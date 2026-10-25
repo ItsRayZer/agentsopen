@@ -1,0 +1,15 @@
+# ai-workspace
+al:1
+agent: ai-workspace | role=workspace
+task: boot | status: todo
+in: agent.json | capabilities.json | tools.json | AGENT-LANG.md | AGENT-START.md | HANDOFF.md | examples.al
+out: views=33 | lang=al:1 | keys=none | exec=sandboxed-js-only
+next: select-view
+note: v7.1 | shell+themes-7+agentmode | local-only | not-deployed | not-pushed | free-only | sync=local-only | cloud=not-built
+
+note: v7.2 | cloud-view+cloudflare-free-public-packs-only | local-only | not-deployed | not-pushed | free-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only
+note: v7.2-fix | language-guide-view+which-language-when | views=33 | local-only | not-deployed | not-pushed | free-only
+note: v7.3 | agentcode-view+ac:1-convert | views=34 | local-only | not-deployed | not-pushed | free-only | free-forever-by-design-not-vendor-promise
+
+note: v7.3-agentonly | agent-only | landing=agentmode | no-human-home | no-chat-projection | views=32 | core-lines-in-html-no-click-needed | fetch=index.html-gives-all-views-core-lines | local-only | not-deployed | not-pushed | free-only
+note: aiws-cli | sh+curl-only | file=aiws | docs=aiws.md | commands=start,agent,examples,search,pack,publish,list,get,delete,health,help | keys=none | publish-public-only | no-code-exec | local-only | not-deployed | not-pushed | free-only

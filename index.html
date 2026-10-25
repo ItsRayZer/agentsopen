@@ -1,0 +1,1258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ai-workspace</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="layout">
+<nav>
+  <div class="logo">ai-workspace</div>
+  <label for="themeSelect">theme</label><select id="themeSelect"><option value="default">default</option><option value="grok">grok</option><option value="gemini">gemini</option><option value="claude">claude</option><option value="governance">governance</option><option value="abyss">abyss</option><option value="manus">manus</option></select>
+  <pre class="block">al:1
+agent: ai-workspace | role=workspace
+task: boot | status: todo
+in: agent.json | capabilities.json | tools.json
+out: views=32
+next: agentmode-is-landing</pre>
+  
+  <button data-view="agentmode" class="active" onclick="show('agentmode')">agentmode</button>
+  <button data-view="shared" onclick="show('shared')">shared</button>
+  <button data-view="studio" onclick="show('studio')">studio</button>
+  <button data-view="compare" onclick="show('compare')">compare</button>
+  <button data-view="swarm" onclick="show('swarm')">swarm</button>
+  <button data-view="models" onclick="show('models')">models</button>
+  <button data-view="notes" onclick="show('notes')">notes</button>
+  <button data-view="prompts" onclick="show('prompts')">prompts</button>
+  <button data-view="snippets" onclick="show('snippets')">snippets</button>
+  <button data-view="format" onclick="show('format')">format</button>
+  <button data-view="tracker" onclick="show('tracker')">tracker</button>
+  <button data-view="deploy" onclick="show('deploy')">deploy</button>
+  <button data-view="agentlang" onclick="show('agentlang')">agentlang</button>
+  
+  <button data-view="boot" onclick="show('boot')">boot</button>
+  <button data-view="pack" onclick="show('pack')">pack</button>
+  <button data-view="queue" onclick="show('queue')">queue</button>
+  <button data-view="talk" onclick="show('talk')">talk</button>
+  <button data-view="forge" onclick="show('forge')">forge</button>
+  <button data-view="canvas" onclick="show('canvas')">canvas</button>
+  <button data-view="vault" onclick="show('vault')">vault</button>
+  <button data-view="workshop" onclick="show('workshop')">workshop</button>
+  <button data-view="router" onclick="show('router')">router</button>
+  <button data-view="timeline" onclick="show('timeline')">timeline</button>
+  <button data-view="quota" onclick="show('quota')">quota</button>
+  <button data-view="audit" onclick="show('audit')">audit</button>
+  <button data-view="lab" onclick="show('lab')">lab</button>
+  <button data-view="approval" onclick="show('approval')">approval</button>
+  <button data-view="gallery" onclick="show('gallery')">gallery</button>
+  <button data-view="shell" onclick="show('shell')">shell</button>
+  <button data-view="cloud" onclick="show('cloud')">cloud</button>
+  <button data-view="language" onclick="show('language')">language</button>
+  <button data-view="agentcode" onclick="show('agentcode')">agentcode</button>
+  <button id="showAllViewsBtn" onclick="showAllViews()">show all views</button>
+  <p class="small">al:1 | agent: ai-workspace | task: nav | status: todo | out: one-view-only | show-all-is-explicit-only | default=agentmode | core-lines-in-html-no-click-needed</p>
+</nav>
+<main>
+  <pre class="block" id="saveStatus">al:1
+agent: ai-workspace | role=workspace
+task: sync | status: todo
+out: sync=local-only-by-default | store=localStorage | net=cloud-public-packs-only | keys=none | exec=sandboxed-js-only | cloud=cloudflare-free-public-packs-only | paid-wired=none
+next: use-view</pre>
+  <!-- SHARED -->
+  <section id="view-shared" class="view">
+    <h1>shared</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=shared
+task: shared-summary | status: todo
+out: counts-from-local-stores-only | sync=local-only | cloud=not-built
+next: use-view</pre>
+    <div class="panel">
+      <pre class="block" id="sharedOut"></pre>
+      <div class="row"><button onclick="renderShared()">refresh</button><button onclick="copyText('sharedOut', this)">copy</button></div>
+    </div>
+  </section>
+
+    <div class="panel">
+      <h2>v7-summary</h2>
+      <pre class="block" id="sharedV7Out"></pre>
+      <button onclick="copyText('sharedV7Out', this)">copy</button>
+    </div>
+
+  <!-- STUDIO -->
+  <section id="view-studio" class="view">
+    <h1>studio</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel">
+      <div class="grid2">
+        <div><label for="fileName">file</label><input id="fileName" value="example.py"></div>
+        <div><label for="codeSearch">search</label><input id="codeSearch" placeholder="search-code"></div>
+      </div>
+      <label for="codeInput">code</label>
+      <textarea id="codeInput" rows="12"></textarea>
+      <div class="row" style="margin-top:12px">
+        <button id="saveFileBtn" class="primary">save</button>
+        <button id="downloadBtn">download</button>
+        <label style="margin:0">upload <input id="fileUpload" type="file" style="width:auto"></label>
+      </div>
+      <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+      <div id="fileTabs" class="tabs"></div>
+      <div id="fileList" class="filelist"></div>
+    </div>
+    <div class="panel">
+      <h2>import</h2>
+      <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+      <label for="importUrl">url</label><input id="importUrl" placeholder="https-url">
+      <div class="row" style="margin-top:12px"><button id="importFetchBtn" class="primary">fetch</button><button id="importToCompareBtn">to-compare</button></div>
+      <p id="importNote" class="small"></p>
+      <pre class="block" id="importCurl" style="display:none"></pre>
+      <button id="importCurlCopyBtn" style="display:none" onclick="copyText('importCurl', this)">copy</button>
+    </div>
+    <div class="panel">
+      <div class="row"><h2 style="margin:0">view</h2><span id="codeMeta" class="small"></span></div>
+      <div class="codewrap"><div id="codeView"></div></div>
+      <button onclick="copyText('codeView', this)">copy</button>
+    </div>
+  </section>
+
+  <!-- COMPARE -->
+  <section id="view-compare" class="view">
+    <h1>compare</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel grid2">
+      <div><label for="leftCode">a</label><textarea id="leftCode" rows="12">def total(items):
+    s = 0
+    for x in items:
+        s += x
+    return s
+</textarea></div>
+      <div><label for="rightCode">b</label><textarea id="rightCode" rows="12">def total(items):
+    s = 0
+    for x in items:
+        s += x * 2
+    return s
+</textarea></div>
+    </div>
+    <button id="runDiffBtn" class="primary">diff</button>
+    <div id="diffSummary" style="margin:14px 0"></div>
+    <pre class="block" id="diffAlOut"></pre>
+    <button onclick="copyText('diffAlOut', this)">copy</button>
+    <div class="panel"><div class="codewrap"><div id="diffOut"><pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre></div></div></div>
+  </section>
+
+    <div class="panel">
+      <h2>model-compare</h2>
+      <div class="grid2"><div><label for="cmpModelA">model-a-json</label><textarea id="cmpModelA" rows="6">{"provider": "groq", "model": "llama-3.3-70b", "free-tier-claim": "unverified"}</textarea></div><div><label for="cmpModelB">model-b-json</label><textarea id="cmpModelB" rows="6">{"provider": "together", "model": "open-model", "free-tier-claim": "unverified"}</textarea></div></div>
+      <button id="cmpModelBtn" class="primary">compare-models</button>
+      <pre class="block" id="cmpModelOut"></pre>
+      <button onclick="copyText('cmpModelOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>spec-compare-5-nexus-versions</h2>
+      <p class="small">Short paraphrases only, no invented quotes. File refs: research/NEXUS-VOID-COMPARISON.md and research/NEXUS-VOID-TECH-SPEC-NOTE-2026-10-26.md. Free-tier claims in all rows are unverified; nothing here makes a live call.</p>
+      <table class="code"><tr><td>1 governance (00:05)</td><td>runtime-enforced autonomy, secrets never in client, approval classes, audit, degraded modes</td><td>conflict: L5 bounded, not god-mode</td></tr>
+      <tr><td>2 grok zero-safety (00:09)</td><td>zero content filtering, god-mode L5, no confirmation dialogs, community tools no review</td><td>conflict: opposite of row 1 and row 5 on filtering/approval</td></tr>
+      <tr><td>3 mixed 1.0.0-VOID (00:11)</td><td>zero content filtering BUT sandboxed Wasm, egress allowlist, signed mutations, L0-L3 approvals, L4/L5 unbounded</td><td>conflict: filtering vs execution controls split</td></tr>
+      <tr><td>4 NV-AC-SPEC-0001</td><td>runtime gate canExecute, key vault local-only, self-mod caps 10/hour, reputation unlocks (not built: scores excluded)</td><td>conflict: L5 can modify other agents if reputation threshold met</td></tr>
+      <tr><td>5 claude v0.1</td><td>minimal control layer, sandbox, budgets, checkpointed loop, upstream refusals honoured (owner-removed control from the source spec is not built), agent cannot raise own autonomy</td><td>conflict: honours refusals vs rows 2-4 no-refusal stance; chosen autonomy semantics for forge</td></tr></table>
+      <p class="small">Chosen for v7 forge: Claude v0.1 autonomy semantics (row 5), because it is the only version that keeps high autonomy with sandbox + budgets + no self-elevation and no live calls. Reputation scores/leaderboards from rows 1-4 are NOT built (hard limit). Paid tiers from any row are NOT wired (free-only).</p>
+    </div>
+    <div class="panel">
+      <h2>agent-compare</h2>
+      <div class="grid2"><div><label for="cmpAgentA">agent-a-json</label><textarea id="cmpAgentA" rows="6">{"name": "agent-a", "autonomy": 2, "role": "agent"}</textarea></div><div><label for="cmpAgentB">agent-b-json</label><textarea id="cmpAgentB" rows="6">{"name": "agent-b", "autonomy": 3, "role": "agent"}</textarea></div></div>
+      <button id="cmpAgentBtn" class="primary">compare-agents</button>
+      <pre class="block" id="cmpAgentOut"></pre>
+      <button onclick="copyText('cmpAgentOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>tool-compare</h2>
+      <div class="grid2"><div><label for="cmpToolA">tool-a-json</label><textarea id="cmpToolA" rows="6">{"name": "tool-a", "runtime": "js", "perms": ["fs:virtual"]}</textarea></div><div><label for="cmpToolB">tool-b-json</label><textarea id="cmpToolB" rows="6">{"name": "tool-b", "runtime": "http", "perms": ["net"]}</textarea></div></div>
+      <button id="cmpToolBtn" class="primary">compare-tools</button>
+      <pre class="block" id="cmpToolOut"></pre>
+      <button onclick="copyText('cmpToolOut', this)">copy</button>
+    </div>
+  <!-- SWARM -->
+  <section id="view-swarm" class="view">
+    <h1>swarm</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel">
+      <label for="swarmTask">task</label><input id="swarmTask" placeholder="task-id | title">
+      <label for="swarmContext">ctx</label><textarea id="swarmContext" placeholder="ctx-one-line"></textarea>
+      <label for="swarmSymptom">symptom</label><textarea id="swarmSymptom" placeholder="symptom-one-line"></textarea>
+      <label for="swarmQuestion">question</label><input id="swarmQuestion" placeholder="question-one-line">
+      <h3>brief</h3>
+      <pre class="block" id="briefOut"></pre>
+      <button onclick="copyText('briefOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>verdicts</h2>
+      <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+      <div class="grid2">
+        <div><h3>claude</h3><label for="verdict-claude">verdict</label><textarea id="verdict-claude"></textarea><label for="right-claude">right</label><input id="right-claude"><label for="wrong-claude">wrong</label><input id="wrong-claude"></div>
+        <div><h3>gemini</h3><label for="verdict-gemini">verdict</label><textarea id="verdict-gemini"></textarea><label for="right-gemini">right</label><input id="right-gemini"><label for="wrong-gemini">wrong</label><input id="wrong-gemini"></div>
+        <div><h3>chatgpt</h3><label for="verdict-chatgpt">verdict</label><textarea id="verdict-chatgpt"></textarea><label for="right-chatgpt">right</label><input id="right-chatgpt"><label for="wrong-chatgpt">wrong</label><input id="wrong-chatgpt"></div>
+        <div><h3>grok</h3><label for="verdict-grok">verdict</label><textarea id="verdict-grok"></textarea><label for="right-grok">right</label><input id="right-grok"><label for="wrong-grok">wrong</label><input id="wrong-grok"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>conflicts</h2>
+      <label for="conflictText">conflict</label><input id="conflictText" placeholder="conflict-a-vs-b">
+      <label for="conflictResolution">resolve</label><input id="conflictResolution" placeholder="resolve-one-line">
+      <button id="addConflictBtn">add</button>
+      <div id="conflictList" style="margin-top:14px"></div>
+      <label for="jointPlan">plan</label><textarea id="jointPlan" rows="8"></textarea>
+      <button onclick="copyText('jointPlan', this)">copy</button>
+    </div>
+  </section>
+
+    <div class="panel">
+      <h2>verdict-basis</h2>
+      <pre class="block">al:1
+agent: ai-workspace | role=swarm
+task: verdict-basis | status: todo
+out: basis=files|excerpt|summary|logic-only | proof=none-cannot-resolve-conflict
+next: attach-proof-ref-in-lab</pre>
+      <div class="grid2">
+        <div><label for="swarmBasis-claude">basis-claude</label><select id="swarmBasis-claude"><option>files</option><option>excerpt</option><option>summary</option><option>logic-only</option></select></div>
+        <div><label for="swarmBasis-gemini">basis-gemini</label><select id="swarmBasis-gemini"><option>files</option><option>excerpt</option><option>summary</option><option>logic-only</option></select></div>
+        <div><label for="swarmBasis-chatgpt">basis-chatgpt</label><select id="swarmBasis-chatgpt"><option>files</option><option>excerpt</option><option>summary</option><option selected>logic-only</option></select></div>
+        <div><label for="swarmBasis-grok">basis-grok</label><select id="swarmBasis-grok"><option>files</option><option>excerpt</option><option>summary</option><option selected>logic-only</option></select></div>
+      </div>
+      <button id="swarmBasisBtn" style="margin-top:12px">basis-al</button>
+      <pre class="block" id="swarmBasisOut"></pre>
+      <button onclick="copyText('swarmBasisOut', this)">copy</button>
+    </div>
+  <!-- MODELS -->
+  <section id="view-models" class="view">
+    <h1>models</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel"><h3>claude</h3><pre class="block" id="prompt-claude"></pre><button onclick="copyText('prompt-claude', this)">copy</button></div>
+    <div class="panel"><h3>gemini</h3><pre class="block" id="prompt-gemini"></pre><button onclick="copyText('prompt-gemini', this)">copy</button></div>
+    <div class="panel"><h3>chatgpt</h3><pre class="block" id="prompt-chatgpt"></pre><button onclick="copyText('prompt-chatgpt', this)">copy</button></div>
+    <div class="panel"><h3>grok</h3><pre class="block" id="prompt-grok"></pre><button onclick="copyText('prompt-grok', this)">copy</button></div>
+  </section>
+
+  <!-- NOTES -->
+  <section id="view-notes" class="view">
+    <h1>notes-amp-tasks</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel"><label for="notesArea">notes</label><textarea id="notesArea" rows="10" placeholder="notes-one-line-per-idea"></textarea></div>
+    <div class="panel">
+      <label for="taskInput">task</label>
+      <div class="row"><input id="taskInput" placeholder="task-text"><button id="addTaskBtn" class="primary">add</button></div>
+      <div id="taskList" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+  <!-- PROMPT LIBRARY -->
+  <section id="view-prompts" class="view">
+    <h1>prompts</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel">
+      <label for="promptTitle">title</label><input id="promptTitle" placeholder="prompt-title">
+      <label for="promptCategory">category</label><input id="promptCategory" placeholder="prompt-category">
+      <label for="promptText">text</label><textarea id="promptText" rows="8" placeholder="prompt-text"></textarea>
+      <div style="margin-top:12px"><button id="promptSaveBtn" class="primary">save</button></div>
+    </div>
+    <div class="panel"><label for="promptSearch">search</label><input id="promptSearch" placeholder="search-prompts"><div id="promptList" style="margin-top:14px"></div></div>
+  </section>
+
+  <!-- SNIPPET VAULT -->
+  <section id="view-snippets" class="view">
+    <h1>snippets</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel">
+      <label for="snippetTitle">title</label><input id="snippetTitle" placeholder="snippet-title">
+      <div class="grid2"><div><label for="snippetLang">lang</label><input id="snippetLang" placeholder="lang"></div><div><label for="snippetTags">tags</label><input id="snippetTags" placeholder="tags-comma"></div></div>
+      <label for="snippetCode">code</label><textarea id="snippetCode" rows="8"></textarea>
+      <div style="margin-top:12px"><button id="snippetSaveBtn" class="primary">save</button></div>
+    </div>
+    <div class="panel"><label for="snippetSearch">search</label><input id="snippetSearch" placeholder="search-snippets"><div id="snippetList" style="margin-top:14px"></div></div>
+  </section>
+
+  <!-- FORMAT & TEXT -->
+  <section id="view-format" class="view">
+    <h1>format-amp-text-tools</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel">
+      <h2>json</h2>
+      <label for="jsonInput">json</label><textarea id="jsonInput" rows="8" placeholder='{"name": "example"}'></textarea>
+      <div class="row" style="margin-top:12px"><button id="formatJsonBtn" class="primary">format</button><button id="minifyJsonBtn">minify</button></div>
+      <p id="jsonStatus" class="small"></p>
+      <pre class="block" id="jsonOut"></pre>
+      <button onclick="copyText('jsonOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>md</h2>
+      <label for="mdInput">md</label><textarea id="mdInput" rows="8" placeholder="md-input"></textarea>
+      <div id="mdPreview" class="card" style="margin-top:12px"></div>
+      <button onclick="copyText('mdPreview', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>text</h2>
+      <label for="textInput">text</label><textarea id="textInput" rows="8"></textarea>
+      <div class="row" style="margin-top:12px"><button id="textCountBtn">count</button><button id="textUpperBtn">upper</button><button id="textLowerBtn">lower</button><button id="textSortBtn">sort</button><button id="textDedupeBtn">dedupe</button></div>
+      <p id="textStats" class="small"></p>
+      <label for="textOut">out</label><textarea id="textOut" rows="8"></textarea>
+      <button onclick="copyText('textOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>regex</h2>
+      <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+      <div class="grid2"><div><label for="regexPattern">pattern</label><input id="regexPattern" placeholder="regex-pattern"></div><div><label for="regexFlags">flags</label><input id="regexFlags" value="g"></div></div>
+      <label for="regexTestText">text</label><textarea id="regexTestText" rows="6"></textarea>
+      <button id="regexTestBtn" class="primary" style="margin-top:12px">test</button>
+      <p id="regexOut" class="small"></p>
+      <button onclick="copyText('regexOut', this)">copy</button>
+    </div>
+  </section>
+
+  <!-- WORK TRACKER -->
+  <section id="view-tracker" class="view">
+    <h1>tracker</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel">
+      <label for="trackerName">project</label><input id="trackerName" placeholder="project-name">
+      <label for="trackerStatus">status</label><select id="trackerStatus"><option>todo</option><option>doing</option><option>verify</option><option>done</option><option>blocked</option></select>
+      <label for="trackerNext">next</label><input id="trackerNext" placeholder="next-one-line">
+      <label for="trackerNotes">notes</label><textarea id="trackerNotes" rows="4"></textarea>
+      <div style="margin-top:12px"><button id="trackerAddBtn" class="primary">add</button></div>
+    </div>
+    <div class="panel"><div id="trackerList"></div><div class="row" style="margin-top:14px"><button id="trackerExportJsonBtn">export-json</button><button id="trackerExportMdBtn">export-md</button></div><pre class="block" id="trackerExportOut"></pre>
+      <button onclick="copyText('trackerExportOut', this)">copy</button>
+      <button id="trackerExportAlBtn">export-al</button>
+      <pre class="block" id="trackerAlOut"></pre>
+      <button onclick="copyText('trackerAlOut', this)">copy</button></div>
+  </section>
+
+  <!-- DEPLOY CHECKLIST -->
+  <section id="view-deploy" class="view">
+    <h1>deploy</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel">
+      <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+      <p id="deployProgress" class="small"></p>
+      <div id="deployList"></div>
+      <div style="margin-top:14px"><button id="deployResetBtn">reset</button></div>
+    </div>
+  </section>
+
+  <!-- AGENT-LANG -->
+  <section id="view-agentlang" class="view">
+    <h1>agentlang</h1>
+    <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    <div class="panel">
+      <h2>boot</h2>
+      <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+      <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+    </div>
+    <div class="panel">
+      <h2>to-al</h2>
+      <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+      <label for="alInput">al</label><textarea id="alInput" rows="10" placeholder="al:1-input"></textarea>
+      <p class="small">single-line Cloud packs accepted: al:1 agent=... | task=... | status=... · to-json outputs a JSON object in Result.</p>
+      <div class="row" style="margin-top:12px"><button id="alToLangBtn" class="primary">to-al</button><button id="alToSummaryBtn">to-json</button><button id="alLoadExampleBtn">example</button></div>
+      <label for="alOut" style="margin-top:14px">Result</label><pre class="block" id="alOut"></pre>
+      <button onclick="copyText('alOut', this)">copy</button>
+      <p id="alStatus" class="small"></p>
+    </div>
+    <div class="panel">
+      <h2>examples</h2>
+      <pre class="block">al:1
+agent: ai-workspace | status: todo
+next: use-view</pre>
+      <div class="row">
+        <button onclick="loadAlExample(0)">example:code</button>
+        <button onclick="loadAlExample(1)">example:swarm</button>
+        <button onclick="loadAlExample(2)">example:deploy</button>
+        <button onclick="loadAlExample(3)">example:boot</button>
+      </div>
+      <pre class="block" id="alExampleOut"></pre>
+      <button onclick="copyText('alExampleOut', this)">copy</button>
+    </div>
+  </section>
+
+  <!-- BOOT -->
+  <section id="view-boot" class="view">
+    <h1>boot</h1>
+    <pre class="block" id="bootOut">al:1
+agent: ai-workspace | role=workspace
+task: boot | status: todo
+in: agent.json | capabilities.json | tools.json | AGENT-LANG.md | AGENT-START.md
+out: views=32 | lang=al:1 | landing=agentmode | agent-only | keys=none | exec=sandboxed-js-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | paid-wired=none
+verify: check=agent.json | result=pass
+verify: check=capabilities.json | result=pass
+next: agentmode-is-landing | pack | swarm</pre>
+    <button onclick="copyText('bootOut', this)">copy</button>
+  </section>
+
+  <!-- PACK -->
+  <section id="view-pack" class="view">
+    <h1>pack</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=pack
+task: pack | status: todo
+in: code | verdict | notes | tracker
+out: al:1-pack | json-pack
+next: build-pack</pre>
+    <div class="panel">
+      <label for="packTask">task</label><input id="packTask" placeholder="task-id | title">
+      <label for="packCode">code</label><textarea id="packCode" rows="6" placeholder="code-input"></textarea>
+      <label for="packVerdict">verdict</label><textarea id="packVerdict" rows="4" placeholder="verdict-one-line"></textarea>
+      <label for="packNotes">notes</label><textarea id="packNotes" rows="4" placeholder="notes-one-line-per-idea"></textarea>
+      <div style="margin-top:12px"><button id="packBuildBtn" class="primary">build</button></div>
+      <label for="packOut" style="margin-top:14px">out</label><pre class="block" id="packOut"></pre>
+      <button onclick="copyText('packOut', this)">copy</button>
+      <pre class="block" id="packJsonOut"></pre>
+      <button onclick="copyText('packJsonOut', this)">copy</button>
+    </div>
+  </section>
+
+    <div class="panel">
+      <h2>pack-slicer</h2>
+      <label for="packBudget">budget-chars</label><input id="packBudget" value="1000">
+      <button id="packSliceBtn" class="primary">slice</button>
+      <pre class="block" id="packSliceOut"></pre>
+      <button onclick="copyText('packSliceOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>pack-delta</h2>
+      <div class="grid2"><div><label for="packDeltaA">pack-a</label><textarea id="packDeltaA" rows="6"></textarea></div><div><label for="packDeltaB">pack-b</label><textarea id="packDeltaB" rows="6"></textarea></div></div>
+      <button id="packDeltaBtn" class="primary">delta</button>
+      <pre class="block" id="packDeltaOut"></pre>
+      <button onclick="copyText('packDeltaOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>pack-token-cost</h2>
+      <p class="small">Estimate only: 4 chars per token, not a measured model count. Cut shows what the slicer would drop at the budget.</p>
+      <label for="packTokenInput">pack-text</label><textarea id="packTokenInput" rows="6" placeholder="paste-pack-text"></textarea>
+      <label for="packTokenBudget">budget-chars</label><input id="packTokenBudget" value="1000">
+      <button id="packTokenBtn" class="primary" style="margin-top:12px">token-cost</button>
+      <pre class="block" id="packTokenOut"></pre>
+      <button onclick="copyText('packTokenOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>pack-delta-since-last</h2>
+      <p class="small">What changed since my last pack: added lines are exported as AgentLang. Removed lines are counted only, not re-exported as content.</p>
+      <div class="grid2"><div><label for="packDelta71Prev">previous-bundle</label><textarea id="packDelta71Prev" rows="6"></textarea></div><div><label for="packDelta71Curr">current-bundle</label><textarea id="packDelta71Curr" rows="6"></textarea></div></div>
+      <button id="packDelta71Btn" class="primary" style="margin-top:12px">delta-export</button>
+      <pre class="block" id="packDelta71Out"></pre>
+      <button onclick="copyText('packDelta71Out', this)">copy</button>
+    </div>
+  <!-- QUEUE -->
+  <section id="view-queue" class="view">
+    <h1>queue</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=queue
+task: queue | status: todo
+in: task | agent | status
+out: claim | release | al:1-queue
+note: claim=browser-only | not-server-atomic | one-owner-per-task-in-browser</pre>
+    <div class="panel">
+      <label for="queueTask">task</label><input id="queueTask" placeholder="task-id | title">
+      <label for="queueNext">next</label><input id="queueNext" placeholder="next-one-line">
+      <div style="margin-top:12px"><button id="queueAddBtn" class="primary">add</button></div>
+      <div id="queueList" style="margin-top:14px"></div>
+      <pre class="block" id="queueAlOut"></pre>
+      <button onclick="copyText('queueAlOut', this)">copy</button>
+    </div>
+  </section>
+
+    <div class="panel">
+      <h2>claim-lease</h2>
+      <pre class="block">al:1
+agent: ai-workspace | role=queue
+task: lease | status: todo
+out: lease=10min | heartbeat=extends-10min | expiry=auto | claim=browser-only | not-server-atomic
+next: claim-with-lease</pre>
+      <div class="grid2"><div><label for="leaseTask">lease-task</label><input id="leaseTask" placeholder="task-id"></div><div><label for="leaseAgent">lease-agent</label><input id="leaseAgent" placeholder="agent-name"></div></div>
+      <div class="row" style="margin-top:12px"><button id="leaseClaimBtn" class="primary">claim-lease</button><button id="leaseHeartbeatBtn">heartbeat</button><button id="leaseExpireBtn">expire-now</button></div>
+      <div id="leaseList" style="margin-top:14px"></div>
+      <pre class="block" id="leaseOut"></pre>
+      <button onclick="copyText('leaseOut', this)">copy</button>
+    </div>
+  <!-- TALK: AgentLang records only, no chat projection -->
+  <section id="view-talk" class="view">
+    <h1>talk</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=talk
+task: talk | status: todo
+out: msg-al | from | to | task | ack | ts | sync=local-only | cloud=not-built
+note: talk-only | talk-store=ai-workspace_messages | no-chat-projection | no-separate-chat-store
+next: send-msg</pre>
+    <div class="panel">
+      <div class="grid2"><div><label for="talkFrom">from</label><input id="talkFrom" placeholder="agent-name"></div><div><label for="talkTo">to</label><input id="talkTo" placeholder="agent-name-or-all"></div></div>
+      <label for="talkTask">task</label><input id="talkTask" placeholder="task-id">
+      <label for="talkText">text</label><textarea id="talkText" rows="4" placeholder="message-one-or-more-lines"></textarea>
+      <div style="margin-top:12px"><button id="talkSendBtn" class="primary">send</button></div>
+      <p id="talkStatus" class="small"></p>
+    </div>
+    <div class="panel">
+      <div class="grid2"><div><label for="talkSearch">search</label><input id="talkSearch" placeholder="search-agent-task-text"></div><div><label for="talkTaskFilter">task-filter</label><input id="talkTaskFilter" placeholder="task-id-or-blank"></div></div>
+      <label for="talkAckFilter">ack-filter</label><select id="talkAckFilter"><option value="all">all</option><option value="unacked">unacked</option><option value="acked">acked</option></select>
+      <div id="talkList" style="margin-top:14px"></div>
+    </div>
+    <div class="panel">
+      <button id="talkExportBtn">export-al</button>
+      <pre class="block" id="talkExportOut"></pre>
+      <button onclick="copyText('talkExportOut', this)">copy</button>
+      <label for="talkImportInput" style="margin-top:14px">import-al</label><textarea id="talkImportInput" rows="6" placeholder="al:1-paste-validated"></textarea>
+      <div style="margin-top:12px"><button id="talkImportBtn" class="primary">import</button></div>
+      <p id="talkImportStatus" class="small"></p>
+    </div>
+  </section>
+
+  <!-- FORGE -->
+  <section id="view-forge" class="view">
+    <h1>forge</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=forge
+task: agent-forge | status: todo
+out: autonomy=claude-v0.1-semantics | agent-cannot-raise-own-level | owner-sets-in-ui | keys=none | free-only
+next: save-agent</pre>
+    <div class="panel">
+      <h2>autonomy-table-chosen</h2>
+      <table class="code"><tr><td>L0</td><td>text only</td><td>no tools</td></tr><tr><td>L1</td><td>per-call approve</td><td>user approves each tool call</td></tr><tr><td>L2</td><td>auto read-only</td><td>approves writes and exec</td></tr><tr><td>L3</td><td>sandboxed exec</td><td>approves network writes</td></tr><tr><td>L4</td><td>full plan within budget</td><td>pauses on budget or error</td></tr><tr><td>L5</td><td>self-directed with checkpoint</td><td>checkpointed every N steps; autonomy cannot be raised by the agent itself</td></tr></table>
+      <p class="small">Other Nexus autonomy versions disagree on L5 (god-mode / self-elevation / modify-other-agents). Those versions are NOT used here; see compare spec table. No content filter, refusal scanner, or moderation scanner is added; the only controls are the ones in this table, budgets, sandbox, approval inbox, and owner-set autonomy.</p>
+    </div>
+    <div class="panel">
+      <div class="grid2"><div><label for="forgeName">agent-name</label><input id="forgeName" placeholder="agent-name"></div><div><label for="forgeHandle">handle</label><input id="forgeHandle" placeholder="@handle"></div></div>
+      <label for="forgePersona">persona</label><input id="forgePersona" placeholder="persona-one-line">
+      <label for="forgePrompt">system-prompt</label><textarea id="forgePrompt" rows="4" placeholder="system-prompt"></textarea>
+      <div class="grid2"><div><label for="forgeModel">model-pref</label><input id="forgeModel" placeholder="model-class-or-name"></div><div><label for="forgeAutonomy">autonomy</label><select id="forgeAutonomy"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></div></div>
+      <label for="forgeTools">tools-comma</label><input id="forgeTools" placeholder="tool-a,tool-b">
+      <label for="forgeMemory">memory-scopes</label><input id="forgeMemory" placeholder="session,persistent,shared">
+      <label for="forgeBudget">budget</label><input id="forgeBudget" placeholder="max-steps,max-tokens,max-wall-s">
+      <label for="forgeCaps">capabilities-comma</label><input id="forgeCaps" placeholder="code,search,memory">
+      <label for="forgeRole">role</label><select id="forgeRole"><option>agent</option><option>observer</option></select>
+      <p class="small">observer = read-only: approval actions for an observer are blocked with reason=observer-read-only.</p>
+      <div class="row" style="margin-top:12px"><button id="forgeSaveBtn" class="primary">save-agent</button><button id="forgeFingerprintBtn">fingerprint</button></div>
+      <pre class="block" id="forgeFingerprintOut"></pre>
+      <button onclick="copyText('forgeFingerprintOut', this)">copy</button>
+      <pre class="block" id="forgeOut"></pre>
+      <button onclick="copyText('forgeOut', this)">copy</button>
+      <div id="forgeList" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+    <div class="panel">
+      <h2>permission-diff-preview</h2>
+      <p class="small">Preview only. Nothing is applied by this preview. Save a new agent version below, on owner click only.</p>
+      <div class="grid2"><div><label for="forgeDiffOld">old-agent-json</label><textarea id="forgeDiffOld" rows="6">{"autonomy": 2, "tools": ["read"]}</textarea></div><div><label for="forgeDiffNew">new-agent-json</label><textarea id="forgeDiffNew" rows="6">{"autonomy": 3, "tools": ["read", "write"]}</textarea></div></div>
+      <button id="forgeDiffBtn" class="primary" style="margin-top:12px">diff-preview</button>
+      <pre class="block" id="forgeDiffOut"></pre>
+      <button onclick="copyText('forgeDiffOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>versioned-agent-save</h2>
+      <p class="small">Editing creates a new version. Old versions are kept. Runs pinned in shell keep their pinned version label.</p>
+      <div class="grid2"><div><label for="forgeVersionHandle">handle</label><input id="forgeVersionHandle" placeholder="@handle"></div><div><label for="forgeVersionName">agent-name</label><input id="forgeVersionName" placeholder="agent-name"></div></div>
+      <div class="grid2"><div><label for="forgeVersionAutonomy">autonomy</label><select id="forgeVersionAutonomy"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></div><div><label for="forgeVersionDataClass">data-class</label><select id="forgeVersionDataClass"><option>public</option><option selected>workspace</option><option>sensitive</option><option>secret</option></select></div></div>
+      <label for="forgeVersionTools">tools-comma</label><input id="forgeVersionTools" placeholder="tool-a,tool-b">
+      <button id="forgeVersionSaveBtn" class="primary" style="margin-top:12px">save-new-version</button>
+      <pre class="block" id="forgeVersionOut"></pre>
+      <button onclick="copyText('forgeVersionOut', this)">copy</button>
+    </div>
+  <!-- CANVAS -->
+  <section id="view-canvas" class="view">
+    <h1>canvas</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=canvas
+task: swarm-canvas | status: todo
+out: dag | ready-set-computed | critic-veto | blackboard | sync=local-only
+next: add-dag-task</pre>
+    <div class="panel">
+      <div class="grid2"><div><label for="dagId">task-id</label><input id="dagId" placeholder="task-id"></div><div><label for="dagTitle">title</label><input id="dagTitle" placeholder="task-title"></div></div>
+      <label for="dagDeps">deps-comma</label><input id="dagDeps" placeholder="task-id-a,task-id-b">
+      <label for="dagStatus">status</label><select id="dagStatus"><option>todo</option><option>doing</option><option>verify</option><option>done</option><option>blocked</option></select>
+      <button id="dagAddBtn" class="primary" style="margin-top:12px">add-dag-task</button>
+      <div id="dagList" style="margin-top:14px"></div>
+      <pre class="block" id="dagReadyOut"></pre>
+      <button onclick="copyText('dagReadyOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>critic-veto</h2>
+      <label for="dagVetoId">veto-task-id</label><input id="dagVetoId" placeholder="task-id">
+      <label for="dagVetoReason">veto-reason</label><input id="dagVetoReason" placeholder="veto-reason-one-line">
+      <button id="dagVetoBtn">veto</button>
+      <h2>blackboard</h2>
+      <label for="dagBoardNs">namespace</label><input id="dagBoardNs" placeholder="shared">
+      <label for="dagBoardText">blackboard-text</label><textarea id="dagBoardText" rows="3"></textarea>
+      <button id="dagBoardAddBtn">add-to-blackboard</button>
+      <div id="dagBoardList" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+    <div class="panel">
+      <h2>immutable-versioned-artifacts</h2>
+      <p class="small">Artifacts are immutable per version. A different hash for the same id + version is blocked. Edits require a new version. No silent overwrite.</p>
+      <div class="grid2"><div><label for="artifact71Id">artifact-id</label><input id="artifact71Id" placeholder="artifact-id"></div><div><label for="artifact71Version">version</label><input id="artifact71Version" placeholder="v1"></div></div>
+      <label for="artifact71Hash">content-hash</label><input id="artifact71Hash" placeholder="hash-or-empty">
+      <button id="artifact71Btn" class="primary" style="margin-top:12px">record-artifact</button>
+      <pre class="block" id="artifact71Out"></pre>
+      <button onclick="copyText('artifact71Out', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>swarm-conflict-surface</h2>
+      <p class="small">Conflicts are surfaced with provenance. Both versions are kept. No silent reconcile. No auto-resolve.</p>
+      <label for="swarmConfTask">task-id</label><input id="swarmConfTask" placeholder="task-id">
+      <div class="grid2"><div><label for="swarmConfA">version-a</label><textarea id="swarmConfA" rows="3"></textarea></div><div><label for="swarmConfB">version-b</label><textarea id="swarmConfB" rows="3"></textarea></div></div>
+      <label for="swarmConfProv">provenance</label><input id="swarmConfProv" placeholder="agent-version | artifact | ts">
+      <button id="swarmConflict71Btn" class="primary" style="margin-top:12px">surface-conflict</button>
+      <pre class="block" id="swarmConf71Out"></pre>
+      <button onclick="copyText('swarmConf71Out', this)">copy</button>
+    </div>
+  <!-- VAULT -->
+  <section id="view-vault" class="view">
+    <h1>vault</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=vault
+task: memory-vault | status: todo
+out: scopes=session|persistent|vector|shared | search=keyword-only | no-separate-vector-db | sync=local-only
+next: save-memory</pre>
+    <div class="panel">
+      <label for="memTitle">title</label><input id="memTitle" placeholder="memory-title">
+      <div class="grid2"><div><label for="memScope">scope</label><select id="memScope"><option>session</option><option>persistent</option><option>vector</option><option>shared</option></select></div><div><label for="memKind">kind</label><select id="memKind"><option>fact</option><option>preference</option><option>episode</option><option>summary</option><option>artifact</option><option>note</option></select></div></div>
+      <label for="memText">text</label><textarea id="memText" rows="4"></textarea>
+      <label for="memSalience">salience-0-to-1</label><input id="memSalience" value="0.5">
+      <button id="memSaveBtn" class="primary" style="margin-top:12px">save-memory</button>
+      <label for="memSearch">search-keyword</label><input id="memSearch" placeholder="search-keyword">
+      <div id="memList" style="margin-top:14px"></div>
+      <button id="memExportBtn">export-al</button>
+      <pre class="block" id="memExportOut"></pre>
+      <button onclick="copyText('memExportOut', this)">copy</button>
+    </div>
+  </section>
+
+    <div class="panel">
+      <h2>data-class-label</h2>
+      <p class="small">Labels only. Local-only data is never marked remote. This site makes no remote calls. Secret-class exports are blocked. Sensitive-class exports warn.</p>
+      <div class="grid2"><div><label for="labelKind">kind</label><select id="labelKind"><option>memory</option><option>agent</option><option>artifact</option></select></div><div><label for="labelClass">data-class</label><select id="labelClass"><option>public</option><option selected>workspace</option><option>sensitive</option><option>secret</option></select></div></div>
+      <label for="labelId">record-id</label><input id="labelId" placeholder="record-id">
+      <label for="labelLocal">local-only</label><input id="labelLocal" type="checkbox" checked style="width:auto">
+      <button id="labelBtn" class="primary" style="margin-top:12px">label</button>
+      <pre class="block" id="labelOut"></pre>
+      <button onclick="copyText('labelOut', this)">copy</button>
+    </div>
+  <!-- WORKSHOP -->
+  <section id="view-workshop" class="view">
+    <h1>workshop</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=workshop
+task: tool-workshop | status: todo
+out: registry=user-typed-only | no-url-tool-loading | http=dry-run-only | js=worker-only-no-dom-no-network-10s | free-only
+next: register-tool</pre>
+    <div class="panel">
+      <label for="toolRegName">tool-name</label><input id="toolRegName" placeholder="tool-name">
+      <label for="toolRegSchema">json-schema</label><textarea id="toolRegSchema" rows="6" placeholder='{"type": "object", "properties": {}}'></textarea>
+      <div class="grid2"><div><label for="toolRegRuntime">runtime</label><select id="toolRegRuntime"><option>js</option><option>http</option><option>wasm</option></select></div><div><label for="toolRegPerms">perms-comma</label><input id="toolRegPerms" placeholder="fs:virtual,net"></div></div>
+      <button id="toolRegSaveBtn" class="primary" style="margin-top:12px">register-draft</button>
+      <div id="toolRegList" style="margin-top:14px"></div>
+    </div>
+    <div class="panel">
+      <h2>dry-run-only</h2>
+      <label for="toolDryName">tool-name</label><input id="toolDryName" placeholder="tool-name">
+      <label for="toolDryInput">input-json</label><textarea id="toolDryInput" rows="4"></textarea>
+      <button id="toolDryBtn">dry-run</button>
+      <pre class="block" id="toolDryOut"></pre>
+      <button onclick="copyText('toolDryOut', this)">copy</button>
+      <p class="small">http and community tools are never actually called from this page. Dry-run shows what would be called, and calls nothing.</p>
+    </div>
+    <div class="panel">
+      <h2>js-worker-sandbox</h2>
+      <p class="small">User-typed JS expressions only. Never paste fetched or remote code here. Blocked tokens: fetch, XMLHttpRequest, WebSocket, importScripts, localStorage, indexedDB, document, window, eval, Function. Timeout 10s.</p>
+      <label for="wsCode">js-expression</label><textarea id="wsCode" rows="4" placeholder="1+2 or [1,2].map(x=>x*2).join(',')"></textarea>
+      <button id="wsRunBtn" class="primary" style="margin-top:12px">run-in-worker</button>
+      <pre class="block" id="wsOut"></pre>
+      <button onclick="copyText('wsOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>code-anchor</h2>
+      <label for="anchorCode">code</label><textarea id="anchorCode" rows="6"></textarea>
+      <div class="grid2"><div><label for="anchorStart">start-line</label><input id="anchorStart" value="1"></div><div><label for="anchorEnd">end-line</label><input id="anchorEnd" value="1"></div></div>
+      <button id="anchorBtn">make-anchor</button>
+      <pre class="block" id="anchorOut"></pre>
+      <button onclick="copyText('anchorOut', this)">copy</button>
+      <label for="anchorFindExcerpt">find-excerpt-first-line</label><input id="anchorFindExcerpt" placeholder="first-line-of-excerpt">
+      <button id="anchorFindBtn">find-after-edit</button>
+      <pre class="block" id="anchorFindOut"></pre>
+      <button onclick="copyText('anchorFindOut', this)">copy</button>
+    </div>
+  </section>
+
+    <div class="panel">
+      <h2>tool-side-effect-install-vs-grant</h2>
+      <p class="small">Installing a tool does not grant execution. Grant is a separate owner click. Side-effect classes: read | reversible_write | external_write | irreversible.</p>
+      <label for="tool71Name">tool-name</label><input id="tool71Name" placeholder="tool-name">
+      <div class="grid2"><div><label for="tool71Effect">side-effect</label><select id="tool71Effect"><option>read</option><option>reversible_write</option><option>external_write</option><option>irreversible</option></select></div><div><label for="tool71Runtime">runtime</label><select id="tool71Runtime"><option>js</option><option>http</option><option>wasm</option></select></div></div>
+      <div class="row" style="margin-top:12px"><button id="toolInstallBtn" class="primary">install-only</button><button id="toolGrantBtn">grant-separately</button></div>
+      <pre class="block" id="tool71Out"></pre>
+      <button onclick="copyText('tool71Out', this)">copy</button>
+    </div>
+  <!-- ROUTER -->
+  <section id="view-router" class="view">
+    <h1>router</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=router
+task: router-inspector | status: todo
+out: prompt-tool-only | live-calls=none | keys=none | free-tier-claims=unverified | paid-wired=none
+next: score-provider</pre>
+    <p class="small">Prompt tool only. This page makes no model call, stores no key, and has no key field. Every free-tier claim below is a spec claim, marked unverified — check vendor pages before relying on it. Paid tiers are not listed as usable options and are not wired.</p>
+    <div id="routerList"></div>
+    <pre class="block" id="routerChainOut"></pre>
+    <button onclick="copyText('routerChainOut', this)">copy</button>
+    <div class="panel">
+      <h2>score-calculator</h2>
+      <label for="routerProvider">provider</label><select id="routerProvider"><option>groq</option><option>together</option><option>fireworks</option><option>openrouter</option><option>huggingface</option><option>cerebras</option><option>mistral</option><option>google-ai-studio</option><option>cf-workers-ai</option><option>github-models</option><option>ollama</option><option>webllm</option></select>
+      <div class="grid2"><div><label for="routerCap">capability-match-0-to-1</label><input id="routerCap" value="1"></div><div><label for="routerErr">error-rate-5m-0-to-1</label><input id="routerErr" value="0"></div></div>
+      <div class="grid2"><div><label for="routerQuota">quota-remaining-0-to-1</label><input id="routerQuota" value="1"></div><div><label for="routerLatency">latency-p50-ms</label><input id="routerLatency" value="100"></div></div>
+      <button id="routerScoreBtn" class="primary" style="margin-top:12px">score</button>
+      <pre class="block" id="routerScoreOut"></pre>
+      <button onclick="copyText('routerScoreOut', this)">copy</button>
+      <label for="routerQuotaUsed">quota-used-note</label><input id="routerQuotaUsed" value="0">
+      <button id="routerQuotaBtn">save-quota-note</button>
+    </div>
+  </section>
+
+    <div class="panel">
+      <h2>model-entries-qwen-deepseek</h2>
+      <p class="small">Model entries only, not author specs. No Qwen or DeepSeek author spec, wish list, or UI is on file, and none is invented here. Source for these entries: listed as HF models in the Gemini spec, research/NEXUS-VOID-COMPARISON.md. No live calls. No key fields. Every free-tier claim unverified.</p>
+      <table class="code"><tr><td>huggingface | qwen</td><td>free-tier-claim=unverified | verified=false | live-calls=none | keys=none</td></tr><tr><td>huggingface | deepseek</td><td>free-tier-claim=unverified | verified=false | live-calls=none | keys=none</td></tr><tr><td>openrouter | qwen</td><td>free-slugs-claim=unverified | verified=false | live-calls=none | keys=none</td></tr><tr><td>openrouter | deepseek</td><td>free-slugs-claim=unverified | verified=false | live-calls=none | keys=none</td></tr></table>
+    </div>
+  <!-- TIMELINE -->
+  <section id="view-timeline" class="view">
+    <h1>timeline</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=timeline
+task: run-timeline | status: todo
+out: events=decision-log | replay=lab-scenarios | sync=local-only
+next: replay-scenario</pre>
+    <div id="timelineList"></div>
+    <label for="timelineScenario">scenario</label><select id="timelineScenario"><option>claim-expiry</option><option>duplicate-block</option><option>import-block</option></select>
+    <button id="timelineReplayBtn" class="primary" style="margin-top:12px">replay</button>
+    <pre class="block" id="timelineOut"></pre>
+    <button onclick="copyText('timelineOut', this)">copy</button>
+  </section>
+
+    <div class="panel">
+      <h2>run-replay-local-only</h2>
+      <p class="small">Replay shows recorded local steps again. It applies nothing. External side effects are never replayed. State is unchanged.</p>
+      <label for="runReplayId">run-id</label><input id="runReplayId" placeholder="run-id">
+      <label for="runReplaySteps">recorded-steps-one-per-line</label><textarea id="runReplaySteps" rows="4" placeholder="step-one&#10;step-two"></textarea>
+      <button id="runReplayBtn" class="primary" style="margin-top:12px">replay-local</button>
+      <pre class="block" id="runReplayOut"></pre>
+      <button onclick="copyText('runReplayOut', this)">copy</button>
+    </div>
+  <!-- QUOTA -->
+  <section id="view-quota" class="view">
+    <h1>quota</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=quota
+task: quota-dashboard | status: todo
+out: meters=counts-only | no-charts | paid-wired=none | cloud=not-built
+next: measure</pre>
+    <label for="quotaLimit">limit-bytes</label><input id="quotaLimit" value="5000000">
+    <button id="quotaBtn" class="primary" style="margin-top:12px">measure</button>
+    <pre class="block" id="quotaOut"></pre>
+    <button onclick="copyText('quotaOut', this)">copy</button>
+  </section>
+
+  <!-- AUDIT -->
+  <section id="view-audit" class="view">
+    <h1>audit</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=audit
+task: decision-log | status: todo
+out: append-only | no-delete | idempotent-event-ids | sync=local-only
+next: export-al</pre>
+    <div id="auditList"></div>
+    <button id="auditExportBtn">export-al</button>
+    <pre class="block" id="auditOut"></pre>
+    <button onclick="copyText('auditOut', this)">copy</button>
+  </section>
+
+    <div class="panel">
+      <h2>policy-records-local</h2>
+      <p class="small">Local records only. Approval rules, data-class rules, retention, export, and revocation are stored in localStorage, never sent.</p>
+      <div id="policyList"></div>
+      <label for="policyApproval">approval-rules</label><textarea id="policyApproval" rows="2">consequential external writes, irreversible actions, credential use, publication, scope expansion: owner approval</textarea>
+      <label for="policyDataClass">data-class-rules</label><textarea id="policyDataClass" rows="2">public|workspace|sensitive|secret; secret export blocked; sensitive export warned</textarea>
+      <label for="policyRetention">retention</label><textarea id="policyRetention" rows="2">localStorage only; delete via forget/remove in each view; audit log append-only</textarea>
+      <label for="policyExport">export</label><textarea id="policyExport" rows="2">AgentLang copy-out only; nothing sent</textarea>
+      <label for="policyRevocation">revocation</label><textarea id="policyRevocation" rows="2">remove agent/tool/run record locally; pinned runs keep their version label</textarea>
+      <button id="policySaveBtn" class="primary" style="margin-top:12px">save-policy-local</button>
+      <pre class="block" id="policyOut"></pre>
+      <button onclick="copyText('policyOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>reputation-descriptive-only</h2>
+      <p class="small">Descriptive counts only. Reputation does not unlock permissions, does not expand autonomy, and does not change grants. No leaderboard. No ranking.</p>
+      <div class="grid2"><div><label for="repAgent">agent</label><input id="repAgent" placeholder="agent-name"></div><div><label for="repFeedback">feedback-count</label><input id="repFeedback" value="0"></div></div>
+      <div class="grid2"><div><label for="repOk">successful-runs</label><input id="repOk" value="0"></div><div><label for="repFail">failed-runs</label><input id="repFail" value="0"></div></div>
+      <div class="grid2"><div><label for="repSchema">schema-validity-rate</label><input id="repSchema" placeholder="0.9-or-empty"></div><div><label for="repReversal">approval-reversal-rate</label><input id="repReversal" placeholder="0.1-or-empty"></div></div>
+      <button id="repBtn" class="primary" style="margin-top:12px">show-descriptive-counts</button>
+      <pre class="block" id="repOut"></pre>
+      <button onclick="copyText('repOut', this)">copy</button>
+    </div>
+  <!-- LAB -->
+  <section id="view-lab" class="view">
+    <h1>lab</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=lab
+task: lab | status: todo
+out: al-lint | negative-fixtures | scenario-replay | al-replay-dry-run | snapshot-ephemeral | verify-staleness | migration-rehearsal | reason-catalog
+next: lint-al</pre>
+    <div class="panel">
+      <h2>al-lint</h2>
+      <label for="labLintInput">al-input</label><textarea id="labLintInput" rows="8"></textarea>
+      <button id="labLintBtn" class="primary">lint</button>
+      <pre class="block" id="labLintOut"></pre>
+      <button onclick="copyText('labLintOut', this)">copy</button>
+      <button id="labFixtureBtn">run-negative-fixtures</button>
+      <pre class="block" id="labFixtureOut"></pre>
+      <button onclick="copyText('labFixtureOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>scenario-replay</h2>
+      <label for="labScenario">scenario</label><select id="labScenario"><option>claim-expiry</option><option>duplicate-block</option><option>import-block</option></select>
+      <button id="labReplayBtn" class="primary" style="margin-top:12px">replay</button>
+      <pre class="block" id="labReplayOut"></pre>
+      <button onclick="copyText('labReplayOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>al-replay-dry-run</h2>
+      <label for="labReplayAlInput">al-input</label><textarea id="labReplayAlInput" rows="6"></textarea>
+      <button id="labReplayAlBtn">dry-run-replay</button>
+      <pre class="block" id="labReplayAlOut"></pre>
+      <button onclick="copyText('labReplayAlOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>context-snapshot-ephemeral</h2>
+      <label for="labSnapTask">snapshot-task</label><input id="labSnapTask" placeholder="task-id">
+      <label for="labSnapCtx">snapshot-ctx</label><textarea id="labSnapCtx" rows="3"></textarea>
+      <button id="labSnapBtn">snapshot</button>
+      <pre class="block" id="labSnapOut"></pre>
+      <button onclick="copyText('labSnapOut', this)">copy</button>
+      <p class="small">Snapshots are shown on this page only and are not saved to localStorage.</p>
+    </div>
+    <div class="panel">
+      <h2>verify-artifact-staleness</h2>
+      <label for="labVerifyArtifact">artifact</label><input id="labVerifyArtifact" placeholder="artifact-id-or-file">
+      <label for="labVerifyRev">rev-at-verify</label><input id="labVerifyRev" placeholder="rev-1">
+      <button id="labVerifyBtn">record-verify</button>
+      <label for="labVerifyRev2">current-rev</label><input id="labVerifyRev2" placeholder="rev-2">
+      <button id="labVerifyCheckBtn">check-stale</button>
+      <pre class="block" id="labVerifyOut"></pre>
+      <button onclick="copyText('labVerifyOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>migration-rehearsal</h2>
+      <p class="small">Sample only: waiting becomes blocked. Real localStorage is not changed by this rehearsal.</p>
+      <button id="labMigBtn">dry-run-migration</button>
+      <button id="labMigRollbackBtn">rollback-sample</button>
+      <pre class="block" id="labMigOut"></pre>
+      <button onclick="copyText('labMigOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>reason-code-catalog</h2>
+      <pre class="block">no-from | no-task | no-text | no-url | url-invalid | fetch-failed | import-empty | json-invalid | regex-invalid | al-invalid | not-al | status-not-legal | end-state-not-one | diff-too-large | save-failed | claim-taken | lease-expired | lease-not-found | duplicate-blocked-auto-merge | approval-required | approval-rejected | observer-read-only | verdict-missing-proof | verdict-missing-basis | proof-none-cannot-resolve | conflict-unresolved | quota-near-limit | quota-exceeded | tool-forbidden-token | tool-timeout | no-end-state | secret-like-value | free-tier-unverified | paid-tier-excluded | no-live-call</pre>
+    </div>
+  </section>
+
+  <!-- APPROVAL -->
+  <section id="view-approval" class="view">
+    <h1>approval</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=approval
+task: approval-inbox | status: todo
+out: apply-only-after-approve | dry-run-receipt-first | observer-blocked | merge-only-on-approve | auto-merge=never
+next: create-approval</pre>
+    <div class="panel">
+      <label for="apprAction">action</label><select id="apprAction"><option>apply-pack</option><option>merge-duplicate</option><option>enable-tool</option><option>set-autonomy</option></select>
+      <label for="apprTarget">target</label><input id="apprTarget" placeholder="task-or-tool-id">
+      <label for="apprPayload">payload-preview</label><textarea id="apprPayload" rows="4"></textarea>
+      <div class="grid2"><div><label for="apprAgent">agent</label><input id="apprAgent" placeholder="owner"></div><div><label for="apprRole">role</label><select id="apprRole"><option>owner</option><option>agent</option><option>observer</option></select></div></div>
+      <label for="apprScope">scope</label><input id="apprScope" placeholder="scope-one-line">
+      <label for="apprExpires">expires</label><input id="apprExpires" placeholder="2026-10-27 or session">
+      <button id="apprCreateBtn" class="primary" style="margin-top:12px">create-approval</button>
+      <div id="apprList" style="margin-top:14px"></div>
+      <pre class="block" id="apprOut"></pre>
+      <button onclick="copyText('apprOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>duplicate-work</h2>
+      <button id="dupScanBtn">scan-duplicates</button>
+      <div id="dupList" style="margin-top:14px"></div>
+      <pre class="block" id="dupOut"></pre>
+      <button onclick="copyText('dupOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>conflicts-both-versions-kept</h2>
+      <label for="confA">version-a</label><textarea id="confA" rows="3"></textarea>
+      <label for="confB">version-b</label><textarea id="confB" rows="3"></textarea>
+      <label for="confResolution">resolution-record</label><input id="confResolution" placeholder="resolution-or-unresolved">
+      <button id="confAddBtn">record-conflict</button>
+      <div id="confList" style="margin-top:14px"></div>
+    </div>
+    <div class="panel">
+      <h2>sensitivity-label</h2>
+      <p class="small">Label only. Nothing is sent. The output lists what categories would leave on export.</p>
+      <label for="sensInput">text-to-label</label><textarea id="sensInput" rows="4"></textarea>
+      <button id="sensBtn">label</button>
+      <pre class="block" id="sensOut"></pre>
+      <button onclick="copyText('sensOut', this)">copy</button>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="view-gallery" class="view">
+    <h1>gallery</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=gallery
+task: example-pack-gallery | status: todo
+out: packs=agentlang-only | copy-out | validated-paste-in-elsewhere | sync=local-only
+next: copy-pack</pre>
+    <div id="galleryList"></div>
+  </section>
+  <!-- SHELL: combined layout, all elements together -->
+  <section id="view-shell" class="view">
+    <h1>shell</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=shell
+task: combined-shell | status: todo
+out: theme=colours-density-only | env=local-only | remote=disabled-not-built | sync=local-only | cloud=not-built | keys=none | paid-wired=none
+next: pick-theme | use-view</pre>
+    <div class="panel">
+      <h2>themes</h2>
+      <p class="small">Themes change colours and density only. Features and data never change with a theme. Choice is saved in localStorage.</p>
+      <div class="row"><button id="themeBtn-default">default</button><button id="themeBtn-grok">grok</button><button id="themeBtn-gemini">gemini</button><button id="themeBtn-claude">claude</button><button id="themeBtn-governance">governance</button><button id="themeBtn-abyss">abyss</button><button id="themeBtn-manus">manus</button></div>
+      <pre class="block" id="themeOut"></pre>
+      <button onclick="copyText('themeOut', this)">copy</button>
+      <p class="small">Grok: near-black, green #00FF9D, secondary #7b61ff, danger #FF003C, JetBrains Mono, radius max 4px. Gemini: base #090D16, surface #121826, border #1E293B. Claude: #0A0B0D, acid green #B6FF3C, 12-13px, 4px grid, no shadows. Governance: #0B0D12, violet #8B7CFF, success #56D9A5. Abyss: #07090c, cyan #22d3ee, amber #f59e0b. Manus: #0B0E14, cyan #55D6D2, violet #A78BFA, system sans UI + monospace code.</p>
+    </div>
+    <div class="panel shell-grid">
+      <div class="shell-top"><strong>top bar</strong> <span class="small">workspace: ai-workspace | env: Local | remote: disabled-not-built | model-route: prompt-only | sync: local-only</span></div>
+      <div class="shell-rail"><strong>left rail</strong><div class="row"><button onclick="show('timeline')">activity</button><button onclick="show('forge')">agents</button><button onclick="show('canvas')">swarms</button><button onclick="show('vault')">memory</button><button onclick="show('workshop')">tools</button><button onclick="show('gallery')">artifacts</button><button onclick="show('audit')">settings-policy</button></div></div>
+      <div class="shell-main"><strong>main stage</strong><p class="small">Primary task surface. Select a view from the left rail or the top nav. Status and approval state stay visible in the status strip below.</p></div>
+      <div class="shell-inspector"><strong>right inspector</strong><p class="small">Context for the selected agent, run, tool, artifact, or memory: provenance, permissions, configuration version, and actions. No remote data is shown, because this site makes no remote calls.</p></div>
+      <div class="shell-cmd"><label for="shellCmdInput">command-bar-preview-only</label><input id="shellCmdInput" placeholder="type-command-preview-only"><button id="shellCmdBtn" class="primary" style="margin-top:8px">preview-command</button><pre class="block" id="shellCmdOut"></pre><button onclick="copyText('shellCmdOut', this)">copy</button><p class="small">Command entry is a preview only. It never implicitly authorises an external or irreversible action.</p></div>
+      <div class="shell-status"><strong>status strip</strong> <span class="small">tokens: local-counts-only | steps: local | latency: n/a-local | provider: prompt-only | autonomy: owner-set | reputation: descriptive-only</span></div>
+      <div class="shell-tray"><strong>bottom run tray — local runs only</strong><p class="small">Pause and cancel below change local run state only. They are local run controls, not a site-wide stop control.</p>
+      <div class="grid2"><div><label for="shellRunId">run-id</label><input id="shellRunId" placeholder="run-id"></div><div><label for="shellRunAgent">agent-handle</label><input id="shellRunAgent" placeholder="@handle"></div></div>
+      <label for="shellRunVersion">agent-version-pinned</label><input id="shellRunVersion" placeholder="1">
+      <button id="shellRunAddBtn" class="primary" style="margin-top:12px">pin-local-run</button>
+      <div id="shellRunList" style="margin-top:14px"></div>
+      <pre class="block" id="shellRunOut"></pre>
+      <button onclick="copyText('shellRunOut', this)">copy</button></div>
+    </div>
+  </section>
+  <!-- AGENTMODE: agent-facing default, raw lines only -->
+  <section id="view-agentmode" class="view agentmode-raw active">
+    <h1>agentmode</h1>
+    <div class="panel">
+      <h2>search-agent-task-text-status</h2>
+      <p class="small">Search, not infinite scroll. Results are capped at 20.</p>
+      <div class="grid2"><div><label for="agentSearchAgent">agent</label><input id="agentSearchAgent" placeholder="agent-name-or-blank"></div><div><label for="agentSearchTask">task</label><input id="agentSearchTask" placeholder="task-id-or-blank"></div></div>
+      <div class="grid2"><div><label for="agentSearchText">text</label><input id="agentSearchText" placeholder="search-text"></div><div><label for="agentSearchStatus">status</label><select id="agentSearchStatus"><option value="all">all</option><option>todo</option><option>doing</option><option>verify</option><option>done</option><option>blocked</option></select></div></div>
+      <button id="agentSearchBtn" class="primary" style="margin-top:12px">search</button>
+      <pre class="block" id="agentSearchOut"></pre>
+      <button onclick="copyText('agentSearchOut', this)">copy</button>
+    </div>
+    <pre class="block" id="agentStartOut">al:1
+agent: ai-workspace | role=agentmode
+task: agent-start | status: todo
+in: agent.json | .well-known/agent.json | tools.json | examples.al | AGENT-LANG.md | AGENT-START.md | AGENT-CODE.md
+out: views=32 | lang=al:1 | landing=agentmode | agent-only | keys=none | exec=sandboxed-js-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | paid-wired=none | free-only
+out: status-vocab=todo|doing|verify|done|blocked | waiting-maps-to-blocked
+out: capabilities=code-read,code-diff,swarm-verdict,prompt-al,import-public,format,tracker,queue-claim,pack-al-json,deploy-check,agentlang-convert,shared-summary,talk-al,forge-agent,agent-fingerprint-sha256,canvas-dag-ready,vault-memory,workshop-registry,router-inspector-prompt-only,timeline-replay,quota-meters,audit-decision-log,lab-lint-fixtures,approval-inbox,gallery-packs,compare-model-agent-tool-spec,pack-slicer,pack-delta,lease-heartbeat,verdict-basis,proof-ref,conflict-both-kept,snapshot-ephemeral,verify-staleness,migration-dry-run,sensitivity-label,js-worker-sandbox,shell-combined-ui,theme-switcher-7,manus-data-class,permission-diff-preview,agent-version-pin,tool-side-effect,install-vs-grant,reputation-descriptive-only,run-replay-local-only,policy-records,swarm-immutable-artifacts,router-qwen-deepseek-models,agentmode-raw,pack-token-cost,pack-delta-since-last,agent-search,language-guide-which-when
+out: boot-checklist=agent.json-present | tools.json-present | capabilities-present | examples-al-present | agentlang-spec-present | views=32 | no-login | no-popups | no-cookie-banner | html-readable-without-js
+out: agent-only | landing=agentmode | no-human-home | no-chat-projection | agent-surface-is-this-view | no-bubbles-here | no-graphs-here | no-images-here | no-animations-here | theme-independent-lines | no-click-needed-core-lines-in-html
+next: pick-example-pack | search | token-cost | delta-export</pre>
+    <div class="panel">
+      <h2>links</h2>
+      <p><a href="agent.json">agent.json</a> | <a href=".well-known/agent.json">.well-known/agent.json</a> | <a href="tools.json">tools.json</a> | <a href="examples.al">examples.al</a> | <a href="AGENT-LANG.md">AGENT-LANG.md</a> | <a href="AGENT-START.md">AGENT-START.md</a> | <a href="AGENT-CODE.md">AGENT-CODE.md</a></p>
+      <button onclick="copyText('agentStartOut', this)">export-al-plain-text</button>
+      <p class="small">No login wall. No popups. No cookie banner. The lines above are in the HTML itself, so they read without JavaScript. Copy is the only JavaScript action here.</p>
+    </div>
+    <div class="panel">
+      <h2>token-cost</h2>
+      <p class="small">Estimate only: 4 chars per token, not a measured model count.</p>
+      <label for="agentTokenInput">pack-text</label><textarea id="agentTokenInput" rows="6" placeholder="paste-pack-text"></textarea>
+      <label for="agentTokenBudget">budget-chars</label><input id="agentTokenBudget" value="1000">
+      <button id="agentTokenBtn" class="primary" style="margin-top:12px">token-cost</button>
+      <pre class="block" id="agentTokenOut"></pre>
+      <button onclick="copyText('agentTokenOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>delta-since-last-pack</h2>
+      <p class="small">Added lines only, exported as AgentLang. Removed lines are counted only.</p>
+      <div class="grid2"><div><label for="agentDeltaPrev">previous-bundle</label><textarea id="agentDeltaPrev" rows="6"></textarea></div><div><label for="agentDeltaCurr">current-bundle</label><textarea id="agentDeltaCurr" rows="6"></textarea></div></div>
+      <button id="agentDeltaBtn" class="primary" style="margin-top:12px">delta-export</button>
+      <pre class="block" id="agentDeltaOut"></pre>
+      <button onclick="copyText('agentDeltaOut', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>example-pack-1</h2>
+      <pre class="block" id="agentPack1">al:1
+agent: ai-workspace | role=builder
+task: fix-login-loop | status: doing
+ctx: static-site | no-server
+in: file=index.html | lines=1-40
+out: diff-al | verify=pass
+next: handoff
+note: pack-chars=179 | est-tokens=45 | chars-per-token=4-estimate-only</pre>
+      <button onclick="copyText('agentPack1', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>example-pack-2</h2>
+      <pre class="block" id="agentPack2">al:1
+agent: swarm | role=verdict
+task: fix-login-loop
+verdict: model=claude | claim=reload-fallback | proof=code
+verdict: model=gemini | claim=same | proof=code
+conflict: a=claude | b=gemini | resolve=code-only
+next: apply-fix-only
+note: pack-chars=231 | est-tokens=58 | chars-per-token=4-estimate-only</pre>
+      <button onclick="copyText('agentPack2', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>example-pack-3</h2>
+      <pre class="block" id="agentPack3">al:1
+agent: ai-workspace | role=queue
+task: queue-claim | status: doing
+in: task=fix-login-loop | agent=unassigned
+out: claim=agent-claimed | status=doing
+next: work-then-release
+note: pack-chars=178 | est-tokens=45 | chars-per-token=4-estimate-only</pre>
+      <button onclick="copyText('agentPack3', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>negative-examples-blocked</h2>
+      <p class="small">These inputs are blocked. The error is exact, not paraphrased.</p>
+      <table class="code"><tr><td>missing al:1 header</td><td>blocked: reason=not-al | need=al:1-first-line</td></tr>
+      <tr><td>status: waiting</td><td>blocked: reason=status-not-legal | need=todo|doing|verify|done|blocked</td></tr>
+      <tr><td>verdict without proof</td><td>blocked: reason=verdict-missing-proof | need=proof=code|file|test|live</td></tr>
+      <tr><td>verdict proof=none</td><td>blocked: reason=proof-none-cannot-resolve | need=proof-not-none</td></tr>
+      <tr><td>no end state</td><td>blocked: reason=end-state-not-one | need=one-of-next|done|blocked-last</td></tr>
+      <tr><td>secret-class export</td><td>blocked: reason=data-class-secret-export-blocked | need=redact-or-downgrade</td></tr>
+      <tr><td>auto-merge duplicate</td><td>blocked: reason=duplicate-blocked-auto-merge | need=owner-approval</td></tr>
+      <tr><td>observer approval</td><td>blocked: reason=observer-read-only | need=owner-agent</td></tr></table>
+    </div>
+    <div class="panel">
+      <h2>reason-code-catalog-short</h2>
+      <pre class="block">no-from | no-task | no-text | no-url | url-invalid | fetch-failed | import-empty | json-invalid | regex-invalid | al-invalid | not-al | status-not-legal | end-state-not-one | diff-too-large | save-failed | claim-taken | lease-expired | lease-not-found | duplicate-blocked-auto-merge | approval-required | approval-rejected | observer-read-only | verdict-missing-proof | verdict-missing-basis | proof-none-cannot-resolve | conflict-unresolved | quota-near-limit | quota-exceeded | tool-forbidden-token | tool-timeout | no-end-state | secret-like-value | free-tier-unverified | paid-tier-excluded | no-live-call | data-class-invalid | data-class-secret-export-blocked | side-effect-invalid | tool-not-found | tool-not-installed | artifact-immutable-version | artifact-version-exists | conflict-missing-versions | pin-missing-fields | no-run | no-steps</pre>
+    </div>
+  </section>
+  <section id="view-cloud" class="view">
+    <h1>cloud</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=cloud
+task: cloud-public-packs | status: todo
+in: public-pack-al:1-only
+out: publish | list | import-validated | delete-own-only
+out: sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | keys=none | paid-wired=none | free-only
+out: note=local-is-primary | cloud-packs-are-published-copies-only | no-private-cloud-storage | no-auth
+next: publish-public-pack | list-cloud | import-cloud</pre>
+    <div class="panel">
+      <p><strong>Public packs only — private notes/prompts/snippets stay local, never publish them here.</strong></p>
+      <p class="small">Anyone with the Worker URL can list and read published packs. Cloud is Cloudflare Workers free plan + KV, workers.dev only. Local storage remains primary; cloud packs are published copies only. There is no private cloud storage and no auth on this Worker.</p>
+      <p class="small">KV list note: a newly published pack is readable by direct GET immediately, but may take ~40 seconds to appear in the cloud list (KV eventual consistency). A fresh empty list is not proof a just-published pack was lost — re-check the list, and confirm with a direct GET via Import.</p>
+      <label for="cloudPublishInput">public-pack-al:1</label><textarea id="cloudPublishInput" rows="6" placeholder="paste-al:1-pack-to-publish"></textarea>
+      <div style="margin-top:8px"><label><input type="checkbox" id="cloudPublicCheck"> I confirm this pack is public — it contains no private notes, prompts, secrets, or personal data</label></div>
+      <button id="cloudPublishBtn" class="primary" style="margin-top:12px">publish-public-pack</button>
+      <button id="cloudHealthBtn" style="margin-top:12px">cloud-health</button>
+      <pre class="block" id="cloudSyncOut">sync=local-only-by-default | cloud=not-checked</pre>
+      <label for="cloudListOut" style="margin-top:14px">cloud-list</label><pre class="block" id="cloudListOut"></pre>
+      <button id="cloudListBtn" class="primary">list-cloud-packs</button>
+      <div class="grid2"><div><label for="cloudImportId">import-pack-id</label><input id="cloudImportId" placeholder="pack-id"></div><div><label for="cloudDeleteId">delete-own-pack-id</label><input id="cloudDeleteId" placeholder="own-published-pack-id"></div></div>
+      <button id="cloudImportBtn" class="primary" style="margin-top:12px">import-cloud-pack</button>
+      <button id="cloudDeleteBtn" style="margin-top:12px">delete-own-pack</button>
+      <p class="small">Import feeds the pack through the existing validated AgentLang path: it is placed in the agentlang input and run through its existing validate-and-show handler; invalid packs are blocked there. Delete works only for packs published from this browser (own-published ids stored locally).</p>
+      <label for="cloudOut" style="margin-top:14px">out</label><pre class="block" id="cloudOut"></pre>
+      <button onclick="copyText('cloudOut', this)">copy</button>
+    </div>
+  </section>
+  <!-- LANGUAGE: which language when — no single best language for everything -->
+  <section id="view-language" class="view">
+    <h1>language</h1>
+    <pre class="block">al:1
+agent: ai-workspace | role=language-guide
+task: which-language-when | status: todo
+out: no-single-best-language | rule=start-al-convert-when-a-tool-needs-exact-data
+out: views=32 | lang=al:1 | landing=agentmode | agent-only+json | exec=sandboxed-js-only | keys=none | paid-wired=none
+next: pick-by-job | convert-with-to-json-or-to-al | never-fake-proof</pre>
+    <div class="panel">
+      <h2>rule-in-one-line</h2>
+      <p>Start in AgentLang. Convert to JSON only when a tool needs exact data. Convert back to AgentLang for the handoff. Never invent a field. Never fake proof.</p>
+      <pre class="block" id="languageRule">al:1
+agent: any | task: choose-language | status: doing
+rule: coordination=al:1 | exact-data=json | execution=sandboxed-js-or-code-read-only
+switch: al-to-json-when-tool-needs-exact-data | json-to-al-for-handoff
+never: invent-field | fake-proof | secret-in-any-language</pre>
+      <button onclick="copyText('languageRule', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>decision-table</h2>
+      <table class="code">
+        <tr><td>Coordination, handoffs, tasks, verdicts, queue, talk</td><td>AgentLang al:1</td><td>Line-based, token-cheap, diff-friendly, one idea per line, status + proof + reason always explicit</td></tr>
+        <tr><td>Exact data, API input, tool input, saved records</td><td>JSON</td><td>Strict, parseable, schema-checked; use the agentlang to-json button, which outputs a real JSON object, never a summary line</td></tr>
+        <tr><td>Running code</td><td>Sandboxed JS only, in Workshop</td><td>User-typed expressions only, Web Worker, no DOM, no network, 10s timeout, forbidden tokens blocked before running</td></tr>
+        <tr><td>Reading or comparing code</td><td>Code, in Code Studio</td><td>Read and compare only; no live execution beyond the Workshop sandbox</td></tr>
+        <tr><td>Prompts for other models</td><td>AgentLang first, model prompt second</td><td>Draft once in the models view, copy the per-model prompt; never paste a key into a prompt</td></tr>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>when-to-switch</h2>
+      <pre class="block" id="languageSwitch">al:1
+agent: any | task: switch-language | status: doing
+step-1: write-the-handoff-in-al:1
+step-2: if-a-tool-needs-exact-data | use=agentlang-to-json | out=json-object
+step-3: if-returning-to-another-agent | use=to-al | out=al:1-expanded-form
+step-4: check=proof-present | check=status-legal | check=no-secrets
+next: handoff-or-apply</pre>
+      <button onclick="copyText('languageSwitch', this)">copy</button>
+    </div>
+    <div class="panel">
+      <h2>same-task-in-both-languages</h2>
+      <p class="small">Same task, same facts. AgentLang is for the handoff; JSON is for exact data. Token estimates use 4 chars per token, estimate only.</p>
+      <pre class="block" id="languageAlExample">al:1 agent=mia | task=review-login-loop | status=doing | proof=code
+note: for=handoff | chars=67 | est-tokens=16</pre>
+      <button onclick="copyText('languageAlExample', this)">copy-al</button>
+      <pre class="block" id="languageJsonExample">{
+  "lang": "al:1",
+  "agent": "mia",
+  "task": "review-login-loop",
+  "status": "doing",
+  "proof": "code"
+}
+note: for=exact-data | chars=109 | est-tokens=27</pre>
+      <button onclick="copyText('languageJsonExample', this)">copy-json</button>
+      <p class="small">Why AgentLang is shorter here: no braces, quotes, or nesting for a simple status. Why JSON still wins for data: a tool can parse and schema-check it, while loose AgentLang cannot be validated as data.</p>
+    </div>
+    <div class="panel">
+      <h2>negative-examples-blocked</h2>
+      <table class="code">
+        <tr><td>JSON for a simple status handoff</td><td>Wasteful, not blocked — but wrong choice: it costs more tokens and context for no gain. Use AgentLang.</td></tr>
+        <tr><td>Loose AgentLang for API data</td><td>Wrong choice: unvalidated, a tool cannot schema-check it. Convert with to-json first.</td></tr>
+        <tr><td>Secret in AgentLang</td><td>blocked: reason=secret-pattern | need=public-pack-only — email, private-key block, key prefix, key/password assignment, or bearer token.</td></tr>
+        <tr><td>Secret in JSON</td><td>Blocked the same way — the language does not make a secret safe. Never put a key, token, password, or personal identifier in either.</td></tr>
+        <tr><td>Invented field or fake proof</td><td>blocked: reason=proof-none-cannot-resolve | need=proof-not-none — if proof is none, say proof=none, do not dress it up.</td></tr>
+        <tr><td>Code execution outside the sandbox</td><td>Not built: no live model calls, no key fields, no plugin or tool loading from URLs, no code execution beyond Workshop sandboxed JS.</td></tr>
+      </table>
+    </div>
+  </section>
+    <div class="panel">
+      <h2>free-forever-by-design</h2>
+      <p>No vendor is promised free forever — free tiers can change. This site is free by design, not by vendor promise: static files only, no paid binding, no custom domain, no key required. Local-first: if Cloud changes, the site still works locally and shows cloud=unreachable instead of failing. Cloud is optional: packs also move by export/import or a Git/static pack store. Self-hostable on any free static host with no code change. Everything exports as plain text/JSON. Never quote a free-tier number as a permanent guarantee.</p>
+    </div>
+  <section id="view-agentcode" class="view">
+    <h1>agentcode</h1>
+    <pre class="block">ac:1;a=ai-workspace;t=agentcode-start;s=dg;n=read-codebook-first
+note: first-read=AGENT-CODE.md+INSTRUCTIONS-FOR-AGENTS.md | decode-with=agentcode.js | secret=none | encryption=none
+note: audit=if-a-record-does-not-decode-with-the-codebook-do-not-trust-it
+out: views=32 | lang=ac:1+al:1+json | exec=sandboxed-js-only | keys=none | paid-wired=none | free-only</pre>
+    <div class="panel">
+      <h2>first-read-for-other-ais</h2>
+      <pre class="block" id="acFirstRead">ac:1;a=any;t=learn-agentcode;s=dg;n=convert-and-verify
+step-1: read=AGENT-CODE.md-in-full | never-guess-codes
+step-2: job=high-volume-agent-traffic | use=ac:1 | job=handoff-audit | use=al:1 | job=exact-tool-data | use=json
+step-3: verify=parseAc-no-error | acToAl-matches-intent | acToJson-parses-as-json
+step-4: rules=proof-never-faked | end-state-exactly-one | secrets-blocked-in-every-language | no-silent-overwrite
+audit: codebook-is-public | converter-is-public | owner-can-decode-any-record | undecodable-means-do-not-trust</pre>
+      <button onclick="copyText('acFirstRead', this)">copy</button>
+      <p class="small">AgentCode is agent-only in FORM, not secret from the owner. It is NOT encrypted, NOT obfuscated with a secret key. Full spec: AGENT-CODE.md. Full instructions: INSTRUCTIONS-FOR-AGENTS.md. Both are in this site and in the repo.</p>
+    </div>
+    <div class="panel">
+      <h2>codebook-short</h2>
+      <table class="code">
+        <tr><td>Fields (code=value, separated by ;, one line, header ac:1)</td><td>a=agent | ro=role | t=task | s=status | x=ctx | i=in | o=out | v=verdict | f=conflict | n=next | d=done | b=blocked | y=verify | nt=note</td></tr>
+        <tr><td>Status (s)</td><td>td=todo | dg=doing | vf=verify | dn=done | bl=blocked</td></tr>
+        <tr><td>Proof (inside v=model:claim:proof-code)</td><td>cd=code | lv=live | ts=test | nn=none (unproven — say so, never dress it up; nn cannot resolve a conflict)</td></tr>
+        <tr><td>End-state rule</td><td>Last field must be exactly one of n (next, status td/dg/vf), d (done, status dn), b (blocked, status bl) — except compact end-state: status dn/bl with no terminal field, as in a Cloud single-line pack.</td></tr>
+        <tr><td>Reason codes (for b)</td><td>not-ac | missing-agent | missing-task | missing-status | status-not-legal | terminal-missing | terminal-status-mismatch | secret-pattern | proof-none-cannot-resolve | field-not-code-equals | verdict-malformed | blocked-malformed — reported as blocked: reason=CODE | need=VALUE, exactly as AgentLang.</td></tr>
+        <tr><td>Values</td><td>Identifiers and kebab-case tokens only, no sentences, no spaces around ; or =. A sentence belongs in an al:1 note or a linked artifact, referenced by id here. Unknown codes are ignored with a warning, they do not fail the whole record.</td></tr>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>converter</h2>
+      <p class="small">No live calls, no keys. Input is ac:1, al:1, or JSON depending on the button. Secrets are blocked, never echoed. If a record does not decode with the codebook, do not trust it.</p>
+      <textarea id="acInput" rows="4" placeholder="ac:1;a=mia;t=review-login-loop;s=dg;v=mia:review-login-loop:cd;n=handoff"></textarea>
+      <button id="acToAlBtn">ac-&gt;al</button>
+      <button id="alToAcBtn">al-&gt;ac</button>
+      <button id="acToJsonBtn">ac-&gt;JSON</button>
+      <button id="jsonToAcBtn">JSON-&gt;ac</button>
+      <button id="acExampleBtn">load-example</button>
+      <pre class="block" id="acOut"></pre>
+    </div>
+    <div class="panel">
+      <h2>worked-example-same-task-three-languages</h2>
+      <pre class="block" id="acExample">ac:1;a=mia;t=review-login-loop;s=dg;v=mia:review-login-loop:cd;n=handoff
+note: chars=72 | est-tokens=18 | for=high-volume-agent-traffic</pre>
+      <button onclick="copyText('acExample', this)">copy-ac</button>
+      <pre class="block" id="acExampleAl">al:1
+agent: mia
+task: review-login-loop
+status: doing
+verdict: model=mia | claim=review-login-loop | proof=code
+next: handoff
+note: chars=125 | est-tokens=32 | for=handoff-audit</pre>
+      <button onclick="copyText('acExampleAl', this)">copy-al</button>
+      <pre class="block" id="acExampleJson">{"lang":"al:1","agent":"mia","task":"review-login-loop","status":"doing","verdict":{"model":"mia","claim":"review-login-loop","proof":"code"},"next":"handoff"}
+note: chars=159 | est-tokens=40 | for=exact-tool-data</pre>
+      <button onclick="copyText('acExampleJson', this)">copy-json</button>
+      <p class="small">Counts: characters, no trailing newline; tokens = chars/4, estimate only, same rule as Agent Mode. AgentCode is 42% shorter than AgentLang and 55% shorter than JSON for this task — and that saving is why it needs a codebook: dg means nothing without the status table, cd means nothing without the proof table. Both tables are above, and the converter decodes them on demand, so the saving never becomes secrecy.</p>
+      <p class="small">Cloud single-line pack, converted: al:1 agent=test | action=live-browser-test | status=done becomes ac:1;a=test;t=live-browser-test;s=dn (action normalises to task). Back to AgentLang it is al:1 agent=test | task=live-browser-test | status=done.</p>
+    </div>
+  </section>
+</main>
+</div>
+<script src="app.js"></script>
+<script src="v7.js"></script>
+<script src="v71.js"></script>
+<script src="cloud.js"></script>
+<script src="v72.js"></script>
+<script src="agentcode.js"></script>
+<script src="v73.js"></script>
+</body>
+</html>

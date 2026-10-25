@@ -1,0 +1,121 @@
+#!/bin/sh
+# aiws — ai-workspace command tool | al:1 | keys=none | auth=none | free-only
+# POSIX sh + curl only. No node, no python, no login, no keys, no paid endpoints.
+# Fetches/prints/posts AgentLang packs only. Never runs code from a pack.
+# Defaults: AIWS_SITE, AIWS_CLOUD env overrides only.
+# Read this file before running a downloaded copy: sh aiws help
+set -u
+SITE="${AIWS_SITE:-https://ai-ws.vercel.app}"
+CLOUD="${AIWS_CLOUD:-https://ai-workspace-cloud.mrabensojan.workers.dev}"
+PUBLISHED_FILE="${AIWS_PUBLISHED_FILE:-$HOME/.aiws-published}"
+MAX_PACK_BYTES=102400
+ID_RE='^[A-Za-z0-9_-]\{1,64\}$'
+
+blocked() { printf 'blocked: reason=%s | need=%s\n' "$1" "$2"; exit 1; }
+need_curl() { command -v curl >/dev/null 2>&1 || blocked "curl-missing" "curl-installed"; }
+fetch() { # fetch <url>
+  need_curl
+  curl -fsS --max-time 30 "$1" || blocked "fetch-failed" "$1"
+}
+json_escape() { # read stdin, print JSON string content (no surrounding quotes)
+  awk 'BEGIN{ORS=""} { gsub(/\\/,"\\\\"); gsub(/"/,"\\\""); gsub(/\t/,"\\t"); gsub(/\r/,"\\r"); printf "%s\\n", $0 }' "$1" | sed 's/\\n$//'
+}
+is_secret() { # is_secret <file> — high-confidence patterns only, never prints content
+  grep -Eiq -- '-----BEGIN [A-Z ]*PRIVATE KEY-----|sk-[A-Za-z0-9]{16,}|ghp_[A-Za-z0-9]{20,}|gho_[A-Za-z0-9]{20,}|ghu_[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|api[_-]?key[[:space:]]*[:=][[:space:]]*["'"'"'][^"'"'"']+["'"'"']|password[[:space:]]*[:=][[:space:]]*[^[:space:]]+|Bearer[[:space:]]+[A-Za-z0-9._-]{20,}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' "$1"
+}
+validate_pack() { # validate_pack <file>
+  [ -f "$1" ] || blocked "file-not-found" "$1"
+  size=$(wc -c < "$1" | tr -d ' ')
+  [ "$size" -le "$MAX_PACK_BYTES" ] || blocked "pack-too-large" "pack-under-100kb"
+  first=$(sed -e 's/^[[:space:]]*//' -e q "$1")
+  case "$first" in
+    al:1*) ;;
+    *) blocked "pack-not-agentlang" "pack-starting-with-al:1" ;;
+  esac
+  if is_secret "$1"; then blocked "secret-pattern" "public-pack-only-no-secret-values"; fi
+}
+cmd_help() {
+  printf 'aiws start | fetch agent.json + start lines\n'
+  printf 'aiws agent | fetch agent.json\n'
+  printf 'aiws examples | fetch examples.al\n'
+  printf 'aiws search <term> | search index + examples, capped 20\n'
+  printf 'aiws pack <file> | validate al:1 + size + secret-pattern, print pack, do not publish\n'
+  printf 'aiws publish <file> | publish public pack only, file must contain public=true\n'
+  printf 'aiws list | list published pack ids only\n'
+  printf 'aiws get <id> | fetch one public pack\n'
+  printf 'aiws delete <id> | delete only an id published by this tool\n'
+  printf 'aiws health | cloud health + site agent.json version\n'
+  printf 'aiws help | this list\n'
+}
+cmd_start() { fetch "$SITE/agent.json"; printf '\n'; fetch "$SITE/AGENT-START.md"; }
+cmd_search() {
+  [ $# -ge 1 ] || blocked "search-term-missing" "aiws search <term>"
+  term="$1"
+  tmp=$(mktemp) || blocked "tmp-failed" "writable-tmp"
+  trap 'rm -f "$tmp"' EXIT INT TERM
+  fetch "$SITE/index.html" | sed 's/<[^>]*>/ /g' > "$tmp"
+  fetch "$SITE/examples.al" >> "$tmp"
+  if grep -iq -- "$term" "$tmp"; then
+    grep -i -- "$term" "$tmp" | head -20
+  else
+    printf 'status: done | out=no-match\n'
+  fi
+  rm -f "$tmp"; trap - EXIT INT TERM
+}
+cmd_publish() {
+  [ $# -ge 1 ] || blocked "pack-file-missing" "aiws publish <file>"
+  validate_pack "$1"
+  grep -q 'public=true' "$1" || blocked "not-marked-public" "public=true-in-pack"
+  need_curl
+  esc=$(json_escape "$1")
+  resp=$(printf '{"pack":"%s"}' "$esc" | curl -fsS --max-time 30 -X POST -H 'Content-Type: application/json' --data-binary @- "$CLOUD/packs") || blocked "publish-failed" "cloud-reachable"
+  printf '%s\n' "$resp"
+  id=$(printf '%s' "$resp" | tr ',' '\n' | grep '"id"' | head -1 | sed -E 's/.*"id"[[:space:]]*:[[:space:]]*"([^"]*)".*/\1/')
+  if [ -n "$id" ]; then
+    touch "$PUBLISHED_FILE" 2>/dev/null || true
+    printf '%s\n' "$id" >> "$PUBLISHED_FILE" 2>/dev/null || true
+    printf 'id=%s\n' "$id"
+  fi
+}
+cmd_list() {
+  resp=$(fetch "$CLOUD/packs")
+  ids=$(printf '%s' "$resp" | tr ',' '\n' | grep '"id"' | sed -E 's/.*"id"[[:space:]]*:[[:space:]]*"([^"]*)".*/\1/')
+  if [ -z "$ids" ]; then printf 'status: done | out=count=0\n'; else printf '%s\n' "$ids"; fi
+}
+cmd_get() {
+  [ $# -ge 1 ] || blocked "pack-id-missing" "aiws get <id>"
+  printf '%s' "$1" | grep -Eq '^[A-Za-z0-9_-]{1,64}$' || blocked "pack-id-invalid" "id-a-z-0-9-dash-underscore-max-64"
+  fetch "$CLOUD/packs/$1"
+}
+cmd_delete() {
+  [ $# -ge 1 ] || blocked "pack-id-missing" "aiws delete <id>"
+  if [ ! -f "$PUBLISHED_FILE" ] || ! grep -qx -- "$1" "$PUBLISHED_FILE" 2>/dev/null; then
+    blocked "not-own-published-id" "aiws-publish-id"
+  fi
+  resp=$(curl -fsS --max-time 30 -X DELETE "$CLOUD/packs/$1") || blocked "delete-failed" "cloud-reachable"
+  printf '%s\n' "$resp"
+  tmp=$(mktemp) || exit 0
+  grep -vx -- "$1" "$PUBLISHED_FILE" > "$tmp" 2>/dev/null || true
+  mv "$tmp" "$PUBLISHED_FILE" 2>/dev/null || true
+}
+cmd_health() {
+  fetch "$CLOUD/"
+  printf '\n'
+  fetch "$SITE/agent.json" | grep '"version"' | head -1 | sed -E 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]*)".*/site: version=\1/'
+}
+
+cmd="${1:-help}"
+case "$cmd" in
+  start) cmd_start ;;
+  agent) fetch "$SITE/agent.json" ;;
+  examples) fetch "$SITE/examples.al" ;;
+  search) shift; cmd_search "$@" ;;
+  pack) shift; [ $# -ge 1 ] || blocked "pack-file-missing" "aiws pack <file>"; validate_pack "$1"; cat "$1" ;;
+  publish) shift; cmd_publish "$@" ;;
+  list) cmd_list ;;
+  get) shift; cmd_get "$@" ;;
+  delete) shift; cmd_delete "$@" ;;
+  health) cmd_health ;;
+  help|--help|-h) cmd_help ;;
+  *) blocked "unknown-command" "aiws help" ;;
+esac

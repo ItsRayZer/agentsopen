@@ -1,0 +1,172 @@
+{
+  "agent": "ai-workspace",
+  "version": "v7.3",
+  "lang": "al:1",
+  "tools": [
+    {
+      "name": "shared",
+      "desc": "shared | ready | active | blocked | conflicts | pending-verify | sync=local-only",
+      "view": "shared"
+    },
+    {
+      "name": "studio",
+      "desc": "code | view | search | import",
+      "view": "studio"
+    },
+    {
+      "name": "compare",
+      "desc": "diff | add | del | chg | same | al | model | agent | tool | spec",
+      "view": "compare"
+    },
+    {
+      "name": "swarm",
+      "desc": "brief-al | verdicts | conflicts | plan",
+      "view": "swarm"
+    },
+    {
+      "name": "models",
+      "desc": "prompt-al | per-model",
+      "view": "models"
+    },
+    {
+      "name": "notes",
+      "desc": "notes | tasks | local",
+      "view": "notes"
+    },
+    {
+      "name": "prompts",
+      "desc": "prompts | save | search | copy",
+      "view": "prompts"
+    },
+    {
+      "name": "snippets",
+      "desc": "snippets | lang | tags | exec=none",
+      "view": "snippets"
+    },
+    {
+      "name": "format",
+      "desc": "json | md | text | regex | exec=none",
+      "view": "format"
+    },
+    {
+      "name": "tracker",
+      "desc": "tracker | status | next | export-al | export-json",
+      "view": "tracker"
+    },
+    {
+      "name": "deploy",
+      "desc": "deploy-check | verify | go-ahead-required",
+      "view": "deploy"
+    },
+    {
+      "name": "agentlang",
+      "desc": "al:1 | convert | examples",
+      "view": "agentlang"
+    },
+    {
+      "name": "boot",
+      "desc": "al:1 | manifest | spec | tools | first-task",
+      "view": "boot"
+    },
+    {
+      "name": "pack",
+      "desc": "al:1+json | code+verdict+notes+tracker | slicer | delta | token-cost | delta-since-last",
+      "view": "pack"
+    },
+    {
+      "name": "queue",
+      "desc": "al:1 | claim | assignee | status | single-owner | lease-heartbeat",
+      "view": "queue"
+    },
+    {
+      "name": "talk",
+      "desc": "talk-al | from | to | task | ack | ts | local",
+      "view": "talk"
+    },
+    {
+      "name": "forge",
+      "desc": "forge | autonomy-0-5 | fingerprint-sha256 | observer-read-only | permission-diff-preview | agent-version-pin",
+      "view": "forge"
+    },
+    {
+      "name": "canvas",
+      "desc": "dag | ready-set | blocked-by | blocks | critic-veto | blackboard",
+      "view": "canvas"
+    },
+    {
+      "name": "vault",
+      "desc": "memory | session | persistent | vector-label | shared | keyword-search | pin | forget | export",
+      "view": "vault"
+    },
+    {
+      "name": "workshop",
+      "desc": "registry | json-schema | dry-run-only | js-worker-sandbox | code-anchor | side-effect | install-vs-grant",
+      "view": "workshop"
+    },
+    {
+      "name": "router",
+      "desc": "router-inspector | prompt-only | fallback-chain | score | breaker | quota | free-claims-unverified | qwen-deepseek-models",
+      "view": "router"
+    },
+    {
+      "name": "timeline",
+      "desc": "timeline | decision-log | scenario-replay | run-replay-local-only",
+      "view": "timeline"
+    },
+    {
+      "name": "quota",
+      "desc": "quota | meters-counts-only | warning-al-note",
+      "view": "quota"
+    },
+    {
+      "name": "audit",
+      "desc": "audit | decision-log-append-only | idempotent-events | policy-records | reputation-descriptive-only",
+      "view": "audit"
+    },
+    {
+      "name": "lab",
+      "desc": "lab | al-lint | negative-fixtures | replay | snapshot-ephemeral | verify-staleness | migration-dry-run",
+      "view": "lab"
+    },
+    {
+      "name": "approval",
+      "desc": "approval-inbox | dry-run-receipt | duplicate-scan | conflict-both-kept | sensitivity-label",
+      "view": "approval"
+    },
+    {
+      "name": "gallery",
+      "desc": "gallery | example-packs-al | copy-out",
+      "view": "gallery"
+    },
+    {
+      "name": "shell",
+      "desc": "shell-combined-ui | themes-7 | top-bar | left-rail | main-stage | right-inspector | command-preview | status-strip | run-tray-local",
+      "view": "shell"
+    },
+    {
+      "name": "agentmode",
+      "desc": "agentmode-raw | agent-start-page | search-agent-task-text-status | token-cost | delta-since-last | example-packs-3 | negative-examples | plain-text-al-export",
+      "view": "agentmode"
+    },
+    {
+      "name": "cloud",
+      "desc": "cloud | cloudflare-free-public-packs-only | publish-public | list | import-validated | delete-own-only | kv-list-40s-note",
+      "view": "cloud"
+    },
+    {
+      "name": "language",
+      "desc": "language-guide | which-language-when | al:1-coordination | json-exact-data | sandboxed-js-execution | examples-al-json | negative-examples",
+      "view": "language"
+    },
+    {
+      "name": "agentcode",
+      "desc": "agentcode | ac:1 | codebook-public-not-secret | ac->al | al->ac | ac->json | json->ac | audit-undecodable-do-not-trust",
+      "view": "agentcode"
+    },
+    {
+      "name": "aiws",
+      "desc": "aiws | sh+curl-only | start | agent | examples | search-capped-20 | pack-validate-only | publish-public-only | list | get | delete-own-only | health | keys=none | no-code-exec",
+      "view": "agentmode"
+    }
+  ]
+}

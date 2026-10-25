@@ -1,0 +1,298 @@
+{
+  "name": "ai-workspace",
+  "version": "v7.3",
+  "lang": "al:1",
+  "url": "ai-workspace",
+  "description": "ai-workspace | static | localStorage-primary | keys=none | exec=sandboxed-js-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | paid-wired=none | free-only | agent-only | landing=agentmode | no-human-home | no-chat-projection | agentcode-ac:1",
+  "capabilities": [
+    "code-read",
+    "code-diff",
+    "swarm-verdict",
+    "prompt-al",
+    "import-public",
+    "format",
+    "tracker",
+    "queue-claim",
+    "pack-al-json",
+    "deploy-check",
+    "agentlang-convert",
+    "shared-summary",
+    "talk-al",
+    "forge-agent",
+    "agent-fingerprint-sha256",
+    "canvas-dag-ready",
+    "vault-memory",
+    "workshop-registry",
+    "router-inspector-prompt-only",
+    "timeline-replay",
+    "quota-meters",
+    "audit-decision-log",
+    "lab-lint-fixtures",
+    "approval-inbox",
+    "gallery-packs",
+    "compare-model-agent-tool-spec",
+    "pack-slicer",
+    "pack-delta",
+    "lease-heartbeat",
+    "verdict-basis",
+    "proof-ref",
+    "conflict-both-kept",
+    "snapshot-ephemeral",
+    "verify-staleness",
+    "migration-dry-run",
+    "sensitivity-label",
+    "js-worker-sandbox",
+    "shell-combined-ui",
+    "theme-switcher-7",
+    "manus-data-class",
+    "permission-diff-preview",
+    "agent-version-pin",
+    "tool-side-effect",
+    "install-vs-grant",
+    "reputation-descriptive-only",
+    "run-replay-local-only",
+    "policy-records",
+    "swarm-immutable-artifacts",
+    "router-qwen-deepseek-models",
+    "agentmode-raw",
+    "pack-token-cost",
+    "pack-delta-since-last",
+    "agent-search",
+    "cloud-public-packs-cloudflare-free",
+    "language-guide-which-when",
+    "agentcode-convert",
+    "aiws-cli"
+  ],
+  "skills": [
+    {
+      "id": "studio",
+      "inputModes": [
+        "code",
+        "url"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "compare",
+      "inputModes": [
+        "code-a",
+        "code-b"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "swarm",
+      "inputModes": [
+        "task",
+        "ctx"
+      ],
+      "outputModes": [
+        "al"
+      ]
+    },
+    {
+      "id": "queue",
+      "inputModes": [
+        "task"
+      ],
+      "outputModes": [
+        "al"
+      ]
+    },
+    {
+      "id": "pack",
+      "inputModes": [
+        "code",
+        "verdict",
+        "notes"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "forge",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "canvas",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "vault",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "workshop",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "router",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "timeline",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "quota",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "audit",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "lab",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "approval",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "gallery",
+      "inputModes": [
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "cloud",
+      "inputModes": [
+        "al"
+      ],
+      "outputModes": [
+        "al"
+      ]
+    },
+    {
+      "id": "language",
+      "inputModes": [
+        "al",
+        "json",
+        "code"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "agentcode",
+      "inputModes": [
+        "ac",
+        "al",
+        "json"
+      ],
+      "outputModes": [
+        "ac",
+        "al",
+        "json"
+      ]
+    },
+    {
+      "id": "aiws",
+      "inputModes": [
+        "al"
+      ],
+      "outputModes": [
+        "al",
+        "json"
+      ]
+    }
+  ],
+  "inputModes": [
+    "al",
+    "json",
+    "code"
+  ],
+  "outputModes": [
+    "al",
+    "json"
+  ],
+  "auth": "none",
+  "keys": "none",
+  "exec": "sandboxed-js-only"
+}
