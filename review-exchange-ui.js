@@ -428,6 +428,7 @@
     var prepared;
     try { prepared = core.buildPublicRecordPack(publishedCopy, review); }
     catch (e) { setPublicStatus("Publication blocked before network access: " + String(e.message || e), "error"); return; }
+    qs("confirmPublicPublish").checked = false;
     if (btn) { btn.disabled = true; btn.textContent = "Publishing public record…"; }
     setPublicStatus("Sending only the artifact metadata and review record to the public pack store. Source text is not included.", "info");
     var receipt;
@@ -605,7 +606,7 @@
     qs("rawProjection").textContent=JSON.stringify(projection,null,2);
     return projection;
   }
-  function renderAll() { renderCatalog();renderBenchmarks();renderWorkflows();renderTraces();renderProjection(); }
+  function renderAll() { renderCatalog();renderBenchmarks();renderWorkflows();renderTraces();renderProjection();renderPublicRecords(); }
   function exportBundle() {
     var bundle={schemaVersion:BUNDLE_VERSION,exportedAt:new Date().toISOString(),artifacts:state.artifacts,reviews:state.reviews,benchmarks:state.benchmarks,workflows:state.workflows,events:state.events.slice(0,300),note:"Local metadata bundle only; source text is never included and no artifact code is executed."};
     downloadText("aiws-review-exchange-bundle.json",JSON.stringify(bundle,null,2));logEvent("bundle-exported",state.artifacts.length+" artifacts / "+state.reviews.length+" reviews");
@@ -807,6 +808,11 @@
   function handleAction(action, value, target) {
     if(action==="details") showDetails(value);
     else if(action==="passport") exportPassport(value);
+    else if(action==="public-import") importPublicRecord(value);
+    else if(action==="public-review-export"){
+      var publicRecord=state.publicRecords.find(function(x){return x.cloudId===String(value);});
+      if(publicRecord)downloadText(core.slugify(publicRecord.artifact.artifactId+"-"+publicRecord.artifact.version)+"-public-review-bundle.json",JSON.stringify(publicRecord.bundle,null,2));
+    }
     else if(action==="download-artifact") exportArtifact(value);
     else if(action==="download-review") exportReview(value);
     else if(action==="open-artifact"){showDetails(value);}
@@ -846,6 +852,8 @@
     qs("sourceFile").addEventListener("change",function(){handleSourceFile(qs("sourceFile").files[0]);});
     qs("sourceText").addEventListener("input",updateSourceSize);
     qs("catalogSearch").addEventListener("input",renderCatalog);qs("catalogType").addEventListener("change",renderCatalog);
+    qs("loadPublicRecordsBtn").addEventListener("click",loadPublicRecords);
+    qs("publishSelectedPublicBtn").addEventListener("click",publishSelectedPublicRecord);
     qs("compareRunBtn").addEventListener("click",compareSelected);
     qs("benchmarkForm").addEventListener("submit",saveBenchmark);
     qs("workflowForm").addEventListener("submit",saveWorkflow);
@@ -878,7 +886,7 @@
       return;
     }
     loadState();initEvents();renderAll();
-    if(!storageLoadFailed)setStatus("Ready. Records stay in this browser until you export them; no public upload is configured.","success");
+    if(!storageLoadFailed)setStatus("Ready. Local records stay in this browser until exported. Public sharing is optional and requires explicit consent; published packs are visible to anyone.","success");
   }
   document.addEventListener("DOMContentLoaded",boot);
 })();
