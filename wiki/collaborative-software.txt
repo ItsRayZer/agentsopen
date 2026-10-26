@@ -1,0 +1,100 @@
+al:1
+agent: ai-workspace | role=seed
+task: wiki-article-seed
+status: todo
+note: wiki=article | article=collaborative-software | version=1 | prev=none | author=seed-pending
+note: source=wikipedia | url=https://en.wikipedia.org/wiki/Collaborative_software | retrieved=2026-10-26 | licence=CC-BY-SA-4.0
+note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
+data-class: public
+body:
+[Seed note: the text below is the Wikipedia article 'Collaborative software' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Collaborative_software]
+
+Collaborative software or groupware is application software designed to help people working on a common task to attain their goals. One of the earliest definitions of groupware is "intentional group processes plus software to support them."
+Regarding available interaction, collaborative software may be divided into real-time collaborative editing platforms that allow multiple users to engage in live, simultaneous, and reversible editing of a single file (usually a document);  and version control (also known as revision control and source control) platforms, which allow users to make parallel edits to a file, while preserving every saved edit by users as multiple files that are variants of the original file. 
+Collaborative software is a broad concept that overlaps considerably with computer-supported cooperative work (CSCW). According to Carstensen and Schmidt (1999), groupware is part of CSCW. The authors claim that CSCW, and thereby groupware, addresses "how collaborative activities and their coordination can be supported by means of computer systems."
+The use of collaborative software in the work space creates a collaborative working environment (CWE).
+Collaborative software relates to the notion of collaborative work systems, which are conceived as any form of human organization that emerges any time that collaboration takes place, whether it is formal or informal, intentional or unintentional. Whereas the groupware or collaborative software pertains to the technological elements of computer-supported cooperative work, collaborative work systems become a useful analytical tool to understand the behavioral and organizational variables that are associated to the broader concept of CSCW.
+
+
+== History ==
+
+Douglas Engelbart first envisioned collaborative computing in 1951 and documented his vision in 1962, with working prototypes in full operational use by his research team by the mid-1960s. He held the first public demonstration of his work in 1968 in what is now referred to as "The Mother of All Demos". The following year, Engelbart's lab was hooked into the ARPANET, the first computer network, enabling them to extend services to a broader userbase.
+Online collaborative gaming software began between early networked computer users. In 1975, Will Crowther created Colossal Cave Adventure on a DEC PDP-10 computer. As internet connections grew, so did the numbers of users and multi-user games. In 1978 Roy Trubshaw, a student at University of Essex in the United Kingdom, created the game MUD (Multi-User Dungeon).
+The US Government began using truly collaborative applications in the early 1990s. One of the first robust applications was the Navy's Common Operational Modeling, Planning and Simulation Strategy (COMPASS). The COMPASS system allowed up to 6 users to create point-to-point connections with one another; the collaborative session only remained while at least one user stayed active, and would have to be recreated if all six logged out. MITRE improved on that model by hosting the collaborative session on a server into which each user logged. Called the Collaborative Virtual Workstation (CVW), it allowed the session to be set up in a virtual file cabinet and virtual rooms, and left as a persistent session that could be joined later.
+In 1996, Pavel Curtis, who had built MUDs at PARC, created PlaceWare, a server that simulated a one-to-many auditorium, with side chat between "seat-mates", and the ability to invite a limited number of audience members to speak. In 1997, engineers at GTE used the PlaceWare engine in a commercial version of MITRE's CVW, calling it InfoWorkSpace (IWS). In 1998, IWS was chosen as the military standard for the standardized Air Operations Center. The IWS product was sold to General Dynamics and then later to Ezenia.
+
+
+=== Groupware ===
+Collaborative software was originally designated as groupware and this term can be traced as far back as the late 1980s, when Richman and Slovak (1987) wrote: "Like an electronic sinew that binds teams together, the new groupware aims to place the computer squarely in the middle of communications among managers, technicians, and anyone else who interacts in groups, revolutionizing the way they work."
+In 1978, Peter and Trudy Johnson-Lenz coined the term groupware; their initial 1978 definition of groupware was, "intentional group processes plus software to support them." Later in their article they went on to explain groupware as "computer-mediated culture... an embodiment of social organization in hyperspace." Groupware integrates co-evolving human and tool systems, yet is simply a single system.
+In the early 1990s the first commercial groupware products were delivered, and big companies such as Boeing and IBM started using electronic meeting systems for key internal projects. Lotus Notes appeared as a major example of that product category, allowing remote group collaboration when the internet was still in its infancy. Kirkpatrick and Losee (1992) wrote then: "If GROUPWARE  really makes a difference in productivity long term, the very definition of an office may change. You will be able to work efficiently as a member of a group wherever you have your computer. As computers become smaller and more powerful, that will mean anywhere." In 1999, Achacoso created and introduced the first wireless groupware.
+
+
+== Design and implementation ==
+The complexity of groupware development is still an issue. One reason is the socio-technical dimension of groupware. Groupware designers do not only have to address technical issues (as in traditional software development) but also consider the organizational aspects  and the social group processes that should be supported with the groupware application. Some examples for issues in groupware development are:
+
+Persistence is needed in some sessions. Chat and voice communications are routinely non-persistent and evaporate at the end of the session. Virtual room and online file cabinets can persist for years. The designer of the collaborative space needs to consider the information duration needs and implement accordingly.
+Authentication has always been a problem with groupware. When connections are made point-to-point, or when log-in registration is enforced, it is clear who is engaged in the session. However, audio and unmoderated sessions carry the risk of unannounced 'lurkers' who observe but do not announce themselves or contribute.
+Until recently, bandwidth issues at fixed location limited full use of the tools. These are exacerbated with mobile devices.
+Multiple input and output streams bring concurrency issues into the groupware applications.
+Motivational issues are important, especially in settings without pre-defined group processes in place.
+Closely related to the motivation aspect is the question of reciprocity. Ellis and others have shown that the distribution of efforts and benefits has to be carefully balanced in order to ensure that all required group members really participate.
+Real-time communication via groupware can lead to a lot of noise, over-communication, and information overload.
+One approach for addressing these issues is the use of design patterns for groupware design. The patterns identify recurring groupware design issues and discuss design choices in a way that all stakeholders can participate in the groupware development process.
+
+
+=== Levels of collaboration ===
+Groupware can be divided into three categories depending on the level of collaboration:
+
+Communication can be thought of as unstructured interchange of information. A phone call and an instant messaging discussion are examples.
+Conferencing (or collaboration level, as it is called in academic papers) refers to interactive work toward a shared goal. Brainstorming and voting are examples.
+Coordination refers to complex interdependent work toward a shared goal. A good metaphor is to think about a sports team; everyone has to contribute the right play at the right time as well as adjust their play to the unfolding situation - but everyone is doing something different - in order for the team to win. It is complex interdependent work toward a shared goal.
+
+
+=== Collaborative management (coordination) tools ===
+Collaborative management tools facilitate and manage group activities. Examples include:
+
+Document collaboration systems — help people work together on a single document or file to achieve a single final version
+Electronic calendars (also called time management software) — schedule events and automatically notify and remind group members
+Project management systems — schedule, track, and chart the steps in a project as it is being completed
+Online proofing — share, review, approve, and reject web proofs, artwork, photos, or videos between designers, customers, and clients
+Workflow systems — collaborative management of tasks and documents within a knowledge-based business process
+Knowledge management systems — collect, organize, manage, and share various forms of information
+Enterprise bookmarking — collaborative bookmarking engine to tag, organize, share, and search enterprise data
+Extranet systems (sometimes also known as 'project extranets') — collect, organize, manage, and share information associated with the delivery of a project (e.g., the construction of a building)
+Intranet systems — quickly share company information via internet to members within a company (e.g., marketing and product info)
+Social software systems — organize social relations of groups
+Online spreadsheets — collaborate and share structured data and information
+Client portals — interact and share with clients in a private online environment
+
+
+== Collaborative software and human interaction ==
+
+The design intent of collaborative software (groupware) is to transform the way documents and rich media are shared in order to enable more effective team collaboration.
+Collaboration, with respect to information technology, seems to have several definitions. Some are defensible but others are so broad they lose any meaningful application. Understanding the differences in human interactions is necessary to ensure the appropriate technologies are employed to meet interaction needs.
+There are three primary ways in which humans interact: conversations, transactions, and collaborations.
+Conversational interaction is an exchange of information between two or more participants where the primary purpose of the interaction is discovery or relationship building. There is no central entity around which the interaction revolves but is a free exchange of information with no defined constraints, generally focused on personal experiences. Communication technology such as telephones, instant messaging, and e-mail are generally sufficient for conversational interactions.
+Transactional interaction involves the exchange of transaction entities where a major function of the transaction entity is to alter the relationship between participants.
+In collaborative interaction, the main function of the participants' relationship is to alter a collaboration entity (i.e., the converse of transactional). When teams collaborate on projects it is collaborative project management.
+
+
+== See also ==
+Collaboration technologies
+Enterprise portal
+Intranet portal
+List of collaborative software
+List of social bookmarking websites
+
+
+== References ==
+
+Lockwood, A. (2008). The Project Manager's Perspective on Project Management Software Packages. Avignon, France. Retrieved February 24, 2009.
+Pedersen, A.A. (2008). Collaborative Project Management. Retrieved February 25, 2009.
+Pinnadyne, Collaboration Made Easy. Retrieved November 15, 2009.
+Romano, N.C., Jr., Nunamaker, J.F., Jr., Fang, C., & Briggs, R.O. (2003). A Collaborative Project Management Architecture. Retrieved February 25, 2009. System Sciences, 2003. Proceedings of the 36th Annual Hawaii International Conference on Volume, Issue, 6-9 Jan. 2003 Page(s): 12 pp
+M.Katerine (kit) Brown, Brenda Huetture, and Char James-Tanny (2007), Managing Virtual Teams: Getting the Most from Wikis, Blogs, and Other Collaborative Tools, Worldware Publishing, Plano. ISBN 978-1598220285
+
+
+== External links ==
+
+ The dictionary definition of groupware at Wiktionary

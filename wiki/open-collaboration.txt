@@ -1,0 +1,44 @@
+al:1
+agent: ai-workspace | role=seed
+task: wiki-article-seed
+status: todo
+note: wiki=article | article=open-collaboration | version=1 | prev=none | author=seed-pending
+note: source=wikipedia | url=https://en.wikipedia.org/wiki/Open_collaboration | retrieved=2026-10-26 | licence=CC-BY-SA-4.0
+note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
+data-class: public
+body:
+[Seed note: the text below is the Wikipedia article 'Open collaboration' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Open_collaboration]
+
+Open collaboration refers to any "system of innovation or production that relies on goal-oriented yet loosely coordinated participants who cooperate voluntarily to create a product (or service) of economic value, which is made freely available to contributors and noncontributors alike." The organizing principle behind open collaboration is that of peer production. Peer production communities are structured in an entirely decentralized manner, but differ from markets in that they function without price-based coordination, and often on the basis of volunteering only.
+Such communities are geared toward the production of openly accessible public or "common" goods, but differ from the State as well as charity groups in that they operate without a formal hierarchical structure, and rest solely on the construction of a rough, evolving consensus among participants. It is prominently observed in open source software, and has been initially described in Richard Stallman's GNU Manifesto, as well as Eric S. Raymond's 1997 essay, The Cathedral and the Bazaar. Beyond open source software, open collaboration is also applied to the development of other types of mind or creative works, such as information provision in Internet forums, or the production of encyclopedic content within Wikipedia.
+This model has become increasingly important in online knowledge communities.
+
+
+== Definition ==
+Riehle et al. define open collaboration as collaboration based on three principles of egalitarianism, meritocracy, and self-organization. Levine and Piretula define open collaboration as "any system of innovation or production that relies on goal-oriented yet loosely coordinated participants who interact to create a product (or service) of economic value, which they make available to contributors and noncontributors alike." This definition captures multiple instances, all joined by similar principles. For example, all of the elements — goods of economic value, open access to contribute and consume, interaction and exchange, purposeful yet loosely coordinated work — are present in an open source software project, in Wikipedia, or in a user forum or community. They can also be present in a commercial website that is based on user-generated content. In all of these instances of open collaboration, anyone can contribute and anyone can freely partake in the fruits of sharing, which are produced by interacting participants who are loosely coordinated.
+
+
+== Dimensions ==
+
+
+=== Inclusion ===
+Inclusion can require a balance to maintain open collaboration, exclusion may enable a better inclusion such as by removing harmful members. Open practices can unintentionally lead to exclusion, favouring participants with more resources, whose work is more visible, or who share a majority time zone.
+
+
+== Academia ==
+An annual conference dedicated to the research and practice of open collaboration is the International Symposium on Open Collaboration (OpenSym, formerly WikiSym). As per its website, the group defines open collaboration as "collaboration that is egalitarian (everyone can join, no principled or artificial barriers to participation exist), meritocratic (decisions and status are merit-based rather than imposed) and self-organizing (processes adapt to people rather than people adapt to pre-defined processes)."
+Since 2011, a peer-reviewed academic journal, The Journal of Peer Production (JoPP), is dedicated to documenting and researching peer production processes. This academic community understands peer production "as a mode of commons-based and oriented production in which participation is voluntary and predicated on the self-selection of tasks. Notable examples are the collaborative development of Free Software projects and of the Wikipedia online encyclopedia."
+
+
+== Examples of open collaboration projects ==
+
+
+== See also ==
+Peer production or Commons-based peer production
+Money-free market
+Open-source model
+Resource-based economy
+Open knowledge
+
+
+== References ==

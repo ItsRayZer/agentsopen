@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 222,
+    "files": 247,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -1117,6 +1117,131 @@
       "bytes": 4616,
       "path": "vocab.json",
       "sha256": "3a35fb588108a247a9548d7274ea610faa4f57df2e688d4ad7c166383469ad93"
+    },
+    {
+      "bytes": 28512,
+      "path": "wiki/agent-based-model.txt",
+      "sha256": "3540b7546045d81c583104feb38ef9a9678f0dfbf05025933b69abcb5b4f342b"
+    },
+    {
+      "bytes": 88494,
+      "path": "wiki/artificial-intelligence.txt",
+      "sha256": "9ec25ddfc225a5db57665b597e726fdf3b91d2baa3145d94e4a1ea026ce52764"
+    },
+    {
+      "bytes": 35038,
+      "path": "wiki/collaboration.txt",
+      "sha256": "a1bf007be55490b8d40f85338c16649943f5b92d909d736a047989e25d1b460b"
+    },
+    {
+      "bytes": 13085,
+      "path": "wiki/collaborative-software.txt",
+      "sha256": "ca50ef422ed5e9db7d485bfb4f803a72ae2a35ecfacce792253af283546e5d46"
+    },
+    {
+      "bytes": 90782,
+      "path": "wiki/collective-intelligence.txt",
+      "sha256": "175132652117a1c64b1332bc88e4fea08a3c51d240561a9d45213e95910334ab"
+    },
+    {
+      "bytes": 73964,
+      "path": "wiki/computer-supported-cooperative-work.txt",
+      "sha256": "3259f524846257dc7cc1897958bfcde37b2710b23dca4bb6b5ae4578ea359624"
+    },
+    {
+      "bytes": 11368,
+      "path": "wiki/distributed-artificial-intelligence.txt",
+      "sha256": "f2cf4a5677ed226fa02d8d488df1d00e68024c7c933cbdec8ff7c980a79d6f61"
+    },
+    {
+      "bytes": 5410,
+      "path": "wiki/extra-ai-workspace-items.txt",
+      "sha256": "cc4dc2c235d48b886a64d1edb8de7b9efc5292fe9cb9ffe5889a8f26d66f7dc8"
+    },
+    {
+      "bytes": 28610,
+      "path": "wiki/human-computer-interaction.txt",
+      "sha256": "cb60a14d7e3bd412bdd455a48d84882efea13a3994d4fc445e1a656667e45e55"
+    },
+    {
+      "bytes": 10850,
+      "path": "wiki/index.json",
+      "sha256": "37d0bf948a7c6943a848967a1f57f302e35ea79521640b87de6b762910a757e0"
+    },
+    {
+      "bytes": 8487,
+      "path": "wiki/index.txt",
+      "sha256": "403a98d21a2ceabc4da80c27feff24c9fe9fc07afac48fd6c910993b7ca1b4ca"
+    },
+    {
+      "bytes": 19349,
+      "path": "wiki/intelligent-agent.txt",
+      "sha256": "8078966729b9063813a041cd929066305f6b7ccd87d26e30a3a90fb9a6981472"
+    },
+    {
+      "bytes": 8582,
+      "path": "wiki/knowledge-base.txt",
+      "sha256": "17efc976c621355be4a92422b05cd9403763438761d9d8be667f30e06318b4c6"
+    },
+    {
+      "bytes": 29351,
+      "path": "wiki/knowledge-management.txt",
+      "sha256": "48e065a2a8bb96ad6afca6f93dde63f1cb30745e9914fd54c07bacd9b07c913e"
+    },
+    {
+      "bytes": 28749,
+      "path": "wiki/knowledge-representation-and-reasoning.txt",
+      "sha256": "f9535f8481fbf258a3c010628514cdbeb839ce23450fd9d31d28eb24474c36e0"
+    },
+    {
+      "bytes": 61092,
+      "path": "wiki/machine-learning.txt",
+      "sha256": "b36c45d34c6cdce16c46447e55538b58e18c21eaa5a675ac9fbbeb025e0826aa"
+    },
+    {
+      "bytes": 13193,
+      "path": "wiki/multi-agent-system.txt",
+      "sha256": "1309b6db73923a8f4e2f1654b4686b2cdc5f2012864b0567ed7179edc23f0cfc"
+    },
+    {
+      "bytes": 33054,
+      "path": "wiki/natural-language-processing.txt",
+      "sha256": "b549ff9d3a16c4d44534ce6a2518b0b6efa592298f2d065c9254022118e368ca"
+    },
+    {
+      "bytes": 4815,
+      "path": "wiki/open-collaboration.txt",
+      "sha256": "e972f01455040945b6814cc60565ef6349488909eb80905de773a642eacee033"
+    },
+    {
+      "bytes": 54195,
+      "path": "wiki/remote-work.txt",
+      "sha256": "3e7f822ff7e828d4bec9d385b3fe145072858f896e1d9cc81d7da0b418ffe539"
+    },
+    {
+      "bytes": 18342,
+      "path": "wiki/software-agent.txt",
+      "sha256": "d1a0003bbb47025e8694561e1b42b4565945b81bb9d66c34d9036f54b5227765"
+    },
+    {
+      "bytes": 20660,
+      "path": "wiki/swarm-intelligence.txt",
+      "sha256": "8e464c353ce9648ab5aa529f8eeb39f7b31f6d83a74b846fcdb5c6f05fc16737"
+    },
+    {
+      "bytes": 16418,
+      "path": "wiki/teamwork.txt",
+      "sha256": "f36d39c4358af80c2143a716e4d3fdccc64ee7a33cc29d452c52951479cf088b"
+    },
+    {
+      "bytes": 58284,
+      "path": "wiki/virtual-team.txt",
+      "sha256": "a9385bbd7b328134237181bbd91d30dba291097f33568abc553c0316f6637f6d"
+    },
+    {
+      "bytes": 26083,
+      "path": "wiki/wiki.txt",
+      "sha256": "b698aa957daf7af5e550ee7fc1689a1dbbead69e6735774971548a4258092611"
     },
     {
       "bytes": 1566,

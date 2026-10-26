@@ -1,0 +1,289 @@
+al:1
+agent: ai-workspace | role=seed
+task: wiki-article-seed
+status: todo
+note: wiki=article | article=remote-work | version=1 | prev=none | author=seed-pending
+note: source=wikipedia | url=https://en.wikipedia.org/wiki/Remote_work | retrieved=2026-10-26 | licence=CC-BY-SA-4.0
+note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
+data-class: public
+body:
+[Seed note: the text below is the Wikipedia article 'Remote work' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Remote_work]
+
+Remote work is the practice of working at or from one's home or another space rather than from an office or workplace.
+The practice of working at home has been documented for centuries, but remote work for large employers began on a small scale in the 1970s when technology was developed that could link satellite offices to downtown mainframes through dumb terminals using telephone lines as a network bridge. It became more common in the 1990s and 2000s, facilitated by internet technologies such as collaborative software on cloud computing and conference calling via videotelephony. In 2020, workplace hazard controls during the COVID-19 pandemic catalyzed a rapid transition to remote work for white-collar workers around the world. This shift largely persisted even after restrictions were lifted.
+Proponents of a geographically distributed workforce argue that it reduces costs associated with maintaining an office, grants employees greater autonomy and flexibility—which improves their motivation and job satisfaction—eliminates environmental harms from commuting, allows employers to access a more geographically diverse pool of applicants, and enables employees to live where they prefer.
+Opponents of remote work argue that remote telecommunications technology has been unable to fully replicate the advantages of face-to-face interaction, that employees may be more easily distracted, and that reduced social interaction may lead to feelings of isolation.
+
+
+== History ==
+The practice of working at home has been documented for centuries. Management had to rely on trust and control to successfully manage distributed work. In addition to dispersed operations that relied heavily on a combination of explicit information and detailed record-keeping, more tacit and situated knowledge developed through socialization. For example, the Hudson's Bay Company showed a variety of control mechanisms including selection techniques, information requirements, and direct local oversight through its distributed practices of socialization, communication, and participation. Managers found that "common sense" was not enough to encourage everyone to comply.
+The England and Wales census of 1911 included a question about each resident person's employment (if any) and included a question about whether they worked "at home".
+In the early 1970s, technology was developed that linked satellite offices to downtown mainframes through dumb terminals using telephone lines as a network bridge. The terms telecommuting and telework were coined by Jack Nilles in 1973. By 1984 a United Technologies programmer lived in Washington state and telecommuted to his Connecticut office, and the company estimated that executives with computers at home did another two hours of work there. In January 1986, Erik Sandberg Diment of The New York Times reported in his weekly column that "As one of the seemingly few people to be actively engaged in telecommuting", he had only visited his office twice in the previous year. In 1979, five IBM employees were allowed to work from home as an experiment. By 1983, the experiment was expanded to 2,000 people. By the early 1980s, branch offices and home workers were able to connect to organizational mainframes using personal computers and terminal emulators.
+In 1995, the motto that "work is something you do, not something you travel to" was coined. Variations of this motto include: "Work is what we do, not where we are."
+Since the 1980s, the normalization of remote work has been on a steady incline. For example, the number of Americans working from home grew by 4 million from 2003 to 2006, and by 1983 academics were beginning to experiment with online conferencing.
+In the 1990s and 2000s, remote work became facilitated by technology such as collaborative software, virtual private networks, conference calling, videotelephony, internet access, cloud computing, voice over IP (VoIP), mobile telecommunications technology such as a Wi-Fi-equipped laptop or tablet computers, smartphones, and desktop computers, using software such as Zoom, Webex, Microsoft Teams, Google Meet, Slack, and WhatsApp. Remote-first companies have also experimented with consumer messaging platforms to strengthen workplace culture. For example, CRM company Close has used Snapchat internally to encourage informal communication among distributed employees.
+In his 1992 travelogue Exploring the Internet, Carl Malamud described a "digital nomad" as  a person who "travels the world with a laptop, setting up FidoNet nodes." In 1993, Random House published the Digital Nomad's Guide series of guidebooks by Mitch Ratcliffe and Andrew Gore. The guidebooks, PowerBook, AT&T EO Personal Communicator, and Newton's Law, used the term "digital nomad" to refer to the increased mobility and more powerful communication and productivity technologies that facilitated remote work.
+European hacker spaces of the 1990s led to coworking; the first such space opened in 2005. The new economy production no longer requires people to work together in the same physical space to access the tools and resources they need to produce their work and allows for distributed work.
+In 2010, the Telework Enhancement Act of 2010 required each executive agency in the United States to establish policy allowing remote work to the maximum extent possible, so long as employee performance is not diminished.
+During the COVID-19 pandemic, millions of workers began working remotely for the first time. Cities in which the population of remote workers increased significantly were referred to as Zoom towns. According to a U.S. Labor Department study published, millions of Americans ceased working from home by 2022, and the number of employers reporting teleworking decreased to the level before pandemic levels. From August to September 2022, approximately 72 percent of private-sector businesses reported little to no telework among workers, compared to roughly 60 percent from July to September 2021. During the Information Age, many startups were founded in the homes of entrepreneurs who lacked financial resources.
+
+
+=== Remote work during COVID-19 ===
+A 2020 study of the COVID-19 pandemic estimated that 93% of world workers lived in countries with some sort of workplace closure. This figure was composed of: 32% living in countries with required closures for all but essential workplaces; 42% in countries where specific firms or worker categories had been closed; and 19% in countries with only recommended workplace closures.
+The extensive use of remote work under COVID-19 constituted a major organizational transformation. However, the implementation of remote work during COVID-19 was hurried, and new technologies and operating systems had to be implemented without previous testing or training. Organizations reported concerns about losses in culture and productivity whilst workers were more concerned about declines in social interactions, internet connectivity and increased workload. Additionally, 25% of remote-working Americans were resistant to employer mandates to return to in-office work. Especially after the end of the pandemic, many businesses tried to recall their workforce to the office.
+The abrupt transition to remote work during the pandemic led to an increase in both physical and mental health issues among workers; distractions from others in the home and a lack of dedicated workspaces were common negative influences on health and well-being, while effective communication with coworkers was supportive of health and well-being. The transition also increased the amount of time that individuals spent sitting at a workstation by up to two hours more per day, yet, most workers indicated being as productive working remotely as compared to office work before the pandemic. Supporting workers to identify effective approaches for boundary management between home and work across physical spaces, social interactions, and the use of time is critical. Research suggests that remote work can lead to increased employee satisfaction and productivity, but may also create challenges in team cohesion.
+The transition to remote work during the pandemic highlighted the importance of access and equity among individual workers to support productivity and well-being. The remote work arrangement during COVID-19 was better for higher-paid and higher-management personnel in terms of productivity and reported well-being; whereas individuals at the bottom end of the earning spectrum experienced reduced remuneration. Utility bills also increased during the COVID-19 pandemic in an inconsistent manner. Utility bills for minorities and lower income individuals were more likely to increase because they lived in housing that was older, with less effective insulation and without energy-efficient appliances. The increase in electricity also came due to the people using their utilities at different times of the day.
+A 2024 PNAS study found that remote work dispersed economic activity away from city centers, in particular in cities with high levels of remote work.
+
+
+== Statistics ==
+
+In 2020, 12.3% of employed persons, including 13.2% of women and 11.5% of men, in the European Union who were aged 15–64, usually worked from home. By country, the percentage of workers that worked from home was highest in Finland (25.1%), Luxembourg (23.1%), Ireland (21.5%), Austria (18.1%), and the Netherlands (17.8%) and lowest in Bulgaria (1.2%), Romania (2.5%), Croatia (3.1%), Hungary (3.6%), and Latvia (4.5%).
+In 2023, economist and telework expert Nicholas Bloom said about a third of all working days are remote, slashing corporate real estate expenditures, and up from 5% before the pandemic. Bloom believes quickly progressing technology has facilitated and will continue the trend, but drawbacks for some kinds of positions will remain.
+A September 2022 study surveyed workers from 26 countries in mid-2021 and early 2022. Its respondents work from home an average of 1.5 days per week.
+
+
+=== United States ===
+The U.S. Census Bureau estimated that 13.8 percent of U.S. workers, more than 22 million people, usually worked from home in 2023. The share was down from 17.9 percent in 2021 and 15.2 percent in 2022, but remained more than twice the 5.7 percent recorded in 2019.
+According to a Gallup poll in September 2021, 45% of full-time U.S. employees worked from home, including 25% who worked from home full-time and 20% who worked from home part-time. Ninety-one percent of those who worked remotely (fully or partially) hoped to continue doing so after the pandemic. Among all workers, 54% believed that their company's culture would be unchanged by remote work, while 12% believed it would improve and 33% predicted it would deteriorate.
+Gallup found in February 2023 that, among remote-capable employees in the U.S., 20% worked on-site, 28% exclusively remote and 52% hybrid.
+According to the United States Office of Personnel Management, 50% of all U.S. federal workers were eligible to work remotely and agencies saved more than $180 million because of remote work in fiscal 2020.
+A September 2022 study surveyed workers in mid-2021 and early 2022. Its 2,079 US subjects worked from home on average 1.6 days per week, similar to the global average of 1.5 days per week.
+
+
+=== United Kingdom ===
+These results may vary based on the type of sample collected. Certain groups may have fewer office workers (e.g., in more urban locations or industries requiring more manual labour). As such groups may find remote working impossible, their presence or absence in these samples may affect the analysis.
+A June 2022 survey of 56 offices found that 51% had no policy requiring office attendance, 18% requiring two days per week, 11% requiring three days per week, and 20% had policy set at team-level.
+A September 2022 study surveyed workers in mid-2021 and early 2022. Its 1,501 UK subjects worked from home on average two days per week – above the global average of 1.5 days per week.
+An April 2023 survey of 558 central London workers' requirements for onsite working found the most common response was two and three days per week at 26% and 21% of responses respectively. Fewer cited one, four, and five days, each making 8–11% of responses. Having no requirement was second-most common at 25% of responses. It also found that about 18% of vacancies listed by London companies in February 2023 were hybrid or remote, up from about 4% in February 2020.
+An early 2023 survey of 2,049 workers found that 35% must work onsite for two days, 33% for three days, and 33% always work from home. In a separate question, 7% said their employer does not allow hybrid working.
+A March 2023 survey of 2,016 adults found a roughly even distribution of required onsite days per week peaking at two and three days at about 16% each. However, it found a large spike in five days per week, the most common response at over 35%. About 13% were required to work fewer than one day per week.
+Countering the above results suggesting a peak around 2–3 days per week, an April 2023 survey of 1,000 office workers found a peak of five days per week required onsite. Requirements for fewer days were progressively rarer, culminating in 0% saying they must work onsite less than once per month.
+A May 2022 survey by the Office for National Statistics (ONS) found that 14% of working arrangements were fully remote, 24% were hybrid, and 46% were fully onsite.
+A June 2023 survey of 2,000 full-time workers found that 6% of working arrangements were fully remote, 46% were hybrid, and 48% were fully onsite.
+An Autumn Survey by ONS found that more than a quarter of working adults in Great Britain (28%) had hybrid arrangements. They found that those aged over 30, parents and managers and professionals were the most likely to log on from home.
+For those able to have a hybrid arrangement, the ONS said there were significant perks, including an average of 56 minutes saved from commuting, and spending an average of 24 minutes more on sleep and rest and 15 minutes more on exercise, sports and wellbeing.
+
+
+=== Communication technology ===
+Effective group communication involves various nonverbal communication characteristics. Because distance limits interpersonal interaction between members of distributed groups, these characteristics often become constrained. Communication media focuses on alternative ways to achieve these qualities and promote effective communication. This section addresses communication technology in relation to the theories of grounding and mutual knowledge and discusses the costs and benefits of various communication technology tools..
+
+
+==== Grounding and technology ====
+Grounding in communication is the process of updating the evolving common ground, or shared information, between participants. The base of mutual knowledge is important for effective coordination and communication. Additionally, participants constantly gather various forms of verbal and nonverbal evidence to establish understanding of change and task.
+The following are means of grounding and collecting evidence:
+
+Different forms of communication result in the varied presence of these communication characteristics. Therefore, the nature of communication technology can either promote or inhibit grounding between participants. The absence of grounding information results in reduced ability to read and understand social cues. This increases the social distance between them.
+
+
+==== Costs to grounding change ====
+The lack of one of these characteristics generally forces participants to use alternative grounding techniques, because the costs associated with grounding change. There is often a trade-off between the costs: one cost will increase as another decreases. There is also often a correlation between the costs. The following table highlights several of the costs that can change as the medium of communication changes.
+
+
+== Legal aspects ==
+In 1996, the Home Work Convention, an International Labour Organization (ILO) Convention, was created to offer protection to workers who are employed in their own homes.
+The UK's National Minimum Wage Act 1998 makes specific reference to home workers who "contract with a person, for the purposes of that person's business, for the execution of work to be done in a place not under the control or management of that person". In the case of James v Redcats (Brands) Ltd (2007), it was confirmed that "a home worker need not work at home, although typically he or she will do so; the only requirement is to work in a place not under the control or management of the other party".
+In the Netherlands, the Flexible Working Act allows workers to submit a written request to work from home, at least partly. Employers must have a good reason for refusing worker requests.
+
+
+== Potential benefits ==
+
+
+=== Disability employment ===
+A 2026 study in the American Economic Review found that the expansion of remote work has led to a substantial increase in disability employment by reducing the commuting costs of physically disabled workers and allowing them to better control their work conditions to suit their disabilities.
+
+
+=== Access to more employees/employers ===
+Remote work allows employees and employers to be matched despite major location differences.
+Working responsibility is given to the employee who is skilled in that area of work.
+
+
+=== Cost reduction ===
+Remote work can reduce costs for organizations, including the cost of office space and related expenses such as parking, computer equipment, furniture, office supplies, lighting and heating, ventilation, and air conditioning. Certain employee expenses, such as office expenses, can be shifted to the remote worker, although this is the subject of lawsuits.
+Remote work also reduces costs for the worker such as costs of travel/commuting and clothing. It also allows for the possibility of living in a cheaper area than that of the office.
+
+
+=== Environmental benefits ===
+
+Remote work can reduce traffic congestion and air pollution, with fewer cars on the roads.
+Most studies find that remote work overall results in a decrease in energy use due to less time spent on energy-intensive personal transportation, cleaner air, and a reduction of electricity usage due to a lower office space footprint.
+During the COVID-19 lockdowns, the increase in remote work led to a decrease in global CO2 emissions. Partially due to the decrease in car commuting, carbon emissions dropped by 5.4%; however, emissions immediately increased to the same rate in the following year.
+The increase in remote work had also led to people moving out of cities and into larger homes which catered for home office space.
+
+
+=== Fewer disruptions and distractions ===
+Empirical studies find fewer in-office interruptions as a mechanism for productivity gains in remote or hybrid arrangements, particularly for knowledge-based work and concentration-heavy tasks. These include ambient noise such as background chatter and noise from machinery, and forced disruptions such as meetings and check-ins that an on-site employee would not have control over. Remote work gives employees flexibility and control over their environment in regard to distractions.
+A 2024 study published by the Journal of Business and Psychology found that there was a positive effect on daily job performance when working remotely, mediated by higher concentration and greater work engagement. A 2025 study published by Computers in Human Behavior found that working from home increased job concentration; in particular, among those with stable personality traits, the negative effects of increased social isolation were buffered.
+A 2023 study at the Eindhoven University of Technology found that employees working from home in a quiet workspace lead to better concentration and efficiency, as well as lower stress levels.
+
+
+=== Increased motivation and job satisfaction ===
+Consistent with job characteristic theory (1976), an increase in autonomy and feedback for employees leads to higher work motivation, satisfaction with personal growth opportunities, general job satisfaction, higher job performance, and lower absenteeism and turnover. Autonomy increased remote workers' satisfaction by reducing work-family conflicts, especially when workers were allowed to work outside traditional work hours and be more flexible for family purposes. Autonomy was the reason for an increase in employee engagement when the amount of time spent remote working increased. Remote workers have more flexibility and can shift work to different times of day and different locations to maximize their performance. The autonomy of remote work allows for arrangement of work to reduce work-family conflict and conflicts with recreational activities. However, studies also show that autonomy must be balanced with high levels of discipline if a healthy work/leisure balance is to be maintained.
+Remote work may make it easier for workers to balance their work responsibilities with their personal life and family roles such as caring for children or elderly parents. Remote work improves efficiency by reducing travel time, and reduces commuting time and time stuck in traffic congestion, improving quality of life.
+Remote working greatly increases the freedom employees have to choose where to work, such as a home, coffee shop or co-working space. This approach allows employees to choose their own beneficial working style in their preferred environment, further promoting a healthy work-life balance and providing productivity.
+Providing the option to work remotely or adopting a hybrid work schedule has been an incentivizing benefit companies used in new hiring.
+Hybrid is a flexible work model that allows employees to split their time between working in the office and working from home.
+A 2007 meta-analysis of 46 studies of remote work involving 12,833 employees conducted by Ravi Gajendran and David A. Harrison in the Journal of Applied Psychology, published by the American Psychological Association (APA), found that remote work has largely positive effects on employees' job satisfaction, perceived autonomy, stress levels, manager-rated job performance, and (lower) work-family conflict, and lower turnover intention.
+
+
+=== Increased productivity ===
+Remote work has long been promoted as a way to substantially increase employee productivity. A 2013 study showed a 13% increase in productivity among remotely working call-center employees at a Chinese travel agency. An analysis of data collected through March 2021 found that nearly six out of 10 workers reported being more productive working from home than they expected to be, compared with 14% who said they got less done.
+More recent surveys back this up. A U.S. Bureau of Labor Statistics study found that for every 1-point increase in remote work, total factor productivity grew by 0.08 to 0.09 points – even after adjusting for pre-pandemic trends. In other words, more remote work led to slightly better efficiency across industries. Meanwhile, a Zoom survey found that 84% of workers, especially younger ones, feel more productive in remote or hybrid setups. While the preference is strongest among younger employees, it holds true across all age groups.
+Since work hours are less regulated in remote work, employee effort and dedication are far more likely to be measured purely in terms of output or results. However, traces of non-productive work activities (such as research, self-training, dealing with technical problems or equipment failures), and time lost on unsuccessful attempts (such as early drafts, fruitless endeavors, abortive innovations), are visible to employers.
+Remote work improves efficiency by reducing or eliminating employees commute time, thus increasing their availability to work. In addition, remote work also helps employees achieve a better work-life balance.
+An increase in productivity is also supported by sociotechnical systems (STS) theory (1951), which states that, unless absolutely essential, there should be minimal specification of objectives and how to do tasks in order to avoid inhibiting options or effective actions. Remote work provides workers with the freedom and power to decide how and when to do their tasks and therefore can increase productivity.
+
+
+=== Lower turnover intention and higher loyalty ===
+Turnover intention, or the desire to leave an organization, is lower for remote workers. Remote workers who experienced greater professional isolation actually had lower turnover intention.
+A study of workers in 27 countries surveyed in mid-2021 and early 2022 found they would on average be willing to sacrifice 5% of their pay to be able to work from home two to three days per week. 26% would quit immediately or seek a new job if they were required to work five or more days per week.
+A 2017 study showed that companies that offered remote work options experienced a 25% lower turnover rate.
+Surveys by FlexJobs found that 81% of respondents said they would be more loyal to their employers if they had flexible work options. In a 2021 study by McKinsey & Company, more than half of the workers supported companies adopting a hybrid work model, and more than a quarter stated that they would consider switching jobs if their current employer eliminated remote work options.
+A 2021 employee survey reports preferring a more flexible working model. During the COVID-19 pandemic the working model showed the amount of employees who are working fully on site is 62%, with 30% hybrid and 8% remote. Post COVID-19 pandemic working models changed with the amount of employees who were fully on site at 37%, with 52% hybrid and 11% remote.
+
+
+=== Relocation opportunity ===
+Remote workers may have the opportunity to relocate to another city or state for potential job opportunities and or lower cost of living. A 2020 survey found that 2.4% of people or 4.9 million Americans say they have moved because of remote work in 2020.
+
+
+== Potential drawbacks ==
+
+
+=== Reduced face-to-face interactions ===
+The technology available for remote communication does not fully replicate the nuances of face-to-face interactions. Room for mistakes and miscommunication can increase. According to media richness theory, face-to-face communication allows for processing rich information through the clarification of ambiguous issues, immediate feedback, and personalized communication including body language and tone of voice. Remote work typically relies on tools such as videotelephony, telephone, and email, which can introduce limitations such as time lags, reduced ability to interpret emotions, and slower decision-making processes. Asynchronous communication, often used in remote work, can require greater coordination and management than synchronous communication. 
+An increase in videoconferencing during remote work has led to what has been termed "Zoom fatigue," with factors such as prolonged eye contact, self-monitoring during calls, limited physical movement, and reduced non-verbal communication contributing to feelings of exhaustion.
+A 2008 study found that face-to-face interactions are associated with higher levels of interpersonal contact, connectedness, and trust. A 2012 study found that 54% of remote workers reported missing social interaction, while 52.5% reported missing professional interaction.
+Remote work can also impact workplace relationships, particularly when some employees work remotely and others do not. This dynamic may sometimes lead to feelings of resentment or perceptions of unfairness among those who are required to be on-site. Remote workers may also experience reduced access to in-person companionship and on-site benefits.
+The adaptation of technology within organizations has been studied under adaptive structuration theory, which suggests that the use of technology evolves based on both the intended purpose and how individuals choose to use it in practice. Remote work introduces a social structure that both enables and constrains communication compared to traditional office environments. For example, whereas in-person norms typically encourage face-to-face interaction, remote settings require alternative forms of interpersonal exchange. Over time, remote work may shift the established norms of communication and collaboration within organizations.
+Sharing information among teams can also present challenges when working remotely. In office settings, informal information exchange often occurs spontaneously during casual encounters, such as coffee breaks. In remote work environments, sharing information typically requires more deliberate effort and proactive communication. The transfer of tacit knowledge, often learned by observing experienced colleagues, can be more difficult in remote settings where unplanned interactions are less frequent.
+Timely access to information may also be affected in remote work unless information sharing is actively organized. A lack of awareness about colleagues' activities can lead to slower decision-making or less effective decisions.
+From an anthropological perspective, remote work can influence the process of sensemaking, as it limits exposure to a wide range of contextual cues and informal signals.
+Feedback is an important component of job performance and employee development. It provides employees with information about how well they are meeting expectations and completing tasks. In remote work, feedback mechanisms may be less immediate or clear, as electronic communication often lacks the richness of face-to-face interaction. This can contribute to greater role ambiguity, where workers may be less certain about their responsibilities or expectations. Higher levels of role ambiguity are associated with increased conflict, frustration, and exhaustion. 
+Job characteristic theory has found that feedback is strongly related to overall job satisfaction. Research indicates that reduced communication and feedback in remote settings can lead to lower levels of job engagement. Studies in 2006 and 2011 found that when perceived supervisor support and the quality of the leader-employee relationship decline, remote workers' job satisfaction may decrease. Furthermore, when managers themselves work remotely, employees may report lower job satisfaction, possibly due to decreased clarity, slower communication, and fewer feedback opportunities. However, some workers — such as those with longer tenure, functional (rather than socially-oriented) work relationships, or certain personality traits — may report satisfaction with communication even in remote settings.
+Social information processing theory suggests that individuals interpret and assign meaning to their work environment through social cues. These cues can be delivered through direct statements, cognitive evaluations, or observed behaviors of colleagues. In remote work settings, the reduced immediacy and richness of computer-mediated communication may slow the processing of social information compared to in-person interactions.
+
+
+=== Lessened work motivation ===
+Skill variety has been found to have a strong relationship with internal work motivation, with jobs that involve a range of skills leading to greater intrinsic motivation among employees. A 1985 study found that in remote work settings, limitations in teamwork opportunities or reduced opportunities to engage in a variety of tasks may impact workers' internal motivation. Additionally, a 2012 study found that social isolation has been associated with decreased motivation.
+Motivator-hygiene theory differentiates between factors that contribute to job satisfaction (motivators) and those that can prevent dissatisfaction (hygiene factors). Motivators, such as recognition and opportunities for career advancement, may be affected in remote work environments. A 2010 study found that remote workers who are not physically present may experience fewer opportunities for recognition and advancement compared to on-site colleagues, as they may be less visible to peers and supervisors.
+Return to office calls increase employee attrition and often impact staff more than management. In cases where RTO orders are unpopular, employees might not fully comply with them. In early 2025, the US federal government ordered millions of employees to return to offices, but in some cases the offices had not been maintained properly. By 2026, media outlets described a practice known as "hybrid creep", in which employers gradually increase in-office expectations for hybrid workers without issuing formal mandates, for example by tying promotion to office attendance and monitoring compliance more closely.
+Employees who experienced increased well-being, productivity, and autonomy from remote and hybrid work arrangements may resist returning to the office. A call to return to office may feel controlling, manipulative, and outdated, negatively contributing to mental health stress. A return to office mandate may impact women more through the motherhood penalty. A 2017 study found that physical separation from the office environment may also reduce opportunities for informal encouragement, which can contribute to an employee's ability to perform at their highest potential.
+
+
+=== Distractions ===
+
+Evidence from a 2023 study linked a drop in productivity during work from home to fewer uninterrupted work hours ("focus hours") at home compared to the office. 
+Sandberg-Diment, when recounting in 1986 his experience with telecommuting, warned "you can forget about working in the house itself if you have a spouse, three kids, two cats and a dog". He worked in a shed outside his home, and employed a secretary to screen calls.
+While working in an office presents its own set of distractions, it has been argued that remote work may involve additional or different types of distractions. A study identified children as the most common source of distraction for remote workers, followed by spouses, pets, neighbors, and solicitors. Access to appropriate tools and facilities has also been cited as a potential challenge for maintaining focus during remote work, though coworking spaces and short-term office rentals can help address this issue. 
+In some countries, such as Romania, national labor inspectorates have been tasked with verifying that remote work environments meet regulatory requirements for health and safety. 
+A 2019 study found that the absence of on-site monitoring in remote work arrangements has been associated with the potential for increased distractions and, in some cases, decreased productivity.
+
+
+=== Women burdening an unfair share of domestic work ===
+
+Remote work arrangements can have varying effects depending on workers' home environments and domestic responsibilities. Analyses of survey data from the United Kingdom in 2010 and from 2020 to 2021 suggest that women are more likely to bear a disproportionate share of domestic work compared to men.
+A separate study conducted in 2021 and 2022, surveying workers from 26 countries, found that women valued the option to work from home more highly than men in nearly all countries surveyed. Additionally, among both men and women, those with children generally placed a higher value on remote work options compared to those without children.
+A 2021 study indicated that remote work may be associated with increased risks of intimate partner violence for women. Studies conducted during the COVID-19 pandemic found that women working from home had higher odds of experiencing intimate partner violence, particularly psychological violence, compared to those working on-site. Contributing factors included social isolation, increased access by abusers, and economic stressors such as job loss. Although these risks were heightened during the pandemic, some factors may persist beyond the immediate COVID-19 context, highlighting ongoing concerns regarding personal safety for vulnerable individuals working remotely.
+A 2022 study surveying 283 Austrian remote workers cohabiting with an intimate partner during mid-2020 found that women with children reported more exhausting experiences with home-based work, including longer working hours and less distinct boundaries between work and personal life. Women without children reported improved concentration and positive outcomes when working from home.
+The shift to remote work has also been associated with amplifying pre-existing gender disparities. Women with family responsibilities often experienced an increased domestic workload, including childcare and household management, compared to men. This additional burden has been linked to higher rates of anxiety and depression among women with caregiving or familial responsibilities, whereas such effects were not observed among women without caregiving responsibilities.While much of the research linking psychological distress to remote work focuses on the pandemic period, continued attention to the intersection of domestic roles and remote work environments remains relevant in the post-pandemic workplace.
+
+
+=== Employee pressure to be seen as valuable ===
+Remote workers may experience pressure to produce higher levels of output in order to demonstrate their value and counter perceptions that remote work involves reduced productivity. This pressure, combined with limited coworker interactions and feelings of isolation, was associated with lower levels of job engagement among remote workers in a 2012 study. A 2006 study found that higher-quality relationships with teammates can decrease remote workers' job satisfaction, possibly due to frustrations arising from the challenges of maintaining relationships through digital communication. However, coworker support and participation in virtual social groups aimed at team building have been found to positively influence job satisfaction in studies conducted in 2001 and 2002, potentially through increased opportunities for skill use and greater perceived task significance.
+A 2005 study suggested that the relationship between remote work and job satisfaction is complex. Initial increases in remote work may be associated with higher job satisfaction, likely due to greater autonomy. However, as the extent of remote work increases further, declines in feedback and task significance may lead to a plateau or slight decline in satisfaction.
+Working in a shared office environment may enhance opportunities for collaboration and professional development, potentially contributing to increased employee effectiveness.
+
+
+=== Challenges to team building ===
+In traditional office environments, communication and relationship-building among employees and supervisors often occur naturally through day-to-day interactions. In remote work settings, maintaining these relationships typically requires more deliberate effort, particularly for new employees who need to learn organizational norms and practices while working remotely.
+Job characteristics such as skill variety, task identity, and task significance contribute to employees' perceptions of the meaningfulness of their work. Skill variety refers to the range of activities and skills required to complete a job, with greater skill variety associated with increased job challenge and a stronger sense of meaningfulness and engagement. Remote work does not necessarily change the skill variety or perceived meaningfulness of tasks compared to in-office work; however, opportunities for skill development may differ based on whether work is structured individually or collaboratively. Tasks focused primarily on individual work may offer fewer chances to apply a wide range of skills compared to teamwork-based activities.
+Task identity is defined as the extent to which an individual can complete an entire piece of work or identify with a complete project, rather than contributing only a small part. Task significance refers to the degree to which work has a substantial impact on others within or outside the organization. While remote work may not inherently alter these job characteristics, their presence remains important in shaping remote workers' attitudes and work outcomes.
+According to Vivek Murthy in his book Together: The Healing Power of Human Connection in a Sometimes Lonely World, face-to-face meetings, in-person collaboration, and brief informal interactions in the workplace contribute to a sense of belonging and community among workers.
+
+
+=== Health impacts ===
+
+Research by psychologist Julianne Holt-Lunstad at Brigham Young University has indicated that social integration is one of the strongest predictors of longevity. Similarly, a study conducted by researchers at the University of Chicago found that routine social interactions can benefit mental health.
+Workplace relationships also play a role in employee commitment. A 2018 study by Sigal G. Barsade found that employees experiencing greater loneliness reported feeling less committed to their employers and coworkers. Remote work, by reducing opportunities for informal interaction, can hinder the development of workplace friendships.
+Concerns have been raised that remote work might negatively affect career progression and workplace relationships. However, a 2007 study found no overall detrimental effects on the quality of workplace relationships or career outcomes among remote workers. In fact, remote work was associated with improvements in employee-supervisor relationships, and job satisfaction was partly linked to the quality of these relationships. The study noted that only high-intensity remote work—defined as working remotely more than 2.5 days per week—was associated with weaker relationships among coworkers, although it also reduced work-family conflict.
+Individual responses to the characteristics of remote work may vary. According to job characteristics theory from the 1970s, the degree to which employees respond to job features such as autonomy and feedback is influenced by their personal need for accomplishment and development, referred to as "growth need strength". Employees with higher growth need strength may respond more positively to increased autonomy and more negatively to reduced feedback in remote work environments than those with lower growth need strength.
+A 2021 report from Prudential claimed that a majority of workers preferred a hybrid model combining remote and in-person work. The report also indicated that two-thirds of workers believed in-person interactions were important for career advancement. Fully remote workers were more likely to feel hesitant about taking vacations, to perceive a need to be constantly available, and to report feelings of isolation. Overall, the findings suggested that while workers value flexibility, many also wished to retain the benefits associated with in-person workplace interactions.
+A 2021 report by the World Health Organization and the International Labour Organization indicated that remote work could contribute to increased health risks if it leads to working more than 55 hours per week wherever it would be legal to do so. Extended working hours have been associated with negative impacts on health, well-being, and sleep, with contributing factors including disruptions to daily routines, heightened anxiety and worry, feelings of isolation, increased family and work-related stress, and prolonged screen time.
+
+
+==== Indoor environmental quality in home workspaces ====
+Indoor environmental quality (IEQ) is an important factor in the conditions experienced by people working from home. Home workspaces may differ from conventional office environments in aspects such as thermal comfort, lighting, acoustics, air quality and ergonomics.
+A scoping review of studies from multiple countries found that indoor environmental conditions in home workspaces are associated with aspects of workers' well-being and work experience. Factors such as noise, lighting, thermal conditions and indoor air quality have been investigated in relation to stress, fatigue, satisfaction and cognitive performance.
+Assessment of indoor environmental quality in home-based workspaces can include both perceived environmental conditions and the physical characteristics of the workspace. Multidisciplinary approaches have been used to develop assessment instruments covering factors such as thermal comfort, lighting, acoustic conditions, indoor air quality and ergonomics.
+
+
+=== Information security and privacy ===
+Effective remote work requires appropriate training, tools, and technologies. Remote work arrangements can introduce cybersecurity risks, and following recommended best practices is important for maintaining security. Common guidelines include using antivirus software, restricting family member access to work devices, covering webcams when not in use, utilizing virtual private networks (VPNs), relying on centralized storage solutions, creating strong and secure passwords, and exercising caution with email communications to guard against scams and security breaches.
+A 2020 survey of over 1,000 remote workers found that 59% of respondents felt more cyber-secure when working in-office compared to working from home. A survey conducted by FlexJobs found that 28% of remote workers reported experiencing technical problems, and 26% cited Wi-Fi connectivity issues as challenges.
+In 2021, a ranking based on data breaches, stolen records, privacy laws, victim counts, and financial losses identified Vermont, South Carolina, South Dakota, Alabama, and Nebraska as the top five safest states for remote workers in the United States.
+Furthermore, remote work can cause a blurring of personal and professional boundaries, especially when workers join work meetings from their homes, surfacing new privacy challenges.
+
+
+=== Loss of control by management ===
+Remote work may sometimes be viewed cautiously by management due to concerns about reduced managerial control. Research has found that managers may exhibit bias against employees who are not physically present in the office, with perceptions of employee contribution influenced more by visibility than by the actual quality of work performed.
+
+
+=== Alleged drop in worker productivity ===
+Research on the relationship between remote work and productivity has produced mixed findings. Some studies have indicated that remote work can increase worker productivity, with remote employees receiving higher supervisor ratings and performance appraisals compared to on-site workers. Other studies have found decreases in worker productivity during remote work in an IT setting. As with job attitudes, the amount of time spent remote working may influence the relationship between remote work and job performance.
+Productivity declines among remote workers have been attributed in some cases to inadequate home office setups. Nevertheless, some surveys have reported that over two-thirds of employers observed increased productivity among their remote workforces, although findings vary.
+Organizations may encounter challenges when shifting to remote work models, particularly where traditional management practices rely on direct observation rather than results-based evaluation. This reliance can present obstacles to effective remote management. Additionally, issues related to liability and workers' compensation may arise in remote work arrangements.
+A 2008 study found that the more time employees spent working remotely, the lower their perceived productivity was among managers.
+Research examining employee mindsets has also highlighted the role of psychological factors in remote work outcomes. The study Remote work mindsets predict emotions and productivity in home office: a longitudinal study of knowledge workers during the Covid-19 pandemic found that knowledge workers with a fixed mindset toward remote work experienced more negative emotions and fewer positive emotions, leading to perceptions of lower productivity. Encouraging a growth mindset—viewing remote work as a skill that can be developed—was suggested as a strategy for improving employee experiences and productivity.
+
+
+==== Hush trip ====
+In human resources, a hush trip refers to the practice of remote workers working from a location they have not informed their employers about. These trips epitomize freedom for remote workers who are digital nomads. Workers may disguise their location through a virtual private network (VPN) and book meetings around their schedule to decrease detection. Hush trips introduce cybersecurity, tax, privacy, productivity, and legal issues depending on the location of the employee at the time work is performed. Hush trips may be taken as part of bleisure travel or to bypass lengthy corporate approvals.
+Hush trips may help address occupational burnout by improving workers mental and physical health, boosting morale that leads to productivity gains. The term was popularized following the Great Resignation and the rise of remote work.
+
+
+=== Taxation complexity ===
+Remote workers are typically taxed based on several factors, including their place of residence, the location of their employer, and the tax laws of the applicable jurisdictions. International tax treaties may also influence the taxation of remote workers by providing mechanisms to prevent double taxation.
+
+
+== See also ==
+
+
+== References ==
+
+
+=== Notes ===
+
+
+=== Citations ===
+
+
+== Further reading ==
+"The 5th Annual State of Remote Work," OwlLabs and Global Workplace Analytics, 2022
+Working from Home: Unraveling the Employment Law Implications of the Remote Office, Journal of Labor and Employment, 2022
+Lessons Learned from Remote Working during COVID-19: Can Government Save Money Through Maximizing Efficient Use of Leased Space, Testimony presented to the U.S. Senate Committee on Environment and Public Works, 2020
+The Business Case for Remote Work for Employers, Employees, the Environment, and Society; Global Workplace Analytics; 2020
+Global Work-from-Home Experience Survey Report, Iometrics & Global Workplace Analytics, 2020
+Pandemic Manual: Appendix 3—Optimizing Remote Work Programs, IFMA Foundation, 2020 ISBN 978-1-883176-49-5
+'Telework in the 21st Century – An Evolutionary Perspective from Six Countries,' International Labor Organization, Edward Elgar Publishing, 2019 ISBN 978-92-2-133367-8
+John O'Duinn, (2018) 'Distributed Teams: The Art and Practice of Working Together While Physically Apart,' ISBN 978-1-7322549-0-9
+Thomas L. Friedman, 'The World is Flat: A Brief History of the Twenty-First Century.' 2005 ISBN 978-0-374-29288-1
+AWA Hybrid Working Index 3, August 2023
+Aksoy et al. (2022) Working from Home around The World
+Olson, G. M. & Olson, J. S. (2000). Distance matters. Human-Computer Interaction, 15(2–3), 139–178.
+Olson, J. S., Hofer, E., Bos, N., Zimmerman, A., Olson, G. M., Cooney, D., & Faniel, I. (2008). A theory of remote scientific collaboration. In G. M. Olson, A. Zimmerman & N. Bos (Eds.), Scientific Collaboration on the Internet. . Cambridge, MA:: MIT Press.
+Malhotra, Arvind, Majchrzak, Ann, Carman, Robert & Lott, Vern (2001). Radical innovation without collocation: A case study at Boeing-Rocketdyne. MIS Quarterly, 25(2).
+Maznevski, M., & Chudoba, C. (2000). Bridging space over time: Global virtual team dynamics and effectiveness. Organization Science, 11(5), 473–492.
+Clark, Herbert H. & Brennan, Susan E. (1991). Grounding in communication. In L. B. Resnick, R. M. Levine, & S. D. Teasley (Eds.). Perspectives on socially shared cognition. (pp. 127–149). Washington, DC: American Psychological Association.
+Krauss, R. M. & Fussell, S. R. (1990). Mutual knowledge and communicative effectiveness. In J. Galegher & R. E. Kraut, et al. (Eds.), Intellectual teamwork: Social and technological foundations of cooperative work (pp. 111–145). Hillsdale, NJ, England: Lawrence Erlbaum Associates
+Kiesler, S., & Cummings, J. (2002). What do we know about proximity and distance in work groups? A legacy of research. In P. Hinds, & Kiesler, S. (Ed.), Distributed Work (pp. 57–82). Cambridge, MA: MIT Press.
+Gergle, D., Kraut, R. E., & Fussell, S. R. (2013). Using Visual information for grounding and awareness in collaborative tasks. Human Computer Interaction, 28(1), 1-39.
+Kruger, J., Epley, N., Parker, J., & Ng, Z.-W. (2005). Egocentrism over e-mail: Can we communicate as well as we think? Journal of Personality and Social Psychology, 89(6), 925–936.
+Book: Harrison, Andrew, Paul Wheeler, and Carolyn Whitehead. The distributed workplace sustainable work environments. London: Spon Press, 2004. Print. Archived January 10, 2021, at the Wayback Machine
+Hinds, P. J., & Bailey, D. E. (2003). Out of sight, out of sync: Understanding conflict in distributed teams. Organization Science, 14(6), 615–632.
+Zhu, H., Kraut, R. E., & Kittur, A. (2012). Effectiveness of shared leadership in online communities CSCW'12: Proceedings of the ACM Conference on Computer-Supported Cooperative Work (pp. 407–416 ). NY: ACM Press.
+Hinds, Pamela, and Sara Kiesler, Distributed work. Cambridge, Mass.: MIT Press, 2002. Print.
+"2025 Work in America Survey: The Experience of Working in America During Times of Change". American Psychological Association. July 2025. Retrieved October 12, 2025.
+
+
+== External links ==
+ Learning materials related to telecommuting at Wikiversity

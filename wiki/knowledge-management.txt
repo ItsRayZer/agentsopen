@@ -1,0 +1,192 @@
+al:1
+agent: ai-workspace | role=seed
+task: wiki-article-seed
+status: todo
+note: wiki=article | article=knowledge-management | version=1 | prev=none | author=seed-pending
+note: source=wikipedia | url=https://en.wikipedia.org/wiki/Knowledge_management | retrieved=2026-10-26 | licence=CC-BY-SA-4.0
+note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
+data-class: public
+body:
+[Seed note: the text below is the Wikipedia article 'Knowledge management' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Knowledge_management]
+
+Knowledge management (KM) refers to a range of processes focused on organizational awareness, learning, collaboration, and innovation. It involves using and sharing knowledge to support an organization's goals.
+Courses in business administration, information systems, management, libraries, and information science are all part of knowledge management, a discipline that gained prominence in the 1990s and centered on the "Knowledge Workers" that Peter Drucker first identified in his 1954 book, The Practice of Management. Information and media, computer science, public health, and public policy are some of the other disciplines that may contribute to KM research.
+Numerous academic institutions provide master's degrees specifically focused on knowledge management.
+As a component of their IT, human resource management, or business strategy departments, many large corporations, government agencies, and nonprofit organizations have resources devoted to internal knowledge management initiatives. These organizations receive KM guidance from a number of consulting firms.
+Organizational goals including enhanced performance, competitive advantage, innovation, sharing of lessons learned, integration, and ongoing organizational improvement are usually the focus of knowledge management initiatives. These initiatives are similar to organizational learning, but they can be differentiated by their increased emphasis on knowledge management as a strategic asset and information sharing. Organizational learning is facilitated by knowledge management.
+The setting of supply chain may be the most challenging situation for knowledge management since it involves several businesses without a hierarchy or ownership tie; some authors refer to this type of knowledge as transorganizational or interorganizational knowledge. Industry 4.0 (or 4th industrial revolution) and digital transformation also add to that complexity, as new issues arise from the volume and speed of information flows and knowledge generation.
+
+
+== History ==
+Knowledge management efforts have a long history, including on-the-job discussions, formal apprenticeships, discussion forums, corporate libraries, professional training, and mentoring programs. With increased use of computers in the second half of the 20th century, specific adaptations of technologies such as knowledge bases, expert systems, information repositories, group decision support systems, intranets, and computer-supported cooperative work have been introduced to further enhance such efforts.
+In 1999, the term personal knowledge management was introduced; it refers to the management of knowledge at the individual level.
+In the enterprise, early collections of case studies recognised the importance of knowledge management dimensions of strategy, process and measurement. Key lessons learned include people and the cultural norms which influence their behaviors are the most critical resources for successful knowledge creation, dissemination and application; cognitive, social and organisational learning processes are essential to the success of a knowledge management strategy; and measurement, benchmarking and incentives are essential to accelerate the learning process and to drive cultural change. In short, knowledge management programs can yield impressive benefits to individuals and organisations if they are purposeful, concrete and action-orientated.
+The ISO 9001:2015 quality management standard released in September 2015 introduced a specification for "organizational knowledge" as a complementary aspect of quality management within an organisation.
+
+
+== Research ==
+KM emerged as a scientific discipline in the early 1990s. It was initially supported by individual practitioners, when Skandia hired Leif Edvinsson of Sweden as the world's first chief knowledge officer (CKO). Hubert Saint-Onge (formerly of CIBC, Canada), started investigating KM long before that. The objective of CKOs is to manage and maximise the intangible assets of their organizations. Gradually, CKOs became interested in practical and theoretical aspects of KM, and the new research field was formed. The KM idea has been taken up by academics, such as Ikujiro Nonaka (Hitotsubashi University), Hirotaka Takeuchi (Hitotsubashi University), Thomas H. Davenport (Babson College) and Baruch Lev (New York University).
+In 2001, Thomas A. Stewart, former editor at Fortune magazine and subsequently the editor of Harvard Business Review, published a cover story highlighting the importance of intellectual capital in organizations. The KM discipline has been gradually moving towards academic maturity. First, is a trend toward higher cooperation among academics; single-author publications are less common. Second, the role of practitioners has changed. Their contribution to academic research declined from 30% of overall contributions up to 2002, to only 10% by 2009. Third, the number of academic knowledge management journals has been steadily growing, currently reaching 27 outlets.
+Multiple KM disciplines exist; approaches vary by author and school. As the discipline matured, academic debates increased regarding theory and practice, including:
+
+Techno-centric with a focus on technology, ideally those that enhance knowledge sharing and creation.
+Organisational with a focus on how an organisation can be designed to facilitate knowledge processes best.
+Social-psychological, with a focus on how social networks contribute to a transactive memory system
+Ecological with a focus on the interaction of people, identity, knowledge, and environmental factors as a complex adaptive system akin to a natural ecosystem.
+Regardless of the school of thought, core components of KM roughly include people/culture, processes/structure and technology.  The details depend on the  perspective. KM perspectives include:
+
+community of practice
+social network analysis
+intellectual capital
+information theory
+complexity science
+constructivism
+The practical relevance of academic research in KM has been questioned with action research suggested as having more relevance and the need to translate the findings presented in academic journals to a practice.
+
+
+=== Dimensions ===
+Different frameworks for distinguishing between different "types of" knowledge exist. One proposed framework for categorising the dimensions of knowledge distinguishes tacit knowledge and explicit knowledge. Tacit knowledge represents internalised knowledge that an individual may not be consciously aware of, such as to accomplish particular tasks. At the opposite end of the spectrum, explicit knowledge represents knowledge that the individual holds consciously in mental focus, in a form that can easily be communicated to others.
+
+Ikujiro Nonaka proposed a model (SECI, for Socialisation, Externalisation, Combination, Internalisation) which considers a spiraling interaction between explicit knowledge and tacit knowledge. In this model, knowledge follows a cycle in which implicit knowledge is "extracted" to become explicit knowledge, and explicit knowledge is "re-internalised" into implicit knowledge.
+Hayes and Walsham (2003) describe knowledge and knowledge management as two different perspectives. The content perspective suggests that knowledge is easily stored; because it may be codified, while the relational perspective recognises the contextual and relational aspects of knowledge which can make knowledge difficult to share outside the specific context in which it is developed.
+Early research suggested that KM needs to convert internalised tacit knowledge into explicit knowledge to share it, and the same effort must permit individuals to internalise and make personally meaningful any codified knowledge retrieved from the KM effort.
+Subsequent research suggested that a distinction between tacit knowledge and explicit knowledge represented an oversimplification and that the notion of explicit knowledge is self-contradictory. Specifically, for knowledge to be made explicit, it must be translated into information (i.e., symbols outside our heads).  More recently, together with Georg von Krogh and Sven Voelpel, Nonaka returned to his earlier work in an attempt to move the debate about knowledge conversion forward.
+A second proposed framework for categorising knowledge dimensions distinguishes embedded knowledge of a system outside a human individual (e.g., an information system may have knowledge embedded into its design) from embodied knowledge representing a learned capability of a human body's nervous and endocrine systems.
+A third proposed framework distinguishes between the exploratory creation of "new knowledge" (i.e., innovation) vs. the transfer or exploitation of "established knowledge" within a group, organisation, or community. Collaborative environments such as communities of practice or the use of social computing tools can be used for both knowledge creation and transfer.
+
+
+=== Strategies ===
+Knowledge may be accessed at three stages: before, during, or after KM-related activities. Organisations have tried knowledge capture incentives, including making content submission mandatory and incorporating rewards into performance measurement plans. Considerable controversy exists over whether such incentives work and no consensus has emerged.
+One strategy to KM involves actively managing knowledge (push strategy). In such an instance, individuals strive to explicitly encode their knowledge into a shared knowledge repository, such as a database, as well as retrieving knowledge they need that other individuals have provided (codification). Another strategy involves individuals making knowledge requests of experts associated with a particular subject on an ad hoc basis (pull strategy). In such an instance, expert individual(s) provide insights to requestor (personalisation). When talking about strategic knowledge management, the form of the knowledge and activities to share it defines the concept between codification and personalization. The form of the knowledge means that it's either tacit or explicit. Data and information can be considered as explicit and know-how can be considered as tacit.
+Hansen et al. defined the two strategies (codification and personalisation). Codification means a system-oriented method in KM strategy for managing explicit knowledge with organizational objectives. Codification strategy is document-centered strategy, where knowledge is mainly codified as "people-to-document" method. Codification relies on information infrastructure, where explicit knowledge is carefully codified and stored. Codification focuses on collecting and storing codified knowledge in electronic databases to make it accessible. Codification can therefore refer to both tacit and explicit knowledge. In contrast, personalisation encourages individuals to share their knowledge directly. Personalization means human-oriented KM strategy where the target is to improve knowledge flows through networking and integrations related to tacit knowledge with knowledge sharing and creation. Information technology plays a less important role, as it only facilitates communication and knowledge sharing.
+Generic knowledge strategies include knowledge acquisition strategy, knowledge exploitation strategy, knowledge exploration strategy, and knowledge sharing strategy. These strategies aim at helping organisations to increase their knowledge and competitive advantage.
+Other knowledge management strategies and instruments for companies include:
+
+Knowledge sharing (fostering a culture that encourages the sharing of information, based on the concept that knowledge is not irrevocable and should be shared and updated to remain relevant)
+Make knowledge-sharing a key role in employees' job description
+Inter-project knowledge transfer
+Intra-organisational knowledge sharing
+Inter-organisational knowledge sharing
+Knowledge retention also known as Knowledge Continuation: activities addressing the challenge of knowledge loss as a result of people leaving
+Mapping knowledge competencies, roles and identifying current or future predicted gaps.
+Defining for each chosen role the main knowledge that should be retained, and building rituals in which the knowledge is documented or transferred on, from the day they start their job.
+Transfer of knowledge and information prior to employee departure by means of sharing documents, shadowing, mentoring, and more,
+Proximity & architecture (the physical situation of employees can be either conducive or obstructive to knowledge sharing)
+Storytelling (as a means of transferring tacit knowledge)
+Cross-project learning
+After-action reviews
+Knowledge mapping requires the organization to know what kind of knowledge organization it has, how it is distributed throughout the company, and how to efficiently use and re-use that knowledge. (a map of knowledge repositories within a company accessible by all)
+Communities of practice
+Expert directories (to enable knowledge seeker to reach to the experts)
+Expert systems (knowledge seeker responds to one or more specific questions to reach knowledge in a repository)
+Best practice transfer
+Knowledge fairs
+Competency-based management (systematic evaluation and planning of knowledge related competences of individual organisation members)
+Master–apprentice relationship, Mentor-mentee relationship, job shadowing
+Collaborative software technologies (wikis, shared bookmarking, blogs, social software, etc.)
+Knowledge repositories (databases, bookmarking engines, etc.)
+Measuring and reporting intellectual capital (a way of making explicit knowledge for companies)
+Knowledge brokers (some organisational members take on responsibility for a specific "field" and act as first reference on a specific subject)
+Knowledge farming (using note-taking software to cultivate a knowledge graph, part of knowledge agriculture)
+Knowledge capturing (refers to a process where trained people extract valuable or else desired knowledge from experts and embed it in databases)
+
+
+=== Motivations ===
+Multiple motivations lead organisations to undertake KM. Typical considerations include:
+
+Making available increased knowledge content in the development and provision of products and services
+Achieving shorter development cycles
+Improving consistency of knowledge and standardized expert skills among staff
+Facilitating and managing innovation and organisational learning
+Leveraging expertise across the organisation
+Increasing network connectivity between internal and external individuals
+Managing business environments and allowing employees to obtain relevant insights and ideas appropriate to their work
+Solving intractable or wicked problems
+Managing intellectual capital and assets in the workforce (such as the expertise and know-how possessed by key individuals or stored in repositories)
+
+
+== KM technologies ==
+Knowledge management (KM) technology can be categorised:
+
+Collaborative software(Groupware)—Software that facilitates collaboration and sharing of organisational information. Such applications provide tools for threaded discussions, document sharing, organisation-wide uniform email, and other collaboration-related features.
+Workflow systems—Systems that allow the representation of processes associated with the creation, use and maintenance of organisational knowledge, such as the process of creating and utilise forms and documents.
+Content management and document management systems—Software systems that automate the process of creating web content and/or documents. Roles such as editors, graphic designers, writers and producers can be explicitly modeled along with the tasks in the process and validation criteria. Commercial vendors started either to support documents or to support web content but as the Internet grew these functions merged and vendors now perform both functions.
+Enterprise portals—Software that aggregates information across the entire organisation or for groups such as project teams.
+eLearning—Software that enables organisations to create customised training and education. This can include lesson plans, monitoring progress and online classes.
+Planning and scheduling software—Software that automates schedule creation and maintenance. The planning aspect can be integrated with project management software.
+Telepresence—Software that enables individuals to have virtual "face-to-face" meetings without assembling at one location. Videoconferencing is the most obvious example.
+Semantic technology such as ontologies—Systems that encode meaning alongside data to give machines the ability to extract and infer information.
+These categories overlap. Workflow, for example, is a significant aspect of content or document management systems, most of which have tools for developing enterprise portals. 
+Proprietary KM technology products such as HCL Notes (Previously Lotus Notes) defined proprietary formats for email, documents, forms, etc. The Internet drove most vendors to adopt Internet formats. Open-source and freeware tools for the creation of blogs and wikis now enable capabilities that used to require expensive commercial tools.
+KM is driving the adoption of tools that enable organisations to work at the semantic level, as part of the Semantic Web. Some commentators have argued that after many years the Semantic Web has failed to see widespread adoption, while other commentators have argued that it has been a success.
+Since the 2010s, knowledge management practice in software as a service organisations has had to address the gap between rapid product release cycles and the maintenance cadence of knowledge base content. Industry analyses report that the typical useful life of a knowledge management article in such environments is around six months, after which it requires review or replacement to remain accurate.
+
+
+== Knowledge barriers ==
+Just like knowledge transfer and knowledge sharing, the term "knowledge barriers" is not a uniformly defined term and differs in its meaning depending on the author. Knowledge barriers can be associated with high costs for both companies and individuals.
+Knowledge barriers appear to have been used from at least three different perspectives in the literature:
+1) Missing knowledge about something as a result of barriers for the share or transfer of knowledge.
+2) Insufficient knowledge based on the amount of education in a certain field or issue.
+3) A unique individual or group of humans' perceptual system lacks adequate contact points or does not fit incoming information to use and transform it to knowledge.
+
+
+== Knowledge retention ==
+Knowledge retention is part of knowledge management. It helps convert tacit form of knowledge into an explicit form. It is a complex process which aims to reduce the knowledge loss in the organization. Knowledge retention is needed when expert knowledge workers leave the organization after a long career. Retaining knowledge prevents losing intellectual capital.
+According to DeLong(2004) knowledge retention strategies are divided into four main categories:
+
+Human resources, processes and practices
+Knowledge transfer practices
+Knowledge recovery practices
+Information technologies used to capture, store and share knowledge.
+Knowledge retention projects are usually introduced in three stages: decision making, planning and implementation. There are differences among researchers on the terms of the stages. For example, Dalkir talks about knowledge capture, sharing and acquisition and Doan et al. introduces initiation, implementation and evaluation. Furthermore, Levy introduces three steps (scope, transfer, integration) but also recognizes a "zero stage" for initiation of the project.
+
+
+== Knowledge audit ==
+A knowledge audit is a comprehensive assessment of an organization's knowledge assets, including its explicit and tacit knowledge, intellectual capital, expertise, and skills. The goal of a knowledge audit is to identify the organization's knowledge strengths and gaps, and to develop strategies for leveraging knowledge to improve performance and competitiveness. Knowledge audit helps ensure that an organization's knowledge management activities are heading in the right direction. It also reduces the making of incorrect decisions. Term knowledge audit is often used interchangeably with information audit, although information audit is slightly narrower in scope.
+The requirement and significance of a knowledge audit can vary widely among different industries and companies. For instance, within the software development industry, knowledge audits can play a pivotal role due to the inherently knowledge-intensive nature of the work. This contrasts with sectors like manufacturing, where physical assets often take a more important role. The difference arises from the fact that in software development companies, the skills, expertise, and intellectual capital, often overshadow the value of physical assets.
+Knowledge audits provide opportunities for organizations to improve their management of knowledge assets, with the goal of enhancing organizational effectiveness and efficiency. By conducting a knowledge audit, organizations can raise awareness of knowledge assets as primary factors of production and as critical capital assets in today's knowledge economy. The process of a knowledge audit allows organizations to gain a deeper understanding of their knowledge assets. This includes identifying and defining these assets, understanding their behavior and properties, and describing how, when, why, and where they are used in business processes.
+
+
+== Knowledge protection ==
+Knowledge protection refers to behaviors and actions taken to protect the knowledge from unwanted opportunistic behavior for example appropriation or imitation of the knowledge.
+Knowledge protection is used to prevent the knowledge to be unintentionally available or useful for competitors. Knowledge protection can be for example a patent, copyright, trademark, lead time or secrecy held by a company or an individual.
+
+
+=== Knowledge protection methods ===
+There are various methods for knowledge protection and those methods are often divided into two categories by their formality: formal protection and informal protection. Occasionally a third category is introduced, semi-formal protection, which includes contracts and trade-secrets. These semi-formal methods are also usually placed under formal methods.
+Organizations often use a combination of formal and informal knowledge protection methods to achieve comprehensive protection of their knowledge assets. The formal and informal knowledge protection mechanisms are different in nature, and they have their benefits and drawbacks. In many organizations, the challenge is to find a good mix of measures that works for the organization.
+
+
+==== Formal methods ====
+Formal knowledge protection practices can take various forms, such as legal instruments or formal procedures and structures, to control which knowledge is shared and which is protected. Formal knowledge protection methods include for example: patents, trademarks, copyrights and licensing.
+Technical solutions to protect the knowledge fall also under the category of formal knowledge protection. Formal knowledge protection from technical viewpoint includes technical access constraints and protection of communication channels, systems, and storage.
+While knowledge may eventually become public in some form or another, formal protection mechanisms are necessary to prevent competitors from directly utilizing it for their own gain. Formal protection methods are particularly effective in protecting established knowledge that can be codified and embodied in final products or services.
+
+
+==== Informal methods ====
+Informal knowledge protection methods refer to the use of informal mechanisms such as human resource management practices or secrecy to protect knowledge assets. There is notable amount of knowledge that cannot be protected by formal methods, and for which more informal protection might be the most efficient option.
+Informal knowledge protection methods can take various forms, such as: secrecy, social norms and values, complexity, lead-time and Human resource management.
+Informal knowledge protection methods protect knowledge assets for example by making it difficult for outsiders to access and understand the knowledge within the boundaries of the organization. Informal protection methods are more effective for protecting knowledge that is complex or difficult to express, articulate, or codify.
+
+
+=== Balancing knowledge protection and knowledge sharing ===
+The balance between knowledge sharing and knowledge protection is a critical dilemma faced by organizations today. While sharing knowledge can lead to innovation, collaboration, and competitive advantage, protecting knowledge can prevent it from being misused, misappropriated, or lost. Thus, the need for organizational learning must be balanced with the need to protect organisations' intellectual property, especially whilst cooperating with external partners. The role of information security is crucial in helping organisations protect their assets whilst still enabling the benefits of information sharing. By implementing effective knowledge management strategies, organizations can protect valuable intellectual property while also encouraging the sharing of relevant knowledge across teams and departments. This active balancing act requires careful consideration of factors such as the level of openness, the identification of core knowledge areas, and the establishment of appropriate mechanisms for knowledge transfer and collaboration. Finding the right balance between knowledge sharing and knowledge protection is a complex issue that requires a nuanced understanding of the trade-off's involved and the context in which knowledge is shared or protected.
+
+
+=== Knowledge protection risks ===
+Protecting knowledge cannot be considered without its risks. Here are listed four of the major risks associated with knowledge protection:
+
+Overprotection: One of the major risks of knowledge protection is overprotection. Overprotection occurs when intellectual property rights are too broad or too strict, preventing others from building upon existing ideas and stifling innovation. As noted by Rouyre and Fernandez, overprotection can have a chilling effect on follow-on innovation, which is particularly problematic in fields where innovation is cumulative.
+Misappropriation: Another risk associated with knowledge protection is misappropriation. Misappropriation refers to the unauthorized use or theft of intellectual property. This can occur when confidential information is leaked, trade secrets are stolen, or patents are infringed upon. According to the World Intellectual Property Organization, misappropriation can result in significant financial losses for individuals and organizations.
+Infringement claims: Intellectual property owners can also face risks associated with infringement claims. Infringement occurs when someone uses intellectual property without permission or authorization, and the owner of the intellectual property files a lawsuit. Infringement claims can be costly and time-consuming and can result in damage to an individual's or organization's reputation. As noted by Law Insider's Knowledge of infringement Sample Clauses, infringement claims can also result in financial penalties and even criminal prosecution.
+Inadequate protection: Inadequate protection of intellectual property is also a significant risk. This occurs when intellectual property owners fail to properly protect their knowledge, such as by failing to obtain patents, trademarks, or copyrights. Inadequate protection can result in the loss of intellectual property rights and can make it difficult for individuals and organizations to enforce their rights in court. As noted by the WIPO, inadequate protection can also make it easier for others to copy or steal intellectual property.
+In conclusion, protecting knowledge is crucial to promote innovation and creativity, but it is not without its risks. Overprotection, misappropriation, infringement claims, and inadequate protection are all risks associated with knowledge protection. Individuals and organizations should take steps to protect their intellectual property while also considering the potential risks and benefits of such protection.
+
+
+== See also ==
+
+
+== References ==
+
+
+== External links ==

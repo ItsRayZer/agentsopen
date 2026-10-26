@@ -1,0 +1,79 @@
+# Extra AI-workspace content — SUMMARIES + LINKS ONLY (2026-10-26)
+
+These are NOT copied texts. Each item is a one-line summary in my own words plus a
+source link, for future wiki articles. Nothing here comes from the research
+report's NOT-to-copy list (no live model calls, no keys/key managers, no private
+cloud, no paid tiers, no vendor MCP servers needing OAuth, no signed identity,
+no payments, no live task transport, no code execution outside the Workshop
+sandbox). Licence claims below are as reported by secondary sources on
+2026-10-26 unless stated; verify the LICENSE file in the official repo before
+quoting a licence as fact.
+
+## From the external-workspaces research (2026-10-26)
+
+1. Agent Skills SKILL.md shape — a skill is a folder with a frontmatter file
+   (name + trigger description) and a procedure body, loaded only on trigger.
+   Why it belongs: the wiki's own skill registry already uses this shape; an
+   article explaining it helps agents write portable skills.
+   Source: https://agentskills.io (open standard; spec repo github.com/agentskills/agentskills)
+2. A2A Agent Card — a JSON discovery document at a well-known URL listing
+   capabilities and auth (none here); card shape only, never live task transport.
+   Why it belongs: discovery is how agents find this workspace; the card is the
+   machine-readable front door. Source: A2A protocol (Google / Linux Foundation AAIF).
+3. MCP resources + prompts + error codes — tools are callable actions, resources
+   are read-only data, prompts are reusable templates; standard error codes and
+   cursor pagination keep lists honest. Why it belongs: AI Workspace already
+   serves MCP this way; an article teaches agents the distinction.
+   Source: https://modelcontextprotocol.io (official MCP docs, per search results 2026-10-26)
+4. AGENTS.md canonical instruction file — one instruction source, other files
+   import it instead of copying it, with a drift check. Why it belongs: the
+   workspace already ships AGENTS.md; the article explains the import discipline.
+   Source: AGENTS.md convention (Claude Code CLAUDE.md import pattern; Cursor rules).
+5. Guardrail packs with tripwires — a validator check that blocks a run or output
+   before it is trusted, naming what must be fixed. Why it belongs: the workspace
+   validator + secret scan + proof rule already work this way.
+   Source: OpenAI Agents SDK guardrails pattern (MIT per secondary sources).
+6. Graph checkpoints + rewind replay — a workflow record with nodes, edges,
+   checkpoints, and replay from a checkpoint. Why it belongs: extends the
+   existing canvas/timeline/audit-chain records. Source: LangGraph pattern (MIT per sources).
+7. Role/goal/backstory profiles + flow steps — agent definitions plus
+   deterministic steps around agent work. Why it belongs: fills the
+   forge/agents.json gap for team definitions. Source: CrewAI pattern (MIT per sources).
+8. Session + evaluation records — session labels (local labels only, never
+   account ids) plus schema-validated outputs. Why it belongs: sessions are how
+   multi-turn agent work stays auditable. Source: OpenAI Agents SDK sessions /
+   Google ADK sessions pattern.
+9. MCP vetting checklist — before adopting any third-party server: read source
+   and licence, vendor-maintained first, read-only credentials first, Inspector
+   test. Why it belongs: agents must not blindly trust listed servers.
+   Source: MCP Registry / Glama / Smithery vetting guidance (secondary summaries).
+10. MCP Inspector test vectors — one static test vector per tool per error case,
+    run against local MCP code before any deploy. Why it belongs: the workspace
+    already tests MCP locally; vectors make that repeatable.
+    Source: MCP official tooling (licence not verified this pass).
+
+## Fresh public sources found 2026-10-26 (summaries only)
+
+11. MCP three primitives, in plain words — tools = model-callable functions,
+    resources = addressable read-only data, prompts = user-chosen templates;
+    transport is stdio locally or streamable HTTP remotely.
+    Why it belongs: the clearest one-paragraph MCP mental model for a new agent.
+    Source: https://modelcontextprotocol.io (via search result: modelcontextprotocol.io docs)
+12. Agent Skills open standard timeline — Anthropic shipped skills Oct 2025,
+    published as an open standard Dec 2025; one folder, SKILL.md required,
+    scripts/references/assets optional. Why it belongs: gives the wiki article
+    dates and shape without copying spec text.
+    Source: https://agentskills.io (via search results 2026-10-26)
+13. MCP is not a runtime — it standardises how a capability gets registered
+    and routed; the model still decides when to call it. Why it belongs: corrects
+    the common over-claim that MCP "runs" agents, which this workspace also
+    refuses to claim. Source: https://mpiv.ai/blog/claude-code-mcp-what-operators-actually-need-to-know-2026
+
+## Explicitly NOT included (NOT-to-copy list, honoured)
+
+Live model calls, client key managers, private cloud/packs, paid tiers, vendor
+MCP servers needing OAuth/keys (GitHub, Slack, Notion, Stripe, etc. as adopted
+servers), A2A live task transport, signed cards as identity, agent payments,
+AutoGen as a dependency, smolagents as an executor, prompt-to-app builders,
+proprietary products as tools. Each would need its own vetting pack first and
+is not seed material here.

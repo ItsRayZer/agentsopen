@@ -1,0 +1,137 @@
+al:1
+agent: ai-workspace | role=seed
+task: wiki-article-seed
+status: todo
+note: wiki=article | article=teamwork | version=1 | prev=none | author=seed-pending
+note: source=wikipedia | url=https://en.wikipedia.org/wiki/Teamwork | retrieved=2026-10-26 | licence=CC-BY-SA-4.0
+note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
+data-class: public
+body:
+[Seed note: the text below is the Wikipedia article 'Teamwork' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Teamwork]
+
+Teamwork is the collaborative effort of a group to achieve a common goal or to complete a task in an effective and efficient way. Teamwork is seen within the framework of a team, which is a group of interdependent individuals who work together towards a common goal.
+The four key characteristics of a team include a shared goal, interdependence, boundedness, stability, the ability to manage their own work and internal process, and operate in a bigger social system.
+Teams need to be able to leverage resources to be productive (i.e. playing fields or meeting spaces, scheduled times for planning, guidance from coaches or supervisors, support from the organization, etc.), and clearly defined roles within the team in order for everyone to have a clear purpose. Teamwork is present in contexts including an industrial organization (formal work teams), athletics (sports teams), a school (classmates working on a project), and the healthcare system (operating room teams). In each of these settings, the level of teamwork and interdependence can vary from low (e.g. golf, track and field), to intermediate (e.g. baseball, football), to high (e.g. basketball, soccer), depending on the amount of communication, interaction, and collaboration present between team members.
+Among the requirements for effective teamwork are an adequate team size. The context is important, and team sizes can vary depending upon the objective. A team must include at least two members, and most teams range in size from two to 100. Sports teams generally have fixed sizes based upon set rules, and work teams may change in size depending upon the phase and complexity of the objective.
+
+
+== History ==
+The Oxford English Dictionary records the use of "team-work" in the context of a team of draught animals as early as 1800.
+Even though collaborative work among groups of individuals is very prominent today, that was not the case over half a century ago. The shift from the typical assembly line to organizational models that contained increasing amounts of teamwork first came about during World War I and World War II, in an effort for countries to unite their people. The movement towards teamwork was mostly due to the Hawthorne studies, a set of studies conducted in the 1920s and 1930s that suggested positive aspects of teamwork in an organizational setting. After organizations recognized the value of teamwork and the positive effects it had on companies, entire fields of work shifted from the typical assembly line to the contemporary High Performance Organizational Model.
+
+
+== Effective teamwork characteristics ==
+A team must have certain interrelated characteristics to work effectively.
+Among these is strong group cohesion. There is a positive relationship between group cohesion and performance.
+Communication is another vital characteristic for effective teamwork. Members must be able to effectively communicate with each other to overcome obstacles, resolve conflict, and avoid confusion. Communication increases cohesion.
+Communication helps to clearly define the team's purpose so that there is a common goal. Having a common goal increases cohesion because all members are striving for the same objective and will help each other achieve their goals.
+Commitment occurs when members are focused on achieving the team's common goal.
+Accountability is necessary to ensure milestones are reached and that all members are participating. Holding members accountable increases commitment within team relations.
+
+
+== Basic team dynamics ==
+Basic team dynamics include:
+
+Open communication to avoid conflicts.
+Effective coordination to avoid confusion and the overstepping of boundaries.
+Efficient cooperation to perform the tasks in a timely manner and produce the required results, especially in the form of workload sharing.
+High levels of interdependence to maintain trust, risk-taking, and performance.
+These teamwork conditions lead to the team turning in a finished product. To measure if the teamwork was effective, the organization must examine the quality of the output, the process, and the members' experience. The teamwork can be deemed efficient if the output met or exceeded the organization's standard, the process the team chose to take helped them reach their goals, and the members report high levels of satisfaction with the team members as well as the processes that the team followed.
+
+
+== Processes ==
+
+Teams perform various processes during different periods of time. The processes can be performed when the team is undertaking specific activities, when the team is changing from one activity to the next, and during both periods of change and action when addressing relationships between the team members. Teamwork processes fall into three categories:
+
+
+=== Transition processes ===
+These processes occur between periods of action. Team members can evaluate their overall performance as a team and on an individual level, give feedback to each other, make clarifications about the upcoming tasks, and make any changes that would improve the process of collaborating.
+
+Task Analysis
+Goal Specification
+Strategy Formulation
+Result oriented group
+
+
+=== Action processes ===
+These processes take place when the team takes steps to accomplish its goals and objectives. Team members keep each other informed about their progress and their responsibilities, while helping one another with tasks. Feedback and collaborative work continues in high levels throughout this process.
+
+Monitoring progress toward goals
+Systems Monitoring
+Team Monitoring and Backup Behavior
+Coordination
+
+
+=== Interpersonal processes ===
+These processes are present in both action periods and transition periods, and occur between team members. This is a continuous process, in which team members communicate thoughts and/or feelings concerning either another team member or a manner in which a task is being performed. Furthermore, team members encourage and support each other on their individual tasks.
+
+Conflict management
+Motivation and Confidence building
+Affect Management
+Teamwork performance generally improves when a team passes through these processes, since processes like these enhance coordination and communication between the team members and therefore increase teamwork and collaborative work.
+
+
+== Training to improve teamwork ==
+Teamwork and performance can be enhanced through specific training that targets individual team members and the team as a whole. Bruce Tuckman proposed a team developmental model that separated the stages of a team's lifespan and the level of teamwork for each stage:
+
+Forming
+This stage is described by approach/avoidance issues, as well as internal conflicts about being independent vs. wanting to be a part of the team.
+Team members usually tend to 'play it safe' and minimize their risk-taking in case something goes wrong.
+Teamwork in this stage is at its lowest levels.
+Storming
+The second stage is characterized by a competition for power and authority, which is the source of most of the conflicts and doubts about the success of the team.
+If teamwork is low in this stage, it is very unlikely that the team will get past their conflicts. If there is a high degree of teamwork and willingness to collaborate, then the team might have a brighter future.
+Norming
+The third stage is characterized by increasing levels of solidarity, interdependence, and cohesiveness, while simultaneously making an effort to adjust to the team environment.
+This stage shows much higher levels of teamwork that make it easier for the above characteristics to occur.
+Performing
+This final stage of team development includes a comfortable environment in which team members are effectively completing tasks in an interdependent and cohesive manner.
+This stage is characterized by the highest levels of comfort, success, interdependence, and maturity, and therefore includes the highest levels of teamwork.
+
+
+=== Enhancing teamwork ===
+One way organizational psychologists measure teamwork is through the Knowledge, Skills, and Abilities (KSA) Teamwork Test. This test was developed by Michael Stevens and Michael Campion in 1994. It assesses people who want to join a team by measuring 14 KSA requirements for teamwork, especially within formal teams. The test has two main categories: Interpersonal KSAs that contain items such as Conflict Resolution and Communication, and Self-Management KSAs that include items such as Goal Setting and Task Coordination.
+Teamwork can be enhanced through team development interventions (TDIs) such as leadership training, team training, team debriefing, and team building. These TDIs improve communication, coordination, cooperation, and conflict management within teams. Promoting a sense of community among the team members through efforts such as group events also contributes to the enhancement of teamwork.
+
+
+=== Leadership and teamwork ===
+Leaders should establish trust with their teams and provide mutual encouragement to support team success. Leaders can model collaborative behavior to demonstrate effective teamwork to their teams. Team leaders should be both task- and relationship-oriented to facilitate relationships that enhance teamwork. Leaders should ensure that the team member identify and understand their roles and responsibilities within the team. A successful team aligns it objectives with the organization’s vision and goals. Leaders are responsible for inspiring and motivating teams to facilitate the alignment of their objectives with those of the organization.
+
+
+== Drawbacks and benefits ==
+Utilizing teamwork is sometimes unnecessary and can lead to teams not reaching their performance peak. Some of those disadvantages include:
+
+Social loafing: This phenomenon appears when a person working in a group puts in less effort than they can towards a task. If other members of the team are exerting comparatively more effort, this can create conflict and lead to lower levels of performance.
+Behavioral conflicts or ingrained individualism: Employees at higher organizational levels have adapted to positions that require more individual initiative, and therefore have trouble engaging in collaborative work. This creates a more competitive environment with less communication and more conflict. This disadvantage is mostly seen in organizations that utilize teamwork in an extremely hierarchical environment.
+Individual tasks: Certain tasks do not require teamwork, and are more appropriate for individual work. By assigning a team to complete an 'individual task', there can be high levels of conflict between members which can damage the team's dynamic and weaken their overall performance.
+Groupthink: This is a psychological phenomenon that occurs within a group of people when, from a desire for conflict-avoidance, the desire for cohesiveness is greater than the desire for the best decisions. When a team experiences groupthink, alternative solutions will not be suggested due to fear of rejection or disagreement within the group. Group members will measure success based on the harmony of their group and not by the outcome of their decisions. One way to counteract groupthink is to have members of a group be from diverse backgrounds and have different characteristics (gender, age, nationality). Another way to avoid groupthink is to require each member to suggest different ideas.
+Working in teams has also shown to be very beneficial. Some advantages of teamwork include:
+
+Problem solving: A group of people can bring together various perspectives and combine views and opinions to rapidly and effectively solve an issue. Due to the team's culture, each team member has a responsibility to contribute equally and offer their unique perspective on a problem to arrive at the best possible solution. Teamwork can lead to better decisions, products, or services. The effectiveness of teamwork depends on the following six components of collaboration among team members: communication, coordination, balance of member contributions, mutual support, effort, and cohesion.
+Healthy competition: This can motivate people and help the team excel.
+Relationship development: A team that continues to work together will eventually develop an increased level of bonding. This can help members avoid unnecessary conflicts since they have become well acquainted with each other through teamwork. By building strong relationships between members, team members' satisfaction with their team increases, therefore improving both teamwork and performance.
+Individual qualities: Every team member can offer their unique knowledge and ability to help improve other team members. Through teamwork the sharing of these qualities allows team members to be more productive in the future.
+Motivation: Working collaboratively can lead to increased motivation levels within a team due to increasing accountability for individual performance. When groups are being compared, members tend to become more ambitious to perform better. Providing groups with a comparison standard increases their performance level thus encouraging members to work collaboratively.
+Paulus describes additional benefits of teamwork:
+
+shared workload
+opportunity to achieve leadership and social satisfaction
+sense of belonging to a successful team
+ability to accomplish more than if team members worked individually
+
+
+== References ==
+
+
+== Further reading ==
+
+Baker, David P.; Day, Rachel; Salas, Eduardo (2006). "Teamwork as an Essential Component of High-Reliability Organizations". Health Services Research. 41 (4p2): 1576–1598. doi:10.1111/j.1475-6773.2006.00566.x. PMC 1955345. PMID 16898980.
+DeChurch, Leslie A.; Mesmer-Magnus, Jessica R. (2010). "The Cognitive Underpinnings of Effective Teamwork: a Meta-Analysis" (PDF). Journal of Applied Psychology. 95 (1): 32–53. doi:10.1037/a0017328. PMID 20085405. S2CID 15188731. Archived from the original (PDF) on 2020-09-29.
+Hall, P.; Weaver, L. (2001). "Interdisciplinary Education and Teamwork: a Long and Winding Road". Medical Education. 35 (9): 867–875. doi:10.1046/j.1365-2923.2001.00919.x. PMID 11555225. S2CID 25811610.
+Larson, Carl E.; LaFasto, Frank M. (1989). Teamwork: What Must Go Right, What Can Go Wrong. Newbury Park, CA: SAGE. ISBN 978-0-8039-3289-0.
+Leonard, M.; Graham, S.; Bonacum, D. (2004). "The Human Factor: the Critical Importance of Effective Teamwork and Communication in Providing Safe Care". Quality and Safety in Health Care. 13 (Supplement 1): i85–i90. doi:10.1136/qshc.2004.010033. PMC 1765783. PMID 15465961.
+Jones, Gareth R.; George, Jennifer M. (1998). "The Experience and Evolution of Trust: Implications for Cooperation and Teamwork". The Academy of Management Review. 23 (3): 531–546. doi:10.2307/259293. JSTOR 259293.
+Sexton, J. Bryan; Thomas, Eric J.; Helmreich, Robert L. (2000). "Error, Stress, and Teamwork in Medicine and Aviation: Cross Sectional Surveys". BMJ. 320 (7237): 745–749. doi:10.1136/bmj.320.7237.745. PMC 27316. PMID 10720356.
+Sheard, A. G.; Kakabadse, A. P. (2004). "A Process Perspective on Leadership and Team Development". The Journal of Management Development. 23 (1): 7–11, 13–41, 43–79, 81–106. doi:10.1108/02621710410511027.
+Thomas, Eric J.; Sexton, J. Bryan; Helmreich, Robert L. (2003). "Discrepant Attitudes about Teamwork Among Critical Care Nurses and Physicians". Critical Care Medicine. 31 (3): 956–959. doi:10.1097/01.CCM.0000056183.89175.76. PMID 12627011. S2CID 42102070.
+Xyrichis, Andreas; Ream, Emma (2008). "Teamwork: a concept analysis". Journal of Advanced Nursing. 61 (2): 232–241. doi:10.1111/j.1365-2648.2007.04496.x. PMID 18186914.

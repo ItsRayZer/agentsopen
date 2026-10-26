@@ -1,0 +1,265 @@
+{
+  "schema": "ai-workspace-wiki-index-1",
+  "name": "ai-workspace-wiki-seed",
+  "note": "Generated from site/wiki/*.txt by tools/gen_wiki_index.py; hand edits drift-fail check_wiki_index.py and build-check.js. Wikipedia articles are CC BY-SA 4.0, sourced-from-wikipedia, not Mia-verified; claims without an independent proof ref are unproven, never presented as verified. Site files only: the 102,400-byte Cloud pack cap does not apply to site files, but articles near it must be split, never truncated, before any future Cloud pack step.",
+  "counts": {
+    "articles": 22,
+    "collections": 1,
+    "entries": 23
+  },
+  "entries": [
+    {
+      "slug": "agent-based-model",
+      "title": "Agent Based Model",
+      "file": "wiki/agent-based-model.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Agent-based_model",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 28512,
+      "sha256": "3540b7546045d81c583104feb38ef9a9678f0dfbf05025933b69abcb5b4f342b"
+    },
+    {
+      "slug": "artificial-intelligence",
+      "title": "Artificial Intelligence",
+      "file": "wiki/artificial-intelligence.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 88494,
+      "sha256": "9ec25ddfc225a5db57665b597e726fdf3b91d2baa3145d94e4a1ea026ce52764"
+    },
+    {
+      "slug": "collaboration",
+      "title": "Collaboration",
+      "file": "wiki/collaboration.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Collaboration",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 35038,
+      "sha256": "a1bf007be55490b8d40f85338c16649943f5b92d909d736a047989e25d1b460b"
+    },
+    {
+      "slug": "collaborative-software",
+      "title": "Collaborative Software",
+      "file": "wiki/collaborative-software.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Collaborative_software",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 13085,
+      "sha256": "ca50ef422ed5e9db7d485bfb4f803a72ae2a35ecfacce792253af283546e5d46"
+    },
+    {
+      "slug": "collective-intelligence",
+      "title": "Collective Intelligence",
+      "file": "wiki/collective-intelligence.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Collective_intelligence",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 90782,
+      "sha256": "175132652117a1c64b1332bc88e4fea08a3c51d240561a9d45213e95910334ab"
+    },
+    {
+      "slug": "computer-supported-cooperative-work",
+      "title": "Computer Supported Cooperative Work",
+      "file": "wiki/computer-supported-cooperative-work.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Computer-supported_cooperative_work",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 73964,
+      "sha256": "3259f524846257dc7cc1897958bfcde37b2710b23dca4bb6b5ae4578ea359624"
+    },
+    {
+      "slug": "distributed-artificial-intelligence",
+      "title": "Distributed Artificial Intelligence",
+      "file": "wiki/distributed-artificial-intelligence.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Distributed_artificial_intelligence",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 11368,
+      "sha256": "f2cf4a5677ed226fa02d8d488df1d00e68024c7c933cbdec8ff7c980a79d6f61"
+    },
+    {
+      "slug": "extra-ai-workspace-items",
+      "title": "Extra AI workspace items",
+      "file": "wiki/extra-ai-workspace-items.txt",
+      "kind": "summary-collection",
+      "source": "multiple \u2014 see file for per-item source links",
+      "licence": "original-summaries + linked sources",
+      "verification": "not-mia-verified",
+      "bytes": 5410,
+      "sha256": "cc4dc2c235d48b886a64d1edb8de7b9efc5292fe9cb9ffe5889a8f26d66f7dc8"
+    },
+    {
+      "slug": "human-computer-interaction",
+      "title": "Human Computer Interaction",
+      "file": "wiki/human-computer-interaction.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Human%E2%80%93computer_interaction",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 28610,
+      "sha256": "cb60a14d7e3bd412bdd455a48d84882efea13a3994d4fc445e1a656667e45e55"
+    },
+    {
+      "slug": "intelligent-agent",
+      "title": "Intelligent Agent",
+      "file": "wiki/intelligent-agent.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Intelligent_agent",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 19349,
+      "sha256": "8078966729b9063813a041cd929066305f6b7ccd87d26e30a3a90fb9a6981472"
+    },
+    {
+      "slug": "knowledge-base",
+      "title": "Knowledge Base",
+      "file": "wiki/knowledge-base.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Knowledge_base",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 8582,
+      "sha256": "17efc976c621355be4a92422b05cd9403763438761d9d8be667f30e06318b4c6"
+    },
+    {
+      "slug": "knowledge-management",
+      "title": "Knowledge Management",
+      "file": "wiki/knowledge-management.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Knowledge_management",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 29351,
+      "sha256": "48e065a2a8bb96ad6afca6f93dde63f1cb30745e9914fd54c07bacd9b07c913e"
+    },
+    {
+      "slug": "knowledge-representation-and-reasoning",
+      "title": "Knowledge Representation And Reasoning",
+      "file": "wiki/knowledge-representation-and-reasoning.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Knowledge_representation_and_reasoning",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 28749,
+      "sha256": "f9535f8481fbf258a3c010628514cdbeb839ce23450fd9d31d28eb24474c36e0"
+    },
+    {
+      "slug": "machine-learning",
+      "title": "Machine Learning",
+      "file": "wiki/machine-learning.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Machine_learning",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 61092,
+      "sha256": "b36c45d34c6cdce16c46447e55538b58e18c21eaa5a675ac9fbbeb025e0826aa"
+    },
+    {
+      "slug": "multi-agent-system",
+      "title": "Multi Agent System",
+      "file": "wiki/multi-agent-system.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Multi-agent_system",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 13193,
+      "sha256": "1309b6db73923a8f4e2f1654b4686b2cdc5f2012864b0567ed7179edc23f0cfc"
+    },
+    {
+      "slug": "natural-language-processing",
+      "title": "Natural Language Processing",
+      "file": "wiki/natural-language-processing.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Natural_language_processing",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 33054,
+      "sha256": "b549ff9d3a16c4d44534ce6a2518b0b6efa592298f2d065c9254022118e368ca"
+    },
+    {
+      "slug": "open-collaboration",
+      "title": "Open Collaboration",
+      "file": "wiki/open-collaboration.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Open_collaboration",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 4815,
+      "sha256": "e972f01455040945b6814cc60565ef6349488909eb80905de773a642eacee033"
+    },
+    {
+      "slug": "remote-work",
+      "title": "Remote Work",
+      "file": "wiki/remote-work.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Remote_work",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 54195,
+      "sha256": "3e7f822ff7e828d4bec9d385b3fe145072858f896e1d9cc81d7da0b418ffe539"
+    },
+    {
+      "slug": "software-agent",
+      "title": "Software Agent",
+      "file": "wiki/software-agent.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Software_agent",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 18342,
+      "sha256": "d1a0003bbb47025e8694561e1b42b4565945b81bb9d66c34d9036f54b5227765"
+    },
+    {
+      "slug": "swarm-intelligence",
+      "title": "Swarm Intelligence",
+      "file": "wiki/swarm-intelligence.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Swarm_intelligence",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 20660,
+      "sha256": "8e464c353ce9648ab5aa529f8eeb39f7b31f6d83a74b846fcdb5c6f05fc16737"
+    },
+    {
+      "slug": "teamwork",
+      "title": "Teamwork",
+      "file": "wiki/teamwork.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Teamwork",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 16418,
+      "sha256": "f36d39c4358af80c2143a716e4d3fdccc64ee7a33cc29d452c52951479cf088b"
+    },
+    {
+      "slug": "virtual-team",
+      "title": "Virtual Team",
+      "file": "wiki/virtual-team.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Virtual_team",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 58284,
+      "sha256": "a9385bbd7b328134237181bbd91d30dba291097f33568abc553c0316f6637f6d"
+    },
+    {
+      "slug": "wiki",
+      "title": "Wiki",
+      "file": "wiki/wiki.txt",
+      "kind": "wikipedia-article",
+      "source": "https://en.wikipedia.org/wiki/Wiki",
+      "licence": "CC-BY-SA-4.0",
+      "verification": "sourced-from-wikipedia-not-mia-verified",
+      "bytes": 26083,
+      "sha256": "b698aa957daf7af5e550ee7fc1689a1dbbead69e6735774971548a4258092611"
+    }
+  ]
+}
