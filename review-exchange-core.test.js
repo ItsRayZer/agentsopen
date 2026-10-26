@@ -64,7 +64,7 @@ async function main() {
   assert.equal(decodedPack.schemaVersion, core.publicBundleSchema);
   assert.equal(decodedPack.artifact.artifactId, cleanReview.artifact.artifactId);
   assert.equal(decodedPack.review.reviewId, cleanReview.review.reviewId);
-  assert.throws(() => core.parsePublicRecordPack("al:1\\nstatus: done"), /payload is missing/);
+  assert.throws(() => core.parsePublicRecordPack("al:1\npublic=true\ndata-class: public\nnote: exchange=review-exchange-record"), /Public record payload is missing/);
   assert.throws(() => core.buildPublicRecordPack(cleanReview.artifact, { ...cleanReview.review, artifactId: "different-artifact" }), /do not match/);
 
 
