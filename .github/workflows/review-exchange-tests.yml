@@ -15,6 +15,16 @@ on:
       - "review-exchange-smoke.test.js"
       - "schemas/review-exchange-0.1.0.schema.json"
       - ".github/workflows/review-exchange-tests.yml"
+      - ".github/scripts/manifest-check.js"
+      - "manifest.json"
+      - "files.txt"
+      - "sitemap.xml"
+      - "README.md"
+      - "agent.json"
+      - "agent.txt"
+      - "index.html"
+      - "index.json"
+      - "index.txt"
   pull_request:
     branches:
       - main
@@ -51,3 +61,5 @@ jobs:
         run: node review-exchange-core.test.js
       - name: Verify static UI contract
         run: node review-exchange-smoke.test.js
+      - name: Verify public inventory integrity
+        run: node .github/scripts/manifest-check.js
