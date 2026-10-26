@@ -84,9 +84,9 @@
       "sha256": "25c555549674bd0445cbe51959e61ed9cc5ea60edb8931432a4c279402a45cec"
     },
     {
-      "bytes": 10094,
+      "bytes": 10281,
       "path": "SHADOWCODE.md",
-      "sha256": "de6381f6dd602815dac25ffa4e69ccad695d3387651fa91a048e1171a8db0ac8"
+      "sha256": "aa871377d84a5d4e7194d785617f56c37443f121669de2cf142a8adc64c09e38"
     },
     {
       "bytes": 17831,
@@ -139,14 +139,14 @@
       "sha256": "a03d164b8b40c8213533e9e8f2f6c0abe740cfb130eeaa13dc5d415edccc6a61"
     },
     {
-      "bytes": 11489,
+      "bytes": 21692,
       "path": "aiws",
-      "sha256": "a723423ccb601f868db92a91db810645b7258e43f66823ab28f025681999ce04"
+      "sha256": "c74e2025b152a4ba2afd30f3ebfe1770608258a24557972a94049d4bcf445bcf"
     },
     {
-      "bytes": 3691,
+      "bytes": 5790,
       "path": "aiws.md",
-      "sha256": "e20edfc88e702022665c5fc6b85d32104bd7a8f2ecc1d3cc2a8c7b7b20d20bb2"
+      "sha256": "f63f81cd5e044bc236dbaf3d35ea5209e85b2dc4fa724c96edcc3be6506682a8"
     },
     {
       "bytes": 4696,
