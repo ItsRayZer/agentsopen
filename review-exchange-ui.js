@@ -8,7 +8,7 @@
   var MAX_IMPORT_BYTES = 2 * 1024 * 1024;
   var validator = window.AIWSReviewValidator;
   var core = window.AIWSReviewCore;
-  var state = { artifacts:[], reviews:[], benchmarks:[], workflows:[], events:[] };
+  var state = { artifacts:[], reviews:[], benchmarks:[], workflows:[], events:[], publicRecords:[] };
   var storageLoadFailed = false;
   var lastArtifactKey = null;
   var lastSourceText = "";
@@ -243,7 +243,7 @@
     records.forEach(function(a){
       var card=node("article","artifact-card");
       var top=node("div","card-top");top.appendChild(node("span","type-pill",a.artifactType));
-      top.appendChild(node("span","state-pill local","local draft"));card.appendChild(top);
+      top.appendChild(node("span","state-pill local",a.visibility==="public" && a.status==="published" ? "published record" : "local draft"));card.appendChild(top);
       card.appendChild(node("h3","",a.name));
       appendP(card,a.summary || "No summary supplied.");
       card.appendChild(node("div","muted small",a.artifactId+" · version "+a.version));
@@ -261,6 +261,7 @@
       card.appendChild(actions);wrap.appendChild(card);
     });
     renderCompareSelectors();
+    renderPublishSelect();
   }
   function renderCompareSelectors() {
     ["compareA","compareB"].forEach(function(id){
