@@ -342,6 +342,10 @@
       "keys": "none",
       "public_packs_only": true,
       "note": "tools-only, no delete tool, no code execution; boot first via aiws_boot; search covers views+tools+packs, not skills; MCP packs use bare ids and are not list/get-visible via the Worker v2 pack: scheme"
-    }
+    },
+    "review_exchange": "/review-exchange.html",
+    "review_exchange_schema": "/schemas/review-exchange-0.1.0.schema.json",
+    "review_exchange_core": "/review-exchange-core.js",
+    "review_exchange_validator": "/review-exchange-validator.js"
   }
 }
