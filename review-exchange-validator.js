@@ -97,7 +97,7 @@
     if (isObject(o.submitter)) {
       checkKeys(o.submitter, ["id","assurance"], errors, path + ".submitter");
       checkString(o.submitter, "id", false, 160, errors, path + ".submitter");
-      checkEnum(o.submitter, "assurance", ["unknown","self-asserted","account-verified","cryptographically-verified"], false, errors, path + ".submitter");
+      checkEnum(o.submitter, "assurance", ["unknown","self-asserted"], false, errors, path + ".submitter");
     }
     if (o.status === "published" && o.visibility !== "public") add(errors, path + ".visibility", "publish-visibility", "Published artifacts must explicitly declare public visibility.");
   }
@@ -150,7 +150,7 @@
     checkString(o, "reviewBasis", false, 3000, errors, path);
     checkString(o, "reproduction", false, 5000, errors, path);
     checkEnum(o, "disposition", DISPOSITIONS, true, errors, path);
-    checkEnum(o, "signatureStatus", ["verified","unsigned","invalid","unavailable"], false, errors, path);
+    checkEnum(o, "signatureStatus", ["unsigned","invalid","unavailable"], false, errors, path);
 
     if (o.disposition === "promising" && !checks.some(function (c) { return isObject(c) && c.status === "passed"; }) && !(typeof o.reviewBasis === "string" && o.reviewBasis.trim())) add(errors, path + ".disposition", "evidence-mismatch", "A promising disposition needs a passed check or a documented reviewBasis.");
   }
