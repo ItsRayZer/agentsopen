@@ -108,4 +108,10 @@ assert.equal(validator.validateRecord(nullReviewHash).ok, false, "null review ha
 const tooManyCompatibilityRows = { ...review, disposition: "insufficient-evidence", compatibility: Array.from({ length: 101 }, (_, i) => ({ target: "runtime-" + i, status: "not-run" })) };
 assert.equal(validator.validateRecord(tooManyCompatibilityRows).ok, false, "compatibility arrays must respect the schema maximum");
 
+const unverifiedSignatureClaim = { ...review, signatureStatus: "verified" };
+assert.equal(validator.validateRecord(unverifiedSignatureClaim).ok, false, "the MVP must reject verified signature status without a signature verifier");
+const unsupportedIdentityClaim = { ...artifact, submitter: { id: "claimed-author", assurance: "cryptographically-verified" } };
+assert.equal(validator.validateRecord(unsupportedIdentityClaim).ok, false, "the local MVP must not accept unsupported cryptographic identity assurance");
+
+
 console.log("PASS: review-exchange validator metadata fixtures");
