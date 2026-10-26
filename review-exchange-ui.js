@@ -640,6 +640,7 @@
     qs("closeDetailBtn").addEventListener("click",function(){qs("detailDialog").close();});
     qs("detailDialog").addEventListener("click",function(e){if(e.target===qs("detailDialog"))qs("detailDialog").close();});
     document.addEventListener("click",function(e){var b=e.target.closest("[data-action]");if(!b)return;if(b.dataset.action==="workflow-step")return;handleAction(b.dataset.action,b.dataset.value,b);});
+    document.addEventListener("change",function(e){var t=e.target;if(t && t.matches("input[type=checkbox][data-action=workflow-step]"))handleAction("workflow-step", "", t);});
     // A tiny deterministic demonstration is opt-in. It is never auto-added or called a real reviewed artifact.
     qs("catalogEmpty").appendChild(button("Load synthetic example","secondary","load-example"));
     document.addEventListener("click",function(e){var b=e.target.closest("[data-action='load-example']");if(b)safeLoadExample();});
