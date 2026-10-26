@@ -72,7 +72,7 @@ const review = {
 };
 assert.equal(validator.validateRecord(review).ok, true, JSON.stringify(validator.validateRecord(review).errors));
 
-const incompleteReview = { ...review, checks: [{ checkId: "runtime-test", status: "not-run" }] };
+const incompleteReview = { ...review, disposition: "insufficient-evidence", checks: [{ checkId: "runtime-test", status: "not-run" }] };
 const incompleteResult = validator.validateRecord(incompleteReview);
 assert.equal(incompleteResult.ok, true, "not-run is a valid recorded state");
 assert.ok(incompleteResult.warnings.some(w => w.code === "incomplete-evidence"), "not-run checks must produce an incomplete-evidence warning");
