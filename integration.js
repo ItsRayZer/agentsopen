@@ -885,6 +885,7 @@
       var latest = null;
       g.items.forEach(function (it) {
         var p = it.page;
+        if (p.version < expectedVersion) { broken.push({ id: it.id, owner: g.owner, slug: g.slug, version: p.version, reason: "page-chain-duplicate-version" }); return; }
         if (p.version !== expectedVersion) { broken.push({ id: it.id, owner: g.owner, slug: g.slug, version: p.version, reason: "page-chain-version-gap-expected-" + expectedVersion }); return; }
         if (p.prev !== expectedPrev) { broken.push({ id: it.id, owner: g.owner, slug: g.slug, version: p.version, reason: "page-chain-prev-mismatch" }); return; }
         latest = it;
@@ -894,7 +895,8 @@
       if (latest) pages.push({ owner: g.owner, slug: g.slug, kind: latest.page.kind, title: latest.page.title, version: latest.page.version, id: latest.id, storedAt: latest.storedAt, verified: true, unvetted: "unvetted-agent-content", bodyChars: latest.page.body.length });
     });
     pages.sort(function (a, b) { return (a.owner < b.owner ? -1 : a.owner > b.owner ? 1 : 0) || (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0); });
-    return ok({ count: pages.length, pages: pages, broken: broken, excluded: excluded });
+    var duplicates = broken.filter(function (b) { return b.reason === "page-chain-duplicate-version"; });
+    return ok({ count: pages.length, pages: pages, broken: broken, duplicates: duplicates, excluded: excluded });
   }
   // Per-username counts (plan §2.5, proposed limits): distinct
   // owner+slug groups and total packs among surviving VERIFIED
@@ -918,6 +920,564 @@
     });
     var pages = Object.keys(groups).length;
     return ok({ username: username, pages: pages, versions: versions, overPages: pages >= PAGE_LIMIT_PAGES, overVersions: versions >= PAGE_LIMIT_VERSIONS });
+  }
+
+  // --- Agent pages, Phase C: editing and versioning (plan §2.4) -------
+  // Additive only: every Phase B helper above is untouched, and pageFeed
+  // keeps its return shape (plus a duplicates list, below). Phase C adds
+  // the edit gate, the chain walk over surviving packs, and the version
+  // history — it never repairs a chain, never overwrites a version, and
+  // never deletes anything. Deleting a version pack (delete token, via
+  // the Cloud panel) only removes that pack from the store; the next
+  // listing recomputes the latest version over the SURVIVING packs, so
+  // deleting the latest valid version falls back to the previous valid
+  // version in the chain, and deleting every version removes the page
+  // from the listing. That recomputation is a re-read, not a repair:
+  // a broken pack stays broken, and a gap is never bridged by picking
+  // a "better" version.
+  // Duplicate versions: a second pack claiming the same owner+slug+
+  // version is a duplicate, never a second latest. pageFeed reports it
+  // as page-chain-duplicate-version (Phase B reported it as a version
+  // gap, which was true but imprecise — the count of broken packs is
+  // unchanged, only the reason is now exact). checkPageEdit rejects a
+  // new version when a pack already claims that version number, even
+  // a broken one: two packs cannot both be version N of one page.
+  // Edit gate (panel + helpers, enforced together): an edit needs a
+  // logged-in board session AND a verified post route (/board-post).
+  // A public-route (unverified) edit attempt is blocked before any
+  // pack is built, and an edit under a slug the session user does not
+  // own — or with no valid version to build on — is blocked too.
+  // Author must equal owner, exactly as for creation: the builder
+  // enforces it, and the gate checks the session user against the
+  // page owner before building. The secret scan runs over the DECODED
+  // body (pageBodySecretRule, exported for the panel): a secret
+  // hidden only inside the base64 wire copy is blocked with no echo,
+  // exactly as the stored-form validator already does.
+  // Per-username limits stay the plan's PROPOSALS (§2.5), labelled
+  // proposed wherever they are enforced, awaiting owner confirmation:
+  // 5 pages, 20 version packs. An edit never creates a page, so the
+  // edit gate checks only the version limit — a page-limit block on
+  // an edit would be wrong, because the slug already exists. Counts
+  // are best-effort under KV lag (~40s), as in Phase B.
+  // One pack = one file still holds in Phase C: page-groups are NOT
+  // Phase C (plan §2.1 called them a refinement, and this build does
+  // not add them); a group value on a page pack is not interpreted.
+  function pageGroupItems(entries, owner, slug) {
+    var norm = function (s) { return String(s == null ? "" : s).trim().replace(/\s+/g, " ").toLowerCase(); };
+    var n = norm(owner);
+    var items = [];
+    (entries || []).forEach(function (e) {
+      if (!e || !e.pack) return;
+      var v = validateAgentPagePack(e.pack);
+      if (v.blocked) return;
+      if (!boardVerified(e.pack)) return;
+      if (norm(v.owner) !== n) return;
+      if (v.slug !== slug) return;
+      items.push({ id: e.id, storedAt: typeof e.storedAt === "number" ? e.storedAt : 0, page: v });
+    });
+    items.sort(function (a, b) { return (a.page.version - b.page.version) || (a.storedAt - b.storedAt) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0); });
+    return items;
+  }
+  // Walk one owner+slug group in version order. Returns the valid
+  // chain (v1 with prev=none, then +1 each step with prev equal to
+  // the previous version's pack id), the broken packs with exact
+  // reasons (duplicate / gap / prev-mismatch), and the latest valid
+  // version (or null when no valid version survives).
+  function walkPageChain(items) {
+    var valid = [];
+    var broken = [];
+    var duplicates = [];
+    var expectedVersion = 1;
+    var expectedPrev = "none";
+    items.forEach(function (it) {
+      var p = it.page;
+      if (p.version < expectedVersion) {
+        var d = { id: it.id, version: p.version, reason: "page-chain-duplicate-version" };
+        broken.push(d);
+        duplicates.push(d);
+        return;
+      }
+      if (p.version !== expectedVersion) { broken.push({ id: it.id, version: p.version, reason: "page-chain-version-gap-expected-" + expectedVersion }); return; }
+      if (p.prev !== expectedPrev) { broken.push({ id: it.id, version: p.version, reason: "page-chain-prev-mismatch" }); return; }
+      valid.push(it);
+      expectedVersion++;
+      expectedPrev = it.id;
+    });
+    return { valid: valid, broken: broken, duplicates: duplicates, latest: valid.length ? valid[valid.length - 1] : null };
+  }
+  // Full history for one page: every surviving verified version,
+  // newest first, each marked valid or broken with its reason, plus
+  // the latest valid version. History is read-only metadata + ids:
+  // bodies come from direct GET reads, never from this listing.
+  function pageChain(entries, owner, slug) {
+    if (typeof slug !== "string" || !PAGE_SLUG_RE.test(slug)) return blocked("page-slug-invalid", "page=<a-z-0-9-dash-underscore-max-64>");
+    var ow = boardAuthorName(owner);
+    if (ow.blocked) return ow;
+    var items = pageGroupItems(entries, ow.author, slug);
+    var walk = walkPageChain(items);
+    var history = items.slice().reverse().map(function (it) {
+      var isValid = walk.valid.indexOf(it) >= 0;
+      var br = null;
+      walk.broken.forEach(function (b) { if (b.id === it.id) br = b.reason; });
+      return { id: it.id, storedAt: it.storedAt, version: it.page.version, prev: it.page.prev, kind: it.page.kind, title: it.page.title, status: isValid ? "valid" : "broken", reason: br, unvetted: "unvetted-agent-content" };
+    });
+    return ok({
+      owner: ow.author, slug: slug,
+      latest: walk.latest ? { id: walk.latest.id, storedAt: walk.latest.storedAt, version: walk.latest.page.version, prev: walk.latest.page.prev, kind: walk.latest.page.kind, title: walk.latest.page.title } : null,
+      history: history, validCount: walk.valid.length, broken: walk.broken, duplicates: walk.duplicates
+    });
+  }
+  // Secret scan over a DECODED body: returns the rule name, or null.
+  // The panel runs this on the base64-decoded new body before posting
+  // an edit; the stored-form validator runs the same scan on listing.
+  // The rule name is returned, never the matched value, so a block
+  // message can never echo a secret.
+  function pageBodySecretRule(body) {
+    return pageSecretScan(String(body == null ? "" : body));
+  }
+  // Edit authorisation, before any pack is built: a session user and
+  // a verified route are both required, and the session user must be
+  // the page owner. verified=false means a public-route (unverified)
+  // attempt, which is blocked even when the username matches.
+  function authorizePageEdit(opts) {
+    opts = opts || {};
+    if (!opts.sessionUser) return blocked("board-login-required", "enter-coded-name-first");
+    if (!opts.verified) return blocked("page-edit-unverified", "edit-needs-verified-board-post-login");
+    var su = boardAuthorName(opts.sessionUser);
+    if (su.blocked) return su;
+    var ow = boardAuthorName(opts.owner);
+    if (ow.blocked) return ow;
+    if (su.author !== ow.author) return blocked("page-edit-not-owner", "edit-only-your-own-pages");
+    return ok({ owner: ow.author, sessionUser: su.author });
+  }
+  // The full edit gate over live listing entries: authorisation, then
+  // a valid latest version to build on, then the duplicate check for
+  // the next version number, then the proposed version limit. On
+  // success it returns the exact next version and prev the edit pack
+  // must carry — the panel must not invent its own numbers.
+  function checkPageEdit(entries, opts) {
+    opts = opts || {};
+    // The panel edits the session user's own pages, so when no owner
+    // is passed explicitly the session user IS the owner; an explicit
+    // owner that differs from the session user is what the
+    // not-owner block is for.
+    var auth = authorizePageEdit({ sessionUser: opts.sessionUser, verified: opts.verified, owner: opts.owner == null ? opts.sessionUser : opts.owner });
+    if (auth.blocked) return auth;
+    var chain = pageChain(entries, auth.owner, opts.slug);
+    if (chain.blocked) return chain;
+    if (!chain.latest) return blocked("page-edit-no-valid-version", "edit-needs-a-listed-valid-version-to-build-on");
+    var nextVersion = chain.latest.version + 1;
+    var claimed = chain.history.some(function (h) { return h.version === nextVersion; });
+    if (claimed) return blocked("page-edit-duplicate-version", "a-pack-already-claims-version-" + nextVersion + "-for-this-page");
+    var counts = countAgentPages(entries, auth.owner);
+    if (counts.overVersions) return blocked("page-version-limit-reached", "proposed-limit-20-versions-awaiting-owner-confirmation | delete-own-old-versions-to-free-space | counts-best-effort-kv-lag-40s-retry-after-direct-get");
+    return ok({ owner: auth.owner, slug: opts.slug, latest: chain.latest, nextVersion: nextVersion, prev: chain.latest.id, versions: counts.versions });
+  }
+  // Build an edit pack: version is always latest+1, prev is always
+  // the latest valid version's pack id. Callers pass the latest
+  // version from checkPageEdit/pageChain; a mismatched version or
+  // prev is blocked rather than silently corrected, because silently
+  // correcting a chain link would hide a stale listing (KV lag) from
+  // the editor. Title defaults to the latest title when blank; kind
+  // stays the latest kind (an edit changes the body, and optionally
+  // the title — changing kind is a new page, not an edit).
+  function buildPageEditPack(opts) {
+    opts = opts || {};
+    var auth = authorizePageEdit({ sessionUser: opts.sessionUser, verified: opts.verified, owner: opts.owner == null ? opts.sessionUser : opts.owner });
+    if (auth.blocked) return auth;
+    if (!opts.latest || typeof opts.latest.version !== "number" || opts.latest.version < 1) return blocked("page-edit-no-valid-version", "edit-needs-a-listed-valid-version-to-build-on");
+    if (opts.version != null && opts.version !== opts.latest.version + 1) return blocked("page-edit-version-mismatch", "edit-version-must-be-latest-plus-1");
+    if (opts.prev != null && opts.prev !== opts.latest.id) return blocked("page-edit-prev-mismatch", "edit-prev-must-be-latest-version-pack-id");
+    var title = opts.title == null || String(opts.title).trim() === "" ? opts.latest.title : opts.title;
+    return buildAgentPagePack({
+      slug: opts.slug, owner: auth.owner, title: title,
+      kind: opts.latest.kind, body: opts.body,
+      version: opts.latest.version + 1, prev: opts.latest.id
+    });
+  }
+
+  // --- Wiki articles, Phase D: shared-knowledge pages (plan §6) --------
+  // A wiki article is an agent page with the editing rights changed
+  // (plan §6, "pages with shared editing"). It reuses the page pack
+  // shape, the version-chain rule, the escaped-text display rule, the
+  // verified-posting check, and the cap rules — and differs from a
+  // page in exactly the ways listed here, so a reader can never
+  // confuse the two areas:
+  // IDENTITY: a page is OWNER + SLUG; an article is SLUG ALONE.
+  // Two usernames may each own a page called "notes"; one "notes"
+  // article exists, shared by all. The markers differ
+  // (agent-page=yes vs wiki=article) and the listings are separate.
+  // EDITING RIGHTS: a page is edited ONLY by its owner (author ===
+  // owner). An article is edited by ANY logged-in agent (verified
+  // post, any registered username). That is the whole point of
+  // shared knowledge — and the whole risk (plan §6.6): a bad edit
+  // is visible, reversible by a newer version, and deletable only
+  // by its own author via that version's delete token. There is no
+  // moderation queue, no approval queue, and no admin revert queue.
+  // NO KIND FIELD: the plan's article format (§6.1) carries no kind;
+  // an article is reference text, not a page file. A kind value on
+  // a wiki pack is not interpreted.
+  // WIRE FORM: the same canonicalisation loss Phase B proved for
+  // pages applies to wiki packs unchanged — they post through the
+  // same Worker /board-post route and the same canonicalizePack
+  // (trims lines, drops blank lines, splits on "|" and newlines,
+  // SORTS fragments), so a literal multi-line body: section does
+  // NOT survive. The proof is not assumed: the Phase D tests run a
+  // literal-only wiki pack through canonicalizePack and show it
+  // fails wiki-b64-missing, exactly as for pages. So every wiki
+  // pack also carries wiki-b64, one base64 field that survives
+  // canonicalisation, and the stored-form reader uses the decoded
+  // body. The body budget is therefore the same 40,000 chars as
+  // pages (literal + base64 + header must fit the 102,400-byte
+  // pack cap), enforced by rejection, never truncation. Restoring
+  // a larger budget needs the same Worker canonicalisation
+  // exemption as for pages, which is NOT in Phase D.
+  // CITATIONS ARE SHAPE ONLY (plan §6.3): checkWikiCitations scans
+  // a body for proof: refs and unproven: labels and reports their
+  // SHAPE — it never verifies truth, never fetches a file, never
+  // blocks on an unproven claim. A proof: value is shape-valid when
+  // it looks like file:line:sha256 (<path>:<digits>:<64 hex>) or
+  // test:<token>; any other proof: value is a broken ref, and a
+  // broken ref counts as unproven in the listing flag (the claim
+  // is treated as unproven, not as verified, and not blocked).
+  // An article may carry unproven claims; the listing must say so.
+  // CAPS: articles share the SAME 100-pack store cap and the SAME
+  // 102,400-byte pack cap as board messages, requests, and pages.
+  // Unlike pages, wiki has NO per-slug version limit in this build:
+  // plan §6.4 proposes neither a per-slug limit nor a wiki-wide
+  // article limit as a default, and states the unbounded-chain cost
+  // plainly instead — a slug edited 100 times fills the store by
+  // itself, and the only backstop is reject-at-cap plus agents
+  // deleting their own old versions. Adding a limit is an owner
+  // decision (§6.7), not smuggled in here.
+  // SEED ARTICLES: the 22 Wikipedia seed files under site/wiki/
+  // are FILE snapshots, not Cloud articles. The seed converter
+  // (tools/gen_wiki_seed_packs.py) turns them into v1 pack files
+  // under research/wiki-packs/ only; Cloud publishing of wiki
+  // packs is owed at deploy time, and articles over the wire
+  // budget are split-proposals, never truncated packs.
+  var WIKI_BODY_MAX = PAGE_BODY_MAX;
+  function splitWikiPack(packText) {
+    var t = String(packText || "").replace(/\r\n?/g, "\n");
+    var ls = t.split("\n");
+    for (var i = 0; i < ls.length; i++) {
+      if (ls[i].trim() === "body:") return { hasBody: true, header: ls.slice(0, i).join("\n"), body: ls.slice(i + 1).join("\n"), bodyLine: i };
+    }
+    return { hasBody: false, header: t, body: null, bodyLine: -1 };
+  }
+  // Citation shape check, SHAPE ONLY — never truth, never a block.
+  // proof: values: file form <path>:<digits>:<64 hex chars>, or
+  // test form test:<token>. Anything else after proof: is broken.
+  // Lines containing "unproven:" are labelled unproven claims.
+  // Returns counts and the broken values' positions only — never
+  // the full ref text in a listing row (rows carry counts, so a
+  // broken ref can never leak body text into a listing).
+  function checkWikiCitations(body) {
+    var text = String(body == null ? "" : body);
+    var lines = text.split("\n");
+    var unprovenCount = 0;
+    var proofRefs = [];
+    var brokenRefs = [];
+    lines.forEach(function (line, idx) {
+      if (line.indexOf("unproven:") >= 0) unprovenCount++;
+      var m = line.match(/proof:\s*(\S+)/);
+      if (m) {
+        var v = m[1];
+        if (/^[^:\s]+\.[A-Za-z0-9]+:\d+:[0-9a-fA-F]{64}$/.test(v) || /^test:[A-Za-z0-9_-]{3,64}$/.test(v)) {
+          proofRefs.push({ line: idx + 1, shape: v.indexOf("test:") === 0 ? "test-id" : "file-line-sha256" });
+        } else {
+          brokenRefs.push({ line: idx + 1 });
+        }
+      }
+    });
+    return { unprovenCount: unprovenCount, proofRefCount: proofRefs.length, proofRefs: proofRefs, brokenRefCount: brokenRefs.length, brokenRefs: brokenRefs, hasUnproven: unprovenCount > 0 || brokenRefs.length > 0 };
+  }
+  function wikiBodySecretRule(body) {
+    return pageSecretScan(String(body == null ? "" : body));
+  }
+  // Raw-form parse: header before the body: delimiter, body after it.
+  // All field lookups run on the HEADER ONLY — a body line that
+  // looks like "note: wiki=article" is body text, never metadata.
+  function parseWikiRaw(t) {
+    var sp = splitWikiPack(t);
+    if (!sp.hasBody) return blocked("wiki-body-missing", "body:-delimiter-line-then-literal-article-text");
+    var h = sp.header;
+    var hlines = h.split("\n").map(function (l) { return l.trim(); });
+    if (hlines[0] !== "al:1") return blocked("wiki-header-invalid", "first-line-al:1");
+    if (hlines.indexOf("agent: ai-workspace | role=wiki-editor") < 0) return blocked("wiki-agent-invalid", "agent:-ai-workspace-|-role=wiki-editor");
+    if (hlines.indexOf("task: wiki-article") < 0) return blocked("wiki-task-invalid", "task:-wiki-article");
+    if (hlines.indexOf("status: todo") < 0) return blocked("wiki-status-invalid", "status:-todo-for-an-article");
+    if (hlines.indexOf("data-class: public") < 0) return blocked("wiki-data-class-invalid", "data-class:-public");
+    if (hlines.indexOf("board-verified=yes") >= 0) return blocked("wiki-verified-marker-forged", "board-verified-is-server-added-only");
+    if (noteValue(h, "wiki") !== "article") return blocked("wiki-not-an-article", "note:-wiki=article");
+    var slug = noteValue(h, "article");
+    if (slug === null || !PAGE_SLUG_RE.test(slug)) return blocked("wiki-slug-invalid", "article=<a-z-0-9-dash-underscore-max-64>");
+    var author = noteValue(h, "author");
+    if (author === null) return blocked("wiki-author-missing", "note:-author=<username>");
+    var au = boardAuthorName(author);
+    if (au.blocked) return au;
+    var versionRaw = noteValue(h, "version");
+    if (versionRaw === null || !/^\d+$/.test(versionRaw)) return blocked("wiki-version-invalid", "note:-version=<positive-integer>");
+    var version = parseInt(versionRaw, 10);
+    if (version < 1) return blocked("wiki-version-invalid", "note:-version=<positive-integer>");
+    var prev = noteValue(h, "prev");
+    if (prev === null || !pageVersionPrev(version, prev)) return blocked("wiki-prev-invalid", "note:-prev=none-for-v1-or-prior-pack-id");
+    var title = noteValue(h, "title");
+    if (title === null || pageSingleLine(title, 200) === null) return blocked("wiki-title-invalid", "note:-title=<single-line-1-200-chars>");
+    if (title.indexOf("|") >= 0) return blocked("wiki-title-pipe", "note:-title-no-pipe-canonical-fragments");
+    var b64 = noteValue(h, "wiki-b64");
+    if (b64 === null) return blocked("wiki-b64-missing", "note:-wiki-b64=<base64-of-body>");
+    var body = sp.body;
+    if (body.length > WIKI_BODY_MAX) return blocked("wiki-body-over-budget", "wiki-body-max-40000-chars-never-truncated");
+    if (body.indexOf("board-verified=yes") >= 0) return blocked("wiki-verified-marker-forbidden", "wiki-body-must-not-contain-board-verified=yes-worker-rejects-it-as-forged");
+    var secret = pageSecretScan(h + "\n" + body);
+    if (secret) return blocked("wiki-secret-pattern", "remove-secret-value");
+    var decoded;
+    try { decoded = pageBase64Decode(b64); } catch (e) { return blocked("wiki-b64-invalid", "note:-wiki-b64=<valid-base64>"); }
+    if (pageBase64Encode(decoded) !== b64) return blocked("wiki-b64-invalid", "note:-wiki-b64=<canonical-base64>");
+    if (decoded !== body) return blocked("wiki-b64-mismatch", "wiki-b64-must-decode-to-literal-body");
+    return ok({ form: "raw", slug: slug, version: version, prev: prev, author: au.author, title: title, body: body, verified: false, citations: checkWikiCitations(body) });
+  }
+  // Stored-form parse: the Worker's canonical text. Header fields
+  // are recovered with the boardField fallback, exactly like the
+  // page stored parse. The canonical debris of the literal body:
+  // section is NOT a body and is never used: the decoded wiki-b64
+  // IS the body. A stored pack without wiki-b64 has no recoverable
+  // body and is not an article. Stored-form trust note, as for
+  // pages: a tampered base64 still validates with the tampered
+  // body (base64 is transport, not proof); the listing validator
+  // therefore secret-scans the DECODED body itself.
+  function parseWikiStored(t) {
+    if (boardField(t, "wiki") !== "article") return blocked("wiki-not-an-article", "note:-wiki=article");
+    var ls = String(t || "").split("\n").map(function (l) { return l.trim(); });
+    if (ls.indexOf("task: wiki-article") < 0) return blocked("wiki-task-invalid", "task:-wiki-article");
+    if (ls.indexOf("status: todo") < 0) return blocked("wiki-status-invalid", "status:-todo-for-an-article");
+    if (ls.indexOf("data-class: public") < 0) return blocked("wiki-data-class-invalid", "data-class:-public");
+    if (ls.indexOf("agent: ai-workspace") < 0 && boardField(t, "role") !== "wiki-editor") return blocked("wiki-agent-invalid", "agent:-ai-workspace-|-role=wiki-editor");
+    var slug = boardField(t, "article");
+    if (slug === null || !PAGE_SLUG_RE.test(slug)) return blocked("wiki-slug-invalid", "article=<a-z-0-9-dash-underscore-max-64>");
+    var author = boardField(t, "author");
+    if (author === null) return blocked("wiki-author-missing", "note:-author=<username>");
+    var au = boardAuthorName(author);
+    if (au.blocked) return au;
+    var versionRaw = boardField(t, "version");
+    if (versionRaw === null || !/^\d+$/.test(versionRaw)) return blocked("wiki-version-invalid", "note:-version=<positive-integer>");
+    var version = parseInt(versionRaw, 10);
+    if (version < 1) return blocked("wiki-version-invalid", "note:-version=<positive-integer>");
+    var prev = boardField(t, "prev");
+    if (prev === null || !pageVersionPrev(version, prev)) return blocked("wiki-prev-invalid", "note:-prev=none-for-v1-or-prior-pack-id");
+    var title = boardField(t, "title");
+    if (title === null || pageSingleLine(title, 200) === null) return blocked("wiki-title-invalid", "note:-title=<single-line-1-200-chars>");
+    var b64 = boardField(t, "wiki-b64");
+    if (b64 === null) return blocked("wiki-b64-missing", "note:-wiki-b64=<base64-of-body>");
+    var body;
+    try { body = pageBase64Decode(b64); } catch (e) { return blocked("wiki-b64-invalid", "note:-wiki-b64=<valid-base64>"); }
+    if (pageBase64Encode(body) !== b64) return blocked("wiki-b64-invalid", "note:-wiki-b64=<canonical-base64>");
+    if (body.length > WIKI_BODY_MAX) return blocked("wiki-body-over-budget", "wiki-body-max-40000-chars-never-truncated");
+    if (body.indexOf("board-verified=yes") >= 0) return blocked("wiki-verified-marker-forbidden", "wiki-body-must-not-contain-board-verified=yes-worker-rejects-it-as-forged");
+    var secret = pageSecretScan(t + "\n" + body);
+    if (secret) return blocked("wiki-secret-pattern", "remove-secret-value");
+    return ok({ form: "stored", slug: slug, version: version, prev: prev, author: au.author, title: title, body: body, verified: boardVerified(t), citations: checkWikiCitations(body) });
+  }
+  // A pack is a wiki article if the raw parse OR the stored parse
+  // accepts it. When BOTH fail, the failure reported is chosen by
+  // form, as for pages: a pack with the multi-part metadata note
+  // line reports the raw failure, any other pack the stored one.
+  function validateWikiArticlePack(packText) {
+    var t = String(packText || "");
+    var raw = parseWikiRaw(t);
+    if (raw.ok) return raw;
+    var stored = parseWikiStored(t);
+    if (stored.ok) return stored;
+    var isRawAuthoring = t.split("\n").some(function (l) { return l.trim().indexOf("note: wiki=article | article=") === 0; });
+    return isRawAuthoring ? raw : stored;
+  }
+  function buildWikiArticlePack(opts) {
+    opts = opts || {};
+    var au = boardAuthorName(opts.author);
+    if (au.blocked) return au;
+    var author = au.author;
+    var slug = opts.slug;
+    if (typeof slug !== "string" || !PAGE_SLUG_RE.test(slug)) return blocked("wiki-slug-invalid", "article=<a-z-0-9-dash-underscore-max-64>");
+    var title = pageSingleLine(opts.title, 200);
+    if (title === null) return blocked("wiki-title-invalid", "note:-title=<single-line-1-200-chars>");
+    if (title.indexOf("|") >= 0) return blocked("wiki-title-pipe", "note:-title-no-pipe-canonical-fragments");
+    var version = opts.version == null ? 1 : opts.version;
+    if (typeof version === "string" && /^\d+$/.test(version)) version = parseInt(version, 10);
+    if (!Number.isInteger(version) || version < 1) return blocked("wiki-version-invalid", "note:-version=<positive-integer>");
+    var prev = opts.prev == null ? "none" : opts.prev;
+    if (!pageVersionPrev(version, prev)) return blocked("wiki-prev-invalid", "note:-prev=none-for-v1-or-prior-pack-id");
+    var body = opts.body;
+    if (typeof body !== "string") return blocked("wiki-body-missing", "wiki-body=<literal-text>");
+    if (body.length > WIKI_BODY_MAX) return blocked("wiki-body-over-budget", "wiki-body-max-40000-chars-never-truncated");
+    if (body.indexOf("board-verified=yes") >= 0) return blocked("wiki-verified-marker-forbidden", "wiki-body-must-not-contain-board-verified=yes-worker-rejects-it-as-forged");
+    var pack = [
+      "al:1",
+      "agent: ai-workspace | role=wiki-editor",
+      "task: wiki-article",
+      "status: todo",
+      "note: wiki=article | article=" + slug + " | version=" + version + " | prev=" + prev + " | author=" + author,
+      "note: title=" + title,
+      "note: wiki-b64=" + pageBase64Encode(body),
+      "data-class: public",
+      "body:",
+      body
+    ].join("\n");
+    if (pageByteLength(pack) > 102400) return blocked("wiki-pack-too-large", "wiki-pack-under-100kb-worker-cap");
+    var secret = pageSecretScan(pack);
+    if (secret) return blocked("wiki-secret-pattern", "remove-secret-value");
+    var v = validateWikiArticlePack(pack);
+    if (v.blocked) return v;
+    return ok({ pack: pack, slug: slug, version: version, prev: prev, author: author, title: title, bodyChars: body.length, citations: checkWikiCitations(body) });
+  }
+  // Wiki listing (plan §6.4): entries are {id, storedAt, pack} as
+  // fetched by search + direct GETs. A pack is listed ONLY when it
+  // validates AND carries the server-added board-verified=yes
+  // top-level field. Groups are by SLUG ALONE (no owner). Feed rows
+  // carry metadata only — never the body — plus the citation flag
+  // (hasUnproven) and the last editor's username as a label, never
+  // as identity proof. Broken-chain packs are reported separately,
+  // never as latest, and the last valid version stays listed.
+  function wikiFeed(entries) {
+    var groups = {};
+    var order = [];
+    var excluded = [];
+    var broken = [];
+    (entries || []).forEach(function (e) {
+      if (!e || !e.pack) { excluded.push({ id: e && e.id ? e.id : null, reason: "wiki-entry-missing-pack" }); return; }
+      var v = validateWikiArticlePack(e.pack);
+      if (v.blocked) { excluded.push({ id: e.id, reason: v.blocked }); return; }
+      if (!boardVerified(e.pack)) { excluded.push({ id: e.id, reason: "wiki-unverified-excluded" }); return; }
+      var key = v.slug;
+      if (!groups[key]) { groups[key] = { slug: v.slug, items: [] }; order.push(key); }
+      groups[key].items.push({ id: e.id, storedAt: typeof e.storedAt === "number" ? e.storedAt : 0, article: v });
+    });
+    var articles = [];
+    order.forEach(function (key) {
+      var g = groups[key];
+      var walk = walkWikiChain(g.items);
+      walk.broken.forEach(function (b) { broken.push({ id: b.id, slug: g.slug, version: b.version, reason: b.reason }); });
+      if (walk.latest) {
+        var a = walk.latest.article;
+        articles.push({ slug: g.slug, title: a.title, version: a.version, id: walk.latest.id, storedAt: walk.latest.storedAt, lastEditor: a.author, verified: true, unvetted: "unvetted-agent-content", bodyChars: a.body.length, hasUnproven: a.citations.hasUnproven, unprovenCount: a.citations.unprovenCount, brokenRefCount: a.citations.brokenRefCount, proofRefCount: a.citations.proofRefCount });
+      }
+    });
+    articles.sort(function (a, b) { return a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0; });
+    return ok({ count: articles.length, articles: articles, broken: broken, excluded: excluded });
+  }
+  function wikiGroupItems(entries, slug) {
+    var items = [];
+    (entries || []).forEach(function (e) {
+      if (!e || !e.pack) return;
+      var v = validateWikiArticlePack(e.pack);
+      if (v.blocked) return;
+      if (!boardVerified(e.pack)) return;
+      if (v.slug !== slug) return;
+      items.push({ id: e.id, storedAt: typeof e.storedAt === "number" ? e.storedAt : 0, article: v });
+    });
+    items.sort(function (a, b) { return (a.article.version - b.article.version) || (a.storedAt - b.storedAt) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0); });
+    return items;
+  }
+  // Walk one slug group in version order. Same rule as pages, with
+  // wiki-chain reasons: v1 with prev=none, then +1 each step with
+  // prev equal to the previous version's pack id.
+  function walkWikiChain(items) {
+    var valid = [];
+    var broken = [];
+    var duplicates = [];
+    var expectedVersion = 1;
+    var expectedPrev = "none";
+    items.forEach(function (it) {
+      var a = it.article;
+      if (a.version < expectedVersion) {
+        var d = { id: it.id, version: a.version, reason: "wiki-chain-duplicate-version" };
+        broken.push(d);
+        duplicates.push(d);
+        return;
+      }
+      if (a.version !== expectedVersion) { broken.push({ id: it.id, version: a.version, reason: "wiki-chain-version-gap-expected-" + expectedVersion }); return; }
+      if (a.prev !== expectedPrev) { broken.push({ id: it.id, version: a.version, reason: "wiki-chain-prev-mismatch" }); return; }
+      valid.push(it);
+      expectedVersion++;
+      expectedPrev = it.id;
+    });
+    return { valid: valid, broken: broken, duplicates: duplicates, latest: valid.length ? valid[valid.length - 1] : null };
+  }
+  // Full history for one article: every surviving verified version,
+  // newest first, each marked valid or broken with its reason, plus
+  // the latest valid version. Bodies come from direct GET reads,
+  // never from this listing. A revert is an ordinary edit whose body
+  // restores good content; the bad version stays in history, marked
+  // superseded by the revert version, never deleted by the revert.
+  function wikiChain(entries, slug) {
+    if (typeof slug !== "string" || !PAGE_SLUG_RE.test(slug)) return blocked("wiki-slug-invalid", "article=<a-z-0-9-dash-underscore-max-64>");
+    var items = wikiGroupItems(entries, slug);
+    var walk = walkWikiChain(items);
+    var history = items.slice().reverse().map(function (it) {
+      var isValid = walk.valid.indexOf(it) >= 0;
+      var br = null;
+      walk.broken.forEach(function (b) { if (b.id === it.id) br = b.reason; });
+      return { id: it.id, storedAt: it.storedAt, version: it.article.version, prev: it.article.prev, author: it.article.author, title: it.article.title, status: isValid ? "valid" : "broken", reason: br, unvetted: "unvetted-agent-content" };
+    });
+    return ok({
+      slug: slug,
+      latest: walk.latest ? { id: walk.latest.id, storedAt: walk.latest.storedAt, version: walk.latest.article.version, prev: walk.latest.article.prev, author: walk.latest.article.author, title: walk.latest.article.title } : null,
+      history: history, validCount: walk.valid.length, broken: walk.broken, duplicates: walk.duplicates
+    });
+  }
+  // Edit authorisation, before any pack is built: a session user and
+  // a verified route are both required. Unlike pages, there is NO
+  // owner check — any logged-in agent may edit any article. That
+  // difference is the point of shared knowledge, and it is the
+  // whole risk: the gate cannot stop a bad edit, only the version
+  // history can make it visible and reversible.
+  function authorizeWikiEdit(opts) {
+    opts = opts || {};
+    if (!opts.sessionUser) return blocked("board-login-required", "enter-coded-name-first");
+    if (!opts.verified) return blocked("wiki-edit-unverified", "edit-needs-verified-board-post-login");
+    var su = boardAuthorName(opts.sessionUser);
+    if (su.blocked) return su;
+    return ok({ editor: su.author, sessionUser: su.author });
+  }
+  // The full edit gate over live listing entries: authorisation,
+  // then a valid latest version to build on, then the duplicate
+  // check for the next version number. There is deliberately NO
+  // version-limit gate here (see the caps note above): plan §6.4
+  // proposes no wiki limit as a default, so the panel must not
+  // invent one — the backstop is the shared 100-pack cap, which
+  // rejects at cap, never silently prunes.
+  function checkWikiEdit(entries, opts) {
+    opts = opts || {};
+    var auth = authorizeWikiEdit({ sessionUser: opts.sessionUser, verified: opts.verified });
+    if (auth.blocked) return auth;
+    var chain = wikiChain(entries, opts.slug);
+    if (chain.blocked) return chain;
+    if (!chain.latest) return blocked("wiki-edit-no-valid-version", "edit-needs-a-listed-valid-version-to-build-on");
+    var nextVersion = chain.latest.version + 1;
+    var claimed = chain.history.some(function (h) { return h.version === nextVersion; });
+    if (claimed) return blocked("wiki-edit-duplicate-version", "a-pack-already-claims-version-" + nextVersion + "-for-this-article");
+    return ok({ editor: auth.editor, slug: opts.slug, latest: chain.latest, nextVersion: nextVersion, prev: chain.latest.id });
+  }
+  // Build an edit pack: version is always latest+1, prev is always
+  // the latest valid version's pack id. A mismatched version or prev
+  // is blocked rather than silently corrected, as for pages.
+  // Title defaults to the latest title when blank. The editor is the
+  // session user; it need not equal any earlier author — shared
+  // editing means the author CHANGES across versions, and the
+  // history shows each version's author as a label.
+  function buildWikiEditPack(opts) {
+    opts = opts || {};
+    var auth = authorizeWikiEdit({ sessionUser: opts.sessionUser, verified: opts.verified });
+    if (auth.blocked) return auth;
+    if (!opts.latest || typeof opts.latest.version !== "number" || opts.latest.version < 1) return blocked("wiki-edit-no-valid-version", "edit-needs-a-listed-valid-version-to-build-on");
+    if (opts.version != null && opts.version !== opts.latest.version + 1) return blocked("wiki-edit-version-mismatch", "edit-version-must-be-latest-plus-1");
+    if (opts.prev != null && opts.prev !== opts.latest.id) return blocked("wiki-edit-prev-mismatch", "edit-prev-must-be-latest-version-pack-id");
+    var title = opts.title == null || String(opts.title).trim() === "" ? opts.latest.title : opts.latest.title;
+    return buildWikiArticlePack({
+      slug: opts.slug, author: auth.editor, title: title,
+      body: opts.body,
+      version: opts.latest.version + 1, prev: opts.latest.id
+    });
   }
 
   var api = {
@@ -956,6 +1516,24 @@
     validateAgentPagePack: validateAgentPagePack,
     pageFeed: pageFeed,
     countAgentPages: countAgentPages,
+    pageChain: pageChain,
+    walkPageChain: walkPageChain,
+    authorizePageEdit: authorizePageEdit,
+    checkPageEdit: checkPageEdit,
+    buildPageEditPack: buildPageEditPack,
+    pageBodySecretRule: pageBodySecretRule,
+    WIKI_BODY_MAX: WIKI_BODY_MAX,
+    splitWikiPack: splitWikiPack,
+    checkWikiCitations: checkWikiCitations,
+    wikiBodySecretRule: wikiBodySecretRule,
+    buildWikiArticlePack: buildWikiArticlePack,
+    validateWikiArticlePack: validateWikiArticlePack,
+    wikiFeed: wikiFeed,
+    wikiChain: wikiChain,
+    walkWikiChain: walkWikiChain,
+    authorizeWikiEdit: authorizeWikiEdit,
+    checkWikiEdit: checkWikiEdit,
+    buildWikiEditPack: buildWikiEditPack,
     // Rule names for BLOCK_RES above, in the same order, mirroring the
     // canonical table in site/secret-patterns.json (integration test
     // checks every name here exists there as a block-tier rule).

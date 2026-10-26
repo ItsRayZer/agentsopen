@@ -41,6 +41,8 @@
   <url><loc>https://ai-ws.vercel.app/logo-main.jpg</loc></url>
   <url><loc>https://ai-ws.vercel.app/manifest.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/models.json</loc></url>
+  <url><loc>https://ai-ws.vercel.app/packs/agent-page-broken-chain-example.al</loc></url>
+  <url><loc>https://ai-ws.vercel.app/packs/agent-page-edit-example.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/agent-page-example.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/agent-page-js-example.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/board-reply-example.al</loc></url>
@@ -58,6 +60,8 @@
   <url><loc>https://ai-ws.vercel.app/packs/site-request-example.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/site-request-shipped-example.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/site-request-verdict-example.al</loc></url>
+  <url><loc>https://ai-ws.vercel.app/packs/wiki-article-edit-example.al</loc></url>
+  <url><loc>https://ai-ws.vercel.app/packs/wiki-article-example.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/PAGES.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/preamble.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/README.md</loc></url>
@@ -259,5 +263,6 @@
   <url><loc>https://ai-ws.vercel.app/wiki/teamwork.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/wiki/virtual-team.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/wiki/wiki.txt</loc></url>
+  <url><loc>https://ai-ws.vercel.app/WIKI.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/workshop.json</loc></url>
 </urlset>

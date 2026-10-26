@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 258,
+    "files": 263,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -64,9 +64,9 @@
       "sha256": "f51c6b611ae8a1552b329bc757c2afcb3ebf30b0536a3ceabe0e760f5e13ebb0"
     },
     {
-      "bytes": 13901,
+      "bytes": 21916,
       "path": "PAGES.md",
-      "sha256": "1f42b944144a3bd4702d101cdfab5d028902a0bcb16abf77b39f3ec1b31e2942"
+      "sha256": "d72fd6302a5bc05158440fa23c5cfec5b749337e0e4f9b47f078bda3386dd15c"
     },
     {
       "bytes": 3634,
@@ -79,9 +79,14 @@
       "sha256": "b2ad29b6d30f9400263040d801e81ed7cf843c60e03e744cef96bfb3eff83161"
     },
     {
-      "bytes": 6640,
+      "bytes": 17829,
+      "path": "WIKI.md",
+      "sha256": "dda7c4c34a27a10ae3efac729ba3dac4e8acfd89aa13e98ac1871bf13a85a416"
+    },
+    {
+      "bytes": 11016,
       "path": "about.html",
-      "sha256": "071703ea063287040c00c741c98e89a4e872dc4989f6e3fddbdba1254c9834a6"
+      "sha256": "e42f397e40974c09438aa49db6b9223100b7e6e95ec32af7e61423ab032e3fba"
     },
     {
       "bytes": 3746,
@@ -189,9 +194,9 @@
       "sha256": "aa2575396f7b077acf6cf030083c238f604dab62808739aea2a62607e02970c8"
     },
     {
-      "bytes": 95736,
+      "bytes": 100420,
       "path": "index.html",
-      "sha256": "cd50c3d33e212dd6b86d2099ce3c80939b9805409fc133a45928f41703abaa12"
+      "sha256": "8fbcc4bd5d2aaf1fe1340ddbb17401a1d8f63d4f4d448de6e4487d7a80c4e7c6"
     },
     {
       "bytes": 6796,
@@ -204,9 +209,9 @@
       "sha256": "51842f7b0e46ebdfeb80d311e4511a984cf911dd09e6cfe47673d9f3d38ded3a"
     },
     {
-      "bytes": 57217,
+      "bytes": 93597,
       "path": "integration.js",
-      "sha256": "e2e5e4263b209a8214681f85b2d53eb6ad92a59e688513c294a29d2059b3ced1"
+      "sha256": "b080de584a9b301709e78462c975321231fb20c517c021217e7cbbd29226953b"
     },
     {
       "bytes": 8562,
@@ -227,6 +232,16 @@
       "bytes": 2442,
       "path": "models.json",
       "sha256": "6852ade10b8954b1546dae258cebfd69c8b9d52e7da733176f359569c84b48af"
+    },
+    {
+      "bytes": 703,
+      "path": "packs/agent-page-broken-chain-example.al",
+      "sha256": "f00e8f2fc8c327f0652f5e71fc1b1c959bcba4348ccc7cb8e09237573fd8e53a"
+    },
+    {
+      "bytes": 772,
+      "path": "packs/agent-page-edit-example.al",
+      "sha256": "503fb97cab4afa8dcd731bb2a22a7fe0f640b3b049c766f9e729d0cb772f1f9f"
     },
     {
       "bytes": 714,
@@ -284,9 +299,9 @@
       "sha256": "5a464070363b302d673ae2d1aafc5f68e0b735505916744c301ef03ef0fe5fd5"
     },
     {
-      "bytes": 2538,
+      "bytes": 3642,
       "path": "packs/index.txt",
-      "sha256": "350c01210ea136da4f397063a2046b68ff152081be79a6c54ef8f31acb07a50a"
+      "sha256": "1a94d31c685529abc09acdea0f344044e1f81902265d9d73bcf30fce974fd5cd"
     },
     {
       "bytes": 686,
@@ -312,6 +327,16 @@
       "bytes": 346,
       "path": "packs/site-request-verdict-example.al",
       "sha256": "401e1386598f89288abb80f63440362ef2c57a43d5a83adfe7471bc2a02903dd"
+    },
+    {
+      "bytes": 1087,
+      "path": "packs/wiki-article-edit-example.al",
+      "sha256": "d73f70e778532ca9385856770797b6466a6d252410ef910c6d88d8d705610a52"
+    },
+    {
+      "bytes": 850,
+      "path": "packs/wiki-article-example.al",
+      "sha256": "dc1a328275a496318222f0d356c5de5a9ea78c75fd52671cebf4e53358b7ffc0"
     },
     {
       "bytes": 491,
@@ -984,9 +1009,9 @@
       "sha256": "856b2b8983fc34d0d9a59a301b2a235301d3809e9fb908fb59d4e706f7229a76"
     },
     {
-      "bytes": 36267,
+      "bytes": 56316,
       "path": "v72.js",
-      "sha256": "0cc06b01dae6df6a3e128f6c9299e2c0b991648ed461e61955e3f67c22dac44f"
+      "sha256": "7c9e3eca0a2dd1bbe29024e4dd83bb098cb97f25340a58104f07aa104eeb25a6"
     },
     {
       "bytes": 4115,
@@ -1039,9 +1064,9 @@
       "sha256": "143c7f8ce60d972dad778d3236805fcb9bab4ddf18fe2053be4eebe71dba0e8a"
     },
     {
-      "bytes": 5138,
+      "bytes": 8021,
       "path": "views/cloud.txt",
-      "sha256": "8d9f25464eefe03cef3041cca937fdb376d1972e279fc62b2ed7f32686a137c9"
+      "sha256": "e5b805b8599d26a2dc0a2a1f5d2a2e4323a7b3bf65e4667d50903c050ae45dd2"
     },
     {
       "bytes": 2514,
@@ -1485,10 +1510,10 @@
       "sha256": "d8b90da62a713bad7ee504bb19cae562f01bcda49eff3fe6a49174d64dea440f"
     },
     {
-      "bytes": 5138,
+      "bytes": 8021,
       "id": "cloud",
       "path": "views/cloud.txt",
-      "sha256": "8d9f25464eefe03cef3041cca937fdb376d1972e279fc62b2ed7f32686a137c9"
+      "sha256": "e5b805b8599d26a2dc0a2a1f5d2a2e4323a7b3bf65e4667d50903c050ae45dd2"
     },
     {
       "bytes": 4198,

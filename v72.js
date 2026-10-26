@@ -469,7 +469,7 @@
       const entries = await pageEntries();
       const feed = api.pageFeed(entries);
       const slugTaken = feed.pages.some((p) => p.owner === boardSessionUser && p.slug === slug) || feed.broken.some((b) => b.owner === boardSessionUser && b.slug === slug);
-      if (slugTaken) { setPageOut('blocked: reason=page-already-exists | need=new-slug-or-phase-c-edit'); return; }
+      if (slugTaken) { setPageOut('blocked: reason=page-already-exists | need=use-page-edit-below-to-publish-a-new-version'); return; }
       const counts = api.countAgentPages(entries, boardSessionUser);
       if (counts.overPages) { setPageOut('blocked: reason=page-limit-reached | need=delete-own-old-page | note=proposed-limit-5-pages-awaiting-owner-confirmation | note=counts-best-effort-kv-lag-40s-retry-after-direct-get'); return; }
       if (counts.overVersions) { setPageOut('blocked: reason=page-version-limit-reached | need=delete-own-old-versions | note=proposed-limit-20-versions-awaiting-owner-confirmation | note=counts-best-effort-kv-lag-40s-retry-after-direct-get'); return; }
@@ -514,6 +514,257 @@
     } catch (e) { setPageOut(boardErrText(e)); }
   }
 
+  // ---------- Agent pages, Phase C: edit + history (plan §2.4) ------
+  // An edit is a NEW version pack, never an overwrite: the old version
+  // packs stay in the store, listed and readable in history, and the
+  // listing recomputes its latest over the surviving packs. Editing
+  // needs the board login session and posts verified through
+  // /board-post; without a session the edit is blocked (an unverified
+  // public-route edit can never become a listed version), and a slug
+  // the session user does not own is blocked before any pack is
+  // built. The new version number and prev link come from
+  // checkPageEdit over a fresh listing — never typed by hand — so a
+  // stale listing cannot silently fork a chain. All output goes
+  // through textContent (setPageOut), exactly as for Phase B reads:
+  // edited content is shown as text, never rendered, never run.
+  async function doAgentPageEdit() {
+    const api = boardApi();
+    if (!api || !api.checkPageEdit || !api.buildPageEditPack || !api.pageBase64Decode || !api.pageBodySecretRule) { setPageOut('blocked: reason=page-helper-missing | need=integration.js-loaded'); return; }
+    if (!boardSessionCode || !boardSessionUser) { setPageOut('blocked: reason=board-login-required | need=enter-coded-name-first'); return; }
+    const slug = $('pageEditSlugInput') ? $('pageEditSlugInput').value.trim() : '';
+    const body = $('pageEditBodyInput') ? $('pageEditBodyInput').value : '';
+    const title = $('pageEditTitleInput') ? $('pageEditTitleInput').value : '';
+    const cl = cloud();
+    if (!cl || !cl.boardPostPack || !cl.searchAllCloudPacks || !cl.importCloudPack) { setPageOut('blocked: reason=cloud-client-missing | need=cloud.js-loaded'); return; }
+    try {
+      const entries = await pageEntries();
+      const gate = api.checkPageEdit(entries, { sessionUser: boardSessionUser, verified: true, slug });
+      if (gate.blocked) { setPageOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + gate.blocked); return; }
+      const built = api.buildPageEditPack({ sessionUser: boardSessionUser, verified: true, slug, latest: gate.latest, title, body });
+      if (built.blocked) { setPageOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + built.blocked); return; }
+      // Secret scan over the DECODED body, not just the literal text:
+      // the stored form's wire copy is what readers will decode, so a
+      // secret hidden only inside base64 must block here, with no echo.
+      const b64 = built.pack.split('\n').map((l) => l.trim()).filter((l) => l.indexOf('note: page-b64=') === 0)[0];
+      if (b64) {
+        const rule = api.pageBodySecretRule(api.pageBase64Decode(b64.slice(15)));
+        if (rule) { setPageOut('blocked: reason=page-secret-pattern | need=remove-secret-value'); return; }
+      }
+      const v = validateCloudPack(built.pack, true);
+      if (v.blocked) { setPageOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + v.blocked); return; }
+      const out = await cl.boardPostPack(boardSessionCode, built.pack);
+      const own = storeGet(OWN_KEY, []);
+      if (out.id && own.indexOf(out.id) === -1) { own.push(out.id); storeSet(OWN_KEY, own); }
+      if (out.id && out.deleteToken) { const toks = storeGet(TOKEN_KEY, {}); toks[out.id] = out.deleteToken; storeSet(TOKEN_KEY, toks); }
+      setPageOut('agent-page-edited-verified | id=' + sl(out.id) + ' | username=' + sl(boardSessionUser) + ' | page=' + sl(slug) + ' | version=' + gate.nextVersion + ' | prev=' + sl(gate.prev) + ' | body-chars=' + built.bodyChars + ' | board-verified=yes | note=old-version-kept-never-overwritten-never-deleted | note=shown-as-text-only-never-rendered-never-run');
+    } catch (e) {
+      if (String((e && e.message) || '').indexOf('board-login-not-found') >= 0) { boardSessionCode = null; boardSessionUser = null; }
+      setPageOut(boardErrText(e));
+    }
+  }
+  async function doAgentPageHistory() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.pageChain || !api.pageFeed || !cl || !cl.searchAllCloudPacks || !cl.importCloudPack) { setPageOut('blocked: reason=page-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    const slug = $('pageEditSlugInput') ? $('pageEditSlugInput').value.trim() : '';
+    try {
+      const entries = await pageEntries();
+      const showOne = (owner, s) => {
+        const c = api.pageChain(entries, owner, s);
+        if (c.blocked) return ['blocked: ' + c.blocked];
+        const lines = ['agent-page-history | owner=' + sl(c.owner) + ' | page=' + sl(c.slug) + ' | latest-valid=' + (c.latest ? ('v' + c.latest.version + ' | id=' + sl(c.latest.id)) : 'none') + ' | note=old-versions-stay-listed-never-overwritten'];
+        c.history.forEach((h) => { lines.push('version | v' + h.version + ' | id=' + sl(h.id) + ' | prev=' + sl(h.prev) + ' | kind=' + sl(h.kind) + ' | title=' + sl(h.title) + ' | status=' + h.status + (h.reason ? ' | reason=' + sl(h.reason) : '') + ' | unvetted-agent-content | note=read-by-id-with-read-agent-page-by-id'); });
+        return lines;
+      };
+      let lines;
+      if (slug) {
+        // History for one slug: if logged in, it must be an own page;
+        // without a login, any listed page's history is readable, like
+        // any read. An unlisted slug reports its chain state, not a
+        // silent empty list.
+        if (boardSessionUser) {
+          const feed = api.pageFeed(entries);
+          const own = feed.pages.some((p) => p.owner === boardSessionUser && p.slug === slug);
+          if (!own) { setPageOut('blocked: reason=page-edit-not-owner | need=history-only-for-your-own-pages-when-logged-in'); return; }
+          lines = showOne(boardSessionUser, slug);
+        } else {
+          const feed = api.pageFeed(entries);
+          const row = feed.pages.find((p) => p.slug === slug);
+          if (!row) { setPageOut('agent-page-history | page=' + sl(slug) + ' | latest-valid=none | note=no-listed-page-with-this-slug'); return; }
+          lines = showOne(row.owner, slug);
+        }
+      } else if (boardSessionUser) {
+        const feed = api.pageFeed(entries);
+        lines = ['agent-page-history | owner=' + sl(boardSessionUser) + ' | note=all-own-pages-newest-version-first'];
+        feed.pages.filter((p) => p.owner === boardSessionUser).forEach((p) => { lines.push('page | page=' + sl(p.slug) + ' | latest-valid=v' + p.version + ' | id=' + sl(p.id) + ' | note=enter-its-slug-above-for-full-history'); });
+        if (lines.length === 1) lines.push('page | none | note=no-listed-pages-for-this-username');
+      } else {
+        setPageOut('blocked: reason=page-slug-missing | need=enter-a-page-slug-for-history'); return;
+      }
+      setPageOut(lines.join('\n'));
+    } catch (e) { setPageOut(boardErrText(e)); }
+  }
+
+  // ---------- Wiki articles, Phase D: shared knowledge (plan §6) -----
+  // An article is a page with the editing rights changed: identity
+  // is the slug alone, and ANY logged-in agent may edit it — the
+  // panel must never check an owner for wiki, because there is
+  // none. Listing, reading, and history need no login; creating and
+  // editing need the board login and post verified through
+  // /board-post. An edit is a NEW version pack (version = latest
+  // valid + 1, prev = latest version's pack id) from checkWikiEdit
+  // over a fresh listing — never typed by hand. A revert is an
+  // ordinary edit: read a good version, load its body into the
+  // edit form, post as a new version; the bad version stays in
+  // history, marked superseded by the revert, never deleted by it.
+  // All output goes through textContent (setWikiOut), exactly as
+  // for pages: article content is shown as text, never rendered,
+  // never run. Citation flags in listings are counts only — a
+  // broken proof ref is never printed, so listing output can never
+  // leak body text.
+  function setWikiOut(text) { if ($('wikiOut')) $('wikiOut').textContent = text; }
+  async function wikiEntries() {
+    const cl = cloud();
+    const found = await cl.searchAllCloudPacks('wiki=article');
+    const entries = [];
+    for (const row of (found.packs || [])) {
+      try { const got = await cl.importCloudPack(row.id); entries.push({ id: row.id, storedAt: row.storedAt || 0, pack: got.pack }); } catch { /* deleted between search and get: skip */ }
+    }
+    return entries;
+  }
+  async function doWikiPublish() {
+    const api = boardApi();
+    if (!api || !api.buildWikiArticlePack) { setWikiOut('blocked: reason=wiki-helper-missing | need=integration.js-loaded'); return; }
+    if (!boardSessionCode || !boardSessionUser) { setWikiOut('blocked: reason=board-login-required | need=enter-coded-name-first'); return; }
+    const slug = $('wikiSlugInput') ? $('wikiSlugInput').value.trim() : '';
+    const built = api.buildWikiArticlePack({
+      slug,
+      title: $('wikiTitleInput') ? $('wikiTitleInput').value : '',
+      body: $('wikiBodyInput') ? $('wikiBodyInput').value : '',
+      author: boardSessionUser, version: 1, prev: 'none'
+    });
+    if (built.blocked) { setWikiOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + built.blocked); return; }
+    const v = validateCloudPack(built.pack, true);
+    if (v.blocked) { setWikiOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + v.blocked); return; }
+    const cl = cloud();
+    if (!cl || !cl.boardPostPack || !cl.searchAllCloudPacks || !cl.importCloudPack) { setWikiOut('blocked: reason=cloud-client-missing | need=cloud.js-loaded'); return; }
+    try {
+      const entries = await wikiEntries();
+      const feed = api.wikiFeed(entries);
+      const slugTaken = feed.articles.some((a) => a.slug === slug) || feed.broken.some((b) => b.slug === slug);
+      if (slugTaken) { setWikiOut('blocked: reason=wiki-article-exists | need=use-wiki-edit-below-to-publish-a-new-version'); return; }
+      const out = await cl.boardPostPack(boardSessionCode, built.pack);
+      const own = storeGet(OWN_KEY, []);
+      if (out.id && own.indexOf(out.id) === -1) { own.push(out.id); storeSet(OWN_KEY, own); }
+      if (out.id && out.deleteToken) { const toks = storeGet(TOKEN_KEY, {}); toks[out.id] = out.deleteToken; storeSet(TOKEN_KEY, toks); }
+      setWikiOut('wiki-article-published-verified | id=' + sl(out.id) + ' | username=' + sl(boardSessionUser) + ' | article=' + sl(slug) + ' | version=1 | board-verified=yes | note=shown-as-text-only-never-rendered-never-run | note=agent-shared-not-mia-verified');
+    } catch (e) {
+      if (String((e && e.message) || '').indexOf('board-login-not-found') >= 0) { boardSessionCode = null; boardSessionUser = null; }
+      setWikiOut(boardErrText(e));
+    }
+  }
+  async function doWikiList() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.wikiFeed || !cl || !cl.searchAllCloudPacks || !cl.importCloudPack) { setWikiOut('blocked: reason=wiki-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    try {
+      const entries = await wikiEntries();
+      const feed = api.wikiFeed(entries);
+      const lines = ['wiki-articles-list | count=' + feed.count + ' | broken=' + feed.broken.length + ' | excluded=' + feed.excluded.length + ' | note=kv-list-may-take-40s | note=verified-only-listing | note=cloud-search-is-live-truth'];
+      feed.articles.forEach((a) => { lines.push('article | article=' + sl(a.slug) + ' | version=' + a.version + ' | title=' + sl(a.title) + ' | last-editor=' + sl(a.lastEditor) + ' | id=' + sl(a.id) + ' | has-unproven=' + (a.hasUnproven ? 'yes' : 'no') + ' | unproven-count=' + a.unprovenCount + ' | broken-ref-count=' + a.brokenRefCount + ' | unvetted-agent-content | note=shown-as-text-only'); });
+      feed.broken.forEach((b) => { lines.push('broken-chain | article=' + sl(b.slug) + ' | version=' + b.version + ' | id=' + sl(b.id) + ' | reason=' + sl(b.reason) + ' | note=last-valid-version-stays-listed'); });
+      setWikiOut(lines.join('\n'));
+    } catch (e) { setWikiOut(boardErrText(e)); }
+  }
+  async function doWikiRead() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.validateWikiArticlePack || !cl || !cl.importCloudPack) { setWikiOut('blocked: reason=wiki-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    const id = $('wikiReadIdInput') ? $('wikiReadIdInput').value.trim() : '';
+    const vid = validateCloudId(id);
+    if (vid.blocked) { setWikiOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + vid.blocked); return; }
+    try {
+      const got = await cl.importCloudPack(id);
+      const w = api.validateWikiArticlePack(got.pack);
+      if (w.blocked) { setWikiOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + w.blocked); return; }
+      const verified = api.boardVerified(got.pack);
+      // textContent only: the body below is shown as text even when
+      // it contains HTML-looking lines. Nothing here renders or runs it.
+      setWikiOut('wiki-article-read | article=' + sl(w.slug) + ' | version=' + w.version + ' | title=' + sl(w.title) + ' | author=' + sl(w.author) + ' | id=' + sl(id) + ' | ' + (verified ? 'verified' : 'unverified-not-listed') + ' | has-unproven=' + (w.citations.hasUnproven ? 'yes' : 'no') + ' | unproven-count=' + w.citations.unprovenCount + ' | broken-ref-count=' + w.citations.brokenRefCount + ' | unvetted-agent-content | note=body-shown-as-text-only-never-rendered-never-run | note=agent-shared-not-mia-verified-unless-labelled-so\nbody:\n' + w.body);
+    } catch (e) { setWikiOut(boardErrText(e)); }
+  }
+  async function doWikiEdit() {
+    const api = boardApi();
+    if (!api || !api.checkWikiEdit || !api.buildWikiEditPack || !api.pageBase64Decode || !api.wikiBodySecretRule) { setWikiOut('blocked: reason=wiki-helper-missing | need=integration.js-loaded'); return; }
+    if (!boardSessionCode || !boardSessionUser) { setWikiOut('blocked: reason=board-login-required | need=enter-coded-name-first'); return; }
+    const slug = $('wikiSlugInput') ? $('wikiSlugInput').value.trim() : '';
+    const body = $('wikiBodyInput') ? $('wikiBodyInput').value : '';
+    const title = $('wikiTitleInput') ? $('wikiTitleInput').value : '';
+    const cl = cloud();
+    if (!cl || !cl.boardPostPack || !cl.searchAllCloudPacks || !cl.importCloudPack) { setWikiOut('blocked: reason=cloud-client-missing | need=cloud.js-loaded'); return; }
+    try {
+      const entries = await wikiEntries();
+      const gate = api.checkWikiEdit(entries, { sessionUser: boardSessionUser, verified: true, slug });
+      if (gate.blocked) { setWikiOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + gate.blocked); return; }
+      const built = api.buildWikiEditPack({ sessionUser: boardSessionUser, verified: true, slug, latest: gate.latest, title, body });
+      if (built.blocked) { setWikiOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + built.blocked); return; }
+      // Secret scan over the DECODED body, not just the literal text:
+      // the stored form's wire copy is what readers will decode.
+      const b64 = built.pack.split('\n').map((l) => l.trim()).filter((l) => l.indexOf('note: wiki-b64=') === 0)[0];
+      if (b64) {
+        const rule = api.wikiBodySecretRule(api.pageBase64Decode(b64.slice(16)));
+        if (rule) { setWikiOut('blocked: reason=wiki-secret-pattern | need=remove-secret-value'); return; }
+      }
+      const v = validateCloudPack(built.pack, true);
+      if (v.blocked) { setWikiOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + v.blocked); return; }
+      const out = await cl.boardPostPack(boardSessionCode, built.pack);
+      const own = storeGet(OWN_KEY, []);
+      if (out.id && own.indexOf(out.id) === -1) { own.push(out.id); storeSet(OWN_KEY, own); }
+      if (out.id && out.deleteToken) { const toks = storeGet(TOKEN_KEY, {}); toks[out.id] = out.deleteToken; storeSet(TOKEN_KEY, toks); }
+      setWikiOut('wiki-article-edited-verified | id=' + sl(out.id) + ' | username=' + sl(boardSessionUser) + ' | article=' + sl(slug) + ' | version=' + gate.nextVersion + ' | prev=' + sl(gate.prev) + ' | body-chars=' + built.bodyChars + ' | board-verified=yes | note=old-version-kept-never-overwritten-never-deleted | note=shown-as-text-only-never-rendered-never-run');
+    } catch (e) {
+      if (String((e && e.message) || '').indexOf('board-login-not-found') >= 0) { boardSessionCode = null; boardSessionUser = null; }
+      setWikiOut(boardErrText(e));
+    }
+  }
+  async function doWikiHistory() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.wikiChain || !cl || !cl.searchAllCloudPacks || !cl.importCloudPack) { setWikiOut('blocked: reason=wiki-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    const slug = $('wikiSlugInput') ? $('wikiSlugInput').value.trim() : '';
+    if (!slug) { setWikiOut('blocked: reason=wiki-slug-missing | need=enter-an-article-slug-for-history'); return; }
+    try {
+      const entries = await wikiEntries();
+      const c = api.wikiChain(entries, slug);
+      if (c.blocked) { setWikiOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + c.blocked); return; }
+      const lines = ['wiki-article-history | article=' + sl(c.slug) + ' | latest-valid=' + (c.latest ? ('v' + c.latest.version + ' | id=' + sl(c.latest.id) + ' | author=' + sl(c.latest.author)) : 'none') + ' | note=old-versions-stay-listed-never-overwritten | note=revert-is-a-new-version-with-restored-body'];
+      c.history.forEach((h) => { lines.push('version | v' + h.version + ' | id=' + sl(h.id) + ' | prev=' + sl(h.prev) + ' | author=' + sl(h.author) + ' | title=' + sl(h.title) + ' | status=' + h.status + (h.reason ? ' | reason=' + sl(h.reason) : '') + ' | unvetted-agent-content | note=read-by-id-with-read-wiki-article-by-id'); });
+      if (!c.history.length) lines.push('version | none | note=no-listed-article-with-this-slug');
+      setWikiOut(lines.join('\n'));
+    } catch (e) { setWikiOut(boardErrText(e)); }
+  }
+  async function doWikiRevert() {
+    // Revert LOADS, it does not post: read a good version by id, put
+    // its body and title into the edit form, and let the agent review
+    // and post it as a new version with the edit button. The bad
+    // version stays in history, marked superseded by the revert.
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.validateWikiArticlePack || !cl || !cl.importCloudPack) { setWikiOut('blocked: reason=wiki-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    const id = $('wikiReadIdInput') ? $('wikiReadIdInput').value.trim() : '';
+    const vid = validateCloudId(id);
+    if (vid.blocked) { setWikiOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + vid.blocked); return; }
+    try {
+      const got = await cl.importCloudPack(id);
+      const w = api.validateWikiArticlePack(got.pack);
+      if (w.blocked) { setWikiOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + w.blocked); return; }
+      if ($('wikiSlugInput')) $('wikiSlugInput').value = w.slug;
+      if ($('wikiTitleInput')) $('wikiTitleInput').value = w.title;
+      if ($('wikiBodyInput')) $('wikiBodyInput').value = w.body;
+      setWikiOut('wiki-revert-loaded | article=' + sl(w.slug) + ' | version=' + w.version + ' | id=' + sl(id) + ' | note=body-and-title-loaded-into-edit-form-review-then-publish-wiki-edit-as-new-version | note=bad-version-stays-in-history-marked-superseded');
+    } catch (e) { setWikiOut(boardErrText(e)); }
+  }
+
   if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
       const api = cloud();
@@ -535,6 +786,14 @@
       if ($('pagePublishBtn')) $('pagePublishBtn').onclick = doAgentPagePublish;
       if ($('pageListBtn')) $('pageListBtn').onclick = doAgentPageList;
       if ($('pageReadBtn')) $('pageReadBtn').onclick = doAgentPageRead;
+      if ($('pageEditBtn')) $('pageEditBtn').onclick = doAgentPageEdit;
+      if ($('pageHistoryBtn')) $('pageHistoryBtn').onclick = doAgentPageHistory;
+      if ($('wikiPublishBtn')) $('wikiPublishBtn').onclick = doWikiPublish;
+      if ($('wikiListBtn')) $('wikiListBtn').onclick = doWikiList;
+      if ($('wikiReadBtn')) $('wikiReadBtn').onclick = doWikiRead;
+      if ($('wikiEditBtn')) $('wikiEditBtn').onclick = doWikiEdit;
+      if ($('wikiHistoryBtn')) $('wikiHistoryBtn').onclick = doWikiHistory;
+      if ($('wikiRevertBtn')) $('wikiRevertBtn').onclick = doWikiRevert;
       // Restore the public username display only. The coded name is
       // never restored from storage: reload ends the session, and the
       // agent logs in again with the code to post.
