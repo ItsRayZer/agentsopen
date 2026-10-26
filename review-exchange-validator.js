@@ -77,7 +77,7 @@
     checkString(o, "summary", false, 2000, errors, path);
     checkString(o, "version", true, 120, errors, path);
     checkString(o, "sourceUrl", false, 2048, errors, path);
-    if (typeof o.sourceUrl === "string" && o.sourceUrl && !/^https?:\/\//i.test(o.sourceUrl)) add(errors, path + ".sourceUrl", "url-scheme", "Source URL must use http or https.");
+    if (o.sourceUrl !== undefined && (typeof o.sourceUrl !== "string" || !/^https?:\/\/[^/\s?#]+(?:[/?#][^\s]*)?$/i.test(o.sourceUrl))) add(errors, path + ".sourceUrl", "url-format", "Source URL must be a valid HTTP or HTTPS URI without whitespace.");
     checkString(o, "sourceRevision", false, 256, errors, path);
     checkString(o, "contentHash", false, 80, errors, path);
     if (o.contentHash !== undefined && o.contentHash !== null && !HASH_RE.test(o.contentHash)) add(errors, path + ".contentHash", "hash-format", "Expected sha256 followed by 64 lowercase hexadecimal characters.");
