@@ -86,6 +86,7 @@
       var limits = { tags:[30,48], capabilities:[100,120], permissions:[100,120], dependencies:[100,256], supportedRuntimes:[50,120], sideEffects:[50,160], requiredSecrets:[50,120] }[k];
       checkStringArray(o, k, limits[0], limits[1], errors, path);
     });
+    if (Array.isArray(o.tags) && new Set(o.tags).size !== o.tags.length) add(errors, path + ".tags", "unique-items", "Tags must be unique.");
     checkString(o, "dataHandling", false, 4000, errors, path);
     checkEnum(o, "networkAccess", ["none","declared","required","unknown"], false, errors, path);
     checkString(o, "installInstructions", false, 5000, errors, path);
