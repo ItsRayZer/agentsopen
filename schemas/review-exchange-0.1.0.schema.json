@@ -1,0 +1,441 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-ws.vercel.app/schemas/review-exchange-0.1.0.schema.json",
+  "title": "AI Workspace Agent Review Exchange record",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/artifact"
+    },
+    {
+      "$ref": "#/$defs/review"
+    }
+  ],
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "recordType",
+        "artifactId",
+        "artifactType",
+        "name",
+        "version",
+        "status"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "review-exchange-0.1.0"
+        },
+        "recordType": {
+          "const": "artifact"
+        },
+        "artifactId": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[a-z0-9._-]*[a-z0-9])?$",
+          "maxLength": 120
+        },
+        "artifactType": {
+          "enum": [
+            "agent",
+            "skill",
+            "tool",
+            "mcp-server",
+            "workflow",
+            "prompt-pack",
+            "model-adapter",
+            "protocol-schema",
+            "benchmark-suite"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "sourceUrl": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2048
+        },
+        "sourceRevision": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "license": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "tags": {
+          "type": "array",
+          "maxItems": 30,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "maxLength": 48
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "string",
+            "maxLength": 120
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "string",
+            "maxLength": 120
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "string",
+            "maxLength": 256
+          }
+        },
+        "supportedRuntimes": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string",
+            "maxLength": 120
+          }
+        },
+        "dataHandling": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "networkAccess": {
+          "enum": [
+            "none",
+            "declared",
+            "required",
+            "unknown"
+          ]
+        },
+        "sideEffects": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string",
+            "maxLength": 160
+          }
+        },
+        "requiredSecrets": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string",
+            "maxLength": 120
+          }
+        },
+        "installInstructions": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "published",
+            "withdrawn",
+            "superseded",
+            "moderated"
+          ]
+        },
+        "visibility": {
+          "enum": [
+            "local",
+            "public"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "submitter": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 160
+            },
+            "assurance": {
+              "enum": [
+                "unknown",
+                "self-asserted",
+                "account-verified",
+                "cryptographically-verified"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "recordType",
+        "reviewId",
+        "artifactId",
+        "artifactVersion",
+        "reviewerType",
+        "createdAt",
+        "checks",
+        "findings",
+        "disposition"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "review-exchange-0.1.0"
+        },
+        "recordType": {
+          "const": "review"
+        },
+        "reviewId": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[a-z0-9._-]*[a-z0-9])?$",
+          "maxLength": 120
+        },
+        "artifactId": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "artifactVersion": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "artifactHash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "reviewerType": {
+          "enum": [
+            "deterministic-check",
+            "sandbox-test",
+            "model-agent",
+            "human",
+            "maintainer",
+            "community"
+          ]
+        },
+        "reviewerId": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "reviewerVersion": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "checklistVersion": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "environment": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "checks": {
+          "type": "array",
+          "maxItems": 300,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "checkId",
+              "status"
+            ],
+            "properties": {
+              "checkId": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "status": {
+                "enum": [
+                  "passed",
+                  "failed",
+                  "blocked",
+                  "skipped",
+                  "not-run"
+                ]
+              },
+              "outputDigest": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "durationMs": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              }
+            }
+          }
+        },
+        "findings": {
+          "type": "array",
+          "maxItems": 300,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "findingId",
+              "severity",
+              "category",
+              "claim"
+            ],
+            "properties": {
+              "findingId": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "severity": {
+                "enum": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low",
+                  "info",
+                  "unknown"
+                ]
+              },
+              "category": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "claim": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 3000
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              },
+              "remediation": {
+                "type": "string",
+                "maxLength": 3000
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        },
+        "compatibility": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "status"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "status": {
+                "enum": [
+                  "passed",
+                  "failed",
+                  "blocked",
+                  "not-run",
+                  "unknown"
+                ]
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              }
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "conflictsOfInterest": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "reproduction": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "disposition": {
+          "enum": [
+            "promising",
+            "usable-with-caveats",
+            "needs-fixes",
+            "unsafe-to-use",
+            "insufficient-evidence"
+          ]
+        },
+        "signatureStatus": {
+          "enum": [
+            "verified",
+            "unsigned",
+            "invalid",
+            "unavailable"
+          ]
+        },
+        "reviewBasis": {
+          "type": "string",
+          "maxLength": 3000
+        }
+      }
+    }
+  }
+}

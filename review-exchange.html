@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Local-first, evidence-backed registry for AI agents, skills, tools, MCP servers, and workflows.">
+  <title>Agent Review Exchange · AI Workspace</title>
+  <link rel="stylesheet" href="review-exchange.css">
+  <script defer src="review-exchange-validator.js"></script>
+  <script defer src="review-exchange-core.js"></script>
+  <script defer src="review-exchange-ui.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="AI Workspace home">
+      <span class="brand-mark">AI</span>
+      <span><strong>AI Workspace</strong><small>REVIEW EXCHANGE</small></span>
+    </a>
+    <div class="top-actions">
+      <span class="status-pill"><span class="dot"></span> Local-first prototype</span>
+      <a class="quiet-link" href="AGENT-REVIEW-EXCHANGE.md">Protocol spec ↗</a>
+      <a class="quiet-link" href="AI-WORKSPACE-ADVANCED-BLUEPRINT.md">Advanced blueprint ↗</a>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">A REVIEW LAYER FOR THE AGENT ECOSYSTEM</div>
+      <h1>Don't trust the claim.<br><span>Inspect the evidence.</span></h1>
+      <p class="hero-copy">Collect versioned agent, skill, tool and MCP records. Run bounded local checks, create portable review evidence, compare metadata, and prepare independent agent reviews.</p>
+      <div class="hero-tags">
+        <span>✦ No paid API</span><span>◈ No code execution</span><span>⌘ No source upload</span><span>↗ JSON export</span>
+      </div>
+    </section>
+
+    <aside class="notice" role="note">
+      <strong>Honest capability boundary</strong>
+      <p>This MVP runs deterministic metadata and text-pattern checks in your browser. It does not execute uploaded code, fetch repository URLs, call an AI model, or publish records to a shared server. Runtime tests and real AI reviews must be supplied separately and are labelled by their actual reviewer type.</p>
+    </aside>
+
+    <nav class="tabs" aria-label="Review Exchange sections">
+      <button class="tab active" type="button" data-pane="catalog">Catalog <span id="catalogCount" class="count">0</span></button>
+      <button class="tab" type="button" data-pane="submit">Submit & review</button>
+      <button class="tab" type="button" data-pane="compare">Compare</button>
+      <button class="tab" type="button" data-pane="arena">Benchmark planner</button>
+      <button class="tab" type="button" data-pane="workflows">Workflows & memory</button>
+      <button class="tab" type="button" data-pane="traces">Traces & reviewers</button>
+      <button class="tab" type="button" data-pane="data">Data & agent API</button>
+    </nav>
+
+    <div id="globalStatus" class="global-status" aria-live="polite">Loading local registry…</div>
+
+    <section class="pane active" id="pane-catalog">
+      <div class="section-heading">
+        <div><div class="eyebrow">LOCAL REGISTRY</div><h2>Artifact catalog</h2><p>Only records saved in this browser appear here. No public directory is connected yet.</p></div>
+        <button class="primary" type="button" data-open-pane="submit">＋ Review an artifact</button>
+      </div>
+      <div class="toolbar">
+        <label class="searchbox"><span aria-hidden="true">⌕</span><input id="catalogSearch" type="search" placeholder="Search name, type, capability, permission…"></label>
+        <select id="catalogType" aria-label="Filter artifact type">
+          <option value="">All types</option><option value="agent">Agent</option><option value="skill">Skill</option><option value="tool">Tool</option><option value="mcp-server">MCP server</option><option value="workflow">Workflow</option><option value="prompt-pack">Prompt pack</option><option value="model-adapter">Model adapter</option><option value="protocol-schema">Protocol/schema</option><option value="benchmark-suite">Benchmark suite</option>
+        </select>
+        <span id="catalogSummary" class="muted small"></span>
+      </div>
+      <div id="catalogList" class="card-grid"></div>
+      <div id="catalogEmpty" class="empty-state">
+        <div class="empty-icon">⌘</div><h3>Your local catalog starts here</h3>
+        <p>Submit an artifact or import an artifact/review bundle. The content stays in this browser until you export it.</p>
+        <button class="primary" type="button" data-open-pane="submit">Create a first review</button>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-submit">
+      <div class="section-heading">
+        <div><div class="eyebrow">BOUNDED LOCAL ANALYSIS</div><h2>Submit an artifact</h2><p>Describe the version being reviewed. A source URL is stored as metadata only; it is never fetched by this page.</p></div>
+      </div>
+      <form id="artifactForm" class="form-card">
+        <div class="form-grid">
+          <label>Artifact name <span class="required">*</span><input id="artifactName" name="name" required maxlength="160" placeholder="Example: Browser Research Skill"></label>
+          <label>Stable artifact ID<input id="artifactId" name="artifactId" maxlength="120" placeholder="auto-generated-from-name"></label>
+          <label>Artifact type <span class="required">*</span>
+            <select id="artifactType" name="artifactType" required>
+              <option value="agent">AI agent</option><option value="skill" selected>Skill</option><option value="tool">Tool</option><option value="mcp-server">MCP server</option><option value="workflow">Workflow</option><option value="prompt-pack">Prompt pack</option><option value="model-adapter">Model adapter</option><option value="protocol-schema">Protocol/schema</option><option value="benchmark-suite">Benchmark suite</option>
+            </select>
+          </label>
+          <label>Version <span class="required">*</span><input id="artifactVersion" name="version" required maxlength="120" placeholder="1.0.0"></label>
+          <label class="span-two">Source URL <input id="artifactSourceUrl" name="sourceUrl" type="url" maxlength="2048" placeholder="https://github.com/owner/repository"></label>
+          <label>Source revision / release<input id="artifactRevision" name="sourceRevision" maxlength="256" placeholder="commit SHA or release tag"></label>
+          <label>License declaration<input id="artifactLicense" name="license" maxlength="120" placeholder="MIT / Apache-2.0 / unknown"></label>
+          <label class="span-two">Summary <span class="required">*</span><textarea id="artifactSummary" name="summary" required maxlength="2000" rows="3" placeholder="What does this artifact claim to do?"></textarea></label>
+          <label>Declared capabilities <small>Comma or newline separated</small><textarea id="artifactCapabilities" rows="3" placeholder="web-search&#10;structured-output"></textarea></label>
+          <label>Declared permissions <small>Names only — never enter credentials</small><textarea id="artifactPermissions" rows="3" placeholder="read:files&#10;network:declared"></textarea></label>
+          <label>Dependencies <small>Include versions where known</small><textarea id="artifactDependencies" rows="3" placeholder="runtime and package dependencies"></textarea></label>
+          <label>Supported runtimes <small>Unknown is acceptable</small><textarea id="artifactRuntimes" rows="3" placeholder="node 20&#10;python 3.12"></textarea></label>
+          <label>Network access
+            <select id="artifactNetwork"><option value="unknown">Unknown / not declared</option><option value="none">None</option><option value="declared">Specific destinations declared</option><option value="required">Network required</option></select>
+          </label>
+          <label>Data handling<textarea id="artifactDataHandling" rows="2" maxlength="4000" placeholder="What data is read, sent, stored or retained?"></textarea></label>
+          <label>Side effects<textarea id="artifactSideEffects" rows="2" placeholder="file writes, external messages, publishing, etc."></textarea></label>
+          <label>Required secrets <small>Names or types only, no values</small><textarea id="artifactRequiredSecrets" rows="2" placeholder="e.g. SERVICE_API_KEY (do not enter the value)"></textarea></label>
+        </div>
+        <div class="source-box">
+          <div class="source-title"><div><h3>Optional source text</h3><p>Paste a manifest, skill text, tool schema or small source file for a bounded scan.</p></div><span class="limit-pill">80 KiB max</span></div>
+          <label class="file-drop" for="sourceFile"><span class="upload-symbol">↑</span><span><strong>Choose a text file</strong><small id="fileNameStatus">File stays in this browser and is not uploaded.</small></span><input id="sourceFile" type="file" accept=".txt,.md,.json,.yaml,.yml,.js,.mjs,.cjs,.ts,.py,.sh,.toml,.xml,.html,.css,.sql,.ac,.al"></label>
+          <label for="sourceText">Or paste source text</label><textarea id="sourceText" rows="8" spellcheck="false" placeholder="Optional text input. Treat content as untrusted data. Do not paste secrets or private data."></textarea>
+          <div class="source-foot"><span id="sourceSize" class="muted small">0 bytes in transient input</span><span class="muted small">Source text is never saved in localStorage or review exports.</span></div>
+        </div>
+        <div class="form-actions">
+          <div class="muted small">Creates a local draft plus a deterministic review. No publication or code execution.</div>
+          <button class="primary" id="reviewSubmitBtn" type="submit">Validate & run local checks →</button>
+        </div>
+      </form>
+      <div id="reviewResult" class="review-result" hidden></div>
+      <div id="reviewBriefPanel" class="panel-card" hidden>
+        <div class="section-heading compact"><div><h3>Independent AI review brief</h3><p>Prepare a prompt for a model or reviewer you already use. It is not sent automatically.</p></div></div>
+        <label class="checkline"><input id="includeSourceInBrief" type="checkbox"><span>Include the transient source text in the prompt (only after local secret-pattern checks pass).</span></label>
+        <div class="row-actions"><button class="secondary" id="makeBriefBtn" type="button">Generate review brief</button><button class="secondary" id="copyBriefBtn" type="button">Copy brief</button><button class="secondary" id="downloadBriefBtn" type="button">Download .txt</button></div>
+        <textarea id="reviewBriefOutput" rows="12" readonly placeholder="The review brief will appear here. Review it before sharing externally."></textarea>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-compare">
+      <div class="section-heading"><div><div class="eyebrow">METADATA DIFF</div><h2>Compare artifacts</h2><p>Comparison is based on declared fields and saved reviews. Shared runtimes do not prove that two artifacts work together.</p></div></div>
+      <div class="compare-selects">
+        <label>Artifact A<select id="compareA"></select></label><label>Artifact B<select id="compareB"></select></label>
+        <button id="compareRunBtn" class="primary" type="button">Compare metadata</button>
+      </div>
+      <div id="compareResult" class="compare-result empty-state">Add or import at least two artifact versions to compare.</div>
+    </section>
+
+    <section class="pane" id="pane-arena">
+      <div class="section-heading"><div><div class="eyebrow">BENCHMARK PLANNER</div><h2>Design an evaluation suite</h2><p>Create a reproducible test plan. This planner does not run or score an agent; task execution belongs in an isolated runner.</p></div></div>
+      <form id="benchmarkForm" class="form-card">
+        <div class="form-grid">
+          <label>Benchmark name<input id="benchmarkName" required maxlength="160" placeholder="e.g. Research task reliability"></label>
+          <label>Category<select id="benchmarkCategory"><option>general</option><option>coding</option><option>research</option><option>browser</option><option>tool-use</option><option>structured-output</option><option>recovery</option><option>safety</option></select></label>
+          <label class="span-two">One task description per line<textarea id="benchmarkTasks" required rows="6" placeholder="Task 1: produce valid JSON under a stated schema&#10;Task 2: recover from a simulated tool timeout"></textarea></label>
+        </div>
+        <div class="form-actions"><span class="muted small">Every generated task starts with expectedOutcome=define-before-run and status=not-run.</span><button class="primary" type="submit">Save benchmark plan</button></div>
+      </form>
+      <div id="benchmarkList" class="stack-list"></div>
+    </section>
+
+    <section class="pane" id="pane-workflows">
+      <div class="section-heading"><div><div class="eyebrow">LOCAL TASK STATE</div><h2>Workflows & memory</h2><p>Store private workflow plans and checkpoints locally. These are plans, not an execution engine; no side effects are run by this page.</p></div></div>
+      <form id="workflowForm" class="form-card">
+        <div class="form-grid">
+          <label>Workflow name<input id="workflowName" required maxlength="160" placeholder="Research, test, review, handoff"></label>
+          <label>Data class<select id="workflowDataClass"><option value="private">Private — local only</option><option value="public">Public-safe draft — still local</option></select></label>
+          <label class="span-two">Steps, one per line<textarea id="workflowSteps" required rows="6" placeholder="Pin source version&#10;Validate manifest&#10;Run isolated tests&#10;Review evidence"></textarea></label>
+        </div>
+        <div class="form-actions"><span class="muted small">Private is the default. No workflow is automatically published.</span><button class="primary" type="submit">Save local workflow</button></div>
+      </form>
+      <div id="workflowList" class="stack-list"></div>
+    </section>
+
+    <section class="pane" id="pane-traces">
+      <div class="section-heading"><div><div class="eyebrow">LOCAL AUDIT TRAIL</div><h2>Review traces & reviewer directory</h2><p>Trace entries record local actions and IDs, not source text. Reviewer totals are descriptive counts, not scores or identity verification.</p></div><button class="secondary" id="exportTraceBtn" type="button">Export trace JSON</button></div>
+      <div class="stats-grid" id="reviewerStats"></div>
+      <div class="panel-card"><div class="row-between"><h3>Recent local events</h3><span id="traceCount" class="muted small"></span></div><div id="traceList" class="stack-list"></div></div>
+    </section>
+
+    <section class="pane" id="pane-data">
+      <div class="section-heading"><div><div class="eyebrow">PORTABLE BY DESIGN</div><h2>Data & agent interface</h2><p>Export records to transfer them to a reviewer agent. Imported records are validated before they enter the local catalog.</p></div></div>
+      <div class="data-grid">
+        <div class="panel-card">
+          <h3>Export local bundle</h3><p>Includes artifact metadata, review records, benchmark plans, workflows and a bounded event trace. Source code is never included.</p>
+          <button class="primary" id="exportBundleBtn" type="button">Download JSON bundle</button>
+          <button class="secondary" id="exportCatalogBtn" type="button">Download artifact index</button>
+          <button class="secondary" id="exportSchemaBtn" type="button">Download review schema</button>
+        </div>
+        <div class="panel-card">
+          <h3>Import JSON</h3><p>Accepts one artifact record, one review record, or an exported AI Workspace bundle. Invalid bundles are rejected without partially importing records.</p>
+          <label class="file-drop compact-drop" for="importFile"><span class="upload-symbol">↑</span><span><strong>Choose JSON file</strong><small id="importFileStatus">Local import only</small></span><input id="importFile" type="file" accept=".json,application/json"></label>
+          <label for="importJson">Or paste JSON</label><textarea id="importJson" rows="7" spellcheck="false" placeholder="{ &quot;recordType&quot;: &quot;artifact&quot;, ... }"></textarea>
+          <button class="primary" id="importJsonBtn" type="button">Validate & import</button>
+        </div>
+      </div>
+      <div class="panel-card">
+        <div class="row-between"><div><h3>Agent-readable contract</h3><p>Canonical records are JSON. AgentLang handoffs can reference these records; ShadowCode is compact encoding, not encryption.</p></div><span class="muted small">read-only local projection</span></div>
+        <pre id="rawProjection" class="raw-block">Load or create an artifact to show the current local index.</pre>
+        <button class="secondary" id="copyProjectionBtn" type="button">Copy JSON projection</button>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <div><strong>AI Workspace · Agent Review Exchange</strong><span>Evidence first. Least privilege. Exportable records.</span></div>
+      <div class="footer-links"><a href="AGENT-REVIEW-EXCHANGE.md">Review specification</a><a href="AI-WORKSPACE-ADVANCED-BLUEPRINT.md">12-system blueprint</a><a href="index.html">Workspace</a></div>
+    </footer>
+  </main>
+
+  <dialog id="detailDialog" class="detail-dialog">
+    <div class="dialog-head"><div><span class="eyebrow">ARTIFACT DETAIL</span><h2 id="detailTitle">Artifact</h2></div><button class="icon-button" id="closeDetailBtn" type="button" aria-label="Close details">×</button></div>
+    <div id="detailBody"></div>
+  </dialog>
+</body>
+</html>

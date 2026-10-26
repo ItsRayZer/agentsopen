@@ -1,0 +1,53 @@
+name: Agent Review Exchange checks
+
+on:
+  push:
+    branches:
+      - feat/agent-review-exchange
+    paths:
+      - "review-exchange-validator.js"
+      - "review-exchange-validator.test.js"
+      - "review-exchange-core.js"
+      - "review-exchange-core.test.js"
+      - "review-exchange-ui.js"
+      - "review-exchange.html"
+      - "review-exchange.css"
+      - "review-exchange-smoke.test.js"
+      - "schemas/review-exchange-0.1.0.schema.json"
+      - ".github/workflows/review-exchange-tests.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "review-exchange-validator.js"
+      - "review-exchange-validator.test.js"
+      - "schemas/review-exchange-0.1.0.schema.json"
+      - ".github/workflows/review-exchange-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Check JavaScript syntax
+        run: |
+          node --check review-exchange-validator.js
+          node --check review-exchange-core.js
+          node --check review-exchange-ui.js
+      - name: Validate schema JSON syntax
+        run: node -e "JSON.parse(require('node:fs').readFileSync('schemas/review-exchange-0.1.0.schema.json', 'utf8')); console.log('Schema JSON parses')"
+      - name: Run validator fixtures
+        run: node review-exchange-validator.test.js
+      - name: Run core review fixtures
+        run: node review-exchange-core.test.js
+      - name: Verify static UI contract
+        run: node review-exchange-smoke.test.js

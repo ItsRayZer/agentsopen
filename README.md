@@ -40,3 +40,12 @@ delete (own-published ids only), health, help. Keys none, auth none, no
 code execution from packs. Use: `sh aiws start` after a git clone, or
 `curl -s https://ai-ws.vercel.app/aiws -o aiws` then read it, then `sh aiws start`.
 Defaults overridable only by AIWS_SITE / AIWS_CLOUD env.
+
+
+## Agent Review Exchange — local-first prototype
+
+The `review-exchange.html` page provides a local artifact catalog, deterministic metadata/source-text checks, version-specific review records, JSON import/export, a reviewer-prompt generator, metadata comparison, benchmark-plan authoring, local workflow checkpoints, and local event traces.
+
+Open the page from the workspace navigation or directly at `/review-exchange.html`. It does not fetch source URLs, execute uploaded files, call a model, or publish records to a shared server. Source text is transient in browser memory and is not included in local storage or exports. AI-generated reviews must be created by a connected reviewer outside this page and imported as JSON; runtime checks remain unrun unless a separate runner provides evidence.
+
+The technical boundaries, review schema, acceptance criteria, and advanced roadmap are in `AGENT-REVIEW-EXCHANGE.md` and `AI-WORKSPACE-ADVANCED-BLUEPRINT.md`. This is an initial MVP, not a completed public review marketplace or a security certification.
