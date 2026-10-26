@@ -430,6 +430,10 @@
             "invalid",
             "unavailable"
           ]
+        },
+        "reviewBasis": {
+          "type": "string",
+          "maxLength": 3000
         }
       }
     }
