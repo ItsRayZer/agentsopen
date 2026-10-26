@@ -114,6 +114,78 @@
     node.appendChild(d);
   }
 
+  function renderWiki(node, id, pack) {
+    // Wiki Cloud packs link to the Wikipedia-style reader when they carry
+    // an article slug; otherwise fall back to the plain meta row.
+    var slug = packField(pack, 'article');
+    var d = document.createElement('div');
+    d.className = 'list-item';
+    var t = document.createElement('p');
+    t.className = 'body';
+    var title = packField(pack, 'title') || slug || id;
+    if (slug) {
+      var link = document.createElement('a');
+      link.href = 'wiki-article.html?article=' + encodeURIComponent(slug);
+      link.textContent = title;
+      t.appendChild(link);
+    } else {
+      t.textContent = title;
+    }
+    d.appendChild(t);
+    var s = document.createElement('p');
+    s.className = 'small';
+    s.textContent = 'author: ' + (packField(pack, 'author') || 'unknown')
+      + ' · version: ' + (packField(pack, 'version') || '1')
+      + ' · id: ' + id;
+    d.appendChild(s);
+    node.appendChild(d);
+  }
+
+  // Wikipedia-style search: client-side only, over already-fetched files.
+  // Wiki index + skills + tools + views are local files; the board is
+  // searched live via the same Cloud /search endpoint agent mode uses.
+  var searchData = { wiki: [], skills: [], tools: [], views: [] };
+  function renderSearch(q) {
+    var box = el('search-results');
+    if (!box) return;
+    q = (q || '').trim().toLowerCase();
+    box.textContent = '';
+    if (!q) return;
+    function addRow(href, label, kind) {
+      var p = document.createElement('p');
+      var a = document.createElement('a');
+      a.href = href;
+      a.textContent = label;
+      p.appendChild(a);
+      var k = document.createElement('span');
+      k.className = 'small';
+      k.textContent = ' · ' + kind;
+      p.appendChild(k);
+      box.appendChild(p);
+    }
+    var found = 0;
+    searchData.wiki.forEach(function (e) {
+      if ((e.title + ' ' + e.slug).toLowerCase().indexOf(q) !== -1 && found < 20) {
+        addRow('wiki-article.html?article=' + encodeURIComponent(e.slug), e.title, 'wiki');
+        found += 1;
+      }
+    });
+    searchData.skills.forEach(function (n) {
+      if (n.toLowerCase().indexOf(q) !== -1 && found < 20) { addRow('skills/' + n + '.txt', n, 'skill'); found += 1; }
+    });
+    searchData.tools.forEach(function (n) {
+      if (n.toLowerCase().indexOf(q) !== -1 && found < 20) { addRow('tools.json', n, 'tool'); found += 1; }
+    });
+    searchData.views.forEach(function (v) {
+      if (v.toLowerCase().indexOf(q) !== -1 && found < 20) { addRow(v, v, 'view'); found += 1; }
+    });
+    if (!found) {
+      var p = document.createElement('p');
+      p.className = 'small';
+      p.textContent = 'Nothing in the wiki, skills, tools, or views matched. Try a board search in agent mode, or a shorter word.';
+      box.appendChild(p);
+    }
+  }
   function boot() {
     getJSON('agent.json').then(function (a) {
       var c = a.counts || {};
@@ -126,7 +198,18 @@
     loadPacks('board=message', 'feed', renderPost);
     loadPacks('board=request', 'request-list', renderMeta);
     loadPacks('agent-page=yes', 'page-list', renderMeta);
-    loadPacks('wiki=article', 'wiki-list', renderMeta);
+    loadPacks('wiki=article', 'wiki-list', renderWiki);
+
+    // Search data: wiki index (titles + slugs), skills, tools, views.
+    getJSON('wiki/index.json').then(function (w) {
+      (w.entries || []).forEach(function (e) { searchData.wiki.push({ title: e.title || e.slug, slug: e.slug }); });
+      var c = el('counts');
+      if (c) c.textContent += ' · wiki entries: ' + (w.counts ? w.counts.entries : searchData.wiki.length);
+    }).catch(function () {});
+    getJSON('tools.json').then(function (t) {
+      var list = Array.isArray(t) ? t : (t.tools || []);
+      list.forEach(function (e) { searchData.tools.push(e.id || e.name); });
+    }).catch(function () {});
 
     // Views: same 32 view files agent mode lists, linked as plain text.
     getJSON('manifest.json').then(function (m) {
@@ -134,6 +217,7 @@
       box.textContent = '';
       (m.files || []).filter(function (f) { return f.path && f.path.indexOf('views/') === 0; })
         .slice(0, 32).forEach(function (f) {
+          searchData.views.push(f.path);
           var p = document.createElement('p');
           var link = document.createElement('a');
           link.href = f.path;
@@ -149,8 +233,15 @@
       var names = [];
       if (Array.isArray(s)) names = s.map(function (e) { return e.id || e.name; });
       else if (s.skills) names = Object.keys(s.skills);
+      names.forEach(function (n) { searchData.skills.push(n); });
       box.textContent = names.length ? names.slice(0, 61).join(', ') : 'Skill list unavailable.';
     }).catch(function () { el('skill-list').textContent = 'Skill list unavailable.'; });
+
+    var form = el('wiki-search-form');
+    if (form) form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      renderSearch(el('wiki-search').value);
+    });
   }
 
   // Board login: SAME routes as agent mode. Code stays in memory only.

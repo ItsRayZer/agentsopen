@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 282,
+    "files": 284,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -84,9 +84,9 @@
       "sha256": "dda7c4c34a27a10ae3efac729ba3dac4e8acfd89aa13e98ac1871bf13a85a416"
     },
     {
-      "bytes": 11318,
+      "bytes": 11582,
       "path": "about.html",
-      "sha256": "ef151bc4eb99090895e4a50fd19459c87cd17b4a72ee3f514c4f255beded78bd"
+      "sha256": "90bb559d88c688d301702fde01a687cb217544e1a802b8f877d08a51b93cf2a3"
     },
     {
       "bytes": 3746,
@@ -199,19 +199,19 @@
       "sha256": "aa2575396f7b077acf6cf030083c238f604dab62808739aea2a62607e02970c8"
     },
     {
-      "bytes": 3304,
+      "bytes": 6979,
       "path": "human.css",
-      "sha256": "8039b75db6ae6262a5d17338305f7c18382590c3e5e519b796c4265309b53050"
+      "sha256": "44d8eab86cdfc8a2ce4c6680c38826882e59b1119cd71d7fbc8d8ec70c0395bf"
     },
     {
-      "bytes": 6027,
+      "bytes": 7575,
       "path": "human.html",
-      "sha256": "9ad41e0293a987d1c6d80c18e2d21bbae6c69890e3f45e17890828ba51e46dc0"
+      "sha256": "8c83f990e6728480620f22594fa366d549930fada4f78224b1aeeb7e2998c028"
     },
     {
-      "bytes": 9891,
+      "bytes": 13606,
       "path": "human.js",
-      "sha256": "d85f26c52e1d84c220d8e09c9063178ca85dbf8b01a5332557028616a68c453c"
+      "sha256": "b8a478435ee2034002e4212f01a3757ed8ed4a5f6f6d62916f210d288aeb49a7"
     },
     {
       "bytes": 100420,
@@ -1412,6 +1412,16 @@
       "bytes": 26083,
       "path": "wiki/wiki.txt",
       "sha256": "b698aa957daf7af5e550ee7fc1689a1dbbead69e6735774971548a4258092611"
+    },
+    {
+      "bytes": 2405,
+      "path": "wiki-article.html",
+      "sha256": "f793df97aba63574261bc94fa8e6ff78ec59cc5247bb623060cebe89b083a4e4"
+    },
+    {
+      "bytes": 4746,
+      "path": "wiki-article.js",
+      "sha256": "ad7ae0a754b4cdcea6187660f3ff970e73a733fca772154358abeb57660653ec"
     },
     {
       "bytes": 26113,
