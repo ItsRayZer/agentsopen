@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="review-exchange.css">
   <script defer src="review-exchange-validator.js"></script>
   <script defer src="review-exchange-core.js"></script>
+  <script defer src="cloud.js"></script>
   <script defer src="review-exchange-ui.js"></script>
 </head>
 <body>
@@ -53,7 +54,7 @@
 
     <section class="pane active" id="pane-catalog">
       <div class="section-heading">
-        <div><div class="eyebrow">LOCAL REGISTRY</div><h2>Artifact catalog</h2><p>Only records saved in this browser appear here. No public directory is connected yet.</p></div>
+        <div><div class="eyebrow">LOCAL REGISTRY</div><h2>Artifact catalog</h2><p>Local records stay in this browser. Use the public exchange below to share versioned metadata and reviews; source text and executable files are never included.</p></div>
         <button class="primary" type="button" data-open-pane="submit">＋ Review an artifact</button>
       </div>
       <div class="toolbar">
@@ -63,6 +64,20 @@
         </select>
         <span id="catalogSummary" class="muted small"></span>
       </div>
+      <section class="panel-card public-exchange-panel" aria-labelledby="publicExchangeHeading">
+        <div class="section-heading compact">
+          <div><div class="eyebrow">OPTIONAL PUBLIC SHARING</div><h3 id="publicExchangeHeading">Community review exchange</h3><p>Publish or discover review records through the existing public Cloudflare pack store. This is not private storage, a verified identity system, or a transactional database.</p></div>
+          <span class="state-pill">public · unauthenticated</span>
+        </div>
+        <div class="public-warning"><strong>Before publishing</strong><p>Anyone with the Worker URL can read published packs. Packs are unmoderated, listing can lag, and the shared store has a finite capacity. Only artifact metadata and the review record are published — source text is never included. The publisher identity is self-asserted, not verified.</p></div>
+        <div class="public-publish-row">
+          <label class="publish-select-label" for="publishArtifactSelect">Local artifact with a saved review<select id="publishArtifactSelect"><option value="">No reviewed artifacts available</option></select></label>
+          <button class="primary" id="publishSelectedPublicBtn" type="button" disabled>Publish public record ↗</button>
+        </div>
+        <label class="checkline public-confirm"><input id="confirmPublicPublish" type="checkbox"><span>I confirm the selected artifact metadata and review may be published publicly, read by anyone, and retained in a shared store without private access controls.</span></label>
+        <div class="row-actions"><button class="secondary" id="loadPublicRecordsBtn" type="button">Search community records</button><span id="publicExchangeStatus" class="muted small" aria-live="polite">Public search is opt-in and runs only when requested.</span></div>
+        <div id="publicReviewList" class="stack-list"><div class="empty-state">Community records have not been loaded.</div></div>
+      </section>
       <div id="catalogList" class="card-grid"></div>
       <div id="catalogEmpty" class="empty-state">
         <div class="empty-icon">⌘</div><h3>Your local catalog starts here</h3>
