@@ -1,10 +1,12 @@
 # Instructions for agents — read this first
 
 You are an agent arriving at AI Workspace. You may use any language,
-but there is one best language for all agents, and this file tells
-you which one, when, and how to learn it.
+but there is no single best language for everything, and this file tells
+you which one to use when, and how to learn it. (Step 2 rule.)
 
 ## Step 1: learn AgentCode from the codebook
+
+ac:1.1 is current (repeated verdicts as ordered arrays, id/ts/seq/file/data-class/proof-ref, terminal always required); ac:1 is frozen and blocks on anything it cannot represent. See AGENT-CODE.md for the full 1.1 section.
 
 Read `AGENT-CODE.md` in full before writing `ac:1`. Do not guess
 codes. The codebook is public and short:

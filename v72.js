@@ -12,15 +12,29 @@
   const OWN_KEY = 'ai-workspace_cloud_own';
   const IMPORTS_KEY = 'ai-workspace_cloud_imports';
   const MAX_PACK_BYTES = 102400;
-  const SECRET_PATTERNS = [
-    /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/,
-    /-----BEGIN [A-Z ]*PRIVATE KEY-----/,
-    /\bsk-[A-Za-z0-9]{16,}/,
-    /\bghp_[A-Za-z0-9]{20,}/,
-    /\bapi[_-]?key\s*[:=]\s*["'][^"']+["']/i,
-    /\bpassword\s*[:=]\s*\S+/i,
-    /\bBearer\s+[A-Za-z0-9._-]{20,}/,
+  // Canonical secret-pattern mirror (site/secret-patterns.json, block tier only
+  // blocks; email-address is WARNING tier only, never a block — Worker v2
+  // behaviour, owner-accepted 2026-10-26: email warned-and-accepted, not
+  // rejected. Patterns are named by rule so build-check can verify every
+  // canonical rule name is present here. Hygiene check only, never a
+  // general guarantee; values are never echoed.
+  const BLOCK_PATTERNS = [
+    { field: 'private-key', re: /-----BEGIN [A-Z ]*PRIVATE KEY-----/ },
+    { field: 'openai-key', re: /\bsk-[A-Za-z0-9]{12,}/ },
+    { field: 'stripe-key', re: /\bsk_(live|test)_[A-Za-z0-9]{8,}/ },
+    { field: 'github-token', re: /\bgh[pous]_[A-Za-z0-9]{20,}/ },
+    { field: 'aws-access-key-id', re: /\bAKIA[0-9A-Z]{16}/ },
+    { field: 'slack-token', re: /\bxox[baprs]-[A-Za-z0-9-]{10,}/ },
+    { field: 'jwt', re: /\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/ },
+    { field: 'api-key-assignment', re: /\bapi[_-]?key\s*[:=]\s*\S+/i },
+    { field: 'access-token-assignment', re: /\b(access[_-]?token|client[_-]?secret)\s*[:=]\s*\S+/i },
+    { field: 'password-assignment', re: /\bpassword\s*[:=]\s*\S+/i },
+    { field: 'bearer-token', re: /\bBearer\s+[A-Za-z0-9._-]{12,}/ },
   ];
+  const WARNING_PATTERNS = [
+    { field: 'email-address', re: /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/ },
+  ];
+  const TOKEN_KEY = 'ai-workspace_cloud_tokens';
 
   // ---------- Pure logic (node-testable) ----------
   function byteLength(text) {
@@ -35,12 +49,25 @@
     if (byteLength(pack) > MAX_PACK_BYTES) {
       return { blocked: 'reason=pack-too-large | need=pack-under-100kb' };
     }
-    for (let i = 0; i < SECRET_PATTERNS.length; i++) {
-      if (SECRET_PATTERNS[i].test(pack)) {
-        return { blocked: 'reason=secret-pattern | need=public-pack-only' };
+    // Data-class gate, compatible form (NOT Claude's dataclass: spelling):
+    // a pack that carries a data-class line must be public to publish; a
+    // pack with no data-class line is gated by the explicit public checkbox
+    // above, which is the existing, live-tested publish flow. Blocking every
+    // pack without a data-class line would break that flow, so it is not done.
+    const dc = pack.match(/^data-class:\s*(\S+)/m);
+    if (dc && dc[1] !== 'public') {
+      return { blocked: 'reason=data-class-not-public | need=data-class: public-or-no-data-class-line' };
+    }
+    for (let i = 0; i < BLOCK_PATTERNS.length; i++) {
+      if (BLOCK_PATTERNS[i].re.test(pack)) {
+        return { blocked: 'reason=secret-pattern | need=public-pack-only | field=' + BLOCK_PATTERNS[i].field };
       }
     }
-    return { ok: true, chars: pack.length };
+    const warnings = [];
+    for (let i = 0; i < WARNING_PATTERNS.length; i++) {
+      if (WARNING_PATTERNS[i].re.test(pack)) warnings.push(WARNING_PATTERNS[i].field);
+    }
+    return { ok: true, chars: pack.length, warnings };
   }
   function validateCloudId(id) {
     if (!id || !/^[A-Za-z0-9_-]{1,64}$/.test(id)) {
@@ -87,14 +114,27 @@
       const out = await api.publishPack(pack);
       const own = storeGet(OWN_KEY, []);
       if (out.id && own.indexOf(out.id) === -1) { own.push(out.id); storeSet(OWN_KEY, own); }
+      // Worker v2 publish receipt carries a server delete token; store it
+      // (id -> token) so delete can send it. Against Worker v1 there is no
+      // token, and delete works tokenless as before — one UI, both Workers.
+      if (out.id && out.deleteToken) {
+        const toks = storeGet(TOKEN_KEY, {});
+        toks[out.id] = out.deleteToken; storeSet(TOKEN_KEY, toks);
+      }
+      const warnLines = [];
+      if (v.warnings && v.warnings.length) warnLines.push('out: warnings=' + v.warnings.join(',') + ' | tier=hygiene-only | note=not-a-block');
+      if (out.warnings && out.warnings.length) warnLines.push('out: server-warnings=' + sl(out.warnings.map((w) => (w && w.field) || w).join(',')));
       setSync('sync=local-only-by-default | cloud=cloudflare-free-public-packs-only');
       setOut(cloudPackAl('cloud', 'cloud-publish', [
         'out: published-id=' + sl(out.id) + ' | chars=' + v.chars + ' | warning=public-pack-only',
+      ].concat(warnLines).concat([
         'out: note=kv-list-may-take-40s | direct-get-is-confirmation',
-      ]).join('\n'));
+      ])).join('\n'));
     } catch (e) {
+      const msg = String((e && e.message) || '');
+      const cap = msg.indexOf('pack-cap-reached') >= 0;
       setSync('sync=local-only-by-default | cloud=unreachable');
-      setOut('al:1\nagent: ai-workspace | status: blocked\nblocked: reason=cloud-publish-failed | need=retry-or-stay-local | err=' + sl(e && e.message));
+      setOut('al:1\nagent: ai-workspace | status: blocked\nblocked: reason=' + (cap ? 'pack-cap-reached | need=delete-old-pack-or-raise-cap' : 'cloud-publish-failed | need=retry-or-stay-local') + ' | err=' + sl(msg));
     }
   }
   async function doList() {
@@ -154,13 +194,17 @@
     const api = cloud();
     if (!api) { setOut('blocked: reason=cloud-client-missing | need=cloud.js-loaded'); return; }
     try {
-      await api.deleteCloudPack(id);
+      const toks = storeGet(TOKEN_KEY, {});
+      await api.deleteCloudPack(id, toks[id] || null);
       storeSet(OWN_KEY, own.filter((x) => x !== id));
+      if (toks[id]) { delete toks[id]; storeSet(TOKEN_KEY, toks); }
       setSync('sync=local-only-by-default | cloud=cloudflare-free-public-packs-only');
       setOut(cloudPackAl('cloud', 'cloud-delete', ['out: deleted-id=' + sl(id) + ' | note=own-pack-only']).join('\n'));
     } catch (e) {
+      const msg = String((e && e.message) || '');
+      const tokErr = msg.indexOf('delete-token-required') >= 0 ? 'delete-token-required | need=republish-to-get-token' : (msg.indexOf('delete-token-invalid') >= 0 ? 'delete-token-invalid | need=republish-to-get-token' : 'cloud-delete-failed | need=retry');
       setSync('sync=local-only-by-default | cloud=unreachable');
-      setOut('al:1\nagent: ai-workspace | status: blocked\nblocked: reason=cloud-delete-failed | need=retry | err=' + sl(e && e.message));
+      setOut('al:1\nagent: ai-workspace | status: blocked\nblocked: reason=' + tokErr + ' | err=' + sl(msg));
     }
   }
   async function doHealth() {

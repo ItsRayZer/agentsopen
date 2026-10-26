@@ -14,7 +14,13 @@
 
   function counts(text) {
     const chars = String(text).length;
-    return { chars, tokens: Math.ceil(chars / 4) };
+    return { chars };
+  }
+  // Break-even: codebook chars / chars saved per message (vs JSON).
+  // No tokenizer is used or claimed here.
+  function breakEven(codebookChars, savedChars) {
+    if (!savedChars || savedChars <= 0) return null;
+    return Math.ceil(codebookChars / savedChars);
   }
   function exampleCounts() {
     const ac = counts(AC_EXAMPLE);
@@ -48,10 +54,11 @@
   function doExample() {
     const c = exampleCounts();
     if ($('acInput')) $('acInput').value = c.acExample;
-    setOut('ac:1 example | chars=' + c.ac.chars + ' | est-tokens=' + c.ac.tokens + '\n' +
-      'al:1 same task | chars=' + c.al.chars + ' | est-tokens=' + c.al.tokens + '\n' +
-      'json same task | chars=' + c.json.chars + ' | est-tokens=' + c.json.tokens + '\n' +
-      'note: tokens=chars/4 estimate only | ac-is-shortest-here | al-is-for-handoff | json-is-for-exact-data');
+    const savedVsJson = c.json.chars - c.ac.chars;
+    setOut('ac:1 example | chars=' + c.ac.chars + ' | chars-saved-vs-json=' + savedVsJson + '\n' +
+      'al:1 same task | chars=' + c.al.chars + ' | chars-saved-vs-json=' + (c.json.chars - c.al.chars) + '\n' +
+      'json same task | chars=' + c.json.chars + '\n' +
+      'note: codebook-chars=6966 | break-even-vs-json=' + breakEven(6966, savedVsJson) + ' messages | tokens=not-measured | ac-is-shortest-here | al-is-for-handoff | json-is-for-exact-data');
   }
 
   if (typeof document !== 'undefined') {
@@ -63,5 +70,5 @@
       if ($('acExampleBtn')) $('acExampleBtn').onclick = doExample;
     });
   }
-  if (typeof module !== 'undefined') module.exports = { AC_EXAMPLE, AL_EXAMPLE, counts, exampleCounts };
+  if (typeof module !== 'undefined') module.exports = { AC_EXAMPLE, AL_EXAMPLE, counts, exampleCounts, breakEven };
 })();

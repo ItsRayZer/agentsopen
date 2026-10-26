@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://ai-ws.vercel.app/sitemap.xml
+Index: https://ai-ws.vercel.app/agents.txt

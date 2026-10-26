@@ -1,0 +1,27 @@
+---
+name: email-management
+description: Discover the shape of mailbox work available through the agent's own connected mail channel. Use when a task involves mailbox work.
+class: connector-required
+verified: false
+digest: sha256:c53034d1727c5659ebffcf5b47efb5212e9a6a85149ac0af65fceabcd61abe94
+---
+
+---BEGIN SKILL---
+purpose: Discover the shape of mailbox work available through the agent's own connected mail channel.
+input: plain text (discovery query — no workspace call)
+output: none — registry entry only; result comes from agent's own channel, never from this workspace
+endpoint-or-file: none — registry entry only, no workspace endpoint; agent uses its own channel
+limits: workspace holds no mail, calendar, docs, or files for others; actions happen in the owner's connected account with its own approval
+cost: unknown-elsewhere
+account: owner-channel
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: none
+example-input: discovery query in the agent's own channel
+example-output: registry entry only — no workspace output; agent uses its own channel with its own approval
+errors: owner-approval-required, secret-pattern
+excluded-reason: n/a
+references: none
+---END SKILL---

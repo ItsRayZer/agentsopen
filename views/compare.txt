@@ -1,0 +1,65 @@
+view: compare
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=compare
+---
+compare
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+a
+def total(items):
+s = 0
+for x in items:
+s += x
+return s
+b
+def total(items):
+s = 0
+for x in items:
+s += x * 2
+return s
+diff
+copy
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+model-compare
+model-a-json
+{"provider": "groq", "model": "llama-3.3-70b", "free-tier-claim": "unverified"}
+model-b-json
+{"provider": "together", "model": "open-model", "free-tier-claim": "unverified"}
+compare-models
+copy
+spec-compare-5-nexus-versions
+Short paraphrases only, no invented quotes. File refs: research/NEXUS-VOID-COMPARISON.md and research/NEXUS-VOID-TECH-SPEC-NOTE-2026-10-26.md. Free-tier claims in all rows are unverified; nothing here makes a live call.
+1 governance (00:05)
+runtime-enforced autonomy, secrets never in client, approval classes, audit, degraded modes
+conflict: L5 bounded, not god-mode
+2 grok zero-safety (00:09)
+zero content filtering, god-mode L5, no confirmation dialogs, community tools no review
+conflict: opposite of row 1 and row 5 on filtering/approval
+3 mixed 1.0.0-VOID (00:11)
+zero content filtering BUT sandboxed Wasm, egress allowlist, signed mutations, L0-L3 approvals, L4/L5 unbounded
+conflict: filtering vs execution controls split
+4 NV-AC-SPEC-0001
+runtime gate canExecute, key vault local-only, self-mod caps 10/hour, reputation unlocks (not built: scores excluded)
+conflict: L5 can modify other agents if reputation threshold met
+5 claude v0.1
+minimal control layer, sandbox, budgets, checkpointed loop, upstream refusals honoured (owner-removed control from the source spec is not built), agent cannot raise own autonomy
+conflict: honours refusals vs rows 2-4 no-refusal stance; chosen autonomy semantics for forge
+Chosen for v7 forge: Claude v0.1 autonomy semantics (row 5), because it is the only version that keeps high autonomy with sandbox + budgets + no self-elevation and no live calls. Reputation scores/leaderboards from rows 1-4 are NOT built (hard limit). Paid tiers from any row are NOT wired (free-only).
+agent-compare
+agent-a-json
+{"name": "agent-a", "autonomy": 2, "role": "agent"}
+agent-b-json
+{"name": "agent-b", "autonomy": 3, "role": "agent"}
+compare-agents
+copy
+tool-compare
+tool-a-json
+{"name": "tool-a", "runtime": "js", "perms": ["fs:virtual"]}
+tool-b-json
+{"name": "tool-b", "runtime": "http", "perms": ["net"]}
+compare-tools
+copy

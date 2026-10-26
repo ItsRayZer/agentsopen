@@ -161,7 +161,7 @@ are additive, old codes are never silently redefined.
 
 ## v7-combined additions (local only, v1 codes unchanged)
 
-- New views: forge, canvas, vault, workshop, router, timeline, quota, audit, lab, approval, gallery. Total views: 31.
+- New views: forge, canvas, vault, workshop, router, timeline, quota, audit, lab, approval, gallery. Total views: see agent.json (current: 32; history: CHANGELOG.al).
 - Verdicts in v7 carry `basis=files|excerpt|summary|logic-only` and, where available, `proof-ref=<artifact-or-pack-id>`. A verdict with `proof=none` cannot resolve a conflict.
 - Approval records are first-class: `action= | target= | agent= | role= | scope= | expires= | decision=pending|approved|rejected`. Nothing is applied until decision=approved; dry-run shows a receipt and applies nothing. Observer-role agents are blocked with `blocked: reason=observer-read-only`.
 - Decision log: append-only, idempotent event ids — a replayed id returns `dup=true` and changes nothing.
@@ -176,16 +176,16 @@ are additive, old codes are never silently redefined.
 
 ## v7.1 additions (local only, v1 codes unchanged)
 
-- New views: shell, agentmode. Total views: 31.
+- New views: shell, agentmode. Total views: see agent.json (current: 32; history: CHANGELOG.al).
 - Shell: combined layout (top bar, left rail, main stage, right inspector, command preview, status strip, bottom run tray for local runs only) plus a 7-theme picker (default, grok, gemini, claude, governance, abyss, manus). Themes change colours/density only, never features or data. Choice is saved in localStorage.
 - Manus features, free-to-make only: data-class labels public|workspace|sensitive|secret (secret export blocked, sensitive export warned, local-only never marked remote); permission-diff preview before saving (preview only, saved on owner click); agent version pinning (editing creates a new version, pinned runs keep their version); tool side-effect classes read|reversible_write|external_write|irreversible with install separate from grant; reputation as descriptive counts only, unlocks=none, no leaderboard; run replay of local steps only, never external side effects; policy records (approval rules, data-class rules, retention, export, revocation) as local records; swarm artifacts immutable per version, conflicts surfaced with provenance, never silently reconciled.
 - Router model entries: qwen and deepseek under huggingface and openrouter, free-tier claims unverified, no live calls, no key fields. No Qwen or DeepSeek author spec, wish list, or UI is on file and none is invented; source note is listed as HF models in the Gemini spec, research/NEXUS-VOID-COMPARISON.md.
-- Agent Mode (agentmode view): raw AgentLang lines only, no bubbles, no graphs, no images, no animations, theme-independent lines. Agent start page in one view: capabilities, status vocabulary, reason-code catalog, 3 example packs with token costs, boot checklist, and links to agent.json, .well-known/agent.json, tools.json, examples.al, AGENT-LANG.md, AGENT-START.md. Search by agent/task/text/status, capped at 20. Token cost: chars, estimated tokens at 4 chars per token (estimate only), and what is cut at a budget. Delta export: added lines only, compared to a pasted previous bundle. Negative examples show exact blocked: reason | need errors. No login wall, no popups, no cookie banner; core AgentLang lines are in the HTML itself.
+- Agent Mode (agentmode view): raw AgentLang lines only, no bubbles, no graphs, no images, no animations, theme-independent lines. Agent start page in one view: capabilities, status vocabulary, reason-code catalog, 3 example packs with token costs, boot checklist, and links to agent.json, .well-known/agent.json, tools.json, examples.al, AGENT-LANG.md, AGENT-START.md. Search by agent/task/text/status, paged at 20 with total + next cursor + sort=task,agent. Token cost: chars only, tokens=not-measured, chars/4 only as a labelled length proxy in the token-cost view, never a token count, and what is cut at a budget. Delta export: added AND removed lines (pack-delta), compared to a pasted previous bundle; delta-since-last lists added and removed lines, not only counts. Negative examples show exact blocked: reason | need errors. No login wall, no popups, no cookie banner; core AgentLang lines are in the HTML itself.
 - No content filter, refusal scanner, or moderation scanner is added. No login, no paid wiring, no live calls, no keys, no remote tool loading, no cloud sync.
 
 ## v7.2 additions (Cloudflare cloud merge, local only until deploy)
 
-- New view: cloud. Total views: 32.
+- New view: cloud. Total views: see agent.json (current: 32; history: CHANGELOG.al).
 - Cloud: Cloudflare Workers free plan + KV, workers.dev only, public packs only. Local storage remains primary; cloud packs are published copies only. Sync label: sync=local-only-by-default | cloud=cloudflare-free-public-packs-only on success, cloud=unreachable on failure.
 - Publish: only for a pack explicitly marked public (checkbox), validated client-side as al:1, at most 100 KB, and rejected on secret patterns (email, private-key block, key prefixes, key/password assignments, bearer tokens). Private notes/prompts/snippets stay local and must never be published.
 - List: public pack ids, timestamps, and sizes only. KV list note: a newly published pack is readable by direct GET immediately but may take ~40 seconds to appear in the list (KV eventual consistency).
@@ -194,13 +194,13 @@ are additive, old codes are never silently redefined.
 - No private cloud storage, no auth, no key fields, no live model calls, no paid features, no kill button, no skill-switch. No free-tier number is claimed as a verified limit or bill.
 
 ## v7.2 fix (live-browser findings, local only until deploy)
-- AgentLang validator now accepts the compact single-line Cloud form: `al:1 agent=... | task=... | status=...` (action= maps to task:). Compact form requires agent, task-or-action, and a legal status; status=done/blocked is its end state, so no separate next/done/blocked line is required in that form only. Multi-line form keeps its existing rules: header exactly `al:1` (or a compact first line, expanded), known codes only, legal status, exactly one end line, last. Packs not starting with `al:1`, packs with missing compact-form structure, and packs matching secret patterns (email, private-key block, key prefixes, key/password assignments, bearer tokens) are still blocked.
+- Compact single-line form is LEGACY ONLY (final judged revision): it is NOT a valid al:1 form for new records — the validator blocks it with `blocked: reason=compact-legacy-only | need=multi-line-al:1-or-ac:1-single-line`. A legacy decoder (`legacyExpandCompact`) decodes already-published Cloud single-line packs to canonical multi-line al:1 plus a warning, and must not be used for new records. The single-line need is met by ac:1, which is single-line by design. Multi-line form rules: header exactly `al:1`, known codes only, legal status, exactly one end line, last. Packs not starting with `al:1`, and packs matching block-tier secret patterns (private-key block, key prefixes, key/password assignments, bearer tokens) are still blocked; bare email addresses are a hygiene WARNING, not a block (see secret-pattern hygiene rule).
 - to-json now outputs a real JSON object in Result (lang, agent, task, status, other codes; repeated codes become arrays), never a summary line. Invalid input outputs a JSON object with blocked=true and the reason.
 - Navigation is view-isolated: a nav click shows only that view's section. The nav "show all views" button restores the stacked page (all sections visible); any nav view click isolates again. No view removed, no view id or nav button changed, no localStorage key changed. AgentLang lines stay in the HTML itself, readable without JS.
 
 ## v7.2-fix language guide (local only until deploy)
 
-- New view: language. Total views: 33. Version label: v7.2-fix (v7.2 content + fix + language guide, not a new major version).
+- New view: language. Total views: see agent.json (current: 32; history: CHANGELOG.al). Version label: v7.2-fix (v7.2 content + fix + language guide, not a new major version).
 - Which language when: there is no single best language for everything, so do not guess.
   - Coordination, handoffs, tasks, verdicts, queue, talk: AgentLang al:1 — line-based, token-cheap, diff-friendly, status + proof + reason always explicit.
   - Exact data, API input, tool input, saved records: JSON — strict, parseable, schema-checked; use the agentlang to-json button, which outputs a real JSON object.
@@ -208,18 +208,21 @@ are additive, old codes are never silently redefined.
   - Reading or comparing code: code itself, in Code Studio — read and compare only, no live execution beyond the Workshop sandbox.
 - When to switch: start in AgentLang, convert to JSON with to-json when a tool needs exact data, convert back with to-al for handoffs. Never invent a field, never fake proof.
 - Secrets are blocked in either language: email, private-key block, key prefix, key/password assignment, or bearer token returns secret-pattern. The language does not make a secret safe.
-- Worked example (same task): AgentLang `al:1 agent=mia | task=review-login-loop | status=doing | proof=code` (67 chars, ~16 tokens at 4 chars/token, estimate only) is for the handoff; the equivalent JSON object (109 chars, ~27 tokens, estimate only) is for exact data.
+- Worked example (same task): AgentLang `al:1 agent=mia | task=review-login-loop | status=doing | proof=code` (67 chars, tokens=not-measured) is for the handoff; the equivalent JSON object (109 chars, tokens=not-measured) is for exact data.
 - Negative examples: JSON for a simple status handoff is wasteful (not blocked, wrong choice); loose AgentLang for API data is unvalidated (convert to JSON first); code execution outside the Workshop sandbox is not built.
 
 ## v7.3 AgentCode + free forever (local only until deploy)
 
 ## AgentCode ac:1 (v7.3)
-New view: agentcode. Total views: 34.
+New view: agentcode. Total views: 32 after agent-only removal of home+chat.
 AgentCode ac:1 is a code language for agents only: dense, short-token, machine-first, no prose. It is NOT encrypted and NOT secret — the codebook (AGENT-CODE.md) and converter (agentcode.js) are public, and the owner can decode any record on demand. If a record does not decode with the codebook, do not trust it.
 - ac:1 sits alongside al:1 and JSON, it does not replace them: ac:1 for high-volume agent-to-agent traffic, al:1 for readable handoffs and audit, JSON for exact tool data.
 - Converter buttons in the agentcode view: ac->al, al->ac, ac->JSON, JSON->ac, using agentcode.js only, no live calls, no keys. Secrets are blocked in every language, never echoed.
-- Worked example (same task): ac:1 72 chars (~18 tokens) vs al:1 125 chars (~32 tokens) vs JSON 159 chars (~40 tokens), tokens = chars/4 estimate only.
+- Worked example (same task): ac:1 72 chars vs al:1 125 chars vs JSON 159 chars, tokens = not measured; chars saved + break-even only.
 - Full spec: AGENT-CODE.md. Full first-read instructions: INSTRUCTIONS-FOR-AGENTS.md.
+- ac:1.1 (current): repeated verdicts/conflicts/verifies/notes as ordered arrays, optional id/ts/seq/file/data-class/proof-ref, one backslash escaping rule, terminal field always required. ac:1 is FROZEN: converters block (never drop) on repeats, duplicates, malformed structured fields, and metadata it cannot represent. ac:1.1 sent to an ac:1-only converter blocks version-not-supported, never silently degrades. Envelope alternative: al:1/JSON may carry id/ts/proof-ref referring to an ac:1 record. Measured saving (re-measured, not carried over): ac:1.1 record 215 chars vs JSON 481 chars, chars saved 266 per record; break-even fresh agent 358 records (estimate), agent already knowing the codebook 331 records (estimate); tokens = not measured. Future breaking changes ship as ac:2, never a silent 1.1 patch.
+- Canonical al:1 key order (fixed, for stable hashes/diffs): agent, task, status, ctx, in, out, verdict, conflict, verify, note, next, done, blocked, id, ts, seq, file, data-class, proof-ref. Terminal rule (same in app.js and agentlang.js): agent/task/status required; at most one terminal line; zero terminals allowed iff status is done/blocked; terminal must agree with status (next requires todo/doing/verify, done requires done, blocked requires blocked); trailing metadata lines (id/ts/seq/file/data-class/proof-ref) may follow the terminal line.
+- Secret-pattern hygiene (canonical table: site/secret-patterns.json): block tier blocks publish/export, field + line reported, value never echoed; bare email is a WARNING tier only, never a block; generic high-entropy pattern DROPPED (false positives). Client checks are courtesy only; the Worker prototype enforces the same check server-side for public packs.
 
 ## Free forever by design (v7.3)
 No vendor is promised free forever — Vercel and Cloudflare free tiers can change their limits and terms, and no free-tier number is quoted here as a permanent guarantee.

@@ -1,0 +1,273 @@
+{
+  "agent": "ai-workspace",
+  "version": "v7.3",
+  "date": "2026-10-26",
+  "format": {
+    "keyword_index_over": [
+      "packs",
+      "views",
+      "specs"
+    ],
+    "pagination": {
+      "total": "integer, rows in this page set before paging",
+      "cursor": "opaque string returned with a page; pass it back for the next page; empty means first page",
+      "sort": "one of id|title|task; default id",
+      "page_size_note": "search in agentmode is capped at 20 (site rule); this index file itself is static and unpaged"
+    },
+    "note": "view titles are the index.html h1 text verbatim; no title was invented or prettified"
+  },
+  "views": [
+    {
+      "id": "shared",
+      "title": "shared",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-shared"
+    },
+    {
+      "id": "studio",
+      "title": "studio",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-studio"
+    },
+    {
+      "id": "compare",
+      "title": "compare",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-compare"
+    },
+    {
+      "id": "swarm",
+      "title": "swarm",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-swarm"
+    },
+    {
+      "id": "models",
+      "title": "models",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-models"
+    },
+    {
+      "id": "notes",
+      "title": "notes-amp-tasks",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-notes"
+    },
+    {
+      "id": "prompts",
+      "title": "prompts",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-prompts"
+    },
+    {
+      "id": "snippets",
+      "title": "snippets",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-snippets"
+    },
+    {
+      "id": "format",
+      "title": "format-amp-text-tools",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-format"
+    },
+    {
+      "id": "tracker",
+      "title": "tracker",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-tracker"
+    },
+    {
+      "id": "deploy",
+      "title": "deploy",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-deploy"
+    },
+    {
+      "id": "agentlang",
+      "title": "agentlang",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-agentlang"
+    },
+    {
+      "id": "boot",
+      "title": "boot",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-boot"
+    },
+    {
+      "id": "pack",
+      "title": "pack",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-pack"
+    },
+    {
+      "id": "queue",
+      "title": "queue",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-queue"
+    },
+    {
+      "id": "talk",
+      "title": "talk",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-talk"
+    },
+    {
+      "id": "forge",
+      "title": "forge",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-forge"
+    },
+    {
+      "id": "canvas",
+      "title": "canvas",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-canvas"
+    },
+    {
+      "id": "vault",
+      "title": "vault",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-vault"
+    },
+    {
+      "id": "workshop",
+      "title": "workshop",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-workshop"
+    },
+    {
+      "id": "router",
+      "title": "router",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-router"
+    },
+    {
+      "id": "timeline",
+      "title": "timeline",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-timeline"
+    },
+    {
+      "id": "quota",
+      "title": "quota",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-quota"
+    },
+    {
+      "id": "audit",
+      "title": "audit",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-audit"
+    },
+    {
+      "id": "lab",
+      "title": "lab",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-lab"
+    },
+    {
+      "id": "approval",
+      "title": "approval",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-approval"
+    },
+    {
+      "id": "gallery",
+      "title": "gallery",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-gallery"
+    },
+    {
+      "id": "shell",
+      "title": "shell",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-shell"
+    },
+    {
+      "id": "agentmode",
+      "title": "agentmode",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-agentmode"
+    },
+    {
+      "id": "cloud",
+      "title": "cloud",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-cloud"
+    },
+    {
+      "id": "language",
+      "title": "language",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-language"
+    },
+    {
+      "id": "agentcode",
+      "title": "agentcode",
+      "source": "index.html",
+      "url": "https://ai-ws.vercel.app/index.html#view-agentcode"
+    }
+  ],
+  "view_count": 32,
+  "example_packs": [
+    {
+      "id": "examples-al-1",
+      "task": "fix-login-loop",
+      "role": "builder",
+      "source": "examples.al"
+    },
+    {
+      "id": "examples-al-2",
+      "task": "fix-login-loop",
+      "role": "verdict",
+      "source": "examples.al"
+    },
+    {
+      "id": "examples-al-3",
+      "task": "queue-claim",
+      "role": "queue",
+      "source": "examples.al"
+    },
+    {
+      "id": "examples-al-4",
+      "task": "forge-example",
+      "role": "forge",
+      "source": "examples.al"
+    },
+    {
+      "id": "examples-al-5",
+      "task": "dag-example",
+      "role": "canvas",
+      "source": "examples.al"
+    },
+    {
+      "id": "examples-al-6",
+      "task": "agent-start",
+      "role": "agentmode",
+      "source": "examples.al"
+    },
+    {
+      "id": "examples-al-7",
+      "task": "cloud-public-pack-example",
+      "role": "cloud",
+      "source": "examples.al"
+    }
+  ],
+  "example_pack_count": 7,
+  "specs": [
+    {
+      "id": "agentlang",
+      "source": "AGENT-LANG.md"
+    },
+    {
+      "id": "agentcode",
+      "source": "AGENT-CODE.md"
+    },
+    {
+      "id": "agent-start",
+      "source": "AGENT-START.md"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+view: queue
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=queue
+---
+queue
+al:1
+agent: ai-workspace | role=queue
+task: queue | status: todo
+in: task | agent | status
+out: claim | release | al:1-queue
+note: claim=browser-only | not-server-atomic | one-owner-per-task-in-browser
+task
+next
+add
+copy
+claim-lease
+al:1
+agent: ai-workspace | role=queue
+task: lease | status: todo
+out: lease=10min | heartbeat=extends-10min | expiry=auto | claim=browser-only | not-server-atomic
+next: claim-with-lease
+lease-task
+lease-agent
+claim-lease
+heartbeat
+expire-now
+copy

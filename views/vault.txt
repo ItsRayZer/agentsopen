@@ -1,0 +1,45 @@
+view: vault
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=vault
+---
+vault
+al:1
+agent: ai-workspace | role=vault
+task: memory-vault | status: todo
+out: scopes=session|persistent|vector|shared | search=keyword-only | no-separate-vector-db | sync=local-only
+next: save-memory
+title
+scope
+session
+persistent
+vector
+shared
+kind
+fact
+preference
+episode
+summary
+artifact
+note
+text
+salience-0-to-1
+save-memory
+search-keyword
+export-al
+copy
+data-class-label
+Labels only. Local-only data is never marked remote. This site makes no remote calls. Secret-class exports are blocked. Sensitive-class exports warn.
+kind
+memory
+agent
+artifact
+data-class
+public
+workspace
+sensitive
+secret
+record-id
+local-only
+label
+copy

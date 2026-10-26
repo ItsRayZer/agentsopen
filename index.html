@@ -10,7 +10,6 @@
 <div class="layout">
 <nav>
   <div class="logo">ai-workspace</div>
-  <label for="themeSelect">theme</label><select id="themeSelect"><option value="default">default</option><option value="grok">grok</option><option value="gemini">gemini</option><option value="claude">claude</option><option value="governance">governance</option><option value="abyss">abyss</option><option value="manus">manus</option></select>
   <pre class="block">al:1
 agent: ai-workspace | role=workspace
 task: boot | status: todo
@@ -18,41 +17,41 @@ in: agent.json | capabilities.json | tools.json
 out: views=32
 next: agentmode-is-landing</pre>
   
-  <button data-view="agentmode" class="active" onclick="show('agentmode')">agentmode</button>
-  <button data-view="shared" onclick="show('shared')">shared</button>
-  <button data-view="studio" onclick="show('studio')">studio</button>
-  <button data-view="compare" onclick="show('compare')">compare</button>
-  <button data-view="swarm" onclick="show('swarm')">swarm</button>
-  <button data-view="models" onclick="show('models')">models</button>
-  <button data-view="notes" onclick="show('notes')">notes</button>
-  <button data-view="prompts" onclick="show('prompts')">prompts</button>
-  <button data-view="snippets" onclick="show('snippets')">snippets</button>
-  <button data-view="format" onclick="show('format')">format</button>
-  <button data-view="tracker" onclick="show('tracker')">tracker</button>
-  <button data-view="deploy" onclick="show('deploy')">deploy</button>
-  <button data-view="agentlang" onclick="show('agentlang')">agentlang</button>
+  <a data-view="agentmode" href="views/agentmode.txt" onclick="show('agentmode');return false;" class="active">agentmode</a>
+  <a data-view="shared" href="views/shared.txt" onclick="show('shared');return false;">shared</a>
+  <a data-view="studio" href="views/studio.txt" onclick="show('studio');return false;">studio</a>
+  <a data-view="compare" href="views/compare.txt" onclick="show('compare');return false;">compare</a>
+  <a data-view="swarm" href="views/swarm.txt" onclick="show('swarm');return false;">swarm</a>
+  <a data-view="models" href="views/models.txt" onclick="show('models');return false;">models</a>
+  <a data-view="notes" href="views/notes.txt" onclick="show('notes');return false;">notes</a>
+  <a data-view="prompts" href="views/prompts.txt" onclick="show('prompts');return false;">prompts</a>
+  <a data-view="snippets" href="views/snippets.txt" onclick="show('snippets');return false;">snippets</a>
+  <a data-view="format" href="views/format.txt" onclick="show('format');return false;">format</a>
+  <a data-view="tracker" href="views/tracker.txt" onclick="show('tracker');return false;">tracker</a>
+  <a data-view="deploy" href="views/deploy.txt" onclick="show('deploy');return false;">deploy</a>
+  <a data-view="agentlang" href="views/agentlang.txt" onclick="show('agentlang');return false;">agentlang</a>
   
-  <button data-view="boot" onclick="show('boot')">boot</button>
-  <button data-view="pack" onclick="show('pack')">pack</button>
-  <button data-view="queue" onclick="show('queue')">queue</button>
-  <button data-view="talk" onclick="show('talk')">talk</button>
-  <button data-view="forge" onclick="show('forge')">forge</button>
-  <button data-view="canvas" onclick="show('canvas')">canvas</button>
-  <button data-view="vault" onclick="show('vault')">vault</button>
-  <button data-view="workshop" onclick="show('workshop')">workshop</button>
-  <button data-view="router" onclick="show('router')">router</button>
-  <button data-view="timeline" onclick="show('timeline')">timeline</button>
-  <button data-view="quota" onclick="show('quota')">quota</button>
-  <button data-view="audit" onclick="show('audit')">audit</button>
-  <button data-view="lab" onclick="show('lab')">lab</button>
-  <button data-view="approval" onclick="show('approval')">approval</button>
-  <button data-view="gallery" onclick="show('gallery')">gallery</button>
-  <button data-view="shell" onclick="show('shell')">shell</button>
-  <button data-view="cloud" onclick="show('cloud')">cloud</button>
-  <button data-view="language" onclick="show('language')">language</button>
-  <button data-view="agentcode" onclick="show('agentcode')">agentcode</button>
+  <a data-view="boot" href="views/boot.txt" onclick="show('boot');return false;">boot</a>
+  <a data-view="pack" href="views/pack.txt" onclick="show('pack');return false;">pack</a>
+  <a data-view="queue" href="views/queue.txt" onclick="show('queue');return false;">queue</a>
+  <a data-view="talk" href="views/talk.txt" onclick="show('talk');return false;">talk</a>
+  <a data-view="forge" href="views/forge.txt" onclick="show('forge');return false;">forge</a>
+  <a data-view="canvas" href="views/canvas.txt" onclick="show('canvas');return false;">canvas</a>
+  <a data-view="vault" href="views/vault.txt" onclick="show('vault');return false;">vault</a>
+  <a data-view="workshop" href="views/workshop.txt" onclick="show('workshop');return false;">workshop</a>
+  <a data-view="router" href="views/router.txt" onclick="show('router');return false;">router</a>
+  <a data-view="timeline" href="views/timeline.txt" onclick="show('timeline');return false;">timeline</a>
+  <a data-view="quota" href="views/quota.txt" onclick="show('quota');return false;">quota</a>
+  <a data-view="audit" href="views/audit.txt" onclick="show('audit');return false;">audit</a>
+  <a data-view="lab" href="views/lab.txt" onclick="show('lab');return false;">lab</a>
+  <a data-view="approval" href="views/approval.txt" onclick="show('approval');return false;">approval</a>
+  <a data-view="gallery" href="views/gallery.txt" onclick="show('gallery');return false;">gallery</a>
+  <a data-view="shell" href="views/shell.txt" onclick="show('shell');return false;">shell</a>
+  <a data-view="cloud" href="views/cloud.txt" onclick="show('cloud');return false;">cloud</a>
+  <a data-view="language" href="views/language.txt" onclick="show('language');return false;">language</a>
+  <a data-view="agentcode" href="views/agentcode.txt" onclick="show('agentcode');return false;">agentcode</a>
   <button id="showAllViewsBtn" onclick="showAllViews()">show all views</button>
-  <p class="small">al:1 | agent: ai-workspace | task: nav | status: todo | out: one-view-only | show-all-is-explicit-only | default=agentmode | core-lines-in-html-no-click-needed</p>
+  <p class="small">al:1 | agent: ai-workspace | task: nav | status: todo | out: one-view-only | show-all-is-explicit-only | default=agentmode | core-lines-in-html-no-click-needed | per-view-txt=views/<id>.txt | browser-alias=?view=<id> | raw-mode=?raw=1 | inventories=agents.txt,files.txt,index.txt</p>
 </nav>
 <main>
   <pre class="block" id="saveStatus">al:1
@@ -66,7 +65,7 @@ next: use-view</pre>
     <pre class="block">al:1
 agent: ai-workspace | role=shared
 task: shared-summary | status: todo
-out: counts-from-local-stores-only | sync=local-only | cloud=not-built
+out: counts-from-local-stores-only | sync=local-only-advisory | cloud=cloudflare-free-public-packs-only
 next: use-view</pre>
     <div class="panel">
       <pre class="block" id="sharedOut"></pre>
@@ -74,11 +73,6 @@ next: use-view</pre>
     </div>
   </section>
 
-    <div class="panel">
-      <h2>v7-summary</h2>
-      <pre class="block" id="sharedV7Out"></pre>
-      <button onclick="copyText('sharedV7Out', this)">copy</button>
-    </div>
 
   <!-- STUDIO -->
   <section id="view-studio" class="view">
@@ -149,7 +143,6 @@ next: use-view</pre>
     <div class="panel"><div class="codewrap"><div id="diffOut"><pre class="block">al:1
 agent: ai-workspace | status: todo
 next: use-view</pre></div></div></div>
-  </section>
 
     <div class="panel">
       <h2>model-compare</h2>
@@ -182,6 +175,7 @@ next: use-view</pre></div></div></div>
       <pre class="block" id="cmpToolOut"></pre>
       <button onclick="copyText('cmpToolOut', this)">copy</button>
     </div>
+  </section>
   <!-- SWARM -->
   <section id="view-swarm" class="view">
     <h1>swarm</h1>
@@ -218,7 +212,6 @@ next: use-view</pre>
       <label for="jointPlan">plan</label><textarea id="jointPlan" rows="8"></textarea>
       <button onclick="copyText('jointPlan', this)">copy</button>
     </div>
-  </section>
 
     <div class="panel">
       <h2>verdict-basis</h2>
@@ -237,6 +230,7 @@ next: attach-proof-ref-in-lab</pre>
       <pre class="block" id="swarmBasisOut"></pre>
       <button onclick="copyText('swarmBasisOut', this)">copy</button>
     </div>
+  </section>
   <!-- MODELS -->
   <section id="view-models" class="view">
     <h1>models</h1>
@@ -447,7 +441,6 @@ next: build-pack</pre>
       <pre class="block" id="packJsonOut"></pre>
       <button onclick="copyText('packJsonOut', this)">copy</button>
     </div>
-  </section>
 
     <div class="panel">
       <h2>pack-slicer</h2>
@@ -465,7 +458,7 @@ next: build-pack</pre>
     </div>
     <div class="panel">
       <h2>pack-token-cost</h2>
-      <p class="small">Estimate only: 4 chars per token, not a measured model count. Cut shows what the slicer would drop at the budget.</p>
+      <p class="small">Chars only: no token estimate. Cut shows what the slicer would drop at the budget.</p>
       <label for="packTokenInput">pack-text</label><textarea id="packTokenInput" rows="6" placeholder="paste-pack-text"></textarea>
       <label for="packTokenBudget">budget-chars</label><input id="packTokenBudget" value="1000">
       <button id="packTokenBtn" class="primary" style="margin-top:12px">token-cost</button>
@@ -480,6 +473,7 @@ next: build-pack</pre>
       <pre class="block" id="packDelta71Out"></pre>
       <button onclick="copyText('packDelta71Out', this)">copy</button>
     </div>
+  </section>
   <!-- QUEUE -->
   <section id="view-queue" class="view">
     <h1>queue</h1>
@@ -497,7 +491,6 @@ note: claim=browser-only | not-server-atomic | one-owner-per-task-in-browser</pr
       <pre class="block" id="queueAlOut"></pre>
       <button onclick="copyText('queueAlOut', this)">copy</button>
     </div>
-  </section>
 
     <div class="panel">
       <h2>claim-lease</h2>
@@ -512,13 +505,14 @@ next: claim-with-lease</pre>
       <pre class="block" id="leaseOut"></pre>
       <button onclick="copyText('leaseOut', this)">copy</button>
     </div>
+  </section>
   <!-- TALK: AgentLang records only, no chat projection -->
   <section id="view-talk" class="view">
     <h1>talk</h1>
     <pre class="block">al:1
 agent: ai-workspace | role=talk
 task: talk | status: todo
-out: msg-al | from | to | task | ack | ts | sync=local-only | cloud=not-built
+out: msg-al | from | to | task | ack | ts | sync=local-only | cloud=cloudflare-free-public-packs-only
 note: talk-only | talk-store=ai-workspace_messages | no-chat-projection | no-separate-chat-store
 next: send-msg</pre>
     <div class="panel">
@@ -574,7 +568,6 @@ next: save-agent</pre>
       <button onclick="copyText('forgeOut', this)">copy</button>
       <div id="forgeList" style="margin-top:14px"></div>
     </div>
-  </section>
 
     <div class="panel">
       <h2>permission-diff-preview</h2>
@@ -594,6 +587,7 @@ next: save-agent</pre>
       <pre class="block" id="forgeVersionOut"></pre>
       <button onclick="copyText('forgeVersionOut', this)">copy</button>
     </div>
+  </section>
   <!-- CANVAS -->
   <section id="view-canvas" class="view">
     <h1>canvas</h1>
@@ -622,7 +616,6 @@ next: add-dag-task</pre>
       <button id="dagBoardAddBtn">add-to-blackboard</button>
       <div id="dagBoardList" style="margin-top:14px"></div>
     </div>
-  </section>
 
     <div class="panel">
       <h2>immutable-versioned-artifacts</h2>
@@ -643,6 +636,7 @@ next: add-dag-task</pre>
       <pre class="block" id="swarmConf71Out"></pre>
       <button onclick="copyText('swarmConf71Out', this)">copy</button>
     </div>
+  </section>
   <!-- VAULT -->
   <section id="view-vault" class="view">
     <h1>vault</h1>
@@ -663,7 +657,6 @@ next: save-memory</pre>
       <pre class="block" id="memExportOut"></pre>
       <button onclick="copyText('memExportOut', this)">copy</button>
     </div>
-  </section>
 
     <div class="panel">
       <h2>data-class-label</h2>
@@ -675,6 +668,7 @@ next: save-memory</pre>
       <pre class="block" id="labelOut"></pre>
       <button onclick="copyText('labelOut', this)">copy</button>
     </div>
+  </section>
   <!-- WORKSHOP -->
   <section id="view-workshop" class="view">
     <h1>workshop</h1>
@@ -719,7 +713,6 @@ next: register-tool</pre>
       <pre class="block" id="anchorFindOut"></pre>
       <button onclick="copyText('anchorFindOut', this)">copy</button>
     </div>
-  </section>
 
     <div class="panel">
       <h2>tool-side-effect-install-vs-grant</h2>
@@ -730,6 +723,7 @@ next: register-tool</pre>
       <pre class="block" id="tool71Out"></pre>
       <button onclick="copyText('tool71Out', this)">copy</button>
     </div>
+  </section>
   <!-- ROUTER -->
   <section id="view-router" class="view">
     <h1>router</h1>
@@ -753,13 +747,13 @@ next: score-provider</pre>
       <label for="routerQuotaUsed">quota-used-note</label><input id="routerQuotaUsed" value="0">
       <button id="routerQuotaBtn">save-quota-note</button>
     </div>
-  </section>
 
     <div class="panel">
       <h2>model-entries-qwen-deepseek</h2>
       <p class="small">Model entries only, not author specs. No Qwen or DeepSeek author spec, wish list, or UI is on file, and none is invented here. Source for these entries: listed as HF models in the Gemini spec, research/NEXUS-VOID-COMPARISON.md. No live calls. No key fields. Every free-tier claim unverified.</p>
       <table class="code"><tr><td>huggingface | qwen</td><td>free-tier-claim=unverified | verified=false | live-calls=none | keys=none</td></tr><tr><td>huggingface | deepseek</td><td>free-tier-claim=unverified | verified=false | live-calls=none | keys=none</td></tr><tr><td>openrouter | qwen</td><td>free-slugs-claim=unverified | verified=false | live-calls=none | keys=none</td></tr><tr><td>openrouter | deepseek</td><td>free-slugs-claim=unverified | verified=false | live-calls=none | keys=none</td></tr></table>
     </div>
+  </section>
   <!-- TIMELINE -->
   <section id="view-timeline" class="view">
     <h1>timeline</h1>
@@ -773,7 +767,6 @@ next: replay-scenario</pre>
     <button id="timelineReplayBtn" class="primary" style="margin-top:12px">replay</button>
     <pre class="block" id="timelineOut"></pre>
     <button onclick="copyText('timelineOut', this)">copy</button>
-  </section>
 
     <div class="panel">
       <h2>run-replay-local-only</h2>
@@ -784,13 +777,14 @@ next: replay-scenario</pre>
       <pre class="block" id="runReplayOut"></pre>
       <button onclick="copyText('runReplayOut', this)">copy</button>
     </div>
+  </section>
   <!-- QUOTA -->
   <section id="view-quota" class="view">
     <h1>quota</h1>
     <pre class="block">al:1
 agent: ai-workspace | role=quota
 task: quota-dashboard | status: todo
-out: meters=counts-only | no-charts | paid-wired=none | cloud=not-built
+out: meters=counts-only | no-charts | paid-wired=none | cloud=cloudflare-free-public-packs-only
 next: measure</pre>
     <label for="quotaLimit">limit-bytes</label><input id="quotaLimit" value="5000000">
     <button id="quotaBtn" class="primary" style="margin-top:12px">measure</button>
@@ -810,7 +804,6 @@ next: export-al</pre>
     <button id="auditExportBtn">export-al</button>
     <pre class="block" id="auditOut"></pre>
     <button onclick="copyText('auditOut', this)">copy</button>
-  </section>
 
     <div class="panel">
       <h2>policy-records-local</h2>
@@ -835,6 +828,7 @@ next: export-al</pre>
       <pre class="block" id="repOut"></pre>
       <button onclick="copyText('repOut', this)">copy</button>
     </div>
+  </section>
   <!-- LAB -->
   <section id="view-lab" class="view">
     <h1>lab</h1>
@@ -961,12 +955,11 @@ next: copy-pack</pre>
     <pre class="block">al:1
 agent: ai-workspace | role=shell
 task: combined-shell | status: todo
-out: theme=colours-density-only | env=local-only | remote=disabled-not-built | sync=local-only | cloud=not-built | keys=none | paid-wired=none
-next: pick-theme | use-view</pre>
+out: theme-independent-raw | env=local-only | remote=disabled-not-built | sync=local-only | cloud=cloudflare-free-public-packs-only | keys=none | paid-wired=none
+next: use-view</pre>
     <div class="panel">
-      <h2>themes</h2>
-      <p class="small">Themes change colours and density only. Features and data never change with a theme. Choice is saved in localStorage.</p>
-      <div class="row"><button id="themeBtn-default">default</button><button id="themeBtn-grok">grok</button><button id="themeBtn-gemini">gemini</button><button id="themeBtn-claude">claude</button><button id="themeBtn-governance">governance</button><button id="themeBtn-abyss">abyss</button><button id="themeBtn-manus">manus</button></div>
+      <p class="small">al:1 | agent: ai-workspace | task: shell-theme | status: done | out: theme-independent-raw | note: theme-picker-removed-agent-only | next: use-view</p>
+    </div>
       <pre class="block" id="themeOut"></pre>
       <button onclick="copyText('themeOut', this)">copy</button>
       <p class="small">Grok: near-black, green #00FF9D, secondary #7b61ff, danger #FF003C, JetBrains Mono, radius max 4px. Gemini: base #090D16, surface #121826, border #1E293B. Claude: #0A0B0D, acid green #B6FF3C, 12-13px, 4px grid, no shadows. Governance: #0B0D12, violet #8B7CFF, success #56D9A5. Abyss: #07090c, cyan #22d3ee, amber #f59e0b. Manus: #0B0E14, cyan #55D6D2, violet #A78BFA, system sans UI + monospace code.</p>
@@ -992,7 +985,7 @@ next: pick-theme | use-view</pre>
     <h1>agentmode</h1>
     <div class="panel">
       <h2>search-agent-task-text-status</h2>
-      <p class="small">Search, not infinite scroll. Results are capped at 20.</p>
+      <p class="small">Search, not infinite scroll. Results are paged at 20 with total + next cursor + sort=task,agent.</p>
       <div class="grid2"><div><label for="agentSearchAgent">agent</label><input id="agentSearchAgent" placeholder="agent-name-or-blank"></div><div><label for="agentSearchTask">task</label><input id="agentSearchTask" placeholder="task-id-or-blank"></div></div>
       <div class="grid2"><div><label for="agentSearchText">text</label><input id="agentSearchText" placeholder="search-text"></div><div><label for="agentSearchStatus">status</label><select id="agentSearchStatus"><option value="all">all</option><option>todo</option><option>doing</option><option>verify</option><option>done</option><option>blocked</option></select></div></div>
       <button id="agentSearchBtn" class="primary" style="margin-top:12px">search</button>
@@ -1017,7 +1010,7 @@ next: pick-example-pack | search | token-cost | delta-export</pre>
     </div>
     <div class="panel">
       <h2>token-cost</h2>
-      <p class="small">Estimate only: 4 chars per token, not a measured model count.</p>
+      <p class="small">Chars only: no token estimate.</p>
       <label for="agentTokenInput">pack-text</label><textarea id="agentTokenInput" rows="6" placeholder="paste-pack-text"></textarea>
       <label for="agentTokenBudget">budget-chars</label><input id="agentTokenBudget" value="1000">
       <button id="agentTokenBtn" class="primary" style="margin-top:12px">token-cost</button>
@@ -1041,7 +1034,7 @@ ctx: static-site | no-server
 in: file=index.html | lines=1-40
 out: diff-al | verify=pass
 next: handoff
-note: pack-chars=179 | est-tokens=45 | chars-per-token=4-estimate-only</pre>
+note: pack-chars=179 | tokens=not-measured</pre>
       <button onclick="copyText('agentPack1', this)">copy</button>
     </div>
     <div class="panel">
@@ -1053,7 +1046,7 @@ verdict: model=claude | claim=reload-fallback | proof=code
 verdict: model=gemini | claim=same | proof=code
 conflict: a=claude | b=gemini | resolve=code-only
 next: apply-fix-only
-note: pack-chars=231 | est-tokens=58 | chars-per-token=4-estimate-only</pre>
+note: pack-chars=231 | tokens=not-measured</pre>
       <button onclick="copyText('agentPack2', this)">copy</button>
     </div>
     <div class="panel">
@@ -1064,7 +1057,7 @@ task: queue-claim | status: doing
 in: task=fix-login-loop | agent=unassigned
 out: claim=agent-claimed | status=doing
 next: work-then-release
-note: pack-chars=178 | est-tokens=45 | chars-per-token=4-estimate-only</pre>
+note: pack-chars=178 | tokens=not-measured</pre>
       <button onclick="copyText('agentPack3', this)">copy</button>
     </div>
     <div class="panel">
@@ -1155,9 +1148,9 @@ next: handoff-or-apply</pre>
     </div>
     <div class="panel">
       <h2>same-task-in-both-languages</h2>
-      <p class="small">Same task, same facts. AgentLang is for the handoff; JSON is for exact data. Token estimates use 4 chars per token, estimate only.</p>
+      <p class="small">Same task, same facts. AgentLang is for the handoff; JSON is for exact data. Chars only: no token estimate.</p>
       <pre class="block" id="languageAlExample">al:1 agent=mia | task=review-login-loop | status=doing | proof=code
-note: for=handoff | chars=67 | est-tokens=16</pre>
+note: for=handoff | chars=67 | tokens=not-measured</pre>
       <button onclick="copyText('languageAlExample', this)">copy-al</button>
       <pre class="block" id="languageJsonExample">{
   "lang": "al:1",
@@ -1166,7 +1159,7 @@ note: for=handoff | chars=67 | est-tokens=16</pre>
   "status": "doing",
   "proof": "code"
 }
-note: for=exact-data | chars=109 | est-tokens=27</pre>
+note: for=exact-data | chars=109 | tokens=not-measured</pre>
       <button onclick="copyText('languageJsonExample', this)">copy-json</button>
       <p class="small">Why AgentLang is shorter here: no braces, quotes, or nesting for a simple status. Why JSON still wins for data: a tool can parse and schema-check it, while loose AgentLang cannot be validated as data.</p>
     </div>
@@ -1181,11 +1174,11 @@ note: for=exact-data | chars=109 | est-tokens=27</pre>
         <tr><td>Code execution outside the sandbox</td><td>Not built: no live model calls, no key fields, no plugin or tool loading from URLs, no code execution beyond Workshop sandboxed JS.</td></tr>
       </table>
     </div>
-  </section>
     <div class="panel">
       <h2>free-forever-by-design</h2>
       <p>No vendor is promised free forever — free tiers can change. This site is free by design, not by vendor promise: static files only, no paid binding, no custom domain, no key required. Local-first: if Cloud changes, the site still works locally and shows cloud=unreachable instead of failing. Cloud is optional: packs also move by export/import or a Git/static pack store. Self-hostable on any free static host with no code change. Everything exports as plain text/JSON. Never quote a free-tier number as a permanent guarantee.</p>
     </div>
+  </section>
   <section id="view-agentcode" class="view">
     <h1>agentcode</h1>
     <pre class="block">ac:1;a=ai-workspace;t=agentcode-start;s=dg;n=read-codebook-first
@@ -1228,7 +1221,7 @@ audit: codebook-is-public | converter-is-public | owner-can-decode-any-record | 
     <div class="panel">
       <h2>worked-example-same-task-three-languages</h2>
       <pre class="block" id="acExample">ac:1;a=mia;t=review-login-loop;s=dg;v=mia:review-login-loop:cd;n=handoff
-note: chars=72 | est-tokens=18 | for=high-volume-agent-traffic</pre>
+note: chars=72 | chars-saved-vs-json=87 | for=high-volume-agent-traffic</pre>
       <button onclick="copyText('acExample', this)">copy-ac</button>
       <pre class="block" id="acExampleAl">al:1
 agent: mia
@@ -1236,12 +1229,12 @@ task: review-login-loop
 status: doing
 verdict: model=mia | claim=review-login-loop | proof=code
 next: handoff
-note: chars=125 | est-tokens=32 | for=handoff-audit</pre>
+note: chars=125 | chars-saved-vs-json=34 | for=handoff-audit</pre>
       <button onclick="copyText('acExampleAl', this)">copy-al</button>
       <pre class="block" id="acExampleJson">{"lang":"al:1","agent":"mia","task":"review-login-loop","status":"doing","verdict":{"model":"mia","claim":"review-login-loop","proof":"code"},"next":"handoff"}
-note: chars=159 | est-tokens=40 | for=exact-tool-data</pre>
+note: chars=159 | tokens=not-measured | for=exact-tool-data</pre>
       <button onclick="copyText('acExampleJson', this)">copy-json</button>
-      <p class="small">Counts: characters, no trailing newline; tokens = chars/4, estimate only, same rule as Agent Mode. AgentCode is 42% shorter than AgentLang and 55% shorter than JSON for this task — and that saving is why it needs a codebook: dg means nothing without the status table, cd means nothing without the proof table. Both tables are above, and the converter decodes them on demand, so the saving never becomes secrecy.</p>
+      <p class="small">Counts: characters, no trailing newline; no token estimate. AgentCode is 42% shorter than AgentLang and 55% shorter than JSON for this task, saving 87 chars vs JSON per message; codebook is 6966 chars, so break-even vs JSON is 81 messages (6966/87, ceil).</p>
       <p class="small">Cloud single-line pack, converted: al:1 agent=test | action=live-browser-test | status=done becomes ac:1;a=test;t=live-browser-test;s=dn (action normalises to task). Back to AgentLang it is al:1 agent=test | task=live-browser-test | status=done.</p>
     </div>
   </section>
@@ -1253,6 +1246,7 @@ note: chars=159 | est-tokens=40 | for=exact-tool-data</pre>
 <script src="cloud.js"></script>
 <script src="v72.js"></script>
 <script src="agentcode.js"></script>
+<script src="agentlang.js"></script>
 <script src="v73.js"></script>
 </body>
 </html>

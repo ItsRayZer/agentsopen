@@ -1,0 +1,40 @@
+view: approval
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=approval
+---
+approval
+al:1
+agent: ai-workspace | role=approval
+task: approval-inbox | status: todo
+out: apply-only-after-approve | dry-run-receipt-first | observer-blocked | merge-only-on-approve | auto-merge=never
+next: create-approval
+action
+apply-pack
+merge-duplicate
+enable-tool
+set-autonomy
+target
+payload-preview
+agent
+role
+owner
+agent
+observer
+scope
+expires
+create-approval
+copy
+duplicate-work
+scan-duplicates
+copy
+conflicts-both-versions-kept
+version-a
+version-b
+resolution-record
+record-conflict
+sensitivity-label
+Label only. Nothing is sent. The output lists what categories would leave on export.
+text-to-label
+label
+copy

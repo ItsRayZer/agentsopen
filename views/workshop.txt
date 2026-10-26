@@ -1,0 +1,55 @@
+view: workshop
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=workshop
+---
+workshop
+al:1
+agent: ai-workspace | role=workshop
+task: tool-workshop | status: todo
+out: registry=user-typed-only | no-url-tool-loading | http=dry-run-only | js=worker-only-no-dom-no-network-10s | free-only
+next: register-tool
+tool-name
+json-schema
+runtime
+js
+http
+wasm
+perms-comma
+register-draft
+dry-run-only
+tool-name
+input-json
+dry-run
+copy
+http and community tools are never actually called from this page. Dry-run shows what would be called, and calls nothing.
+js-worker-sandbox
+User-typed JS expressions only. Never paste fetched or remote code here. Blocked tokens: fetch, XMLHttpRequest, WebSocket, importScripts, localStorage, indexedDB, document, window, eval, Function. Timeout 10s.
+js-expression
+x*2).join(',')">
+run-in-worker
+copy
+code-anchor
+code
+start-line
+end-line
+make-anchor
+copy
+find-excerpt-first-line
+find-after-edit
+copy
+tool-side-effect-install-vs-grant
+Installing a tool does not grant execution. Grant is a separate owner click. Side-effect classes: read | reversible_write | external_write | irreversible.
+tool-name
+side-effect
+read
+reversible_write
+external_write
+irreversible
+runtime
+js
+http
+wasm
+install-only
+grant-separately
+copy

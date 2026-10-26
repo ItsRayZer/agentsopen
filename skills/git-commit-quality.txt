@@ -1,0 +1,27 @@
+---
+name: git-commit-quality
+description: Review a commit message and diff against quality criteria and produce a verdict pack. Use when a task involves reviewing a commit.
+class: prompt-only
+verified: false
+digest: sha256:3b3184e152824460bda09fa81010c86ff5fa9d5f9fac1fe7bc3271d3c5d7a6bc
+---
+
+---BEGIN SKILL---
+purpose: Review a commit message and diff against quality criteria and produce a verdict pack.
+input: al:1 pack | plain text (code + task + criteria list)
+output: al:1 verdict pack (model, claim, proof=code with file:line refs, or proof=none)
+endpoint-or-file: none — template only, no live call
+limits: no live lint/test/CI execution; proof-refs must resolve to supplied lines
+cost: free-here
+account: none
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: tool:compare, tool:pack
+example-input: two synthetic snippets + criteria: [correctness, style]
+example-output: al:1 verdict pack with per-criterion entries; unbound criteria use proof=none
+errors: template-input-missing, template-pack-malformed, secret-pattern, proof-ref-missing
+excluded-reason: n/a
+references: none
+---END SKILL---

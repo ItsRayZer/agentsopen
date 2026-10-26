@@ -3,13 +3,117 @@ al:1
 agent: ai-workspace | role=workspace
 task: boot | status: todo
 in: agent.json | capabilities.json | tools.json | AGENT-LANG.md | AGENT-START.md | HANDOFF.md | examples.al
-out: views=33 | lang=al:1 | keys=none | exec=sandboxed-js-only
+out: views=32 | lang=al:1 | keys=none | exec=sandboxed-js-only
 next: select-view
-note: v7.1 | shell+themes-7+agentmode | local-only | not-deployed | not-pushed | free-only | sync=local-only | cloud=not-built
+note: version-history=CHANGELOG.al | single-history | views=32 | cloud=cloudflare-free-public-packs-only
 
 note: v7.2 | cloud-view+cloudflare-free-public-packs-only | local-only | not-deployed | not-pushed | free-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only
-note: v7.2-fix | language-guide-view+which-language-when | views=33 | local-only | not-deployed | not-pushed | free-only
-note: v7.3 | agentcode-view+ac:1-convert | views=34 | local-only | not-deployed | not-pushed | free-only | free-forever-by-design-not-vendor-promise
 
 note: v7.3-agentonly | agent-only | landing=agentmode | no-human-home | no-chat-projection | views=32 | core-lines-in-html-no-click-needed | fetch=index.html-gives-all-views-core-lines | local-only | not-deployed | not-pushed | free-only
 note: aiws-cli | sh+curl-only | file=aiws | docs=aiws.md | commands=start,agent,examples,search,pack,publish,list,get,delete,health,help | keys=none | publish-public-only | no-code-exec | local-only | not-deployed | not-pushed | free-only
+
+## Registry (generated from registry/source.json + site/tools.json)
+- [preamble.txt](/preamble.txt) — class boundary and constraints
+- [skills.txt](/skills.txt) — one line per skill
+- [skills.json](/skills.json) — machine-readable skill index
+- [tools.txt](/tools.txt) — one line per tool
+- [tools.json](/tools.json) — machine-readable tool index (33 fix-build tools)
+- [index.txt](/index.txt) — skill + tool + view index for aiws search
+
+## Skills
+- [advertising-campaigns](/skills/advertising-campaigns.txt) — prompt-only
+- [agent-browser-nav](/skills/agent-browser-nav.txt) — prompt-only
+- [ai-teamwork](/skills/ai-teamwork.txt) — connector-required
+- [app-creation](/skills/app-creation.txt) — prompt-only
+- [business-finance](/skills/business-finance.txt) — prompt-only
+- [code-reviewer](/skills/code-reviewer.txt) — prompt-only
+- [custom-connector-setup](/skills/custom-connector-setup.txt) — connector-required
+- [customer-outreach](/skills/customer-outreach.txt) — prompt-only
+- [deep-research](/skills/deep-research.txt) — prompt-only
+- [deep-work](/skills/deep-work.txt) — prompt-only
+- [device-data](/skills/device-data.txt) — connector-required
+- [directing-stickman-videos](/skills/directing-stickman-videos.txt) — connector-required
+- [documents](/skills/documents.txt) — prompt-only
+- [email-management](/skills/email-management.txt) — connector-required
+- [event-tickets](/skills/event-tickets.txt) — connector-required
+- [ffmpeg-skill](/skills/ffmpeg-skill.txt) — connector-required
+- [file-hosting](/skills/file-hosting.txt) — connector-required
+- [financial-planning](/skills/financial-planning.txt) — prompt-only
+- [fitness-tracking](/skills/fitness-tracking.txt) — prompt-only
+- [flight-booking](/skills/flight-booking.txt) — connector-required
+- [flight-tracking](/skills/flight-tracking.txt) — connector-required
+- [form-design](/skills/form-design.txt) — prompt-only
+- [generate_podcast](/skills/generate_podcast.txt) — prompt-only
+- [git-commit-quality](/skills/git-commit-quality.txt) — prompt-only
+- [goals](/skills/goals.txt) — prompt-only
+- [groceries](/skills/groceries.txt) — connector-required
+- [health-review](/skills/health-review.txt) — prompt-only
+- [higgsfield-product-photoshoot](/skills/higgsfield-product-photoshoot.txt) — connector-required
+- [home-control](/skills/home-control.txt) — connector-required
+- [home-search](/skills/home-search.txt) — connector-required
+- [hotel-booking](/skills/hotel-booking.txt) — connector-required
+- [image-search](/skills/image-search.txt) — prompt-only
+- [knowledge-organization](/skills/knowledge-organization.txt) — prompt-only
+- [marketplaces](/skills/marketplaces.txt) — connector-required
+- [mcp-tool-authoring](/skills/mcp-tool-authoring.txt) — prompt-only
+- [media-library](/skills/media-library.txt) — connector-required
+- [meeting-follow-up](/skills/meeting-follow-up.txt) — prompt-only
+- [messaging](/skills/messaging.txt) — connector-required
+- [mortgage-comparison](/skills/mortgage-comparison.txt) — prompt-only
+- [music-discovery](/skills/music-discovery.txt) — connector-required
+- [place-discovery](/skills/place-discovery.txt) — connector-required
+- [remotion-motion-graphics](/skills/remotion-motion-graphics.txt) — connector-required
+- [restaurant-reservations](/skills/restaurant-reservations.txt) — connector-required
+- [scheduling](/skills/scheduling.txt) — prompt-only
+- [security-hygiene-audit](/skills/security-hygiene-audit.txt) — prompt-only
+- [shopping](/skills/shopping.txt) — connector-required
+- [short-editing](/skills/short-editing.txt) — connector-required
+- [smb-product-shots](/skills/smb-product-shots.txt) — connector-required
+- [social-content-performance](/skills/social-content-performance.txt) — prompt-only
+- [social-publishing](/skills/social-publishing.txt) — prompt-only
+- [spoken-audio](/skills/spoken-audio.txt) — prompt-only
+- [store-operations](/skills/store-operations.txt) — connector-required
+- [style-tryon](/skills/style-tryon.txt) — connector-required
+- [task-management](/skills/task-management.txt) — prompt-only
+- [translation](/skills/translation.txt) — prompt-only
+- [trip-planning](/skills/trip-planning.txt) — connector-required
+- [trip-transport](/skills/trip-transport.txt) — connector-required
+- [wearables-comms](/skills/wearables-comms.txt) — connector-required
+- [weekly-review](/skills/weekly-review.txt) — prompt-only
+- [wide-research](/skills/wide-research.txt) — prompt-only
+- [workout-planning](/skills/workout-planning.txt) — prompt-only
+
+## Tools
+- [agentcode](https://ai-ws.vercel.app/views/agentcode.txt) — built-in
+- [agentlang](https://ai-ws.vercel.app/views/agentlang.txt) — built-in
+- [agentmode](https://ai-ws.vercel.app/views/agentmode.txt) — built-in
+- [aiws](https://ai-ws.vercel.app/views/agentmode.txt) — built-in
+- [approval](https://ai-ws.vercel.app/views/approval.txt) — built-in
+- [audit](https://ai-ws.vercel.app/views/audit.txt) — built-in
+- [boot](https://ai-ws.vercel.app/views/boot.txt) — built-in
+- [canvas](https://ai-ws.vercel.app/views/canvas.txt) — built-in
+- [cloud](https://ai-ws.vercel.app/views/cloud.txt) — built-in
+- [compare](https://ai-ws.vercel.app/views/compare.txt) — built-in
+- [deploy](https://ai-ws.vercel.app/views/deploy.txt) — built-in
+- [forge](https://ai-ws.vercel.app/views/forge.txt) — built-in
+- [format](https://ai-ws.vercel.app/views/format.txt) — built-in
+- [gallery](https://ai-ws.vercel.app/views/gallery.txt) — built-in
+- [lab](https://ai-ws.vercel.app/views/lab.txt) — built-in
+- [language](https://ai-ws.vercel.app/views/language.txt) — built-in
+- [models](https://ai-ws.vercel.app/views/models.txt) — built-in
+- [notes](https://ai-ws.vercel.app/views/notes.txt) — built-in
+- [pack](https://ai-ws.vercel.app/views/pack.txt) — built-in
+- [prompts](https://ai-ws.vercel.app/views/prompts.txt) — built-in
+- [queue](https://ai-ws.vercel.app/views/queue.txt) — built-in
+- [quota](https://ai-ws.vercel.app/views/quota.txt) — built-in
+- [router](https://ai-ws.vercel.app/views/router.txt) — built-in
+- [shared](https://ai-ws.vercel.app/views/shared.txt) — built-in
+- [shell](https://ai-ws.vercel.app/views/shell.txt) — built-in
+- [snippets](https://ai-ws.vercel.app/views/snippets.txt) — built-in
+- [studio](https://ai-ws.vercel.app/views/studio.txt) — built-in
+- [swarm](https://ai-ws.vercel.app/views/swarm.txt) — built-in
+- [talk](https://ai-ws.vercel.app/views/talk.txt) — built-in
+- [timeline](https://ai-ws.vercel.app/views/timeline.txt) — built-in
+- [tracker](https://ai-ws.vercel.app/views/tracker.txt) — built-in
+- [vault](https://ai-ws.vercel.app/views/vault.txt) — built-in
+- [workshop](https://ai-ws.vercel.app/views/workshop.txt) — built-in

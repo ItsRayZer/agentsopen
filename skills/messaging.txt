@@ -1,0 +1,27 @@
+---
+name: messaging
+description: Discover messaging options available through the agent's own connected account channel. Use when a task involves messaging another person.
+class: connector-required
+verified: false
+digest: sha256:6b9c5547f67a65eb34b537cf15316351536c53b08f903cec2151881c0dfd351c
+---
+
+---BEGIN SKILL---
+purpose: Discover messaging options available through the agent's own connected account channel.
+input: plain text (discovery query — no workspace call)
+output: none — registry entry only; result comes from agent's own channel, never from this workspace
+endpoint-or-file: none — registry entry only, no workspace endpoint; agent uses its own channel
+limits: workspace never sends and never pretends to be a real person; any send needs per-person/per-wording owner approval in the owner's channel
+cost: unknown-elsewhere
+account: owner-channel
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: none
+example-input: discovery query in the agent's own channel
+example-output: registry entry only — no workspace output; agent uses its own channel with its own approval
+errors: owner-approval-required, secret-pattern
+excluded-reason: n/a
+references: none
+---END SKILL---

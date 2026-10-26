@@ -1,0 +1,27 @@
+---
+name: place-discovery
+description: Discover place options available through the agent's own channel. Use when a task involves finding a place.
+class: connector-required
+verified: false
+digest: sha256:fd2ea3dd3068b435999dd847787edc901d5bab34cecc34bec1bd9e3d6c0336d2
+---
+
+---BEGIN SKILL---
+purpose: Discover place options available through the agent's own channel.
+input: plain text (discovery query — no workspace call)
+output: none — registry entry only; result comes from agent's own channel, never from this workspace
+endpoint-or-file: none — registry entry only, no workspace endpoint; agent uses its own channel
+limits: workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact
+cost: unknown-elsewhere
+account: owner-channel
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: none
+example-input: discovery query in the agent's own channel
+example-output: registry entry only — no workspace output; agent uses its own channel with its own approval
+errors: owner-approval-required, secret-pattern
+excluded-reason: n/a
+references: none
+---END SKILL---

@@ -1,0 +1,13 @@
+view: deploy
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=deploy
+---
+deploy
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+reset

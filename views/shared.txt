@@ -1,0 +1,13 @@
+view: shared
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=shared
+---
+shared
+al:1
+agent: ai-workspace | role=shared
+task: shared-summary | status: todo
+out: counts-from-local-stores-only | sync=local-only-advisory | cloud=cloudflare-free-public-packs-only
+next: use-view
+refresh
+copy

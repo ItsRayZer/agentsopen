@@ -59,7 +59,12 @@
     "cloud-public-packs-cloudflare-free",
     "language-guide-which-when",
     "agentcode-convert",
-    "aiws-cli"
+    "aiws-cli",
+    "skills-registry",
+    "manifest",
+    "aiws-v2",
+    "cloud-v2-delete-token",
+    "dom-isolation-panels"
   ],
   "limits": [
     "localStorage-single-browser",

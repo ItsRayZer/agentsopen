@@ -1,0 +1,32 @@
+view: format
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=format
+---
+format-amp-text-tools
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+json
+format
+minify
+copy
+md
+copy
+text
+count
+upper
+lower
+sort
+dedupe
+out
+copy
+regex
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+pattern
+flags
+text
+test
+copy

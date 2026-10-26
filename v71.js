@@ -113,13 +113,14 @@
   ];
   const TOKEN_CHARS_PER_TOKEN = 4;
   function tokenCost(text, budgetChars) {
+    // Chars only: no token estimate exists here. Break-even vs a reference
+    // (e.g. JSON) is charsSaved / codebookChars, computed by the caller.
     const t = String(text || '');
     const chars = t.length;
-    const estTokens = Math.ceil(chars / TOKEN_CHARS_PER_TOKEN);
-    if (!budgetChars || budgetChars <= 0) return { chars, estTokens, budgetChars: 0, cutChars: 0, cutTokens: 0, kept: t, cut: '', note: 'no-budget-given | nothing-cut' };
-    if (chars <= budgetChars) return { chars, estTokens, budgetChars, cutChars: 0, cutTokens: 0, kept: t, cut: '', note: 'pack-fits-budget | nothing-cut' };
+    if (!budgetChars || budgetChars <= 0) return { chars, lengthProxyCharsDiv4: Math.ceil(chars / 4), lengthProxyNote: 'chars/4 length-proxy-only | not-a-token-count | no-model-named', tokens: 'not-measured', budgetChars: 0, cutChars: 0, kept: t, cut: '', note: 'no-budget-given | nothing-cut | tokens=not-measured' };
+    if (chars <= budgetChars) return { chars, lengthProxyCharsDiv4: Math.ceil(chars / 4), lengthProxyNote: 'chars/4 length-proxy-only | not-a-token-count | no-model-named', tokens: 'not-measured', budgetChars, cutChars: 0, kept: t, cut: '', note: 'pack-fits-budget | nothing-cut | tokens=not-measured' };
     const kept = t.slice(0, budgetChars), cut = t.slice(budgetChars);
-    return { chars, estTokens, budgetChars, cutChars: cut.length, cutTokens: Math.ceil(cut.length / TOKEN_CHARS_PER_TOKEN), kept, cut, note: 'pack-sliced-by-budget | tail-cut | cut-preview-in-output' };
+    return { chars, lengthProxyCharsDiv4: Math.ceil(chars / 4), lengthProxyNote: 'chars/4 length-proxy-only | not-a-token-count | no-model-named', tokens: 'not-measured', budgetChars, cutChars: cut.length, kept, cut, note: 'pack-sliced-by-budget | tail-cut | cut-preview-in-output | tokens=not-measured' };
   }
   function lineDelta(oldText, newText) {
     const a = String(oldText || '').split('\n').filter((l) => l.trim());
@@ -127,7 +128,7 @@
     const setA = new Set(a), setB = new Set(b);
     const added = b.filter((l) => !setA.has(l)), removed = a.filter((l) => !setB.has(l));
     const deltaText = added.join('\n');
-    return { added, removed, addedCount: added.length, removedCount: removed.length, deltaChars: deltaText.length, deltaTokens: Math.ceil(deltaText.length / TOKEN_CHARS_PER_TOKEN), note: 'delta-only | added-lines-exported | removed-lines-counted-not-exported-as-content' };
+    return { added, removed, addedCount: added.length, removedCount: removed.length, deltaChars: deltaText.length, note: 'delta-added-and-removed | tokens=not-measured' };
   }
   function searchRecords(records, q) {
     const query = q || {};
@@ -139,7 +140,10 @@
       if (status !== 'all' && String(r.status || '') !== status) return false;
       return true;
     });
-    return { results: out.slice(0, 20), total: out.length, capped: out.length > 20, note: 'search-by-agent-task-text-status | capped-at-20 | no-infinite-scroll' };
+    const sorted = out.slice().sort((a, b) => String(a.task || '').localeCompare(String(b.task || '')) || String(a.agent || '').localeCompare(String(b.agent || '')));
+    const start = (query.cursor && !isNaN(parseInt(query.cursor, 10)) && parseInt(query.cursor, 10) >= 0) ? parseInt(query.cursor, 10) : 0;
+    const page = sorted.slice(start, start + 20);
+    return { results: page, total: sorted.length, shown: page.length, cursor: String(start), nextCursor: (start + 20 < sorted.length) ? String(start + 20) : null, sort: 'task,agent', pageSize: 20, capped: sorted.length > 20, note: 'search-by-agent-task-text-status | cursor-pagination | sort=task,agent | no-infinite-scroll' };
   }
   function applyThemeToDocument(id) {
     if (typeof document === 'undefined') return themeFromStored(id);
@@ -256,23 +260,23 @@
       bind('policySaveBtn', () => {
         const p = { approvalRules: ($('policyApproval') ? $('policyApproval').value.trim() : ''), dataClassRules: ($('policyDataClass') ? $('policyDataClass').value.trim() : ''), retention: ($('policyRetention') ? $('policyRetention').value.trim() : ''), export: ($('policyExport') ? $('policyExport').value.trim() : ''), revocation: ($('policyRevocation') ? $('policyRevocation').value.trim() : '') };
         storeSet('ai-workspace_v71_policy', p); renderPolicy();
-        if ($('policyOut')) $('policyOut').textContent = alOut(['agent: ai-workspace | role=policy', 'task: policy-save-local | status: done', 'out: saved=local-only | keys=none | cloud=not-built', 'next: use-policy-view']);
+        if ($('policyOut')) $('policyOut').textContent = alOut(['agent: ai-workspace | role=policy', 'task: policy-save-local | status: done', 'out: saved=local-only | keys=none | cloud=cloudflare-free-public-packs-only', 'next: use-policy-view']);
       });
       bind('packTokenBtn', () => {
         const r = tokenCost($('packTokenInput').value, parseInt($('packTokenBudget').value, 10) || 0);
-        $('packTokenOut').textContent = alOut(['agent: ai-workspace | role=pack', 'task: pack-token-cost | status: done', 'out: chars=' + r.chars + ' | est-tokens=' + r.estTokens + ' | chars-per-token=4-estimate-only', 'out: budget-chars=' + r.budgetChars + ' | cut-chars=' + r.cutChars + ' | cut-tokens=' + r.cutTokens + ' | cut=' + sl(r.cut).slice(0, 200), 'out: note=' + r.note, 'next: slice-or-raise-budget']);
+        $('packTokenOut').textContent = alOut(['agent: ai-workspace | role=pack', 'task: pack-token-cost | status: done', 'out: chars=' + r.chars + ' | tokens=not-measured', 'out: budget-chars=' + r.budgetChars + ' | cut-chars=' + r.cutChars + '  | cut=' + sl(r.cut).slice(0, 200), 'out: note=' + r.note, 'next: slice-or-raise-budget']);
       });
       bind('packDelta71Btn', () => {
         const d = lineDelta($('packDelta71Prev').value, $('packDelta71Curr').value);
-        $('packDelta71Out').textContent = alOut(['agent: ai-workspace | role=pack', 'task: pack-delta-since-last | status: done', 'out: added-lines=' + d.addedCount + ' | removed-lines=' + d.removedCount + ' | delta-chars=' + d.deltaChars + ' | delta-est-tokens=' + d.deltaTokens].concat(d.added.map((l) => 'note: delta-added=' + sl(l)))).concat(['note: delta-only-export | removed-lines-counted-only', 'next: copy-delta']);
+        $('packDelta71Out').textContent = alOut(['agent: ai-workspace | role=pack', 'task: pack-delta-since-last | status: done', 'out: added-lines=' + d.addedCount + ' | removed-lines=' + d.removedCount + ' | delta-chars=' + d.deltaChars].concat(d.added.map((l) => 'note: delta-added=' + sl(l))).concat(d.removed.map((l) => 'note: delta-removed=' + sl(l)))).concat(['note: delta-added-and-removed | tokens=not-measured', 'next: copy-delta']);
       });
       bind('agentTokenBtn', () => {
         const r = tokenCost($('agentTokenInput').value, parseInt($('agentTokenBudget').value, 10) || 0);
-        $('agentTokenOut').textContent = alOut(['agent: ai-workspace | role=agentmode', 'task: pack-token-cost | status: done', 'out: chars=' + r.chars + ' | est-tokens=' + r.estTokens + ' | chars-per-token=4-estimate-only', 'out: budget-chars=' + r.budgetChars + ' | cut-chars=' + r.cutChars + ' | cut-tokens=' + r.cutTokens + ' | cut=' + sl(r.cut).slice(0, 200), 'out: note=' + r.note, 'next: slice-or-raise-budget']);
+        $('agentTokenOut').textContent = alOut(['agent: ai-workspace | role=agentmode', 'task: pack-token-cost | status: done', 'out: chars=' + r.chars + ' | tokens=not-measured', 'out: budget-chars=' + r.budgetChars + ' | cut-chars=' + r.cutChars + '  | cut=' + sl(r.cut).slice(0, 200), 'out: note=' + r.note, 'next: slice-or-raise-budget']);
       });
       bind('agentDeltaBtn', () => {
         const d = lineDelta($('agentDeltaPrev').value, $('agentDeltaCurr').value);
-        $('agentDeltaOut').textContent = alOut(['agent: ai-workspace | role=agentmode', 'task: pack-delta-since-last | status: done', 'out: added-lines=' + d.addedCount + ' | removed-lines=' + d.removedCount + ' | delta-chars=' + d.deltaChars + ' | delta-est-tokens=' + d.deltaTokens].concat(d.added.map((l) => 'note: delta-added=' + sl(l)))).concat(['note: delta-only-export | removed-lines-counted-only', 'next: copy-delta']);
+        $('agentDeltaOut').textContent = alOut(['agent: ai-workspace | role=agentmode', 'task: pack-delta-since-last | status: done', 'out: added-lines=' + d.addedCount + ' | removed-lines=' + d.removedCount + ' | delta-chars=' + d.deltaChars].concat(d.added.map((l) => 'note: delta-added=' + sl(l))).concat(d.removed.map((l) => 'note: delta-removed=' + sl(l)))).concat(['note: delta-added-and-removed | tokens=not-measured', 'next: copy-delta']);
       });
       bind('agentSearchBtn', () => {
         const records = [];
@@ -281,7 +285,7 @@
         try { storeGet('ai-workspace_v7_memories', []).forEach((m) => records.push({ agent: '', task: '', text: m.title + ' ' + m.text, status: 'todo' })); } catch {}
         try { storeGet('ai-workspace_messages', []).forEach((m) => records.push({ agent: m.from, task: m.task, text: m.text, status: m.ack ? 'done' : 'todo' })); } catch {}
         const r = searchRecords(records, { agent: $('agentSearchAgent').value, task: $('agentSearchTask').value, text: $('agentSearchText').value, status: $('agentSearchStatus').value });
-        $('agentSearchOut').textContent = alOut(['agent: ai-workspace | role=agentmode', 'task: agent-search | status: done', 'out: total=' + r.total + ' | shown=' + r.results.length + ' | capped=' + r.capped].concat(r.results.map((x) => 'note: hit agent=' + sl(x.agent) + ' | task=' + sl(x.task) + ' | status=' + sl(x.status) + ' | text=' + sl(x.text).slice(0, 160)))).concat(['next: open-record-in-its-view']);
+        $('agentSearchOut').textContent = alOut(['agent: ai-workspace | role=agentmode', 'task: agent-search | status: done', 'out: total=' + r.total + ' | shown=' + r.shown + ' | cursor=' + r.cursor + ' | next-cursor=' + (r.nextCursor || 'none') + ' | sort=' + r.sort].concat(r.results.map((x) => 'note: hit agent=' + sl(x.agent) + ' | task=' + sl(x.task) + ' | status=' + sl(x.status) + ' | text=' + sl(x.text).slice(0, 160)))).concat(['next: open-record-in-its-view']);
       });
       renderV71All();
     });

@@ -1,0 +1,69 @@
+view: swarm
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=swarm
+---
+swarm
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+task
+ctx
+symptom
+question
+brief
+copy
+verdicts
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+claude
+verdict
+right
+wrong
+gemini
+verdict
+right
+wrong
+chatgpt
+verdict
+right
+wrong
+grok
+verdict
+right
+wrong
+conflicts
+conflict
+resolve
+add
+plan
+copy
+verdict-basis
+al:1
+agent: ai-workspace | role=swarm
+task: verdict-basis | status: todo
+out: basis=files|excerpt|summary|logic-only | proof=none-cannot-resolve-conflict
+next: attach-proof-ref-in-lab
+basis-claude
+files
+excerpt
+summary
+logic-only
+basis-gemini
+files
+excerpt
+summary
+logic-only
+basis-chatgpt
+files
+excerpt
+summary
+logic-only
+basis-grok
+files
+excerpt
+summary
+logic-only
+basis-al
+copy

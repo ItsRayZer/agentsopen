@@ -1,0 +1,42 @@
+{
+  "agent": "ai-workspace",
+  "version": "v7.3",
+  "date": "2026-10-26",
+  "forbidden_tokens": [
+    "fetch(",
+    "XMLHttpRequest",
+    "WebSocket",
+    "importScripts",
+    "localStorage",
+    "indexedDB",
+    "document.",
+    "window.",
+    "eval(",
+    "Function("
+  ],
+  "forbidden_tokens_source": "v7.js FORBIDDEN_TOKENS array verbatim; index.html prose drops some punctuation but the code list is canonical",
+  "timeout": {
+    "seconds": 10,
+    "milliseconds": 10000,
+    "on_timeout": "blocked: reason=tool-timeout | need=shorter-snippet"
+  },
+  "globals": "unconfirmed beyond the sandbox contract: Web Worker, no DOM, no network; no global list is enumerated in site code, so none is claimed here",
+  "io_format": {
+    "input": "one user-typed JS expression string",
+    "output_ok": "result string rendered as al:1 done record",
+    "output_blocked": "al:1 blocked record with reason=tool-forbidden-token | need=remove-<token>, or tool-timeout, or tool-error"
+  },
+  "error_codes": [
+    "tool-forbidden-token",
+    "tool-timeout",
+    "tool-error",
+    "worker-unavailable"
+  ],
+  "pasted_via_automation_counts_as_user_typed": false,
+  "pasted_evidence": [
+    "site states: User-typed JS expressions only (v7.js, AGENT-LANG.md, index.html)",
+    "site states: Never paste fetched or remote code here (index.html workshop panel)",
+    "therefore automation paste is NOT user-typed; pasted fetched/remote code is out of contract"
+  ],
+  "note": "HTTP/community tools are dry-run only and are never called from the page; no tool is loaded from a URL"
+}

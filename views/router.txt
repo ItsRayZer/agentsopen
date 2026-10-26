@@ -1,0 +1,45 @@
+view: router
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=router
+---
+router
+al:1
+agent: ai-workspace | role=router
+task: router-inspector | status: todo
+out: prompt-tool-only | live-calls=none | keys=none | free-tier-claims=unverified | paid-wired=none
+next: score-provider
+Prompt tool only. This page makes no model call, stores no key, and has no key field. Every free-tier claim below is a spec claim, marked unverified — check vendor pages before relying on it. Paid tiers are not listed as usable options and are not wired.
+copy
+score-calculator
+provider
+groq
+together
+fireworks
+openrouter
+huggingface
+cerebras
+mistral
+google-ai-studio
+cf-workers-ai
+github-models
+ollama
+webllm
+capability-match-0-to-1
+error-rate-5m-0-to-1
+quota-remaining-0-to-1
+latency-p50-ms
+score
+copy
+quota-used-note
+save-quota-note
+model-entries-qwen-deepseek
+Model entries only, not author specs. No Qwen or DeepSeek author spec, wish list, or UI is on file, and none is invented here. Source for these entries: listed as HF models in the Gemini spec, research/NEXUS-VOID-COMPARISON.md. No live calls. No key fields. Every free-tier claim unverified.
+huggingface | qwen
+free-tier-claim=unverified | verified=false | live-calls=none | keys=none
+huggingface | deepseek
+free-tier-claim=unverified | verified=false | live-calls=none | keys=none
+openrouter | qwen
+free-slugs-claim=unverified | verified=false | live-calls=none | keys=none
+openrouter | deepseek
+free-slugs-claim=unverified | verified=false | live-calls=none | keys=none

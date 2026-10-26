@@ -1,0 +1,35 @@
+# tools.txt — generated from site/tools.json + registry/source.json. Do not hand-edit.
+# one line per tool: name | desc | url | skills
+tool: agentcode | desc=agentcode | ac:1 | codebook-public-not-secret | ac->al | al->ac | ac->json | json->ac | audit-undecodable-do-not-trust | url=https://ai-ws.vercel.app/views/agentcode.txt | skills=none
+tool: agentlang | desc=al:1 | convert | examples | url=https://ai-ws.vercel.app/views/agentlang.txt | skills=none
+tool: agentmode | desc=agentmode-raw | agent-start-page | search-agent-task-text-status | token-cost | delta-since-last | example-packs-3 | negative-examples | plain-text-al-export | url=https://ai-ws.vercel.app/views/agentmode.txt | skills=none
+tool: aiws | desc=aiws | sh+curl-only | start | agent | examples | search-capped-20 | pack-validate-only | publish-public-only | list | get | delete-own-only | health | keys=none | no-code-exec | url=https://ai-ws.vercel.app/views/agentmode.txt | skills=none
+tool: approval | desc=approval-inbox | dry-run-receipt | duplicate-scan | conflict-both-kept | sensitivity-label | url=https://ai-ws.vercel.app/views/approval.txt | skills=none
+tool: audit | desc=audit | decision-log-append-only | idempotent-events | policy-records | reputation-descriptive-only | url=https://ai-ws.vercel.app/views/audit.txt | skills=none
+tool: boot | desc=al:1 | manifest | spec | tools | first-task | url=https://ai-ws.vercel.app/views/boot.txt | skills=none
+tool: canvas | desc=dag | ready-set | blocked-by | blocks | critic-veto | blackboard | url=https://ai-ws.vercel.app/views/canvas.txt | skills=none
+tool: cloud | desc=cloud | cloudflare-free-public-packs-only | publish-public | list | import-validated | delete-own-only | kv-list-40s-note | url=https://ai-ws.vercel.app/views/cloud.txt | skills=none
+tool: compare | desc=diff | add | del | chg | same | al | model | agent | tool | spec | url=https://ai-ws.vercel.app/views/compare.txt | skills=app-creation,code-reviewer,git-commit-quality
+tool: deploy | desc=deploy-check | verify | go-ahead-required | url=https://ai-ws.vercel.app/views/deploy.txt | skills=none
+tool: forge | desc=forge | autonomy-0-5 | fingerprint-sha256 | observer-read-only | permission-diff-preview | agent-version-pin | url=https://ai-ws.vercel.app/views/forge.txt | skills=none
+tool: format | desc=json | md | text | regex | exec=none | url=https://ai-ws.vercel.app/views/format.txt | skills=none
+tool: gallery | desc=gallery | example-packs-al | copy-out | url=https://ai-ws.vercel.app/views/gallery.txt | skills=none
+tool: lab | desc=lab | al-lint | negative-fixtures | replay | snapshot-ephemeral | verify-staleness | migration-dry-run | url=https://ai-ws.vercel.app/views/lab.txt | skills=none
+tool: language | desc=language-guide | which-language-when | al:1-coordination | json-exact-data | sandboxed-js-execution | examples-al-json | negative-examples | url=https://ai-ws.vercel.app/views/language.txt | skills=none
+tool: models | desc=prompt-al | per-model | url=https://ai-ws.vercel.app/views/models.txt | skills=none
+tool: notes | desc=notes | tasks | local | url=https://ai-ws.vercel.app/views/notes.txt | skills=none
+tool: pack | desc=al:1+json | code+verdict+notes+tracker | slicer | delta | token-cost | delta-since-last | url=https://ai-ws.vercel.app/views/pack.txt | skills=advertising-campaigns,agent-browser-nav,app-creation,business-finance,code-reviewer,customer-outreach,deep-research,deep-work,documents,financial-planning,fitness-tracking,form-design,generate_podcast,git-commit-quality,goals,health-review,image-search,knowledge-organization,mcp-tool-authoring,meeting-follow-up,mortgage-comparison,scheduling,security-hygiene-audit,social-content-performance,social-publishing,spoken-audio,task-management,translation,weekly-review,wide-research,workout-planning
+tool: prompts | desc=prompts | save | search | copy | url=https://ai-ws.vercel.app/views/prompts.txt | skills=none
+tool: queue | desc=al:1 | claim | assignee | status | single-owner | lease-heartbeat | url=https://ai-ws.vercel.app/views/queue.txt | skills=none
+tool: quota | desc=quota | meters-counts-only | warning-al-note | url=https://ai-ws.vercel.app/views/quota.txt | skills=none
+tool: router | desc=router-inspector | prompt-only | fallback-chain | score | breaker | quota | free-claims-unverified | qwen-deepseek-models | url=https://ai-ws.vercel.app/views/router.txt | skills=none
+tool: shared | desc=shared | ready | active | blocked | conflicts | pending-verify | sync=local-only | url=https://ai-ws.vercel.app/views/shared.txt | skills=none
+tool: shell | desc=shell-combined-ui | themes-7 | top-bar | left-rail | main-stage | right-inspector | command-preview | status-strip | run-tray-local | url=https://ai-ws.vercel.app/views/shell.txt | skills=none
+tool: snippets | desc=snippets | lang | tags | exec=none | url=https://ai-ws.vercel.app/views/snippets.txt | skills=none
+tool: studio | desc=code | view | search | import | url=https://ai-ws.vercel.app/views/studio.txt | skills=none
+tool: swarm | desc=brief-al | verdicts | conflicts | plan | url=https://ai-ws.vercel.app/views/swarm.txt | skills=none
+tool: talk | desc=talk-al | from | to | task | ack | ts | local | url=https://ai-ws.vercel.app/views/talk.txt | skills=none
+tool: timeline | desc=timeline | decision-log | scenario-replay | run-replay-local-only | url=https://ai-ws.vercel.app/views/timeline.txt | skills=none
+tool: tracker | desc=tracker | status | next | export-al | export-json | url=https://ai-ws.vercel.app/views/tracker.txt | skills=none
+tool: vault | desc=memory | session | persistent | vector-label | shared | keyword-search | pin | forget | export | url=https://ai-ws.vercel.app/views/vault.txt | skills=none
+tool: workshop | desc=registry | json-schema | dry-run-only | js-worker-sandbox | code-anchor | side-effect | install-vs-grant | url=https://ai-ws.vercel.app/views/workshop.txt | skills=none

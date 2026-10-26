@@ -1,0 +1,27 @@
+---
+name: app-creation
+description: Plan a small app from its users, their tasks, and a good result, starting smallest. Use when a task involves planning a small app.
+class: prompt-only
+verified: false
+digest: sha256:3c4423e3aa02aa8462ef3489c22c56a0c29e04d24b36af0b4e90affb50ad878f
+---
+
+---BEGIN SKILL---
+purpose: Plan a small app from its users, their tasks, and a good result, starting smallest.
+input: al:1 pack | plain text (code + task + criteria list)
+output: al:1 verdict pack (model, claim, proof=code with file:line refs, or proof=none)
+endpoint-or-file: none — template only, no live call
+limits: no live lint/test/CI execution; proof-refs must resolve to supplied lines
+cost: free-here
+account: none
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: tool:compare, tool:pack
+example-input: two synthetic snippets + criteria: [correctness, style]
+example-output: al:1 verdict pack with per-criterion entries; unbound criteria use proof=none
+errors: template-input-missing, template-pack-malformed, secret-pattern, proof-ref-missing
+excluded-reason: n/a
+references: none
+---END SKILL---

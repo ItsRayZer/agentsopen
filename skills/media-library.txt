@@ -1,0 +1,27 @@
+---
+name: media-library
+description: Discover photo-library search options available through the agent's own device channel. Use when a task involves searching a photo library.
+class: connector-required
+verified: false
+digest: sha256:e1e9bd6d355acd102cdf08133d461e52398687b88eb4d1bc7afecb3b88e57648
+---
+
+---BEGIN SKILL---
+purpose: Discover photo-library search options available through the agent's own device channel.
+input: plain text (discovery query — no workspace call)
+output: none — registry entry only; result comes from agent's own channel, never from this workspace
+endpoint-or-file: none — registry entry only, no workspace endpoint; agent uses its own channel
+limits: workspace holds no media and plays nothing; playback, library, and search happen in the owner's connected account or device
+cost: unknown-elsewhere
+account: owner-channel
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: none
+example-input: discovery query in the agent's own channel
+example-output: registry entry only — no workspace output; agent uses its own channel with its own approval
+errors: owner-approval-required, secret-pattern
+excluded-reason: n/a
+references: none
+---END SKILL---

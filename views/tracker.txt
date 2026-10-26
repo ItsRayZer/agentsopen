@@ -1,0 +1,24 @@
+view: tracker
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=tracker
+---
+tracker
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+project
+status
+todo
+doing
+verify
+done
+blocked
+next
+notes
+add
+export-json
+export-md
+copy
+export-al
+copy

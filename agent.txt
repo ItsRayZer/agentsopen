@@ -1,0 +1,13 @@
+al:1
+agent: ai-workspace | role=boot
+task: boot
+status: todo
+out: views=32 | lang=al:1 | keys=none | exec=sandboxed-js-only
+out: landing=agentmode | agent-only | no-human-home | no-chat-projection
+out: sync=local-only-by-default | cloud=cloudflare-free-public-packs-only
+out: free-only | paid-wired=none | secrets=none | live-calls=none
+note: hash-rule | hash=sha256-of-file-bytes | filled-by-coordinator-build-check | no-hash-here-is-real
+note: full-inventory=files.txt | index=agents.txt | per-view-txt=views/<id>.txt | browser-alias=?view=<id> | raw-mode=?raw=1
+note: limits | localStorage-single-browser | claim-advisory-not-server-atomic | no-live-apis | no-secrets-in-client | no-url-tool-loading | no-auto-merge | no-reputation-scores
+note: limits | pack-max=102400-bytes | pack-must-start=al:1 | publish-public-only | workshop=user-typed-only | timeout=10s | no-dom | no-network
+next: read agent.json | capabilities.json | tools.json | AGENT-LANG.md | AGENT-CODE.md | examples.al

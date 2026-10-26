@@ -1,0 +1,36 @@
+view: agentlang
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=agentlang
+---
+agentlang
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+boot
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+to-al
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+al
+single-line Cloud packs accepted: al:1 agent=... | task=... | status=... · to-json outputs a JSON object in Result.
+to-al
+to-json
+example
+Result
+copy
+examples
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+example:code
+example:swarm
+example:deploy
+example:boot
+copy

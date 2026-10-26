@@ -1,0 +1,45 @@
+view: canvas
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=canvas
+---
+canvas
+al:1
+agent: ai-workspace | role=canvas
+task: swarm-canvas | status: todo
+out: dag | ready-set-computed | critic-veto | blackboard | sync=local-only
+next: add-dag-task
+task-id
+title
+deps-comma
+status
+todo
+doing
+verify
+done
+blocked
+add-dag-task
+copy
+critic-veto
+veto-task-id
+veto-reason
+veto
+blackboard
+namespace
+blackboard-text
+add-to-blackboard
+immutable-versioned-artifacts
+Artifacts are immutable per version. A different hash for the same id + version is blocked. Edits require a new version. No silent overwrite.
+artifact-id
+version
+content-hash
+record-artifact
+copy
+swarm-conflict-surface
+Conflicts are surfaced with provenance. Both versions are kept. No silent reconcile. No auto-resolve.
+task-id
+version-a
+version-b
+provenance
+surface-conflict
+copy

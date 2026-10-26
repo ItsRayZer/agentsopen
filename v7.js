@@ -49,16 +49,43 @@
     (tasks || []).forEach((t) => { (t.deps || []).forEach((d) => { if (out[d]) out[d].push(t.id); }); });
     return out;
   }
+  // Slicer, line-boundary only (team-round resolution). A sliced pack
+  // retains its header line + exactly one end line (next/done/blocked),
+  // marks sliced=true, and carries the remainder as a NAMED continuation
+  // pack (continuation field) with remainder-hash (fnv, local only — not
+  // sha256, and never presented as a security hash). Single-line input
+  // (no newline) falls back to a char cut, which the old test pins.
   function slicePack(text, budgetChars) {
     const s = String(text || '');
     if (!budgetChars || budgetChars <= 0) return { blocked: 'reason=pack-budget-invalid | need=budget-chars-positive', sliced: '', chars: 0, truncated: false };
     if (s.length <= budgetChars) return { sliced: s, chars: s.length, truncated: false, note: 'pack-fits-budget' };
-    return { sliced: s.slice(0, budgetChars), chars: budgetChars, truncated: true, note: 'pack-sliced-by-budget | remainder-not-included | need=raise-budget-or-split-pack' };
+    const lines = s.split('\n');
+    if (lines.length === 1) return { sliced: s.slice(0, budgetChars), chars: budgetChars, truncated: true, slicedLineBoundary: false, note: 'pack-sliced-by-budget | single-line-input | remainder-not-included' };
+    const header = lines[0];
+    const endIdx = lines.findLastIndex(l => /^(next|done|blocked):/.test(l.trim()));
+    const endLine = endIdx >= 0 ? lines[endIdx] : null;
+    const body = [], bodyIdx = [];
+    let used = header.length + 1 + (endLine ? endLine.length + 1 : 0);
+    for (let i = 1; i < lines.length; i++) {
+      if (i === endIdx) continue;
+      if (used + lines[i].length + 1 > budgetChars) break;
+      body.push(lines[i]); bodyIdx.push(i); used += lines[i].length + 1;
+    }
+    const keptLines = [header].concat(body).concat(endLine ? [endLine] : []);
+    const keptIdx = new Set([0].concat(bodyIdx).concat(endIdx >= 0 ? [endIdx] : []));
+    // Remainder = lines not kept, in original order, as a continuation pack.
+    const remainderLines = lines.filter((l, i) => !keptIdx.has(i));
+    const sliced = keptLines.join('\n');
+    const continuation = remainderLines.length ? [header, 'note: continuation-of-sliced-pack | sliced=true'].concat(remainderLines).join('\n') : '';
+    return { sliced, chars: sliced.length, truncated: true, slicedLineBoundary: true, slicedTrue: true, remainderHash: fnvHash(remainderLines.join('\n')), continuation, continuationChars: continuation.length, note: 'pack-sliced-line-boundary | header-and-end-retained | continuation-included' };
   }
   function deltaPack(oldText, newText) {
     const a = String(oldText || '').split('\n'), b = String(newText || '').split('\n');
     const setA = new Set(a), setB = new Set(b);
-    return { added: b.filter((l) => !setA.has(l)), removed: a.filter((l) => !setB.has(l)), addedCount: b.filter((l) => !setA.has(l)).length, removedCount: a.filter((l) => !setB.has(l)).length };
+    const added = b.filter((l) => !setA.has(l)), removed = a.filter((l) => !setB.has(l));
+    // Reversible: base hash (fnv, local only) + both added and removed.
+    // Delta-since-last (v71 lineDelta) also now reports removed lines.
+    return { added, removed, addedCount: added.length, removedCount: removed.length, baseHash: fnvHash(String(oldText || '')), reversible: true };
   }
   function expireLeases(leases, nowMs) {
     const kept = [], expired = [];
@@ -304,7 +331,7 @@
     const dec = storeGet('ai-workspace_decisions', []);
     const mems = storeGet('ai-workspace_v7_memories', []);
     const tools = storeGet('ai-workspace_v7_tools', []);
-    $('sharedV7Out').textContent = alOut(['agent: ai-workspace | role=shared', 'task: shared-v7 | status: todo', 'out: agents=' + agents.length + ' | dag-ready=' + ready.length + ' | approvals-pending=' + appr.length + ' | decisions=' + dec.length + ' | memories=' + mems.length + ' | tools=' + tools.length, 'out: sync=local-only | keys=none | exec=sandboxed-js-only | cloud=not-built | paid-wired=none', 'next: use-view']);
+    $('sharedV7Out').textContent = alOut(['agent: ai-workspace | role=shared', 'task: shared-v7 | status: todo', 'out: agents=' + agents.length + ' | dag-ready=' + ready.length + ' | approvals-pending=' + appr.length + ' | decisions=' + dec.length + ' | memories=' + mems.length + ' | tools=' + tools.length, 'out: sync=local-only | keys=none | exec=sandboxed-js-only | cloud=cloudflare-free-public-packs-only | paid-wired=none', 'next: use-view']);
   }
   function renderAllV7() { try { renderForge(); } catch {} try { renderDag(); } catch {} try { renderVault(); } catch {} try { renderWorkshop(); } catch {} try { renderRouter(); } catch {} try { renderApprovals(); } catch {} try { renderAudit(); } catch {} try { renderTimeline(); } catch {} try { renderLeases(); } catch {} try { renderGallery(); } catch {} try { renderConflictsV7(); } catch {} try { renderSharedV7(); } catch {} }
 
@@ -446,7 +473,7 @@
         try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith('ai-workspace_')) { bytes += (localStorage.getItem(k) || '').length; count++; } } } catch {}
         const msgs = storeGet('ai-workspace_messages', []);
         const w = quotaWarning(bytes, parseInt($('quotaLimit').value, 10) || 5000000);
-        $('quotaOut').textContent = alOut(['agent: ai-workspace | role=quota', 'task: quota-meters | status: todo', 'out: localstorage-bytes=' + bytes + ' | keys=' + count + ' | messages=' + msgs.length, 'out: warn=' + (w.warn ? w.level : 'ok') + ' | paid-wired=none | cloud=not-built', w.warn ? 'note: quota-warning | see-audit-note' : 'note: quota-ok', 'next: export-if-near-limit']) + (w.al ? '\n' + w.al : '');
+        $('quotaOut').textContent = alOut(['agent: ai-workspace | role=quota', 'task: quota-meters | status: todo', 'out: localstorage-bytes=' + bytes + ' | keys=' + count + ' | messages=' + msgs.length, 'out: warn=' + (w.warn ? w.level : 'ok') + ' | paid-wired=none | cloud=cloudflare-free-public-packs-only', w.warn ? 'note: quota-warning | see-audit-note' : 'note: quota-ok', 'next: export-if-near-limit']) + (w.al ? '\n' + w.al : '');
       });
       bind('apprCreateBtn', () => {
         const list = storeGet('ai-workspace_v7_approvals', []);

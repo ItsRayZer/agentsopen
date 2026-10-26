@@ -1,0 +1,27 @@
+---
+name: custom-connector-setup
+description: Describe how a new service connector is set up through its own documented secure flow, without connecting anything here. Use when a task involves connecting a new service.
+class: connector-required
+verified: false
+digest: sha256:1201d078adfb746817dd1725d3dc2d056e4fd7080520968bf8a033bb9fd2314d
+---
+
+---BEGIN SKILL---
+purpose: Describe how a new service connector is set up through its own documented secure flow, without connecting anything here.
+input: plain text (discovery query — no workspace call)
+output: none — registry entry only; result comes from agent's own channel, never from this workspace
+endpoint-or-file: none — registry entry only, no workspace endpoint; agent uses its own channel
+limits: describes a setup flow only; it does not connect anything from inside AI Workspace; credentials go through the new connector's own secure flow, never through this workspace
+cost: unknown-elsewhere
+account: owner-channel
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: none
+example-input: discovery query in the agent's own channel
+example-output: registry entry only — no workspace output; agent uses its own channel with its own approval
+errors: owner-approval-required, secret-pattern
+excluded-reason: n/a
+references: none
+---END SKILL---

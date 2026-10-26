@@ -1,0 +1,252 @@
+{
+  "agent": "ai-workspace",
+  "version": "v7.3",
+  "date": "2026-10-26",
+  "method": "grep of site *.js for localStorage get/set and store.get/store.set calls; every key below was found in code",
+  "key_count_named_entries": 33,
+  "key_count_note": "33 named entries; the verdict pattern entry expands to 4 model keys, so at most 36 stored keys from this list",
+  "limits": [
+    "localStorage-single-browser",
+    "claim-not-server-atomic",
+    "save-failed if storage unavailable",
+    "quota meters count bytes and keys; warning at 80 percent, exceeded at 100 percent"
+  ],
+  "export_format": "plain-text al:1 packs and JSON (tracker export-al / export-json; pack export); no other export format is stated",
+  "not_localStorage_note": "aiws publish ids are stored in file ~/.aiws-published (override AIWS_PUBLISHED_FILE), not in localStorage",
+  "unconfirmed": "no key beyond this list could be confirmed from site JS; any other key an agent guesses is unconfirmed, do not invent it",
+  "keys": [
+    {
+      "key": "ai-workspace_files",
+      "schema": "array of {name, content}",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_verdict_<model>",
+      "schema": "object {verdict, right, wrong}; model in claude|gemini|chatgpt|grok (pattern expands to 4 keys)",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted",
+      "note": "pattern key; one stored key per model"
+    },
+    {
+      "key": "ai-workspace_conflicts",
+      "schema": "array of {text, resolution}",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_custom_tools",
+      "schema": "array of {name, desc, view}",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_tasks",
+      "schema": "array of {text, done}",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_prompts",
+      "schema": "array of {title, category, text}",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_snippets",
+      "schema": "array of {title, lang, tags, code}",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_projects",
+      "schema": "array of {name, status, next, notes}; status normalised to legal status",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_deploy_checks",
+      "schema": "object mapping check index to boolean",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_queue",
+      "schema": "array of {task, agent, status, next}",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_messages",
+      "schema": "array of {id, from, to, task, text, ack, ts}; one store only, no chat view",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_notes",
+      "schema": "plain string (not JSON-wrapped by the notes handler)",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_joint_plan",
+      "schema": "plain string",
+      "source_file": "app.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_decisions",
+      "schema": "array of append-only decision-log events with idempotent event ids (replayed id returns dup=true)",
+      "source_file": "v7.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_leases",
+      "schema": "array of {task, agent, until, heartbeats}",
+      "source_file": "v7.js",
+      "lease_ttl": "ttl=10min (600000ms); heartbeat extends 10min; expiry automatic on expire check",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v7_agents",
+      "schema": "array of forge agent records",
+      "source_file": "v7.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v7_approvals",
+      "schema": "array of approval records {action, target, agent, role, scope, expires, decision}",
+      "source_file": "v7.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v7_board",
+      "schema": "board state object/array (shared board)",
+      "source_file": "v7.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted",
+      "note": "exact inner shape unconfirmed beyond board use; not invented here"
+    },
+    {
+      "key": "ai-workspace_v7_conflicts",
+      "schema": "array of v7 conflict records",
+      "source_file": "v7.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v7_dag",
+      "schema": "canvas DAG state",
+      "source_file": "v7.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v7_memories",
+      "schema": "array of vault memory records",
+      "source_file": "v7.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v7_router",
+      "schema": "object mapping provider id to {breaker, quotaUsed} overrides",
+      "source_file": "v7.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v7_tools",
+      "schema": "array of v7 workshop tool records",
+      "source_file": "v7.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v7_verifications",
+      "schema": "array of verification records",
+      "source_file": "v7.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_theme",
+      "schema": "plain string theme id (default, grok, gemini, claude, governance, abyss, manus); colours/density only",
+      "source_file": "v71.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v71_agents",
+      "schema": "array of v7.1 agent records",
+      "source_file": "v71.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v71_artifacts",
+      "schema": "array of immutable versioned artifacts",
+      "source_file": "v71.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v71_labels",
+      "schema": "array of data-class labels",
+      "source_file": "v71.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v71_policy",
+      "schema": "array of policy records (approval, data-class, retention, export, revocation)",
+      "source_file": "v71.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v71_runs",
+      "schema": "array of local run records with steps (replay local only)",
+      "source_file": "v71.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_v71_tools",
+      "schema": "array of v7.1 tool records with side-effect class and install-vs-grant",
+      "source_file": "v71.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_cloud_own",
+      "schema": "array of pack ids published from this browser (delete gate)",
+      "source_file": "v72.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    },
+    {
+      "key": "ai-workspace_cloud_imports",
+      "schema": "array of imported cloud pack records",
+      "source_file": "v72.js",
+      "lease_ttl": "none-stated",
+      "storage": "localStorage, single browser, JSON-stringified unless noted"
+    }
+  ]
+}

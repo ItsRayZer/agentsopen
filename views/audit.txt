@@ -1,0 +1,37 @@
+view: audit
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=audit
+---
+audit
+al:1
+agent: ai-workspace | role=audit
+task: decision-log | status: todo
+out: append-only | no-delete | idempotent-event-ids | sync=local-only
+next: export-al
+export-al
+copy
+policy-records-local
+Local records only. Approval rules, data-class rules, retention, export, and revocation are stored in localStorage, never sent.
+approval-rules
+consequential external writes, irreversible actions, credential use, publication, scope expansion: owner approval
+data-class-rules
+public|workspace|sensitive|secret; secret export blocked; sensitive export warned
+retention
+localStorage only; delete via forget/remove in each view; audit log append-only
+export
+AgentLang copy-out only; nothing sent
+revocation
+remove agent/tool/run record locally; pinned runs keep their version label
+save-policy-local
+copy
+reputation-descriptive-only
+Descriptive counts only. Reputation does not unlock permissions, does not expand autonomy, and does not change grants. No leaderboard. No ranking.
+agent
+feedback-count
+successful-runs
+failed-runs
+schema-validity-rate
+approval-reversal-rate
+show-descriptive-counts
+copy

@@ -1,0 +1,27 @@
+view: talk
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=talk
+---
+talk
+al:1
+agent: ai-workspace | role=talk
+task: talk | status: todo
+out: msg-al | from | to | task | ack | ts | sync=local-only | cloud=cloudflare-free-public-packs-only
+note: talk-only | talk-store=ai-workspace_messages | no-chat-projection | no-separate-chat-store
+next: send-msg
+from
+to
+task
+text
+send
+search
+task-filter
+ack-filter
+all
+unacked
+acked
+export-al
+copy
+import-al
+import

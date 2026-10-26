@@ -1,0 +1,10 @@
+al:1
+agent: ai-workspace | role=boot
+task: boot
+status: todo
+out: views=32 | lang=al:1 | keys=none | exec=sandboxed-js-only
+out: landing=agentmode | agent-only | sync=local-only-by-default
+note: full-inventory=files.txt | hashes-filled-by-coordinator-build-check
+note: limits | free-only | no-secrets | no-live-calls | no-paid-wired | pack-max=102400
+note: limits | workshop=user-typed-only | timeout=10s | no-dom | no-network
+next: read agent.json | capabilities.json | tools.json | pick-first-task

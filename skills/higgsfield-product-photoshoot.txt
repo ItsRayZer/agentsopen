@@ -1,0 +1,27 @@
+---
+name: higgsfield-product-photoshoot
+description: Discover product-photoshoot options available through the agent's own media channel. Use when a task involves a product photoshoot.
+class: connector-required
+verified: false
+digest: sha256:bf36313be96bcaf3c7808f9b87e2383644e6bd2e636a6ae6e377b299a553f0e4
+---
+
+---BEGIN SKILL---
+purpose: Discover product-photoshoot options available through the agent's own media channel.
+input: plain text (discovery query — no workspace call)
+output: none — registry entry only; result comes from agent's own channel, never from this workspace
+endpoint-or-file: none — registry entry only, no workspace endpoint; agent uses its own channel
+limits: workspace generates, edits, or renders no media; production happens in the agent's own media channel with its own approval
+cost: unknown-elsewhere
+account: owner-channel
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: none
+example-input: discovery query in the agent's own channel
+example-output: registry entry only — no workspace output; agent uses its own channel with its own approval
+errors: owner-approval-required, secret-pattern
+excluded-reason: n/a
+references: none
+---END SKILL---

@@ -1,0 +1,9 @@
+# CHANGELOG | ai-workspace | single-version-history | dates-unproven-where-not-stated-in-site-docs
+v7.1 | date=unproven | changed=unproven-file-list | breaking=additive | note=shell+themes-7+agentmode | views=31
+v7.2 | date=unproven | changed=unproven-file-list | breaking=additive | note=cloud-view+cloudflare-free-public-packs-only | views=32
+v7.2-fix | date=unproven | changed=unproven-file-list | breaking=additive | note=language-guide-view+which-language-when+validator-fix+to-json-object+view-isolation | views=33
+v7.3 | date=unproven | changed=unproven-file-list | breaking=additive | note=agentcode-view+ac:1-convert+free-forever-by-design | views=34
+v7.3-agentonly | date=unproven | changed=unproven-file-list | breaking=landing-only | note=agent-only+landing=agentmode+no-human-home+no-chat-projection+home-chat-removed | views=32
+v7.3-agentonly-aiws | date=unproven | changed=aiws,aiws.md | breaking=additive | note=aiws-cli+sh+curl-only+commands=start,agent,examples,search,pack,publish,list,get,delete,health,help+keys=none+publish-public-only+no-code-exec | views=32
+v7.3-merged | date=2026-10-26 | changed=index.html,app.js,v72.js,cloud.js,aiws,aiws.md,agent.json,capabilities.json,tools.json,agentcode.js,approvals.md,packs/self-test.al,agent.schema.json,manifest.json,skills.json,skills.txt,tools.txt,index.txt,preamble.txt,llms.txt,skills/*.txt,cloud/claim-log.js,cloud/mcp/mcp-worker.js | breaking=none-additive | note=merge-all+prune | merged=claude-v7.4-fix+deepseek-registry-full-catalog+gemini-v8+self-improve-gaps | added=registry-61-skills+manifest+aiws-v2+cloud-v2-delete-token+dom-isolation-panels+claim-log-prototype+mcp-v2-alignment+parseAcStream | views=32 | tools=33 | skills=61 | capabilities=62
+# latest=v7.3-merged | formats-unchanged=al:1+ac:1+json | earlier-release-dates-and-file-lists-marked-unproven-because-site-docs-state-no-dates

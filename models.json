@@ -1,0 +1,66 @@
+{
+  "agent": "ai-workspace",
+  "version": "v7.3",
+  "date": "2026-10-26",
+  "note": "claim unverified by default for every entry; verified=false in site code for all router entries; no live calls, no key fields",
+  "chooser_entries": [],
+  "chooser_rule": "a model enters the chooser ONLY if site/router files state an exact provider slug; family names without slugs are excluded-from-chooser, never chooser entries",
+  "excluded_from_chooser": [
+    {
+      "provider": "huggingface",
+      "family": "qwen",
+      "exact_slug": null,
+      "reason": "family name only, no exact slug stated",
+      "source_note": "listed as HF models in the Gemini spec, research/NEXUS-VOID-COMPARISON.md",
+      "last_checked": "unverified"
+    },
+    {
+      "provider": "huggingface",
+      "family": "deepseek",
+      "exact_slug": null,
+      "reason": "family name only, no exact slug stated",
+      "source_note": "listed as HF models in the Gemini spec, research/NEXUS-VOID-COMPARISON.md",
+      "last_checked": "unverified"
+    },
+    {
+      "provider": "openrouter",
+      "family": "qwen",
+      "exact_slug": null,
+      "reason": "free-slugs claim only, no exact slug stated",
+      "source_note": "listed as HF models in the Gemini spec, research/NEXUS-VOID-COMPARISON.md",
+      "last_checked": "unverified"
+    },
+    {
+      "provider": "openrouter",
+      "family": "deepseek",
+      "exact_slug": null,
+      "reason": "free-slugs claim only, no exact slug stated",
+      "source_note": "listed as HF models in the Gemini spec, research/NEXUS-VOID-COMPARISON.md",
+      "last_checked": "unverified"
+    },
+    {
+      "provider": "google-ai-studio",
+      "family": "Gemini Flash free (spec example)",
+      "exact_slug": null,
+      "reason": "spec example label only, no exact slug stated",
+      "source_note": "site router provider list (spec example)",
+      "last_checked": "unverified"
+    }
+  ],
+  "router_provider_ids_in_ui": [
+    "groq",
+    "together",
+    "fireworks",
+    "openrouter",
+    "huggingface",
+    "cerebras",
+    "mistral",
+    "google-ai-studio",
+    "cf-workers-ai",
+    "github-models",
+    "ollama",
+    "webllm"
+  ],
+  "provider_ids_note": "these are provider ids from the router select element, not model slugs, and not chooser entries",
+  "last_checked_rule": "last-checked date 2026-10-26 is used ONLY where a file states a check; no site file states a model check, so every entry here is unverified"
+}

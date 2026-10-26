@@ -1,0 +1,23 @@
+view: timeline
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=timeline
+---
+timeline
+al:1
+agent: ai-workspace | role=timeline
+task: run-timeline | status: todo
+out: events=decision-log | replay=lab-scenarios | sync=local-only
+next: replay-scenario
+scenario
+claim-expiry
+duplicate-block
+import-block
+replay
+copy
+run-replay-local-only
+Replay shows recorded local steps again. It applies nothing. External side effects are never replayed. State is unchanged.
+run-id
+recorded-steps-one-per-line
+replay-local
+copy

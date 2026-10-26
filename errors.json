@@ -1,0 +1,764 @@
+{
+ "agent": "ai-workspace",
+ "version": "v7.3",
+ "date": "2026-10-26",
+ "format": "blocked: reason=<reason> | need=<need>",
+ "note": "verbatim_in_site=false means the reason name comes from the fixbuild brief, not from site code; nearest site-verbatim reason is listed",
+ "structured_error_index": {
+  "field-loss": {
+   "field": "any al:1/json/ac:1 code field",
+   "line_rule": "one code per line in al:1; one code=value field per ;-segment in ac:1; no code may be dropped in conversion",
+   "valid_example": "al:1 agent=mia | task=t1 | status=doing -> json {\"agent\":\"mia\",\"task\":\"t1\",\"status\":\"doing\"}",
+   "invalid_example": "al:1 agent=mia | task=t1 | status=doing -> json {\"agent\":\"mia\",\"task\":\"t1\"} (status dropped)",
+   "exact_fix": "re-run conversion and keep every code; if a code has no target field, keep it as an extra field, never drop it"
+  },
+  "secret-pattern": {
+   "field": "any value",
+   "line_rule": "no line may match a secret pattern; on match, block and never echo the value",
+   "valid_example": "out: contact=public-docs-link",
+   "invalid_example": "out: key=REDACTED-PATTERN-EXAMPLE (any real key, token, password assignment, email, or private-key block)",
+   "exact_fix": "replace the value with redacted, remove the secret from the pack, and re-validate"
+  },
+  "proof-ref-missing": {
+   "field": "proof-ref",
+   "line_rule": "a verdict with basis=files|excerpt must name proof-ref=<artifact-or-pack-id> on the same verdict line",
+   "valid_example": "verdict: model=mia | claim=fix | proof=code | basis=files | proof-ref=pack-example-000",
+   "invalid_example": "verdict: model=mia | claim=fix | proof=code | basis=files (no proof-ref)",
+   "exact_fix": "add proof-ref=<artifact-or-pack-id> naming the file, artifact, or pack that was read"
+  },
+  "already-claimed": {
+   "field": "queue claim (task + agent)",
+   "line_rule": "one owner per queue task; a claimed task keeps status=doing and its owner until released or its lease expires",
+   "valid_example": "task=t1 | agent=unassigned | status=todo -> claim -> agent=agent-claimed | status=doing",
+   "invalid_example": "task=t1 already agent=agent-claimed | status=doing -> second claim by another agent",
+   "exact_fix": "wait for release or lease expiry (10min), then claim; site-verbatim reason for this state is claim-taken"
+  },
+  "not-own-published-id": {
+   "field": "pack id on delete",
+   "line_rule": "delete is allowed only for an id in the publisher's own-published list (browser local list, or aiws published file)",
+   "valid_example": "delete id=pack-example-000 where pack-example-000 is in own-published list",
+   "invalid_example": "delete id=someone-elses-pack (not in own-published list)",
+   "exact_fix": "delete only ids you published from this browser/tool; otherwise use blocked, do not delete"
+  },
+  "pack-too-large": {
+   "field": "whole pack",
+   "line_rule": "pack bytes (UTF-8) must be <= 102400",
+   "valid_example": "pack of 102400 bytes or fewer starting with al:1",
+   "invalid_example": "pack of 102401 bytes",
+   "exact_fix": "slice the pack with the pack slicer to a smaller budget, or split it into two packs"
+  },
+  "not-marked-public": {
+   "field": "public mark",
+   "line_rule": "publish requires the explicit public mark: public checkbox in UI, or public=true in the pack for aiws",
+   "valid_example": "pack starts al:1, size <= 102400, contains public=true -> publish allowed",
+   "invalid_example": "pack without public=true -> publish blocked",
+   "exact_fix": "add public=true to the pack (only for content that is genuinely public) and publish again"
+  }
+ },
+ "reasons": [
+  {
+   "reason": "no-from",
+   "meaning": "talk/swarm message has no sender",
+   "version": "v7",
+   "need": "from=agent-id",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-task",
+   "meaning": "message or pack has no task id",
+   "version": "v7",
+   "need": "task=task-id",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-text",
+   "meaning": "talk message has no text",
+   "version": "v7",
+   "need": "text=message-text",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-url",
+   "meaning": "import has no URL",
+   "version": "v7",
+   "need": "url=public-url",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "url-invalid",
+   "meaning": "import URL is not a valid public URL",
+   "version": "v7",
+   "need": "valid-public-url",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "fetch-failed",
+   "meaning": "fetch of a public URL failed",
+   "version": "v7",
+   "need": "reachable-public-url",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "import-empty",
+   "meaning": "import produced no content",
+   "version": "v7",
+   "need": "non-empty-import",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "json-invalid",
+   "meaning": "JSON input is not valid for the target shape",
+   "version": "v7",
+   "need": "valid-json-object",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "json-not-parseable",
+   "meaning": "input is not parseable JSON",
+   "version": "v7.3",
+   "need": "valid-json-object",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "regex-invalid",
+   "meaning": "supplied regex does not compile",
+   "version": "v7",
+   "need": "valid-regex",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "al-invalid",
+   "meaning": "AgentLang message fails validation (generic)",
+   "version": "v7",
+   "need": "valid-al:1-message",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "not-al",
+   "meaning": "input does not start with al:1 first line",
+   "version": "v7",
+   "need": "al:1-first-line",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "not-ac",
+   "meaning": "AgentCode record does not start with ac:1 first token",
+   "version": "v7.3",
+   "need": "ac:1-first-token",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "missing-agent",
+   "meaning": "AgentCode record has no a field",
+   "version": "v7.3",
+   "need": "a=agent-id",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "missing-task",
+   "meaning": "AgentCode record has no t field",
+   "version": "v7.3",
+   "need": "t=task-id",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "missing-status",
+   "meaning": "AgentCode record has no s field",
+   "version": "v7.3",
+   "need": "s=td|dg|vf|dn|bl",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "status-not-legal",
+   "meaning": "status is not todo|doing|verify|done|blocked (waiting maps to blocked, it is not legal)",
+   "version": "v7",
+   "need": "todo|doing|verify|done|blocked",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "end-state-not-one",
+   "meaning": "message does not end with exactly one of next|done|blocked, last",
+   "version": "v7",
+   "need": "one-of-next|done|blocked-last",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-end-state",
+   "meaning": "record has no terminal field (ac alias of terminal-missing for non-done/blocked)",
+   "version": "v7.3",
+   "need": "last-field-n|d|b",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "terminal-missing",
+   "meaning": "AgentCode record with status td|dg|vf has no terminal field",
+   "version": "v7.3",
+   "need": "last-field-n|d|b",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "terminal-status-mismatch",
+   "meaning": "AgentCode terminal field disagrees with status",
+   "version": "v7.3",
+   "need": "d-requires-s=dn | b-requires-s=bl | n-requires-s=td|dg|vf",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "field-not-code-equals",
+   "meaning": "AgentCode field is not code=value form",
+   "version": "v7.3",
+   "need": "code=value-fields",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "verdict-malformed",
+   "meaning": "AgentCode v field is not model:claim:proof-code",
+   "version": "v7.3",
+   "need": "v=model:claim:proof-code",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "blocked-malformed",
+   "meaning": "AgentCode b field is not reason:need",
+   "version": "v7.3",
+   "need": "b=reason:need",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "diff-too-large",
+   "meaning": "diff exceeds the allowed size",
+   "version": "v7",
+   "need": "smaller-diff",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "save-failed",
+   "meaning": "localStorage write failed",
+   "version": "v7",
+   "need": "storage-available",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "claim-taken",
+   "meaning": "queue task is already claimed by another agent",
+   "version": "v7",
+   "need": "unclaimed-task-or-release-first",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "lease-expired",
+   "meaning": "queue lease has expired",
+   "version": "v7",
+   "need": "re-claim-task",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "lease-not-found",
+   "meaning": "no live lease exists for the task",
+   "version": "v7",
+   "need": "live-lease",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "duplicate-blocked-auto-merge",
+   "meaning": "duplicate work exists; auto-merge is never silent",
+   "version": "v7",
+   "need": "owner-approval",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "approval-required",
+   "meaning": "action needs an approval decision first",
+   "version": "v7",
+   "need": "decision=approved",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "approval-rejected",
+   "meaning": "approval decision was rejected",
+   "version": "v7",
+   "need": "owner-agent-review",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "observer-read-only",
+   "meaning": "observer-role agent may read only, never apply",
+   "version": "v7",
+   "need": "owner-agent",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "verdict-missing-proof",
+   "meaning": "verdict line has no proof= value",
+   "version": "v7",
+   "need": "proof=code|live|test|none",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "verdict-missing-basis",
+   "meaning": "verdict line has no basis= value",
+   "version": "v7",
+   "need": "basis=files|excerpt|summary|logic-only",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "proof-none-cannot-resolve",
+   "meaning": "a proof=none verdict was offered to resolve a conflict",
+   "version": "v7",
+   "need": "proof-not-none",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "proof-ref-missing",
+   "meaning": "verdict claims file/excerpt basis but names no proof-ref artifact or pack id",
+   "version": "unproven-brief-named",
+   "need": "proof-ref=<artifact-or-pack-id>",
+   "verbatim_in_site": false,
+   "nearest_site_reasons": [
+    "verdict-missing-basis",
+    "verdict-missing-proof"
+   ]
+  },
+  {
+   "reason": "field-loss",
+   "meaning": "a conversion (al<->json, al<->ac) dropped a field instead of preserving it",
+   "version": "unproven-brief-named",
+   "need": "lossless-conversion-preserve-all-codes",
+   "verbatim_in_site": false,
+   "nearest_site_reasons": [
+    "al-invalid",
+    "json-invalid",
+    "field-not-code-equals"
+   ]
+  },
+  {
+   "reason": "conflict-unresolved",
+   "meaning": "conflict has no code-grounded resolution",
+   "version": "v7",
+   "need": "resolve=code-only",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "conflict-missing-versions",
+   "meaning": "conflict record is missing one or both versions",
+   "version": "v7",
+   "need": "both-versions-kept",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "quota-near-limit",
+   "meaning": "localStorage quota use at or above 80 percent",
+   "version": "v7",
+   "need": "export-soon",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "quota-exceeded",
+   "meaning": "localStorage quota use at or above 100 percent",
+   "version": "v7",
+   "need": "export-and-clear-or-raise-limit",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "quota-limit-invalid",
+   "meaning": "quota limit is missing or not positive",
+   "version": "v7",
+   "need": "limit-positive",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "tool-forbidden-token",
+   "meaning": "Workshop snippet contains a forbidden token",
+   "version": "v7",
+   "need": "remove-forbidden-token",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "tool-timeout",
+   "meaning": "Workshop snippet exceeded the 10s timeout",
+   "version": "v7",
+   "need": "shorter-snippet",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "tool-error",
+   "meaning": "Workshop snippet errored in the worker",
+   "version": "v7",
+   "need": "valid-js-expression",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "tool-not-found",
+   "meaning": "workshop tool id is unknown",
+   "version": "v7",
+   "need": "registered-tool-id",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "tool-not-installed",
+   "meaning": "tool is known but not installed/granted",
+   "version": "v7",
+   "need": "install-then-grant",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "worker-unavailable",
+   "meaning": "JS worker could not start",
+   "version": "v7",
+   "need": "worker-available",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "secret-pattern",
+   "meaning": "value matches a secret pattern (email, private-key block, key prefix, key/password assignment, bearer token); value is never echoed",
+   "version": "v7",
+   "need": "public-pack-only",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "secret-like-value",
+   "meaning": "value looks secret-like in a catalog listing",
+   "version": "v7",
+   "need": "redact-value",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "secret-in-message",
+   "meaning": "message contains a secret-pattern value",
+   "version": "v7",
+   "need": "redacted-value",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "data-class-invalid",
+   "meaning": "data-class label is not public|workspace|sensitive|secret",
+   "version": "v7",
+   "need": "data-class=public|workspace|sensitive|secret",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "data-class-secret-export-blocked",
+   "meaning": "secret-class data was offered for export",
+   "version": "v7",
+   "need": "redact-or-downgrade",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "side-effect-invalid",
+   "meaning": "tool side-effect class is not read|reversible_write|external_write|irreversible",
+   "version": "v7",
+   "need": "valid-side-effect-class",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "free-tier-unverified",
+   "meaning": "a free-tier claim has not been verified on the vendor page",
+   "version": "v7",
+   "need": "vendor-page-check",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "paid-tier-excluded",
+   "meaning": "a paid tier was requested; paid tiers are not wired",
+   "version": "v7",
+   "need": "free-only-route",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-live-call",
+   "meaning": "a live model/API call was requested; none is built",
+   "version": "v7",
+   "need": "prompt-only-route",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "artifact-immutable-version",
+   "meaning": "an immutable swarm artifact version was edited in place",
+   "version": "v7",
+   "need": "new-version-not-edit",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "artifact-version-exists",
+   "meaning": "artifact version id already exists",
+   "version": "v7",
+   "need": "new-version-id",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "artifact-missing-fields",
+   "meaning": "artifact record is missing required fields",
+   "version": "v7",
+   "need": "all-artifact-fields",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "pin-missing-fields",
+   "meaning": "agent version pin is missing required fields",
+   "version": "v7",
+   "need": "all-pin-fields",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-run",
+   "meaning": "replay requested but no run exists",
+   "version": "v7",
+   "need": "local-run-record",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-steps",
+   "meaning": "replay requested but the run has no steps",
+   "version": "v7",
+   "need": "run-with-steps",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-id",
+   "meaning": "record has no id",
+   "version": "v7",
+   "need": "id=value",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-handle",
+   "meaning": "forge agent has no handle",
+   "version": "v7",
+   "need": "handle=value",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-label",
+   "meaning": "record has no label",
+   "version": "v7",
+   "need": "label=value",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-tool",
+   "meaning": "tool reference names no tool",
+   "version": "v7",
+   "need": "tool-id",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-input",
+   "meaning": "tool/run call has no input",
+   "version": "v7",
+   "need": "input=value",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-messages",
+   "meaning": "operation needs messages but none exist",
+   "version": "v7",
+   "need": "messages-present",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-verification",
+   "meaning": "verification record is missing",
+   "version": "v7",
+   "need": "verification-record",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "no-proof",
+   "meaning": "claim names no proof at all",
+   "version": "v7",
+   "need": "proof=value",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "talk-import-invalid-from",
+   "meaning": "talk import message is missing from",
+   "version": "v7",
+   "need": "valid-al-msg",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "talk-import-invalid-task",
+   "meaning": "talk import message is missing task",
+   "version": "v7",
+   "need": "valid-al-msg",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "talk-import-invalid-text",
+   "meaning": "talk import message is missing text",
+   "version": "v7",
+   "need": "valid-al-msg",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "talk-import-invalid-ack",
+   "meaning": "talk import message ack is not boolean",
+   "version": "v7",
+   "need": "valid-al-msg",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "anchor-excerpt-not-found",
+   "meaning": "code-anchor excerpt first line was not found after edit",
+   "version": "v7",
+   "need": "matching-excerpt",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "anchor-range-invalid",
+   "meaning": "code-anchor line range is invalid",
+   "version": "v7",
+   "need": "valid-line-range",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "scenario-unknown",
+   "meaning": "lab scenario id is unknown",
+   "version": "v7",
+   "need": "known-scenario-id",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "pack-not-agentlang",
+   "meaning": "pack does not start with al:1",
+   "version": "v7.2",
+   "need": "pack-starting-with-al:1",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "pack-too-large",
+   "meaning": "pack exceeds 102400 bytes (100 KB)",
+   "version": "v7.2",
+   "need": "pack-under-100kb",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "pack-id-invalid",
+   "meaning": "pack id is not [A-Za-z0-9_-]{1,64}",
+   "version": "v7.2",
+   "need": "id-a-z-0-9-dash-underscore-max-64",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "pack-budget-invalid",
+   "meaning": "pack slicer budget is invalid",
+   "version": "v7",
+   "need": "positive-char-budget",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "not-marked-public",
+   "meaning": "pack was offered for publish without the explicit public mark",
+   "version": "v7.2",
+   "need": "explicit-public-checkbox | public=true-in-pack",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "not-own-pack",
+   "meaning": "delete was requested for a pack not published from this browser",
+   "version": "v7.2",
+   "need": "own-published-id-only",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "not-own-published-id",
+   "meaning": "delete was requested for an id not in the publisher's own-published list (aiws wording)",
+   "version": "v7.3-aiws",
+   "need": "aiws-publish-id",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "already-claimed",
+   "meaning": "queue task was already claimed (brief wording; site-verbatim reason is claim-taken)",
+   "version": "unproven-brief-named",
+   "need": "unclaimed-task-or-release-first",
+   "verbatim_in_site": false,
+   "site_verbatim_reason": "claim-taken"
+  },
+  {
+   "reason": "cloud-unreachable",
+   "meaning": "Worker could not be reached; local mode continues",
+   "version": "v7.2",
+   "need": "cloud-reachable-or-local-only",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "cloud-publish-failed",
+   "meaning": "Worker publish request failed",
+   "version": "v7.2",
+   "need": "cloud-reachable",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "cloud-list-failed",
+   "meaning": "Worker list request failed",
+   "version": "v7.2",
+   "need": "cloud-reachable",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "cloud-list-invalid",
+   "meaning": "Worker list response is not a valid list",
+   "version": "v7.2",
+   "need": "valid-list-response",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "cloud-import-failed",
+   "meaning": "Worker import request failed",
+   "version": "v7.2",
+   "need": "cloud-reachable",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "cloud-delete-failed",
+   "meaning": "Worker delete request failed",
+   "version": "v7.2",
+   "need": "cloud-reachable",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "cloud-client-missing",
+   "meaning": "cloud client script is not loaded",
+   "version": "v7.2",
+   "need": "cloud.js-loaded",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "agentcode-client-missing",
+   "meaning": "agentcode converter script is not loaded",
+   "version": "v7.3",
+   "need": "agentcode.js-loaded",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "router-latency-invalid",
+   "meaning": "router latency value is invalid",
+   "version": "v7",
+   "need": "latency-positive-number",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "duplicate-field",
+   "meaning": "A singleton al:1/ac:1 field (agent, task, status) appears more than once in one record.",
+   "version": "v7.3",
+   "need": "one-value-per-singleton-field",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "compact-legacy-only",
+   "meaning": "Compact single-line al:1 is legacy-only: it decodes already-published Cloud packs, it is not valid for new records.",
+   "version": "v7.3",
+   "need": "multi-line-al:1-or-ac:1-single-line",
+   "verbatim_in_site": true
+  },
+  {
+   "reason": "mixed-compact-multiline",
+   "meaning": "A compact first line combined with multi-line body lines: one form only.",
+   "version": "v7.3",
+   "need": "one-form-only-multi-line-or-single-line-legacy",
+   "verbatim_in_site": true
+  }
+ ],
+ "reason_count": 99
+}

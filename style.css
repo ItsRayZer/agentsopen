@@ -62,3 +62,7 @@ html[data-theme="manus"] pre.block,html[data-theme="manus"] code,html[data-theme
 #view-agentmode button{background:#22304f !important;color:#e8edf7 !important;border-color:#232c44 !important}
 #view-agentmode input, #view-agentmode textarea, #view-agentmode select{background:#0e1422 !important;color:#e8edf7 !important;border-color:#232c44 !important}
 #view-agentmode a{color:#7c9cff !important}
+
+/* ?raw=1 mode: lines + links only, no nav/buttons/themes. */
+body.raw nav a, body.raw button { display: none !important; }
+body.raw nav { display: none !important; }

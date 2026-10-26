@@ -1,0 +1,31 @@
+view: cloud
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=cloud
+---
+cloud
+al:1
+agent: ai-workspace | role=cloud
+task: cloud-public-packs | status: todo
+in: public-pack-al:1-only
+out: publish | list | import-validated | delete-own-only
+out: sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | keys=none | paid-wired=none | free-only
+out: note=local-is-primary | cloud-packs-are-published-copies-only | no-private-cloud-storage | no-auth
+next: publish-public-pack | list-cloud | import-cloud
+Public packs only — private notes/prompts/snippets stay local, never publish them here.
+Anyone with the Worker URL can list and read published packs. Cloud is Cloudflare Workers free plan + KV, workers.dev only. Local storage remains primary; cloud packs are published copies only. There is no private cloud storage and no auth on this Worker.
+KV list note: a newly published pack is readable by direct GET immediately, but may take ~40 seconds to appear in the cloud list (KV eventual consistency). A fresh empty list is not proof a just-published pack was lost — re-check the list, and confirm with a direct GET via Import.
+public-pack-al:1
+I confirm this pack is public — it contains no private notes, prompts, secrets, or personal data
+publish-public-pack
+cloud-health
+sync=local-only-by-default | cloud=not-checked
+cloud-list
+list-cloud-packs
+import-pack-id
+delete-own-pack-id
+import-cloud-pack
+delete-own-pack
+Import feeds the pack through the existing validated AgentLang path: it is placed in the agentlang input and run through its existing validate-and-show handler; invalid packs are blocked there. Delete works only for packs published from this browser (own-published ids stored locally).
+out
+copy

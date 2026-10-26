@@ -1,7 +1,6 @@
 # AgentCode ac:1 — a code language for agents only
 
-Version: `ac:1`. Status: design only, in `~/workspace/mia-workbench/agentcode/`.
-NOT merged into the site. NOT deployed. NOT pushed.
+Version: `ac:1`. Status: merged into the site in v7.3, deployed as part of AI Workspace (agent-only build, Agent Mode landing).
 
 ## What it is, and what it is not
 
@@ -54,6 +53,49 @@ See `INSTRUCTIONS-FOR-AGENTS.md` for when to use which.
 8. Proof is never faked. A claim without evidence uses `nn`
    (`proof=none` in AgentLang). A verdict with `nn` cannot resolve
    a conflict. Never invent a file, a test result, or a live check.
+
+
+## ac:1.1 (current) — what changed from frozen ac:1
+
+ac:1 is FROZEN. Its parser keeps the compact end-state exception, but converters
+block (never drop) on: repeated v/f/y/nt, duplicate singletons (a/t/s), malformed
+verdict/conflict/verify/blocked fields, unknown codes, and compact end-state records
+carrying content fields (field-loss). ac:1.1 is a NEW header, not a patch:
+
+- Repeated v/f/y/nt as ORDERED arrays (array index is field order, never re-sorted).
+- New optional fields: id, ts (ISO-8601 UTC timestamp), seq (non-negative integer),
+  file, data-class, record proof-ref. Wire codes: id, ts, sq, fl, dc, pr.
+- Per-verdict basis + proof-ref inside v=model:claim:proof-code[:basis[:proof-ref]]
+  (a proof-ref requires a basis in the same v field, positional).
+- One escaping rule: backslash before ;, \, n, : yields ;, backslash, newline, :.
+  Any other backslash use blocks bad-escape. ac:1 has no escaping.
+- Terminal field ALWAYS required (compact end-state exception removed in 1.1).
+- Wire order: metadata before the terminal field, which is always last.
+- Effective proof: none when proof is none OR basis is logic-only, otherwise the
+  proof value. A verdict with effective proof none and no proof-ref is unproven:
+  flagged unproven-verdict-cannot-resolve, canResolve=false, never resolves a conflict.
+  A proof-ref supplies the resolving anchor.
+- Envelope alternative: al:1/JSON may carry id/ts/proof-ref (plus seq/file/data-class)
+  referring to an ac:1 record; the ac string stays pure ac:1 and metadata travels
+  alongside, never dropped. Bare alToAc/jsonToAc to ac:1 block on metadata with
+  version-not-supported instead of dropping it.
+- ac:1.1 sent to an ac:1-only converter blocks version-not-supported, never degrades.
+- Measured saving (re-measured on an ac:1.1 record with id/ts/seq/file/data-class/
+  proof-ref, two verdicts with basis+proof-ref, two notes; recomputed by
+  agentlang-tests.js on every run): ac:1.1 215 chars vs JSON 481 chars,
+  chars saved 266 per record. Codebook 6961 bytes + guide 18286 bytes +
+  converter 69759 bytes. Break-even fresh agent 358 records (estimate);
+  agent already knowing the codebook 331 records (estimate). Tokens = not measured.
+  No ac:1.1 token-saving claim is made. The saving does not vanish with the new
+  fields, so ac:1.1 is kept; had it vanished, keep-or-drop would be the owner's call.
+- Future breaking changes ship as ac:2, never a silent 1.1 patch.
+- Compact al:1 is NOT a valid form for new records (legacy decoder only, see
+  AGENT-LANG.md). acToAl never emits compact single-line al.
+- Secrets: hygiene check only (canonical table site/secret-patterns.json), block
+  tier reports pattern class + field + line, never the value; bare email is warning
+  tier only; generic high-entropy pattern DROPPED. No kill switch, no moderation
+  scanner, no moral framing: converters block only on loss, malformed structure,
+  unknown codes, or credential-shaped values.
 
 ## Field codes
 

@@ -1,0 +1,11 @@
+view: gallery
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=gallery
+---
+gallery
+al:1
+agent: ai-workspace | role=gallery
+task: example-pack-gallery | status: todo
+out: packs=agentlang-only | copy-out | validated-paste-in-elsewhere | sync=local-only
+next: copy-pack

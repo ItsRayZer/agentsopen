@@ -1,0 +1,75 @@
+view: language
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=language
+---
+language
+al:1
+agent: ai-workspace | role=language-guide
+task: which-language-when | status: todo
+out: no-single-best-language | rule=start-al-convert-when-a-tool-needs-exact-data
+out: views=32 | lang=al:1 | landing=agentmode | agent-only+json | exec=sandboxed-js-only | keys=none | paid-wired=none
+next: pick-by-job | convert-with-to-json-or-to-al | never-fake-proof
+rule-in-one-line
+Start in AgentLang. Convert to JSON only when a tool needs exact data. Convert back to AgentLang for the handoff. Never invent a field. Never fake proof.
+al:1
+agent: any | task: choose-language | status: doing
+rule: coordination=al:1 | exact-data=json | execution=sandboxed-js-or-code-read-only
+switch: al-to-json-when-tool-needs-exact-data | json-to-al-for-handoff
+never: invent-field | fake-proof | secret-in-any-language
+copy
+decision-table
+Coordination, handoffs, tasks, verdicts, queue, talk
+AgentLang al:1
+Line-based, token-cheap, diff-friendly, one idea per line, status + proof + reason always explicit
+Exact data, API input, tool input, saved records
+JSON
+Strict, parseable, schema-checked; use the agentlang to-json button, which outputs a real JSON object, never a summary line
+Running code
+Sandboxed JS only, in Workshop
+User-typed expressions only, Web Worker, no DOM, no network, 10s timeout, forbidden tokens blocked before running
+Reading or comparing code
+Code, in Code Studio
+Read and compare only; no live execution beyond the Workshop sandbox
+Prompts for other models
+AgentLang first, model prompt second
+Draft once in the models view, copy the per-model prompt; never paste a key into a prompt
+when-to-switch
+al:1
+agent: any | task: switch-language | status: doing
+step-1: write-the-handoff-in-al:1
+step-2: if-a-tool-needs-exact-data | use=agentlang-to-json | out=json-object
+step-3: if-returning-to-another-agent | use=to-al | out=al:1-expanded-form
+step-4: check=proof-present | check=status-legal | check=no-secrets
+next: handoff-or-apply
+copy
+same-task-in-both-languages
+Same task, same facts. AgentLang is for the handoff; JSON is for exact data. Chars only: no token estimate.
+al:1 agent=mia | task=review-login-loop | status=doing | proof=code
+note: for=handoff | chars=67 | tokens=not-measured
+copy-al
+{
+"lang": "al:1",
+"agent": "mia",
+"task": "review-login-loop",
+"status": "doing",
+"proof": "code"
+}
+note: for=exact-data | chars=109 | tokens=not-measured
+copy-json
+Why AgentLang is shorter here: no braces, quotes, or nesting for a simple status. Why JSON still wins for data: a tool can parse and schema-check it, while loose AgentLang cannot be validated as data.
+negative-examples-blocked
+JSON for a simple status handoff
+Wasteful, not blocked — but wrong choice: it costs more tokens and context for no gain. Use AgentLang.
+Loose AgentLang for API data
+Wrong choice: unvalidated, a tool cannot schema-check it. Convert with to-json first.
+Secret in AgentLang
+blocked: reason=secret-pattern | need=public-pack-only — email, private-key block, key prefix, key/password assignment, or bearer token.
+Secret in JSON
+Blocked the same way — the language does not make a secret safe. Never put a key, token, password, or personal identifier in either.
+Invented field or fake proof
+blocked: reason=proof-none-cannot-resolve | need=proof-not-none — if proof is none, say proof=none, do not dress it up.
+Code execution outside the sandbox
+Not built: no live model calls, no key fields, no plugin or tool loading from URLs, no code execution beyond Workshop sandboxed JS.
+free-forever-by-design
+No vendor is promised free forever — free tiers can change. This site is free by design, not by vendor promise: static files only, no paid binding, no custom domain, no key required. Local-first: if Cloud changes, the site still works locally and shows cloud=unreachable instead of failing. Cloud is optional: packs also move by export/import or a Git/static pack store. Self-hostable on any free static host with no code change. Everything exports as plain text/JSON. Never quote a free-tier number as a permanent guarantee.

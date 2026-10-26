@@ -20,8 +20,15 @@ fetch() { # fetch <url>
 json_escape() { # read stdin, print JSON string content (no surrounding quotes)
   awk 'BEGIN{ORS=""} { gsub(/\\/,"\\\\"); gsub(/"/,"\\\""); gsub(/\t/,"\\t"); gsub(/\r/,"\\r"); printf "%s\\n", $0 }' "$1" | sed 's/\\n$//'
 }
-is_secret() { # is_secret <file> — high-confidence patterns only, never prints content
-  grep -Eiq -- '-----BEGIN [A-Z ]*PRIVATE KEY-----|sk-[A-Za-z0-9]{16,}|ghp_[A-Za-z0-9]{20,}|gho_[A-Za-z0-9]{20,}|ghu_[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|api[_-]?key[[:space:]]*[:=][[:space:]]*["'"'"'][^"'"'"']+["'"'"']|password[[:space:]]*[:=][[:space:]]*[^[:space:]]+|Bearer[[:space:]]+[A-Za-z0-9._-]{20,}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' "$1"
+# Canonical secret-pattern table mirror (see site/secret-patterns.json).
+# Block tier = hygiene check only, never a general guarantee; field names
+# match the canonical table. Email is WARNING tier only, never a block.
+# Generic high-entropy pattern DROPPED (false positives).
+is_secret() { # is_secret <file> — block tier only, never prints content
+  grep -Eiq -- '-----BEGIN [A-Z ]*PRIVATE KEY-----|sk-[A-Za-z0-9]{12,}|sk_(live|test)_[A-Za-z0-9]{8,}|gh[pous]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|xox[baprs]-[A-Za-z0-9-]{10,}|eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+|api[_-]?key[[:space:]]*[:=][[:space:]]*[^[:space:]]+|(access[_-]?token|client[_-]?secret)[[:space:]]*[:=][[:space:]]*[^[:space:]]+|password[[:space:]]*[:=][[:space:]]*[^[:space:]]+|Bearer[[:space:]]+[A-Za-z0-9._-]{12,}' "$1"
+}
+is_warning() { # is_warning <file> — warning tier only (email), never blocks
+  grep -Eiq -- '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' "$1"
 }
 validate_pack() { # validate_pack <file>
   [ -f "$1" ] || blocked "file-not-found" "$1"
@@ -33,47 +40,116 @@ validate_pack() { # validate_pack <file>
     *) blocked "pack-not-agentlang" "pack-starting-with-al:1" ;;
   esac
   if is_secret "$1"; then blocked "secret-pattern" "public-pack-only-no-secret-values"; fi
+  if is_warning "$1"; then printf 'warning: reason=email-address | tier=hygiene-only | note=not-a-block\n' >&2; fi
 }
 cmd_help() {
   printf 'aiws start | fetch agent.json + start lines\n'
   printf 'aiws agent | fetch agent.json\n'
   printf 'aiws examples | fetch examples.al\n'
-  printf 'aiws search <term> | search index + examples, capped 20\n'
+  printf 'aiws boot | fetch agent.txt (one-fetch boot index)\n'
+  printf 'aiws view <id> | fetch /views/<id>.txt (alias: aiws txt <id>)\n'
+  printf 'aiws skills | fetch skills.txt (registry index)\n'
+  printf 'aiws skill <id> | fetch /skills/<id>.txt\n'
+  printf 'aiws search <term> [cursor] | search index.txt + examples, 20 per page, total + next cursor\n'
   printf 'aiws pack <file> | validate al:1 + size + secret-pattern, print pack, do not publish\n'
   printf 'aiws publish <file> | publish public pack only, file must contain public=true\n'
   printf 'aiws list | list published pack ids only\n'
   printf 'aiws get <id> | fetch one public pack\n'
   printf 'aiws delete <id> | delete only an id published by this tool\n'
+  printf 'aiws snapshot [--dry-run] <dir> | export site files listed in files.txt with hash check\n'
+  printf 'aiws verify <file> | hygiene check only, NOT full validation (use agentlang.js)\n'
   printf 'aiws health | cloud health + site agent.json version\n'
   printf 'aiws help | this list\n'
 }
 cmd_start() { fetch "$SITE/agent.json"; printf '\n'; fetch "$SITE/AGENT-START.md"; }
 cmd_search() {
-  [ $# -ge 1 ] || blocked "search-term-missing" "aiws search <term>"
-  term="$1"
+  [ $# -ge 1 ] || blocked "search-term-missing" "aiws search <term> [cursor]"
+  term="$1"; cursor="${2:-0}"
+  printf '%s' "$cursor" | grep -Eq '^[0-9]{1,9}$' || blocked "cursor-invalid" "cursor-is-a-number"
   tmp=$(mktemp) || blocked "tmp-failed" "writable-tmp"
   trap 'rm -f "$tmp"' EXIT INT TERM
-  fetch "$SITE/index.html" | sed 's/<[^>]*>/ /g' > "$tmp"
-  fetch "$SITE/examples.al" >> "$tmp"
-  if grep -iq -- "$term" "$tmp"; then
-    grep -i -- "$term" "$tmp" | head -20
-  else
-    printf 'status: done | out=no-match\n'
+  curl -fsS --max-time 30 "$SITE/index.txt" >> "$tmp" 2>/dev/null || true
+  curl -fsS --max-time 30 "$SITE/examples.al" >> "$tmp" 2>/dev/null || true
+  mt=$(mktemp) || blocked "tmp-failed" "writable-tmp"
+  grep -i -- "$term" "$tmp" > "$mt" || true
+  total=$(wc -l < "$mt" | tr -d ' ')
+  start=$((cursor + 1)); end=$((cursor + 20))
+  sed -n "${start},${end}p" "$mt"
+  if [ "$end" -lt "$total" ]; then next="$end"; else next="none"; fi
+  printf 'status: done | total=%s | shown-from=%s | page=20 | next-cursor=%s | sort=id\n' "$total" "$start" "$next"
+  rm -f "$tmp" "$mt"; trap - EXIT INT TERM
+}
+cmd_view() {
+  [ $# -ge 1 ] || blocked "view-id-missing" "aiws view <id>"
+  printf '%s' "$1" | grep -Eq '^[a-z0-9_-]{1,32}$' || blocked "view-id-invalid" "view-id-a-z-0-9-dash-underscore-max-32"
+  fetch "$SITE/views/$1.txt"
+}
+cmd_skill() {
+  [ $# -ge 1 ] || blocked "skill-id-missing" "aiws skill <id>"
+  printf '%s' "$1" | grep -Eq '^[a-z0-9_-]{1,64}$' || blocked "skill-id-invalid" "skill-id-a-z-0-9-dash-underscore-max-64"
+  fetch "$SITE/skills/$1.txt"
+}
+cmd_verify() {
+  [ $# -ge 1 ] || blocked "pack-file-missing" "aiws verify <file>"
+  validate_pack "$1"
+  last=$(grep -v '^[[:space:]]*$' "$1" | tail -1)
+  case "$last" in next:*|done:*|blocked:*) ;; *) blocked "terminal-missing" "last-line-next-done-or-blocked" ;; esac
+  dc=$(grep -m1 '^data-class:' "$1" 2>/dev/null || true)
+  if [ -n "$dc" ]; then
+    case "$dc" in 'data-class: public'|'data-class: workspace'|'data-class: sensitive'|'data-class: secret') ;; *) blocked "data-class-invalid" "data-class=public|workspace|sensitive|secret" ;; esac
   fi
+  printf 'status: done | verify: hygiene-only | header=ok | size=ok | secret-patterns=none-matched | end-line=ok | NOT-full-validation | use=agentlang.js\n'
+}
+cmd_snapshot() {
+  dry=0; if [ "${1:-}" = "--dry-run" ]; then dry=1; shift; fi
+  [ $# -ge 1 ] || blocked "dir-missing" "aiws snapshot [--dry-run] <dir>"
+  dir="$1"; tmp=$(mktemp) || blocked "tmp-failed" "writable-tmp"
+  trap 'rm -f "$tmp"' EXIT INT TERM
+  fetch "$SITE/files.txt" > "$tmp"
+  added=0; changed=0; same=0; bad=0; leaks=0
+  while IFS= read -r line; do
+    case "$line" in 'file: '*) ;; *) continue ;; esac
+    url=$(printf '%s' "$line" | sed -E 's/^file: ([^ ]+) \| bytes=([0-9]+) \| sha256=([0-9a-f]{64})$/\1/')
+    bytes=$(printf '%s' "$line" | sed -E 's/^file: ([^ ]+) \| bytes=([0-9]+) \| sha256=([0-9a-f]{64})$/\2/')
+    h=$(printf '%s' "$line" | sed -E 's/^file: ([^ ]+) \| bytes=([0-9]+) \| sha256=([0-9a-f]{64})$/\3/')
+    rel=$(printf '%s' "$url" | sed -E 's#^https?://[^/]+/##')
+    case "$rel" in *..*|"") continue ;; esac
+    if [ -f "$dir/$rel" ]; then
+      lh=$(sha256_of "$dir/$rel" 2>/dev/null || printf 'unavailable')
+      if [ "$lh" = "$h" ]; then same=$((same+1)); continue; else changed=$((changed+1)); fi
+    else added=$((added+1)); fi
+    if [ "$dry" -eq 0 ]; then
+      mkdir -p "$dir/$(dirname "$rel")" 2>/dev/null || true
+      curl -fsS --max-time 30 "$SITE/$rel" -o "$dir/$rel" || blocked "fetch-failed" "$SITE/$rel"
+      nh=$(sha256_of "$dir/$rel" 2>/dev/null || printf 'unavailable')
+      if [ "$nh" != "$h" ]; then bad=$((bad+1)); printf 'blocked: reason=hash-mismatch | need=%s\n' "$rel"; fi
+      case "$rel" in *.js|*.json|*.md|*.txt|*.al|*.html|*.xml) if is_secret "$dir/$rel"; then leaks=$((leaks+1)); printf 'hygiene: secret-pattern-match | file=%s | value-not-shown\n' "$rel"; fi ;; esac
+    fi
+  done < "$tmp"
   rm -f "$tmp"; trap - EXIT INT TERM
+  printf 'status: done | snapshot | dry-run=%s | added=%s | changed=%s | same=%s | hash-mismatch=%s | hygiene-matches=%s | hygiene-only\n' "$dry" "$added" "$changed" "$same" "$bad" "$leaks"
+}
+sha256_of() {
+  if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | cut -d' ' -f1;
+  elif command -v shasum >/dev/null 2>&1; then shasum -a 256 "$1" | cut -d' ' -f1;
+  else printf 'unavailable'; fi
 }
 cmd_publish() {
   [ $# -ge 1 ] || blocked "pack-file-missing" "aiws publish <file>"
   validate_pack "$1"
   grep -q 'public=true' "$1" || blocked "not-marked-public" "public=true-in-pack"
+  dc=$(grep -m1 '^data-class:' "$1" 2>/dev/null || true)
+  case "$dc" in ''|'data-class: public') ;; *) blocked "data-class-not-public" "data-class: public-or-no-data-class-line" ;; esac
   need_curl
   esc=$(json_escape "$1")
   resp=$(printf '{"pack":"%s"}' "$esc" | curl -fsS --max-time 30 -X POST -H 'Content-Type: application/json' --data-binary @- "$CLOUD/packs") || blocked "publish-failed" "cloud-reachable"
   printf '%s\n' "$resp"
   id=$(printf '%s' "$resp" | tr ',' '\n' | grep '"id"' | head -1 | sed -E 's/.*"id"[[:space:]]*:[[:space:]]*"([^"]*)".*/\1/')
+  token=$(printf '%s' "$resp" | tr ',' '\n' | grep '"deleteToken"' | head -1 | sed -E 's/.*"deleteToken"[[:space:]]*:[[:space:]]*"([^"]*)".*/\1/')
   if [ -n "$id" ]; then
     touch "$PUBLISHED_FILE" 2>/dev/null || true
-    printf '%s\n' "$id" >> "$PUBLISHED_FILE" 2>/dev/null || true
+    if [ -n "$token" ]; then printf '%s %s\n' "$id" "$token" >> "$PUBLISHED_FILE" 2>/dev/null || true;
+    else printf '%s\n' "$id" >> "$PUBLISHED_FILE" 2>/dev/null || true; fi
     printf 'id=%s\n' "$id"
   fi
 }
@@ -89,13 +165,18 @@ cmd_get() {
 }
 cmd_delete() {
   [ $# -ge 1 ] || blocked "pack-id-missing" "aiws delete <id>"
-  if [ ! -f "$PUBLISHED_FILE" ] || ! grep -qx -- "$1" "$PUBLISHED_FILE" 2>/dev/null; then
-    blocked "not-own-published-id" "aiws-publish-id"
+  if [ ! -f "$PUBLISHED_FILE" ]; then blocked "not-own-published-id" "aiws-publish-id"; fi
+  line=$(grep -E -- "^$1( |\$)" "$PUBLISHED_FILE" 2>/dev/null | head -1 || true)
+  if [ -z "$line" ]; then blocked "not-own-published-id" "aiws-publish-id"; fi
+  token=$(printf '%s' "$line" | cut -d' ' -f2 2>/dev/null || true)
+  if [ -n "$token" ]; then
+    resp=$(curl -fsS --max-time 30 -X DELETE -H "X-Delete-Token: $token" "$CLOUD/packs/$1") || blocked "delete-failed" "cloud-reachable"
+  else
+    resp=$(curl -fsS --max-time 30 -X DELETE "$CLOUD/packs/$1") || blocked "delete-failed" "cloud-reachable"
   fi
-  resp=$(curl -fsS --max-time 30 -X DELETE "$CLOUD/packs/$1") || blocked "delete-failed" "cloud-reachable"
   printf '%s\n' "$resp"
   tmp=$(mktemp) || exit 0
-  grep -vx -- "$1" "$PUBLISHED_FILE" > "$tmp" 2>/dev/null || true
+  grep -vx -- "$line" "$PUBLISHED_FILE" > "$tmp" 2>/dev/null || true
   mv "$tmp" "$PUBLISHED_FILE" 2>/dev/null || true
 }
 cmd_health() {
@@ -109,12 +190,18 @@ case "$cmd" in
   start) cmd_start ;;
   agent) fetch "$SITE/agent.json" ;;
   examples) fetch "$SITE/examples.al" ;;
+  boot) fetch "$SITE/agent.txt" ;;
+  view|txt) shift; cmd_view "$@" ;;
+  skills) fetch "$SITE/skills.txt" ;;
+  skill) shift; cmd_skill "$@" ;;
   search) shift; cmd_search "$@" ;;
   pack) shift; [ $# -ge 1 ] || blocked "pack-file-missing" "aiws pack <file>"; validate_pack "$1"; cat "$1" ;;
   publish) shift; cmd_publish "$@" ;;
   list) cmd_list ;;
   get) shift; cmd_get "$@" ;;
   delete) shift; cmd_delete "$@" ;;
+  snapshot) shift; cmd_snapshot "$@" ;;
+  verify) shift; cmd_verify "$@" ;;
   health) cmd_health ;;
   help|--help|-h) cmd_help ;;
   *) blocked "unknown-command" "aiws help" ;;

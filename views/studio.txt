@@ -1,0 +1,28 @@
+view: studio
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=studio
+---
+studio
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+file
+search
+code
+save
+download
+upload
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+import
+al:1
+agent: ai-workspace | status: todo
+next: use-view
+url
+fetch
+to-compare
+copy
+view
+copy

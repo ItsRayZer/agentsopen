@@ -1,0 +1,27 @@
+---
+name: advertising-campaigns
+description: Plan an advertising campaign draft from a business result, audience, and message. Use when a task involves planning an advertising campaign.
+class: prompt-only
+verified: false
+digest: sha256:1594e095c51f06638d29cb8c8a9c09bba5d1a671ad7c28a6fe18d19b8790ed0d
+---
+
+---BEGIN SKILL---
+purpose: Plan an advertising campaign draft from a business result, audience, and message.
+input: plain text (audience + message + channel as text)
+output: al:1 draft pack, marked draft, with disclosure line and send-requires-owner-approval gate
+endpoint-or-file: none — template only, no live call
+limits: no send, publish, or purchase; sending needs owner approval for that person and wording in the owner's channel
+cost: free-here
+account: none
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: tool:pack
+example-input: synthetic audience + message + channel
+example-output: al:1 draft pack marked draft; nothing sent or published
+errors: template-input-missing, template-pack-malformed, secret-pattern, proof-ref-missing
+excluded-reason: n/a
+references: none
+---END SKILL---

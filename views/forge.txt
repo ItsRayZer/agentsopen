@@ -1,0 +1,81 @@
+view: forge
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=forge
+---
+forge
+al:1
+agent: ai-workspace | role=forge
+task: agent-forge | status: todo
+out: autonomy=claude-v0.1-semantics | agent-cannot-raise-own-level | owner-sets-in-ui | keys=none | free-only
+next: save-agent
+autonomy-table-chosen
+L0
+text only
+no tools
+L1
+per-call approve
+user approves each tool call
+L2
+auto read-only
+approves writes and exec
+L3
+sandboxed exec
+approves network writes
+L4
+full plan within budget
+pauses on budget or error
+L5
+self-directed with checkpoint
+checkpointed every N steps; autonomy cannot be raised by the agent itself
+Other Nexus autonomy versions disagree on L5 (god-mode / self-elevation / modify-other-agents). Those versions are NOT used here; see compare spec table. No content filter, refusal scanner, or moderation scanner is added; the only controls are the ones in this table, budgets, sandbox, approval inbox, and owner-set autonomy.
+agent-name
+handle
+persona
+system-prompt
+model-pref
+autonomy
+0
+1
+2
+3
+4
+5
+tools-comma
+memory-scopes
+budget
+capabilities-comma
+role
+agent
+observer
+observer = read-only: approval actions for an observer are blocked with reason=observer-read-only.
+save-agent
+fingerprint
+copy
+permission-diff-preview
+Preview only. Nothing is applied by this preview. Save a new agent version below, on owner click only.
+old-agent-json
+{"autonomy": 2, "tools": ["read"]}
+new-agent-json
+{"autonomy": 3, "tools": ["read", "write"]}
+diff-preview
+copy
+versioned-agent-save
+Editing creates a new version. Old versions are kept. Runs pinned in shell keep their pinned version label.
+handle
+agent-name
+autonomy
+0
+1
+2
+3
+4
+5
+data-class
+public
+workspace
+sensitive
+secret
+tools-comma
+save-new-version
+copy

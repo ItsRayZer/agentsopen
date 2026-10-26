@@ -1,0 +1,128 @@
+# index.txt — generated registry + view index. Do not hand-edit.
+# aiws search <term> [cursor] searches this file + examples.al, 20 per page.
+skill:advertising-campaigns | skill | Plan an advertising campaign draft from a business result, audience, and message. | /skills/advertising-campaigns.txt
+skill:agent-browser-nav | skill | Headless agent-browser protocol template for parsing ac:1 wire streams, data-ac DOM attributes, and fetch-first /views/<id>.txt endpoints without human UI clicks. | /skills/agent-browser-nav.txt
+skill:ai-teamwork | skill | Discover multi-model debugging options available through the agent's own external-model channels. | /skills/ai-teamwork.txt
+skill:app-creation | skill | Plan a small app from its users, their tasks, and a good result, starting smallest. | /skills/app-creation.txt
+skill:business-finance | skill | Draft bookkeeping and invoicing records from company, currency, and period figures the agent supplies. | /skills/business-finance.txt
+skill:code-reviewer | skill | Review code against a supplied criteria list and produce a verdict pack. | /skills/code-reviewer.txt
+skill:custom-connector-setup | skill | Describe how a new service connector is set up through its own documented secure flow, without connecting anything here. | /skills/custom-connector-setup.txt
+skill:customer-outreach | skill | Draft an outreach message plan from audience, channel, and desired outcome. | /skills/customer-outreach.txt
+skill:deep-research | skill | Structure a research question into a research pack with proof-refs. | /skills/deep-research.txt
+skill:deep-work | skill | Draft a deep-work day plan from time blocks, shallow-work budget, and focus hours. | /skills/deep-work.txt
+skill:device-data | skill | Discover the shape of cached contacts and calendar reads available through the agent's own device channel. | /skills/device-data.txt
+skill:directing-stickman-videos | skill | Discover stickman-video production options available through the agent's own media channel. | /skills/directing-stickman-videos.txt
+skill:documents | skill | Draft a document structure from an outline, source notes, and audience. | /skills/documents.txt
+skill:email-management | skill | Discover the shape of mailbox work available through the agent's own connected mail channel. | /skills/email-management.txt
+skill:event-tickets | skill | Discover event and seat options available through the agent's own ticketing channel. | /skills/event-tickets.txt
+skill:ffmpeg-skill | skill | Discover local video and audio editing options available through the agent's own media channel. | /skills/ffmpeg-skill.txt
+skill:file-hosting | skill | Discover file-sharing options available through the agent's own channel. | /skills/file-hosting.txt
+skill:financial-planning | skill | Draft a financial plan from a decision, supplied figures, and constraints. | /skills/financial-planning.txt
+skill:fitness-tracking | skill | Draft a fitness note from activity, sleep, recovery, and measurement figures the agent supplies. | /skills/fitness-tracking.txt
+skill:flight-booking | skill | Discover flight options available through the agent's own flight channel. | /skills/flight-booking.txt
+skill:flight-tracking | skill | Discover flight status information available through the agent's own flight channel. | /skills/flight-tracking.txt
+skill:form-design | skill | Draft a form design from purpose, questions, and how answers will be read. | /skills/form-design.txt
+skill:generate_podcast | skill | Draft a podcast episode plan and script outline from a topic and audience. | /skills/generate_podcast.txt
+skill:git-commit-quality | skill | Review a commit message and diff against quality criteria and produce a verdict pack. | /skills/git-commit-quality.txt
+skill:goals | skill | Draft a goal plan from progress, changes, and next steps the agent supplies. | /skills/goals.txt
+skill:groceries | skill | Discover grocery and food-delivery options available through the agent's own channel. | /skills/groceries.txt
+skill:health-review | skill | Draft a clinician-visit preparation note from records and questions the agent supplies. | /skills/health-review.txt
+skill:higgsfield-product-photoshoot | skill | Discover product-photoshoot options available through the agent's own media channel. | /skills/higgsfield-product-photoshoot.txt
+skill:home-control | skill | Discover home-device control actions available through the agent's own paired-device channel. | /skills/home-control.txt
+skill:home-search | skill | Discover home-search options available through the agent's own channel. | /skills/home-search.txt
+skill:hotel-booking | skill | Discover stay options available through the agent's own channel. | /skills/hotel-booking.txt
+skill:image-search | skill | Structure an image-search question into a research pack with proof-refs. | /skills/image-search.txt
+skill:knowledge-organization | skill | Draft a notes plan from where notes already live, before creating anything new. | /skills/knowledge-organization.txt
+skill:marketplaces | skill | Discover resale marketplace options available through the agent's own channel. | /skills/marketplaces.txt
+skill:mcp-tool-authoring | skill | Template for authoring Model Context Protocol (MCP) tool, resource, and prompt schemas compatible with AI Workspace al:1/ac:1 packs. | /skills/mcp-tool-authoring.txt
+skill:media-library | skill | Discover photo-library search options available through the agent's own device channel. | /skills/media-library.txt
+skill:meeting-follow-up | skill | Draft meeting decisions and owned action items from meeting notes the agent supplies. | /skills/meeting-follow-up.txt
+skill:messaging | skill | Discover messaging options available through the agent's own connected account channel. | /skills/messaging.txt
+skill:mortgage-comparison | skill | Draft a mortgage comparison from purchase price, down payment, term, and rate figures the agent supplies. | /skills/mortgage-comparison.txt
+skill:music-discovery | skill | Discover music search and playback options available through the agent's own channel. | /skills/music-discovery.txt
+skill:place-discovery | skill | Discover place options available through the agent's own channel. | /skills/place-discovery.txt
+skill:remotion-motion-graphics | skill | Discover motion-graphics production options available through the agent's own media channel. | /skills/remotion-motion-graphics.txt
+skill:restaurant-reservations | skill | Discover restaurant table options available through the agent's own channel. | /skills/restaurant-reservations.txt
+skill:scheduling | skill | Draft a schedule plan from attendees, duration, date range, and timezones the agent supplies. | /skills/scheduling.txt
+skill:security-hygiene-audit | skill | Static checklist and regex audit template for secret-pattern leaks, unbound verdicts, permission escalation, and data-class export violations. | /skills/security-hygiene-audit.txt
+skill:shopping | skill | Discover product options available through the agent's own shopping channel. | /skills/shopping.txt
+skill:short-editing | skill | Discover short-form video editing options available through the agent's own media channel. | /skills/short-editing.txt
+skill:smb-product-shots | skill | Discover product-shot editing options available through the agent's own media channel. | /skills/smb-product-shots.txt
+skill:social-content-performance | skill | Draft a social performance review plan from network, account, and question the agent supplies. | /skills/social-content-performance.txt
+skill:social-publishing | skill | Draft a social post plan from account, audience, goal, and timing the agent supplies. | /skills/social-publishing.txt
+skill:spoken-audio | skill | Draft a spoken-audio script from text and audience the agent supplies. | /skills/spoken-audio.txt
+skill:store-operations | skill | Discover store record options available through the agent's own merchant channel. | /skills/store-operations.txt
+skill:style-tryon | skill | Discover style try-on options available through the agent's own media channel. | /skills/style-tryon.txt
+skill:task-management | skill | Draft a task plan from a task list, owners, and dependencies the agent supplies. | /skills/task-management.txt
+skill:translation | skill | Draft a translation plan from source text, target language, region, and audience. | /skills/translation.txt
+skill:trip-planning | skill | Discover trip-planning options available through the agent's own travel channel. | /skills/trip-planning.txt
+skill:trip-transport | skill | Discover trip-transport options available through the agent's own travel channel. | /skills/trip-transport.txt
+skill:wearables-comms | skill | Discover call and text options available through the agent's own wearable-device channel. | /skills/wearables-comms.txt
+skill:weekly-review | skill | Draft a weekly review plan from open loops, stalled projects, and commitments the agent supplies. | /skills/weekly-review.txt
+skill:wide-research | skill | Structure a wide research question into a research pack with proof-refs. | /skills/wide-research.txt
+skill:workout-planning | skill | Draft a workout plan note from goal, constraints, and routines the agent supplies. | /skills/workout-planning.txt
+tool:agentcode | tool | agentcode | ac:1 | codebook-public-not-secret | ac->al | al->ac | ac->json | json->ac | audit-undecodable-do-not-trust | https://ai-ws.vercel.app/views/agentcode.txt
+tool:agentlang | tool | al:1 | convert | examples | https://ai-ws.vercel.app/views/agentlang.txt
+tool:agentmode | tool | agentmode-raw | agent-start-page | search-agent-task-text-status | token-cost | delta-since-last | example-packs-3 | negative-examples | plain-text-al-export | https://ai-ws.vercel.app/views/agentmode.txt
+tool:aiws | tool | aiws | sh+curl-only | start | agent | examples | search-capped-20 | pack-validate-only | publish-public-only | list | get | delete-own-only | health | keys=none | no-code-exec | https://ai-ws.vercel.app/views/agentmode.txt
+tool:approval | tool | approval-inbox | dry-run-receipt | duplicate-scan | conflict-both-kept | sensitivity-label | https://ai-ws.vercel.app/views/approval.txt
+tool:audit | tool | audit | decision-log-append-only | idempotent-events | policy-records | reputation-descriptive-only | https://ai-ws.vercel.app/views/audit.txt
+tool:boot | tool | al:1 | manifest | spec | tools | first-task | https://ai-ws.vercel.app/views/boot.txt
+tool:canvas | tool | dag | ready-set | blocked-by | blocks | critic-veto | blackboard | https://ai-ws.vercel.app/views/canvas.txt
+tool:cloud | tool | cloud | cloudflare-free-public-packs-only | publish-public | list | import-validated | delete-own-only | kv-list-40s-note | https://ai-ws.vercel.app/views/cloud.txt
+tool:compare | tool | diff | add | del | chg | same | al | model | agent | tool | spec | https://ai-ws.vercel.app/views/compare.txt
+tool:deploy | tool | deploy-check | verify | go-ahead-required | https://ai-ws.vercel.app/views/deploy.txt
+tool:forge | tool | forge | autonomy-0-5 | fingerprint-sha256 | observer-read-only | permission-diff-preview | agent-version-pin | https://ai-ws.vercel.app/views/forge.txt
+tool:format | tool | json | md | text | regex | exec=none | https://ai-ws.vercel.app/views/format.txt
+tool:gallery | tool | gallery | example-packs-al | copy-out | https://ai-ws.vercel.app/views/gallery.txt
+tool:lab | tool | lab | al-lint | negative-fixtures | replay | snapshot-ephemeral | verify-staleness | migration-dry-run | https://ai-ws.vercel.app/views/lab.txt
+tool:language | tool | language-guide | which-language-when | al:1-coordination | json-exact-data | sandboxed-js-execution | examples-al-json | negative-examples | https://ai-ws.vercel.app/views/language.txt
+tool:models | tool | prompt-al | per-model | https://ai-ws.vercel.app/views/models.txt
+tool:notes | tool | notes | tasks | local | https://ai-ws.vercel.app/views/notes.txt
+tool:pack | tool | al:1+json | code+verdict+notes+tracker | slicer | delta | token-cost | delta-since-last | https://ai-ws.vercel.app/views/pack.txt
+tool:prompts | tool | prompts | save | search | copy | https://ai-ws.vercel.app/views/prompts.txt
+tool:queue | tool | al:1 | claim | assignee | status | single-owner | lease-heartbeat | https://ai-ws.vercel.app/views/queue.txt
+tool:quota | tool | quota | meters-counts-only | warning-al-note | https://ai-ws.vercel.app/views/quota.txt
+tool:router | tool | router-inspector | prompt-only | fallback-chain | score | breaker | quota | free-claims-unverified | qwen-deepseek-models | https://ai-ws.vercel.app/views/router.txt
+tool:shared | tool | shared | ready | active | blocked | conflicts | pending-verify | sync=local-only | https://ai-ws.vercel.app/views/shared.txt
+tool:shell | tool | shell-combined-ui | themes-7 | top-bar | left-rail | main-stage | right-inspector | command-preview | status-strip | run-tray-local | https://ai-ws.vercel.app/views/shell.txt
+tool:snippets | tool | snippets | lang | tags | exec=none | https://ai-ws.vercel.app/views/snippets.txt
+tool:studio | tool | code | view | search | import | https://ai-ws.vercel.app/views/studio.txt
+tool:swarm | tool | brief-al | verdicts | conflicts | plan | https://ai-ws.vercel.app/views/swarm.txt
+tool:talk | tool | talk-al | from | to | task | ack | ts | local | https://ai-ws.vercel.app/views/talk.txt
+tool:timeline | tool | timeline | decision-log | scenario-replay | run-replay-local-only | https://ai-ws.vercel.app/views/timeline.txt
+tool:tracker | tool | tracker | status | next | export-al | export-json | https://ai-ws.vercel.app/views/tracker.txt
+tool:vault | tool | memory | session | persistent | vector-label | shared | keyword-search | pin | forget | export | https://ai-ws.vercel.app/views/vault.txt
+tool:workshop | tool | registry | json-schema | dry-run-only | js-worker-sandbox | code-anchor | side-effect | install-vs-grant | https://ai-ws.vercel.app/views/workshop.txt
+view:shared | view | view shared | /views/shared.txt
+view:studio | view | view studio | /views/studio.txt
+view:compare | view | view compare | /views/compare.txt
+view:swarm | view | view swarm | /views/swarm.txt
+view:models | view | view models | /views/models.txt
+view:notes | view | view notes | /views/notes.txt
+view:prompts | view | view prompts | /views/prompts.txt
+view:snippets | view | view snippets | /views/snippets.txt
+view:format | view | view format | /views/format.txt
+view:tracker | view | view tracker | /views/tracker.txt
+view:deploy | view | view deploy | /views/deploy.txt
+view:agentlang | view | view agentlang | /views/agentlang.txt
+view:boot | view | view boot | /views/boot.txt
+view:pack | view | view pack | /views/pack.txt
+view:queue | view | view queue | /views/queue.txt
+view:talk | view | view talk | /views/talk.txt
+view:forge | view | view forge | /views/forge.txt
+view:canvas | view | view canvas | /views/canvas.txt
+view:vault | view | view vault | /views/vault.txt
+view:workshop | view | view workshop | /views/workshop.txt
+view:router | view | view router | /views/router.txt
+view:timeline | view | view timeline | /views/timeline.txt
+view:quota | view | view quota | /views/quota.txt
+view:audit | view | view audit | /views/audit.txt
+view:lab | view | view lab | /views/lab.txt
+view:approval | view | view approval | /views/approval.txt
+view:gallery | view | view gallery | /views/gallery.txt
+view:shell | view | view shell | /views/shell.txt
+view:agentmode | view | view agentmode | /views/agentmode.txt
+view:cloud | view | view cloud | /views/cloud.txt
+view:language | view | view language | /views/language.txt
+view:agentcode | view | view agentcode | /views/agentcode.txt

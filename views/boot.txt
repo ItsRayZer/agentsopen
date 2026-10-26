@@ -1,0 +1,15 @@
+view: boot
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=boot
+---
+boot
+al:1
+agent: ai-workspace | role=workspace
+task: boot | status: todo
+in: agent.json | capabilities.json | tools.json | AGENT-LANG.md | AGENT-START.md
+out: views=32 | lang=al:1 | landing=agentmode | agent-only | keys=none | exec=sandboxed-js-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | paid-wired=none
+verify: check=agent.json | result=pass
+verify: check=capabilities.json | result=pass
+next: agentmode-is-landing | pack | swarm
+copy

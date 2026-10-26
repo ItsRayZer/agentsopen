@@ -1,0 +1,26 @@
+{
+  "agent": "ai-workspace",
+  "version": "v7.3",
+  "date": "2026-10-26",
+  "format": {
+    "id": "kebab-case agent id, unique in the registry",
+    "role": "agent role string",
+    "public_fingerprint": "sha256 of the agent's PUBLIC profile (name + handle); NOT a secret, display-only local hash; never a key, token, or password",
+    "version": "agent version label; editing creates a new version, pinned runs keep their version",
+    "created": "ISO-8601 creation timestamp for real rows; EXAMPLE rows carry no real date",
+    "autonomy": "integer 0-5, set by owner in UI, never raised by the agent itself",
+    "observer_read_only_note": "observer-role agents are blocked from applying changes with reason=observer-read-only"
+  },
+  "duplicate_id_collision_rule": "on save, if id already exists in the registry: block with reason=duplicate-id (this file's rule) and keep the existing row unchanged; never silently overwrite, never auto-merge. Site analogues: decision-log replayed id returns dup=true and changes nothing; artifact version collision is artifact-version-exists.",
+  "example_row": {
+    "example_only": true,
+    "not_a_real_agent": true,
+    "id": "example-agent",
+    "role": "agent",
+    "autonomy": 2,
+    "public_fingerprint": "sha256-name-handle (format description from examples.al, NOT a computed hash)",
+    "version": "example",
+    "created": "EXAMPLE-NO-DATE"
+  },
+  "agents": []
+}

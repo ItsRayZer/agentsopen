@@ -6,167 +6,698 @@
     {
       "name": "shared",
       "desc": "shared | ready | active | blocked | conflicts | pending-verify | sync=local-only",
-      "view": "shared"
+      "view": "shared",
+      "url": "https://ai-ws.vercel.app/views/shared.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=shared",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/shared.txt",
+      "exampleOutput": "view: shared | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "studio",
       "desc": "code | view | search | import",
-      "view": "studio"
+      "view": "studio",
+      "url": "https://ai-ws.vercel.app/views/studio.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=studio",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/studio.txt",
+      "exampleOutput": "view: studio | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "compare",
       "desc": "diff | add | del | chg | same | al | model | agent | tool | spec",
-      "view": "compare"
+      "view": "compare",
+      "url": "https://ai-ws.vercel.app/views/compare.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=compare",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/compare.txt",
+      "exampleOutput": "view: compare | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": [
+        "app-creation",
+        "code-reviewer",
+        "git-commit-quality"
+      ]
     },
     {
       "name": "swarm",
       "desc": "brief-al | verdicts | conflicts | plan",
-      "view": "swarm"
+      "view": "swarm",
+      "url": "https://ai-ws.vercel.app/views/swarm.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=swarm",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/swarm.txt",
+      "exampleOutput": "view: swarm | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "models",
       "desc": "prompt-al | per-model",
-      "view": "models"
+      "view": "models",
+      "url": "https://ai-ws.vercel.app/views/models.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=models",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/models.txt",
+      "exampleOutput": "view: models | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "notes",
       "desc": "notes | tasks | local",
-      "view": "notes"
+      "view": "notes",
+      "url": "https://ai-ws.vercel.app/views/notes.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=notes",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/notes.txt",
+      "exampleOutput": "view: notes | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "prompts",
       "desc": "prompts | save | search | copy",
-      "view": "prompts"
+      "view": "prompts",
+      "url": "https://ai-ws.vercel.app/views/prompts.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=prompts",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/prompts.txt",
+      "exampleOutput": "view: prompts | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "snippets",
       "desc": "snippets | lang | tags | exec=none",
-      "view": "snippets"
+      "view": "snippets",
+      "url": "https://ai-ws.vercel.app/views/snippets.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=snippets",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/snippets.txt",
+      "exampleOutput": "view: snippets | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "format",
       "desc": "json | md | text | regex | exec=none",
-      "view": "format"
+      "view": "format",
+      "url": "https://ai-ws.vercel.app/views/format.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=format",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/format.txt",
+      "exampleOutput": "view: format | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "tracker",
       "desc": "tracker | status | next | export-al | export-json",
-      "view": "tracker"
+      "view": "tracker",
+      "url": "https://ai-ws.vercel.app/views/tracker.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=tracker",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/tracker.txt",
+      "exampleOutput": "view: tracker | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "deploy",
       "desc": "deploy-check | verify | go-ahead-required",
-      "view": "deploy"
+      "view": "deploy",
+      "url": "https://ai-ws.vercel.app/views/deploy.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=deploy",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/deploy.txt",
+      "exampleOutput": "view: deploy | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "agentlang",
       "desc": "al:1 | convert | examples",
-      "view": "agentlang"
+      "view": "agentlang",
+      "url": "https://ai-ws.vercel.app/views/agentlang.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=agentlang",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/agentlang.txt",
+      "exampleOutput": "view: agentlang | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "boot",
       "desc": "al:1 | manifest | spec | tools | first-task",
-      "view": "boot"
+      "view": "boot",
+      "url": "https://ai-ws.vercel.app/views/boot.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=boot",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/boot.txt",
+      "exampleOutput": "view: boot | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "pack",
       "desc": "al:1+json | code+verdict+notes+tracker | slicer | delta | token-cost | delta-since-last",
-      "view": "pack"
+      "view": "pack",
+      "url": "https://ai-ws.vercel.app/views/pack.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=pack",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/pack.txt",
+      "exampleOutput": "view: pack | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": [
+        "advertising-campaigns",
+        "agent-browser-nav",
+        "app-creation",
+        "business-finance",
+        "code-reviewer",
+        "customer-outreach",
+        "deep-research",
+        "deep-work",
+        "documents",
+        "financial-planning",
+        "fitness-tracking",
+        "form-design",
+        "generate_podcast",
+        "git-commit-quality",
+        "goals",
+        "health-review",
+        "image-search",
+        "knowledge-organization",
+        "mcp-tool-authoring",
+        "meeting-follow-up",
+        "mortgage-comparison",
+        "scheduling",
+        "security-hygiene-audit",
+        "social-content-performance",
+        "social-publishing",
+        "spoken-audio",
+        "task-management",
+        "translation",
+        "weekly-review",
+        "wide-research",
+        "workout-planning"
+      ]
     },
     {
       "name": "queue",
       "desc": "al:1 | claim | assignee | status | single-owner | lease-heartbeat",
-      "view": "queue"
+      "view": "queue",
+      "url": "https://ai-ws.vercel.app/views/queue.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=queue",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/queue.txt",
+      "exampleOutput": "view: queue | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "talk",
       "desc": "talk-al | from | to | task | ack | ts | local",
-      "view": "talk"
+      "view": "talk",
+      "url": "https://ai-ws.vercel.app/views/talk.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=talk",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/talk.txt",
+      "exampleOutput": "view: talk | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "forge",
       "desc": "forge | autonomy-0-5 | fingerprint-sha256 | observer-read-only | permission-diff-preview | agent-version-pin",
-      "view": "forge"
+      "view": "forge",
+      "url": "https://ai-ws.vercel.app/views/forge.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=forge",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/forge.txt",
+      "exampleOutput": "view: forge | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "canvas",
       "desc": "dag | ready-set | blocked-by | blocks | critic-veto | blackboard",
-      "view": "canvas"
+      "view": "canvas",
+      "url": "https://ai-ws.vercel.app/views/canvas.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=canvas",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/canvas.txt",
+      "exampleOutput": "view: canvas | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "vault",
       "desc": "memory | session | persistent | vector-label | shared | keyword-search | pin | forget | export",
-      "view": "vault"
+      "view": "vault",
+      "url": "https://ai-ws.vercel.app/views/vault.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=vault",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/vault.txt",
+      "exampleOutput": "view: vault | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "workshop",
       "desc": "registry | json-schema | dry-run-only | js-worker-sandbox | code-anchor | side-effect | install-vs-grant",
-      "view": "workshop"
+      "view": "workshop",
+      "url": "https://ai-ws.vercel.app/views/workshop.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=workshop",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/workshop.txt",
+      "exampleOutput": "view: workshop | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "router",
       "desc": "router-inspector | prompt-only | fallback-chain | score | breaker | quota | free-claims-unverified | qwen-deepseek-models",
-      "view": "router"
+      "view": "router",
+      "url": "https://ai-ws.vercel.app/views/router.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=router",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/router.txt",
+      "exampleOutput": "view: router | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "timeline",
       "desc": "timeline | decision-log | scenario-replay | run-replay-local-only",
-      "view": "timeline"
+      "view": "timeline",
+      "url": "https://ai-ws.vercel.app/views/timeline.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=timeline",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/timeline.txt",
+      "exampleOutput": "view: timeline | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "quota",
       "desc": "quota | meters-counts-only | warning-al-note",
-      "view": "quota"
+      "view": "quota",
+      "url": "https://ai-ws.vercel.app/views/quota.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=quota",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/quota.txt",
+      "exampleOutput": "view: quota | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "audit",
       "desc": "audit | decision-log-append-only | idempotent-events | policy-records | reputation-descriptive-only",
-      "view": "audit"
+      "view": "audit",
+      "url": "https://ai-ws.vercel.app/views/audit.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=audit",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/audit.txt",
+      "exampleOutput": "view: audit | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "lab",
       "desc": "lab | al-lint | negative-fixtures | replay | snapshot-ephemeral | verify-staleness | migration-dry-run",
-      "view": "lab"
+      "view": "lab",
+      "url": "https://ai-ws.vercel.app/views/lab.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=lab",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/lab.txt",
+      "exampleOutput": "view: lab | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "approval",
       "desc": "approval-inbox | dry-run-receipt | duplicate-scan | conflict-both-kept | sensitivity-label",
-      "view": "approval"
+      "view": "approval",
+      "url": "https://ai-ws.vercel.app/views/approval.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=approval",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/approval.txt",
+      "exampleOutput": "view: approval | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "gallery",
       "desc": "gallery | example-packs-al | copy-out",
-      "view": "gallery"
+      "view": "gallery",
+      "url": "https://ai-ws.vercel.app/views/gallery.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=gallery",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/gallery.txt",
+      "exampleOutput": "view: gallery | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "shell",
       "desc": "shell-combined-ui | themes-7 | top-bar | left-rail | main-stage | right-inspector | command-preview | status-strip | run-tray-local",
-      "view": "shell"
+      "view": "shell",
+      "url": "https://ai-ws.vercel.app/views/shell.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=shell",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/shell.txt",
+      "exampleOutput": "view: shell | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "agentmode",
       "desc": "agentmode-raw | agent-start-page | search-agent-task-text-status | token-cost | delta-since-last | example-packs-3 | negative-examples | plain-text-al-export",
-      "view": "agentmode"
+      "view": "agentmode",
+      "url": "https://ai-ws.vercel.app/views/agentmode.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=agentmode",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/agentmode.txt",
+      "exampleOutput": "view: agentmode | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "cloud",
       "desc": "cloud | cloudflare-free-public-packs-only | publish-public | list | import-validated | delete-own-only | kv-list-40s-note",
-      "view": "cloud"
+      "view": "cloud",
+      "url": "https://ai-ws.vercel.app/views/cloud.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=cloud",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/cloud.txt",
+      "exampleOutput": "view: cloud | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "language",
       "desc": "language-guide | which-language-when | al:1-coordination | json-exact-data | sandboxed-js-execution | examples-al-json | negative-examples",
-      "view": "language"
+      "view": "language",
+      "url": "https://ai-ws.vercel.app/views/language.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=language",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/language.txt",
+      "exampleOutput": "view: language | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "agentcode",
       "desc": "agentcode | ac:1 | codebook-public-not-secret | ac->al | al->ac | ac->json | json->ac | audit-undecodable-do-not-trust",
-      "view": "agentcode"
+      "view": "agentcode",
+      "url": "https://ai-ws.vercel.app/views/agentcode.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=agentcode",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/agentcode.txt",
+      "exampleOutput": "view: agentcode | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     },
     {
       "name": "aiws",
       "desc": "aiws | sh+curl-only | start | agent | examples | search-capped-20 | pack-validate-only | publish-public-only | list | get | delete-own-only | health | keys=none | no-code-exec",
-      "view": "agentmode"
+      "view": "agentmode",
+      "url": "https://ai-ws.vercel.app/views/agentmode.txt",
+      "browserAlias": "https://ai-ws.vercel.app/?view=agentmode",
+      "method": "GET (read spec as plain text) | action via view, aiws, or Worker",
+      "limits": "pageSize=20 | search-total+cursor+sort | pack-max=100KB | cloud-public-only",
+      "exampleInput": "GET https://ai-ws.vercel.app/views/agentmode.txt",
+      "exampleOutput": "view: agentmode | plain-text | canonical-fetch-form",
+      "errorCodes": [
+        "unknown-view",
+        "compact-legacy-only",
+        "field-loss",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
+      "skills": []
     }
   ]
 }

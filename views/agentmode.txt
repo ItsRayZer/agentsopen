@@ -1,0 +1,107 @@
+view: agentmode
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=agentmode
+---
+agentmode
+search-agent-task-text-status
+Search, not infinite scroll. Results are paged at 20 with total + next cursor + sort=task,agent.
+agent
+task
+text
+status
+all
+todo
+doing
+verify
+done
+blocked
+search
+copy
+al:1
+agent: ai-workspace | role=agentmode
+task: agent-start | status: todo
+in: agent.json | .well-known/agent.json | tools.json | examples.al | AGENT-LANG.md | AGENT-START.md | AGENT-CODE.md
+out: views=32 | lang=al:1 | landing=agentmode | agent-only | keys=none | exec=sandboxed-js-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | paid-wired=none | free-only
+out: status-vocab=todo|doing|verify|done|blocked | waiting-maps-to-blocked
+out: capabilities=code-read,code-diff,swarm-verdict,prompt-al,import-public,format,tracker,queue-claim,pack-al-json,deploy-check,agentlang-convert,shared-summary,talk-al,forge-agent,agent-fingerprint-sha256,canvas-dag-ready,vault-memory,workshop-registry,router-inspector-prompt-only,timeline-replay,quota-meters,audit-decision-log,lab-lint-fixtures,approval-inbox,gallery-packs,compare-model-agent-tool-spec,pack-slicer,pack-delta,lease-heartbeat,verdict-basis,proof-ref,conflict-both-kept,snapshot-ephemeral,verify-staleness,migration-dry-run,sensitivity-label,js-worker-sandbox,shell-combined-ui,theme-switcher-7,manus-data-class,permission-diff-preview,agent-version-pin,tool-side-effect,install-vs-grant,reputation-descriptive-only,run-replay-local-only,policy-records,swarm-immutable-artifacts,router-qwen-deepseek-models,agentmode-raw,pack-token-cost,pack-delta-since-last,agent-search,language-guide-which-when
+out: boot-checklist=agent.json-present | tools.json-present | capabilities-present | examples-al-present | agentlang-spec-present | views=32 | no-login | no-popups | no-cookie-banner | html-readable-without-js
+out: agent-only | landing=agentmode | no-human-home | no-chat-projection | agent-surface-is-this-view | no-bubbles-here | no-graphs-here | no-images-here | no-animations-here | theme-independent-lines | no-click-needed-core-lines-in-html
+next: pick-example-pack | search | token-cost | delta-export
+links
+agent.json
+|
+.well-known/agent.json
+|
+tools.json
+|
+examples.al
+|
+AGENT-LANG.md
+|
+AGENT-START.md
+|
+AGENT-CODE.md
+export-al-plain-text
+No login wall. No popups. No cookie banner. The lines above are in the HTML itself, so they read without JavaScript. Copy is the only JavaScript action here.
+token-cost
+Chars only: no token estimate.
+pack-text
+budget-chars
+token-cost
+copy
+delta-since-last-pack
+Added lines only, exported as AgentLang. Removed lines are counted only.
+previous-bundle
+current-bundle
+delta-export
+copy
+example-pack-1
+al:1
+agent: ai-workspace | role=builder
+task: fix-login-loop | status: doing
+ctx: static-site | no-server
+in: file=index.html | lines=1-40
+out: diff-al | verify=pass
+next: handoff
+note: pack-chars=179 | tokens=not-measured
+copy
+example-pack-2
+al:1
+agent: swarm | role=verdict
+task: fix-login-loop
+verdict: model=claude | claim=reload-fallback | proof=code
+verdict: model=gemini | claim=same | proof=code
+conflict: a=claude | b=gemini | resolve=code-only
+next: apply-fix-only
+note: pack-chars=231 | tokens=not-measured
+copy
+example-pack-3
+al:1
+agent: ai-workspace | role=queue
+task: queue-claim | status: doing
+in: task=fix-login-loop | agent=unassigned
+out: claim=agent-claimed | status=doing
+next: work-then-release
+note: pack-chars=178 | tokens=not-measured
+copy
+negative-examples-blocked
+These inputs are blocked. The error is exact, not paraphrased.
+missing al:1 header
+blocked: reason=not-al | need=al:1-first-line
+status: waiting
+blocked: reason=status-not-legal | need=todo|doing|verify|done|blocked
+verdict without proof
+blocked: reason=verdict-missing-proof | need=proof=code|file|test|live
+verdict proof=none
+blocked: reason=proof-none-cannot-resolve | need=proof-not-none
+no end state
+blocked: reason=end-state-not-one | need=one-of-next|done|blocked-last
+secret-class export
+blocked: reason=data-class-secret-export-blocked | need=redact-or-downgrade
+auto-merge duplicate
+blocked: reason=duplicate-blocked-auto-merge | need=owner-approval
+observer approval
+blocked: reason=observer-read-only | need=owner-agent
+reason-code-catalog-short
+no-from | no-task | no-text | no-url | url-invalid | fetch-failed | import-empty | json-invalid | regex-invalid | al-invalid | not-al | status-not-legal | end-state-not-one | diff-too-large | save-failed | claim-taken | lease-expired | lease-not-found | duplicate-blocked-auto-merge | approval-required | approval-rejected | observer-read-only | verdict-missing-proof | verdict-missing-basis | proof-none-cannot-resolve | conflict-unresolved | quota-near-limit | quota-exceeded | tool-forbidden-token | tool-timeout | no-end-state | secret-like-value | free-tier-unverified | paid-tier-excluded | no-live-call | data-class-invalid | data-class-secret-export-blocked | side-effect-invalid | tool-not-found | tool-not-installed | artifact-immutable-version | artifact-version-exists | conflict-missing-versions | pin-missing-fields | no-run | no-steps

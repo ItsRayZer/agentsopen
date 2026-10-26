@@ -1,0 +1,27 @@
+---
+name: deep-work
+description: Draft a deep-work day plan from time blocks, shallow-work budget, and focus hours. Use when a task involves planning a deep-work day.
+class: prompt-only
+verified: false
+digest: sha256:75f51a43cb5fbef5d5a83f3a339610e5a7a763432aaa02163b3e4b448acedceb
+---
+
+---BEGIN SKILL---
+purpose: Draft a deep-work day plan from time blocks, shallow-work budget, and focus hours.
+input: plain text (goal + tasks + constraints + figures as supplied)
+output: al:1 plan pack (phases, owners, deps, dates and budget lines as supplied)
+endpoint-or-file: none — template only, no live call
+limits: no booking, payment, or scheduling with real people; dates are supplied input echoed back, not a booking
+cost: free-here
+account: none
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: tool:pack
+example-input: synthetic goal + tasks + constraints
+example-output: al:1 plan pack with phases and deps; no booking made
+errors: template-input-missing, template-pack-malformed, secret-pattern, proof-ref-missing
+excluded-reason: n/a
+references: none
+---END SKILL---

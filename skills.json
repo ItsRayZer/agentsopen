@@ -1,0 +1,1847 @@
+{
+  "$schema": "/schemas/registry-0.1.0.json",
+  "contentHash": "sha256:f88d04213a4be423efb62e1f65273b5f899911f0cf6426158d61fe4362770339",
+  "counts": {
+    "connector-required": 30,
+    "prompt-only": 31,
+    "total": 61
+  },
+  "schemaVersion": "registry-0.1.0",
+  "skills": [
+    {
+      "account": "none",
+      "category": "prompt-only/outreach",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic audience + message + channel",
+      "exampleOutput": "al:1 draft pack marked draft; nothing sent or published",
+      "excludedReason": "n/a",
+      "id": "advertising-campaigns",
+      "input": "plain text (audience + message + channel as text)",
+      "limits": "no send, publish, or purchase; sending needs owner approval for that person and wording in the owner's channel",
+      "output": "al:1 draft pack, marked draft, with disclosure line and send-requires-owner-approval gate",
+      "permissions": "none",
+      "purpose": "Plan an advertising campaign draft from a business result, audience, and message.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves planning an advertising campaign",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/browser-nav",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "/skills/agent-browser-nav.txt",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "ac:1 wire stream + target view id",
+      "exampleOutput": "fetch sequence with 0 clicks, plain-text view content only",
+      "excludedReason": "n/a",
+      "id": "agent-browser-nav",
+      "input": "target workspace URL + task goal",
+      "limits": "prompt-only-template | no-live-service-call | no-account | no-booking | no-send",
+      "output": "al:1 / ac:1 deterministic fetch sequence (boot -> skills.txt -> skill/<id>.txt -> view/<id>.txt)",
+      "permissions": "none",
+      "purpose": "Headless agent-browser protocol template for parsing ac:1 wire streams, data-ac DOM attributes, and fetch-first /views/<id>.txt endpoints without human UI clicks.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves zero-click agent browsing of the workspace",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/external-models",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "ai-teamwork",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace calls no model; debate or generation happens through the agent's own external-model channels with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover multi-model debugging options available through the agent's own external-model channels.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves debugging with a team of external models",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/code-review",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:compare",
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "two synthetic snippets + criteria: [correctness, style]",
+      "exampleOutput": "al:1 verdict pack with per-criterion entries; unbound criteria use proof=none",
+      "excludedReason": "n/a",
+      "id": "app-creation",
+      "input": "al:1 pack | plain text (code + task + criteria list)",
+      "limits": "no live lint/test/CI execution; proof-refs must resolve to supplied lines",
+      "output": "al:1 verdict pack (model, claim, proof=code with file:line refs, or proof=none)",
+      "permissions": "none",
+      "purpose": "Plan a small app from its users, their tasks, and a good result, starting smallest.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves planning a small app",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/business-finance",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic figures",
+      "exampleOutput": "al:1 budget pack with arithmetic shown; figures labelled supplied, not bank data",
+      "excludedReason": "n/a",
+      "id": "business-finance",
+      "input": "plain text (figures the agent supplies)",
+      "limits": "no bank, tax, or market data; no trading, no payment",
+      "output": "al:1 budget/plan pack with arithmetic shown, labelled agent-supplied figures",
+      "permissions": "none",
+      "purpose": "Draft bookkeeping and invoicing records from company, currency, and period figures the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves bookkeeping or invoicing planning",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/code-review",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:compare",
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "two synthetic snippets + criteria: [correctness, style]",
+      "exampleOutput": "al:1 verdict pack with per-criterion entries; unbound criteria use proof=none",
+      "excludedReason": "n/a",
+      "id": "code-reviewer",
+      "input": "al:1 pack | plain text (code + task + criteria list)",
+      "limits": "no live lint/test/CI execution; proof-refs must resolve to supplied lines",
+      "output": "al:1 verdict pack (model, claim, proof=code with file:line refs, or proof=none)",
+      "permissions": "none",
+      "purpose": "Review code against a supplied criteria list and produce a verdict pack.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves code review, diff analysis, or fix planning",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/connector-setup-meta",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "custom-connector-setup",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "describes a setup flow only; it does not connect anything from inside AI Workspace; credentials go through the new connector's own secure flow, never through this workspace",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Describe how a new service connector is set up through its own documented secure flow, without connecting anything here.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves connecting a new service",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/outreach",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic audience + message + channel",
+      "exampleOutput": "al:1 draft pack marked draft; nothing sent or published",
+      "excludedReason": "n/a",
+      "id": "customer-outreach",
+      "input": "plain text (audience + message + channel as text)",
+      "limits": "no send, publish, or purchase; sending needs owner approval for that person and wording in the owner's channel",
+      "output": "al:1 draft pack, marked draft, with disclosure line and send-requires-owner-approval gate",
+      "permissions": "none",
+      "purpose": "Draft an outreach message plan from audience, channel, and desired outcome.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves customer outreach",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/deep-research",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "question + sources: [local files only]",
+      "exampleOutput": "al:1 research pack; unbound claims ranked unproven; conflicts kept in both versions",
+      "excludedReason": "n/a",
+      "id": "deep-research",
+      "input": "plain text (question + source list + proof rule)",
+      "limits": "no live page fetch, no search engine, no model call",
+      "output": "al:1 research pack (claims with proof-ref file:line:sha256 or test id)",
+      "permissions": "none",
+      "purpose": "Structure a research question into a research pack with proof-refs.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves research, source synthesis, or conflict tracking",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/planning",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic goal + tasks + constraints",
+      "exampleOutput": "al:1 plan pack with phases and deps; no booking made",
+      "excludedReason": "n/a",
+      "id": "deep-work",
+      "input": "plain text (goal + tasks + constraints + figures as supplied)",
+      "limits": "no booking, payment, or scheduling with real people; dates are supplied input echoed back, not a booking",
+      "output": "al:1 plan pack (phases, owners, deps, dates and budget lines as supplied)",
+      "permissions": "none",
+      "purpose": "Draft a deep-work day plan from time blocks, shallow-work budget, and focus hours.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves planning a deep-work day",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/productivity",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "device-data",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace holds no mail, calendar, docs, or files for others; actions happen in the owner's connected account with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover the shape of cached contacts and calendar reads available through the agent's own device channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves cached contacts or calendar data",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/media-production",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "directing-stickman-videos",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace generates, edits, or renders no media; production happens in the agent's own media channel with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover stickman-video production options available through the agent's own media channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves producing a stickman video",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/documents",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic outline + notes + audience",
+      "exampleOutput": "al:1 document pack with sections and decisions; nothing sent",
+      "excludedReason": "n/a",
+      "id": "documents",
+      "input": "plain text (outline + source notes + audience)",
+      "limits": "no real document, mail, or form created, edited, or sent",
+      "output": "al:1 document pack (structure, sections, decisions, owned action items)",
+      "permissions": "none",
+      "purpose": "Draft a document structure from an outline, source notes, and audience.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves drafting a document",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/productivity",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "email-management",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace holds no mail, calendar, docs, or files for others; actions happen in the owner's connected account with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover the shape of mailbox work available through the agent's own connected mail channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves mailbox work",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "event-tickets",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover event and seat options available through the agent's own ticketing channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves event tickets",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/media-production",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "ffmpeg-skill",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace generates, edits, or renders no media; production happens in the agent's own media channel with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover local video and audio editing options available through the agent's own media channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves editing video or audio",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/productivity",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "file-hosting",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace holds no mail, calendar, docs, or files for others; actions happen in the owner's connected account with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover file-sharing options available through the agent's own channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves sharing a file",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/planning",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic goal + tasks + constraints",
+      "exampleOutput": "al:1 plan pack with phases and deps; no booking made",
+      "excludedReason": "n/a",
+      "id": "financial-planning",
+      "input": "plain text (goal + tasks + constraints + figures as supplied)",
+      "limits": "no booking, payment, or scheduling with real people; dates are supplied input echoed back, not a booking",
+      "output": "al:1 plan pack (phases, owners, deps, dates and budget lines as supplied)",
+      "permissions": "none",
+      "purpose": "Draft a financial plan from a decision, supplied figures, and constraints.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves a financial decision",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/health-notes",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic measurements + routine",
+      "exampleOutput": "al:1 note pack with routine and measurements; no diagnosis, no advice",
+      "excludedReason": "n/a",
+      "id": "fitness-tracking",
+      "input": "plain text (measurements/routines the agent supplies)",
+      "limits": "no device read, no home-device control, no medical advice",
+      "output": "al:1 note pack (routine, measurements, questions for a clinician where relevant)",
+      "permissions": "none",
+      "purpose": "Draft a fitness note from activity, sleep, recovery, and measurement figures the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves tracking fitness",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "flight-booking",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover flight options available through the agent's own flight channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves booking a flight",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "flight-tracking",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover flight status information available through the agent's own flight channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves flight status",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/documents",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic outline + notes + audience",
+      "exampleOutput": "al:1 document pack with sections and decisions; nothing sent",
+      "excludedReason": "n/a",
+      "id": "form-design",
+      "input": "plain text (outline + source notes + audience)",
+      "limits": "no real document, mail, or form created, edited, or sent",
+      "output": "al:1 document pack (structure, sections, decisions, owned action items)",
+      "permissions": "none",
+      "purpose": "Draft a form design from purpose, questions, and how answers will be read.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves designing a form",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/documents",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic outline + notes + audience",
+      "exampleOutput": "al:1 document pack with sections and decisions; nothing sent",
+      "excludedReason": "n/a",
+      "id": "generate_podcast",
+      "input": "plain text (outline + source notes + audience)",
+      "limits": "no real document, mail, or form created, edited, or sent",
+      "output": "al:1 document pack (structure, sections, decisions, owned action items)",
+      "permissions": "none",
+      "purpose": "Draft a podcast episode plan and script outline from a topic and audience.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves planning a podcast episode",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/code-review",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:compare",
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "two synthetic snippets + criteria: [correctness, style]",
+      "exampleOutput": "al:1 verdict pack with per-criterion entries; unbound criteria use proof=none",
+      "excludedReason": "n/a",
+      "id": "git-commit-quality",
+      "input": "al:1 pack | plain text (code + task + criteria list)",
+      "limits": "no live lint/test/CI execution; proof-refs must resolve to supplied lines",
+      "output": "al:1 verdict pack (model, claim, proof=code with file:line refs, or proof=none)",
+      "permissions": "none",
+      "purpose": "Review a commit message and diff against quality criteria and produce a verdict pack.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves reviewing a commit",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/planning",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic goal + tasks + constraints",
+      "exampleOutput": "al:1 plan pack with phases and deps; no booking made",
+      "excludedReason": "n/a",
+      "id": "goals",
+      "input": "plain text (goal + tasks + constraints + figures as supplied)",
+      "limits": "no booking, payment, or scheduling with real people; dates are supplied input echoed back, not a booking",
+      "output": "al:1 plan pack (phases, owners, deps, dates and budget lines as supplied)",
+      "permissions": "none",
+      "purpose": "Draft a goal plan from progress, changes, and next steps the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves creating or tracking a goal",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "groceries",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover grocery and food-delivery options available through the agent's own channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves groceries or food delivery",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/health-notes",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic measurements + routine",
+      "exampleOutput": "al:1 note pack with routine and measurements; no diagnosis, no advice",
+      "excludedReason": "n/a",
+      "id": "health-review",
+      "input": "plain text (measurements/routines the agent supplies)",
+      "limits": "no device read, no home-device control, no medical advice",
+      "output": "al:1 note pack (routine, measurements, questions for a clinician where relevant)",
+      "permissions": "none",
+      "purpose": "Draft a clinician-visit preparation note from records and questions the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves preparing for a clinician visit",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/media-production",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "higgsfield-product-photoshoot",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace generates, edits, or renders no media; production happens in the agent's own media channel with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover product-photoshoot options available through the agent's own media channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves a product photoshoot",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/health-home-devices",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "home-control",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace reads or controls nothing; actions need the owner's paired device and per-action approval, especially control actions",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover home-device control actions available through the agent's own paired-device channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves controlling a home device",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "home-search",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover home-search options available through the agent's own channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves searching for a home",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "hotel-booking",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover stay options available through the agent's own channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves booking a stay",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/deep-research",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "question + sources: [local files only]",
+      "exampleOutput": "al:1 research pack; unbound claims ranked unproven; conflicts kept in both versions",
+      "excludedReason": "n/a",
+      "id": "image-search",
+      "input": "plain text (question + source list + proof rule)",
+      "limits": "no live page fetch, no search engine, no model call",
+      "output": "al:1 research pack (claims with proof-ref file:line:sha256 or test id)",
+      "permissions": "none",
+      "purpose": "Structure an image-search question into a research pack with proof-refs.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves finding public images for research",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/documents",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic outline + notes + audience",
+      "exampleOutput": "al:1 document pack with sections and decisions; nothing sent",
+      "excludedReason": "n/a",
+      "id": "knowledge-organization",
+      "input": "plain text (outline + source notes + audience)",
+      "limits": "no real document, mail, or form created, edited, or sent",
+      "output": "al:1 document pack (structure, sections, decisions, owned action items)",
+      "permissions": "none",
+      "purpose": "Draft a notes plan from where notes already live, before creating anything new.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves organising notes",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "marketplaces",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover resale marketplace options available through the agent's own channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves a resale marketplace",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/mcp-authoring",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "/skills/mcp-tool-authoring.txt",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "tool=aiws_convert | side-effect=read",
+      "exampleOutput": "MCP tool definition draft, exec=none, schema-valid=true",
+      "excludedReason": "n/a",
+      "id": "mcp-tool-authoring",
+      "input": "tool name + input JSON Schema + side-effect class",
+      "limits": "prompt-only-template | no-live-service-call | no-account | no-booking | no-send",
+      "output": "al:1 + JSON MCP tool definition with server-side secret-hygiene and 100KB pack constraints",
+      "permissions": "none",
+      "purpose": "Template for authoring Model Context Protocol (MCP) tool, resource, and prompt schemas compatible with AI Workspace al:1/ac:1 packs.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves drafting an MCP tool schema",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/media",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "media-library",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace holds no media and plays nothing; playback, library, and search happen in the owner's connected account or device",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover photo-library search options available through the agent's own device channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves searching a photo library",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/documents",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic outline + notes + audience",
+      "exampleOutput": "al:1 document pack with sections and decisions; nothing sent",
+      "excludedReason": "n/a",
+      "id": "meeting-follow-up",
+      "input": "plain text (outline + source notes + audience)",
+      "limits": "no real document, mail, or form created, edited, or sent",
+      "output": "al:1 document pack (structure, sections, decisions, owned action items)",
+      "permissions": "none",
+      "purpose": "Draft meeting decisions and owned action items from meeting notes the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves following up a meeting",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/messaging-social",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "messaging",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never sends and never pretends to be a real person; any send needs per-person/per-wording owner approval in the owner's channel",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover messaging options available through the agent's own connected account channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves messaging another person",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/planning",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic goal + tasks + constraints",
+      "exampleOutput": "al:1 plan pack with phases and deps; no booking made",
+      "excludedReason": "n/a",
+      "id": "mortgage-comparison",
+      "input": "plain text (goal + tasks + constraints + figures as supplied)",
+      "limits": "no booking, payment, or scheduling with real people; dates are supplied input echoed back, not a booking",
+      "output": "al:1 plan pack (phases, owners, deps, dates and budget lines as supplied)",
+      "permissions": "none",
+      "purpose": "Draft a mortgage comparison from purchase price, down payment, term, and rate figures the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves comparing mortgages",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/media",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "music-discovery",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace holds no media and plays nothing; playback, library, and search happen in the owner's connected account or device",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover music search and playback options available through the agent's own channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves finding music",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "place-discovery",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover place options available through the agent's own channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves finding a place",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/media-production",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "remotion-motion-graphics",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace generates, edits, or renders no media; production happens in the agent's own media channel with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover motion-graphics production options available through the agent's own media channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves motion graphics",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "restaurant-reservations",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover restaurant table options available through the agent's own channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves reserving a restaurant table",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/planning",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic goal + tasks + constraints",
+      "exampleOutput": "al:1 plan pack with phases and deps; no booking made",
+      "excludedReason": "n/a",
+      "id": "scheduling",
+      "input": "plain text (goal + tasks + constraints + figures as supplied)",
+      "limits": "no booking, payment, or scheduling with real people; dates are supplied input echoed back, not a booking",
+      "output": "al:1 plan pack (phases, owners, deps, dates and budget lines as supplied)",
+      "permissions": "none",
+      "purpose": "Draft a schedule plan from attendees, duration, date range, and timezones the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves planning a schedule",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/security-audit",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "/skills/security-hygiene-audit.txt",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "candidate pack text",
+      "exampleOutput": "hygiene audit report: secret-pattern pass/fail, data-class check, proof binding",
+      "excludedReason": "n/a",
+      "id": "security-hygiene-audit",
+      "input": "candidate pack or tool definition text",
+      "limits": "prompt-only-template | no-live-service-call | no-account | no-booking | no-send",
+      "output": "al:1 hygiene audit report listing secret-pattern status, data-class check, and proof binding",
+      "permissions": "none",
+      "purpose": "Static checklist and regex audit template for secret-pattern leaks, unbound verdicts, permission escalation, and data-class export violations.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves auditing a pack or tool definition for hygiene",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "shopping",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover product options available through the agent's own shopping channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves shopping for a product",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/media-production",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "short-editing",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace generates, edits, or renders no media; production happens in the agent's own media channel with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover short-form video editing options available through the agent's own media channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves editing a short video",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/media-production",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "smb-product-shots",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace generates, edits, or renders no media; production happens in the agent's own media channel with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover product-shot editing options available through the agent's own media channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves editing a product shot",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/outreach",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic audience + message + channel",
+      "exampleOutput": "al:1 draft pack marked draft; nothing sent or published",
+      "excludedReason": "n/a",
+      "id": "social-content-performance",
+      "input": "plain text (audience + message + channel as text)",
+      "limits": "no send, publish, or purchase; sending needs owner approval for that person and wording in the owner's channel",
+      "output": "al:1 draft pack, marked draft, with disclosure line and send-requires-owner-approval gate",
+      "permissions": "none",
+      "purpose": "Draft a social performance review plan from network, account, and question the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves reviewing social performance",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/outreach",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic audience + message + channel",
+      "exampleOutput": "al:1 draft pack marked draft; nothing sent or published",
+      "excludedReason": "n/a",
+      "id": "social-publishing",
+      "input": "plain text (audience + message + channel as text)",
+      "limits": "no send, publish, or purchase; sending needs owner approval for that person and wording in the owner's channel",
+      "output": "al:1 draft pack, marked draft, with disclosure line and send-requires-owner-approval gate",
+      "permissions": "none",
+      "purpose": "Draft a social post plan from account, audience, goal, and timing the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves planning a social post",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/documents",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic outline + notes + audience",
+      "exampleOutput": "al:1 document pack with sections and decisions; nothing sent",
+      "excludedReason": "n/a",
+      "id": "spoken-audio",
+      "input": "plain text (outline + source notes + audience)",
+      "limits": "no real document, mail, or form created, edited, or sent",
+      "output": "al:1 document pack (structure, sections, decisions, owned action items)",
+      "permissions": "none",
+      "purpose": "Draft a spoken-audio script from text and audience the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves scripting spoken audio",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/finance-storefronts",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "store-operations",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace moves no money and touches no merchant account; actions need the owner's merchant account and per-action approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover store record options available through the agent's own merchant channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves a store record, product, order, or customer",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/media-production",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "style-tryon",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace generates, edits, or renders no media; production happens in the agent's own media channel with its own approval",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover style try-on options available through the agent's own media channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves a style try-on",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/planning",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic goal + tasks + constraints",
+      "exampleOutput": "al:1 plan pack with phases and deps; no booking made",
+      "excludedReason": "n/a",
+      "id": "task-management",
+      "input": "plain text (goal + tasks + constraints + figures as supplied)",
+      "limits": "no booking, payment, or scheduling with real people; dates are supplied input echoed back, not a booking",
+      "output": "al:1 plan pack (phases, owners, deps, dates and budget lines as supplied)",
+      "permissions": "none",
+      "purpose": "Draft a task plan from a task list, owners, and dependencies the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves managing a task list",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/documents",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic outline + notes + audience",
+      "exampleOutput": "al:1 document pack with sections and decisions; nothing sent",
+      "excludedReason": "n/a",
+      "id": "translation",
+      "input": "plain text (outline + source notes + audience)",
+      "limits": "no real document, mail, or form created, edited, or sent",
+      "output": "al:1 document pack (structure, sections, decisions, owned action items)",
+      "permissions": "none",
+      "purpose": "Draft a translation plan from source text, target language, region, and audience.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves translation",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "trip-planning",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover trip-planning options available through the agent's own travel channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves planning a trip",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/travel-shopping",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "trip-transport",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover trip-transport options available through the agent's own travel channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves getting around on a trip",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "owner-channel",
+      "category": "connector-required/health-home-devices",
+      "class": "connector-required",
+      "cost": "unknown-elsewhere",
+      "dependencies": [],
+      "endpointOrFile": "none — registry entry only, no workspace endpoint; agent uses its own channel",
+      "errors": [
+        "owner-approval-required",
+        "secret-pattern"
+      ],
+      "exampleInput": "discovery query in the agent's own channel",
+      "exampleOutput": "registry entry only — no workspace output; agent uses its own channel with its own approval",
+      "excludedReason": "n/a",
+      "id": "wearables-comms",
+      "input": "plain text (discovery query — no workspace call)",
+      "limits": "workspace reads or controls nothing; actions need the owner's paired device and per-action approval, especially control actions",
+      "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
+      "permissions": "none",
+      "purpose": "Discover call and text options available through the agent's own wearable-device channel.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves a call or text from a wearable device",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/planning",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic goal + tasks + constraints",
+      "exampleOutput": "al:1 plan pack with phases and deps; no booking made",
+      "excludedReason": "n/a",
+      "id": "weekly-review",
+      "input": "plain text (goal + tasks + constraints + figures as supplied)",
+      "limits": "no booking, payment, or scheduling with real people; dates are supplied input echoed back, not a booking",
+      "output": "al:1 plan pack (phases, owners, deps, dates and budget lines as supplied)",
+      "permissions": "none",
+      "purpose": "Draft a weekly review plan from open loops, stalled projects, and commitments the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves running a weekly review",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/deep-research",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "question + sources: [local files only]",
+      "exampleOutput": "al:1 research pack; unbound claims ranked unproven; conflicts kept in both versions",
+      "excludedReason": "n/a",
+      "id": "wide-research",
+      "input": "plain text (question + source list + proof rule)",
+      "limits": "no live page fetch, no search engine, no model call",
+      "output": "al:1 research pack (claims with proof-ref file:line:sha256 or test id)",
+      "permissions": "none",
+      "purpose": "Structure a wide research question into a research pack with proof-refs.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves wide research across many inputs",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    },
+    {
+      "account": "none",
+      "category": "prompt-only/health-notes",
+      "class": "prompt-only",
+      "cost": "free-here",
+      "dependencies": [
+        "tool:pack"
+      ],
+      "endpointOrFile": "none — template only, no live call",
+      "errors": [
+        "template-input-missing",
+        "template-pack-malformed",
+        "secret-pattern",
+        "proof-ref-missing"
+      ],
+      "exampleInput": "synthetic measurements + routine",
+      "exampleOutput": "al:1 note pack with routine and measurements; no diagnosis, no advice",
+      "excludedReason": "n/a",
+      "id": "workout-planning",
+      "input": "plain text (measurements/routines the agent supplies)",
+      "limits": "no device read, no home-device control, no medical advice",
+      "output": "al:1 note pack (routine, measurements, questions for a clinician where relevant)",
+      "permissions": "none",
+      "purpose": "Draft a workout plan note from goal, constraints, and routines the agent supplies.",
+      "references": [
+        "none"
+      ],
+      "trigger": "a task involves planning a workout",
+      "verified": false,
+      "verifiedBy": "none",
+      "verifiedDate": "never"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+view: agentcode
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=agentcode
+---
+agentcode
+ac:1;a=ai-workspace;t=agentcode-start;s=dg;n=read-codebook-first
+note: first-read=AGENT-CODE.md+INSTRUCTIONS-FOR-AGENTS.md | decode-with=agentcode.js | secret=none | encryption=none
+note: audit=if-a-record-does-not-decode-with-the-codebook-do-not-trust-it
+out: views=32 | lang=ac:1+al:1+json | exec=sandboxed-js-only | keys=none | paid-wired=none | free-only
+first-read-for-other-ais
+ac:1;a=any;t=learn-agentcode;s=dg;n=convert-and-verify
+step-1: read=AGENT-CODE.md-in-full | never-guess-codes
+step-2: job=high-volume-agent-traffic | use=ac:1 | job=handoff-audit | use=al:1 | job=exact-tool-data | use=json
+step-3: verify=parseAc-no-error | acToAl-matches-intent | acToJson-parses-as-json
+step-4: rules=proof-never-faked | end-state-exactly-one | secrets-blocked-in-every-language | no-silent-overwrite
+audit: codebook-is-public | converter-is-public | owner-can-decode-any-record | undecodable-means-do-not-trust
+copy
+AgentCode is agent-only in FORM, not secret from the owner. It is NOT encrypted, NOT obfuscated with a secret key. Full spec: AGENT-CODE.md. Full instructions: INSTRUCTIONS-FOR-AGENTS.md. Both are in this site and in the repo.
+codebook-short
+Fields (code=value, separated by ;, one line, header ac:1)
+a=agent | ro=role | t=task | s=status | x=ctx | i=in | o=out | v=verdict | f=conflict | n=next | d=done | b=blocked | y=verify | nt=note
+Status (s)
+td=todo | dg=doing | vf=verify | dn=done | bl=blocked
+Proof (inside v=model:claim:proof-code)
+cd=code | lv=live | ts=test | nn=none (unproven — say so, never dress it up; nn cannot resolve a conflict)
+End-state rule
+Last field must be exactly one of n (next, status td/dg/vf), d (done, status dn), b (blocked, status bl) — except compact end-state: status dn/bl with no terminal field, as in a Cloud single-line pack.
+Reason codes (for b)
+not-ac | missing-agent | missing-task | missing-status | status-not-legal | terminal-missing | terminal-status-mismatch | secret-pattern | proof-none-cannot-resolve | field-not-code-equals | verdict-malformed | blocked-malformed — reported as blocked: reason=CODE | need=VALUE, exactly as AgentLang.
+Values
+Identifiers and kebab-case tokens only, no sentences, no spaces around ; or =. A sentence belongs in an al:1 note or a linked artifact, referenced by id here. Unknown codes are ignored with a warning, they do not fail the whole record.
+converter
+No live calls, no keys. Input is ac:1, al:1, or JSON depending on the button. Secrets are blocked, never echoed. If a record does not decode with the codebook, do not trust it.
+ac->al
+al->ac
+ac->JSON
+JSON->ac
+load-example
+worked-example-same-task-three-languages
+ac:1;a=mia;t=review-login-loop;s=dg;v=mia:review-login-loop:cd;n=handoff
+note: chars=72 | chars-saved-vs-json=87 | for=high-volume-agent-traffic
+copy-ac
+al:1
+agent: mia
+task: review-login-loop
+status: doing
+verdict: model=mia | claim=review-login-loop | proof=code
+next: handoff
+note: chars=125 | chars-saved-vs-json=34 | for=handoff-audit
+copy-al
+{"lang":"al:1","agent":"mia","task":"review-login-loop","status":"doing","verdict":{"model":"mia","claim":"review-login-loop","proof":"code"},"next":"handoff"}
+note: chars=159 | tokens=not-measured | for=exact-tool-data
+copy-json
+Counts: characters, no trailing newline; no token estimate. AgentCode is 42% shorter than AgentLang and 55% shorter than JSON for this task, saving 87 chars vs JSON per message; codebook is 6966 chars, so break-even vs JSON is 81 messages (6966/87, ceil).
+Cloud single-line pack, converted: al:1 agent=test | action=live-browser-test | status=done becomes ac:1;a=test;t=live-browser-test;s=dn (action normalises to task). Back to AgentLang it is al:1 agent=test | task=live-browser-test | status=done.

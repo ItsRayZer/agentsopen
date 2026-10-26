@@ -1,0 +1,27 @@
+---
+name: financial-planning
+description: Draft a financial plan from a decision, supplied figures, and constraints. Use when a task involves a financial decision.
+class: prompt-only
+verified: false
+digest: sha256:44f17464df60492668c0edbe5919c2d16310d8059abb86cabcddca87eca1b6ca
+---
+
+---BEGIN SKILL---
+purpose: Draft a financial plan from a decision, supplied figures, and constraints.
+input: plain text (goal + tasks + constraints + figures as supplied)
+output: al:1 plan pack (phases, owners, deps, dates and budget lines as supplied)
+endpoint-or-file: none — template only, no live call
+limits: no booking, payment, or scheduling with real people; dates are supplied input echoed back, not a booking
+cost: free-here
+account: none
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: tool:pack
+example-input: synthetic goal + tasks + constraints
+example-output: al:1 plan pack with phases and deps; no booking made
+errors: template-input-missing, template-pack-malformed, secret-pattern, proof-ref-missing
+excluded-reason: n/a
+references: none
+---END SKILL---

@@ -1,0 +1,27 @@
+---
+name: business-finance
+description: Draft bookkeeping and invoicing records from company, currency, and period figures the agent supplies. Use when a task involves bookkeeping or invoicing planning.
+class: prompt-only
+verified: false
+digest: sha256:a214072426d3a63feb70b47386b27bd344394a258c7738399a89e867f58960a9
+---
+
+---BEGIN SKILL---
+purpose: Draft bookkeeping and invoicing records from company, currency, and period figures the agent supplies.
+input: plain text (figures the agent supplies)
+output: al:1 budget/plan pack with arithmetic shown, labelled agent-supplied figures
+endpoint-or-file: none — template only, no live call
+limits: no bank, tax, or market data; no trading, no payment
+cost: free-here
+account: none
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: tool:pack
+example-input: synthetic figures
+example-output: al:1 budget pack with arithmetic shown; figures labelled supplied, not bank data
+errors: template-input-missing, template-pack-malformed, secret-pattern, proof-ref-missing
+excluded-reason: n/a
+references: none
+---END SKILL---

@@ -1,0 +1,7 @@
+REGISTRY-PREAMBLE v1 (generated; do not hand-edit)
+CLASS-ORDER: built-in | prompt-only | connector-required | excluded
+SCOPE: discovery + templates + workspace-native tools only.
+KEYS: none. No entry carries a key, token, or credential field.
+SEND: none. No entry sends, publishes, books, buys, or moves money.
+EXECUTION: only built-in entries execute here. All others are draft/discover-only.
+PROMOTION: connector-required -> built-in requires implement + test + regenerate + CHANGELOG.al.

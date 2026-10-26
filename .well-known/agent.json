@@ -2,8 +2,8 @@
   "name": "ai-workspace",
   "version": "v7.3",
   "lang": "al:1",
-  "url": "ai-workspace",
-  "description": "ai-workspace | static | localStorage-primary | keys=none | exec=sandboxed-js-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | paid-wired=none | free-only | agent-only | landing=agentmode | no-human-home | no-chat-projection | agentcode-ac:1",
+  "url": "https://ai-ws.vercel.app/",
+  "description": "ai-workspace | static | localStorage-primary | keys=none | exec=sandboxed-js-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | paid-wired=none | free-only | agent-only | landing=agentmode | no-human-home | no-chat-projection | agentcode-ac:1 | merged-registry-61-skills | manifest | aiws-v2",
   "capabilities": [
     "code-read",
     "code-diff",
@@ -61,7 +61,12 @@
     "cloud-public-packs-cloudflare-free",
     "language-guide-which-when",
     "agentcode-convert",
-    "aiws-cli"
+    "aiws-cli",
+    "skills-registry",
+    "manifest",
+    "aiws-v2",
+    "cloud-v2-delete-token",
+    "dom-isolation-panels"
   ],
   "skills": [
     {
@@ -294,5 +299,29 @@
   ],
   "auth": "none",
   "keys": "none",
-  "exec": "sandboxed-js-only"
+  "exec": "sandboxed-js-only",
+  "views": 32,
+  "tools": 33,
+  "routes": {
+    "boot": "/agent.txt",
+    "manifest": "/manifest.json",
+    "tools": "/tools.json",
+    "skills": "/skills.json",
+    "skills_txt": "/skills.txt",
+    "views": "/views/<id>.txt",
+    "search_index": "/index.txt",
+    "validator": "/agentlang.js",
+    "converter": "/agentcode.js",
+    "schemas": [
+      "/al-schema.json",
+      "/ac-schema.json",
+      "/agent.schema.json"
+    ],
+    "errors": "/errors.json",
+    "vocab": "/vocab.json",
+    "sitemap": "/sitemap.xml",
+    "files": "/files.txt",
+    "cli": "/aiws",
+    "workshop": "/workshop.json"
+  }
 }

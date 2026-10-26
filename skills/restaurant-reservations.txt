@@ -1,0 +1,27 @@
+---
+name: restaurant-reservations
+description: Discover restaurant table options available through the agent's own channel. Use when a task involves reserving a restaurant table.
+class: connector-required
+verified: false
+digest: sha256:c479bd860906d02fed045b79b397aaade138d9990a7d5752a98eab07b71b3090
+---
+
+---BEGIN SKILL---
+purpose: Discover restaurant table options available through the agent's own channel.
+input: plain text (discovery query — no workspace call)
+output: none — registry entry only; result comes from agent's own channel, never from this workspace
+endpoint-or-file: none — registry entry only, no workspace endpoint; agent uses its own channel
+limits: workspace never books, buys, or holds a payment; any purchase or booking needs its own approval with a verified total in the owner's channel; no price or availability claim is repeated here as a workspace fact
+cost: unknown-elsewhere
+account: owner-channel
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: none
+example-input: discovery query in the agent's own channel
+example-output: registry entry only — no workspace output; agent uses its own channel with its own approval
+errors: owner-approval-required, secret-pattern
+excluded-reason: n/a
+references: none
+---END SKILL---

@@ -1,0 +1,27 @@
+---
+name: store-operations
+description: Discover store record options available through the agent's own merchant channel. Use when a task involves a store record, product, order, or customer.
+class: connector-required
+verified: false
+digest: sha256:d3ecb0a5e8a78d67fe41dfde8ef702e4f8f1419e199e224a636b88c03f1d513f
+---
+
+---BEGIN SKILL---
+purpose: Discover store record options available through the agent's own merchant channel.
+input: plain text (discovery query — no workspace call)
+output: none — registry entry only; result comes from agent's own channel, never from this workspace
+endpoint-or-file: none — registry entry only, no workspace endpoint; agent uses its own channel
+limits: workspace moves no money and touches no merchant account; actions need the owner's merchant account and per-action approval
+cost: unknown-elsewhere
+account: owner-channel
+verified: false
+verified-date: never
+verified-by: none
+permissions: none
+dependencies: none
+example-input: discovery query in the agent's own channel
+example-output: registry entry only — no workspace output; agent uses its own channel with its own approval
+errors: owner-approval-required, secret-pattern
+excluded-reason: n/a
+references: none
+---END SKILL---

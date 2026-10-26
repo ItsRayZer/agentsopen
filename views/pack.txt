@@ -1,0 +1,40 @@
+view: pack
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=pack
+---
+pack
+al:1
+agent: ai-workspace | role=pack
+task: pack | status: todo
+in: code | verdict | notes | tracker
+out: al:1-pack | json-pack
+next: build-pack
+task
+code
+verdict
+notes
+build
+out
+copy
+pack-slicer
+budget-chars
+slice
+copy
+pack-delta
+pack-a
+pack-b
+delta
+copy
+pack-token-cost
+Chars only: no token estimate. Cut shows what the slicer would drop at the budget.
+pack-text
+budget-chars
+token-cost
+copy
+pack-delta-since-last
+What changed since my last pack: added lines are exported as AgentLang. Removed lines are counted only, not re-exported as content.
+previous-bundle
+current-bundle
+delta-export
+copy

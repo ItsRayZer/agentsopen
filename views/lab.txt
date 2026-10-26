@@ -1,0 +1,48 @@
+view: lab
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=lab
+---
+lab
+al:1
+agent: ai-workspace | role=lab
+task: lab | status: todo
+out: al-lint | negative-fixtures | scenario-replay | al-replay-dry-run | snapshot-ephemeral | verify-staleness | migration-rehearsal | reason-catalog
+next: lint-al
+al-lint
+al-input
+lint
+copy
+run-negative-fixtures
+copy
+scenario-replay
+scenario
+claim-expiry
+duplicate-block
+import-block
+replay
+copy
+al-replay-dry-run
+al-input
+dry-run-replay
+copy
+context-snapshot-ephemeral
+snapshot-task
+snapshot-ctx
+snapshot
+copy
+Snapshots are shown on this page only and are not saved to localStorage.
+verify-artifact-staleness
+artifact
+rev-at-verify
+record-verify
+current-rev
+check-stale
+copy
+migration-rehearsal
+Sample only: waiting becomes blocked. Real localStorage is not changed by this rehearsal.
+dry-run-migration
+rollback-sample
+copy
+reason-code-catalog
+no-from | no-task | no-text | no-url | url-invalid | fetch-failed | import-empty | json-invalid | regex-invalid | al-invalid | not-al | status-not-legal | end-state-not-one | diff-too-large | save-failed | claim-taken | lease-expired | lease-not-found | duplicate-blocked-auto-merge | approval-required | approval-rejected | observer-read-only | verdict-missing-proof | verdict-missing-basis | proof-none-cannot-resolve | conflict-unresolved | quota-near-limit | quota-exceeded | tool-forbidden-token | tool-timeout | no-end-state | secret-like-value | free-tier-unverified | paid-tier-excluded | no-live-call

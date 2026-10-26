@@ -1,11 +1,12 @@
 # aiws — ai-workspace command tool
 
 al:1
-agent: ai-workspace | role=cli
-task: aiws | status: todo
-in: aiws | aiws.md
+agent: ai-workspace
+task: aiws
+status: todo
+in: aiws
 out: site=ai-ws.vercel.app | cloud=ai-workspace-cloud | keys=none | auth=none | paid=none
-next: sh aiws start | sh aiws help
+next: sh aiws start
 
 ## What it is
 
@@ -38,12 +39,18 @@ sh aiws start
 sh aiws start    # fetch agent.json + start lines
 sh aiws agent    # fetch agent.json
 sh aiws examples # fetch examples.al
-sh aiws search <term>  # search index + examples, capped 20
+sh aiws boot     # fetch agent.txt (one-fetch boot index)
+sh aiws view <id> # fetch /views/<id>.txt (alias: aiws txt <id>)
+sh aiws skills   # fetch skills.txt (registry index)
+sh aiws skill <id> # fetch /skills/<id>.txt
+sh aiws search <term> [cursor]  # search index.txt + examples, 20 per page, total + next cursor
 sh aiws pack <file>    # validate al:1 + size + secret-pattern, print pack, do NOT publish
 sh aiws publish <file> # publish public pack only, file must contain public=true
 sh aiws list     # list published pack ids only
 sh aiws get <id> # fetch one public pack
-sh aiws delete <id> # delete only an id published by this tool
+sh aiws delete <id> # delete only an id published by this tool (sends the Worker v2 delete token when one was stored at publish)
+sh aiws snapshot [--dry-run] <dir> # export site files listed in files.txt with hash check
+sh aiws verify <file> # hygiene check only, NOT full validation (use agentlang.js)
 sh aiws health   # cloud health + site agent.json version
 sh aiws help     # one line per command
 ```

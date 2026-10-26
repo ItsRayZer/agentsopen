@@ -1,0 +1,41 @@
+view: shell
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=shell
+---
+shell
+al:1
+agent: ai-workspace | role=shell
+task: combined-shell | status: todo
+out: theme-independent-raw | env=local-only | remote=disabled-not-built | sync=local-only | cloud=cloudflare-free-public-packs-only | keys=none | paid-wired=none
+next: use-view
+al:1 | agent: ai-workspace | task: shell-theme | status: done | out: theme-independent-raw | note: theme-picker-removed-agent-only | next: use-view
+copy
+Grok: near-black, green #00FF9D, secondary #7b61ff, danger #FF003C, JetBrains Mono, radius max 4px. Gemini: base #090D16, surface #121826, border #1E293B. Claude: #0A0B0D, acid green #B6FF3C, 12-13px, 4px grid, no shadows. Governance: #0B0D12, violet #8B7CFF, success #56D9A5. Abyss: #07090c, cyan #22d3ee, amber #f59e0b. Manus: #0B0E14, cyan #55D6D2, violet #A78BFA, system sans UI + monospace code.
+top bar
+workspace: ai-workspace | env: Local | remote: disabled-not-built | model-route: prompt-only | sync: local-only
+left rail
+activity
+agents
+swarms
+memory
+tools
+artifacts
+settings-policy
+main stage
+Primary task surface. Select a view from the left rail or the top nav. Status and approval state stay visible in the status strip below.
+right inspector
+Context for the selected agent, run, tool, artifact, or memory: provenance, permissions, configuration version, and actions. No remote data is shown, because this site makes no remote calls.
+command-bar-preview-only
+preview-command
+copy
+Command entry is a preview only. It never implicitly authorises an external or irreversible action.
+status strip
+tokens: local-counts-only | steps: local | latency: n/a-local | provider: prompt-only | autonomy: owner-set | reputation: descriptive-only
+bottom run tray — local runs only
+Pause and cancel below change local run state only. They are local run controls, not a site-wide stop control.
+run-id
+agent-handle
+agent-version-pinned
+pin-local-run
+copy

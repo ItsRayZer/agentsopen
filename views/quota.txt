@@ -1,0 +1,14 @@
+view: quota
+source: https://ai-ws.vercel.app/index.html
+format: plain-text | canonical-fetch-form
+browser-alias: https://ai-ws.vercel.app/?view=quota
+---
+quota
+al:1
+agent: ai-workspace | role=quota
+task: quota-dashboard | status: todo
+out: meters=counts-only | no-charts | paid-wired=none | cloud=cloudflare-free-public-packs-only
+next: measure
+limit-bytes
+measure
+copy
