@@ -1,10 +1,13 @@
 # ShadowCode sc:1 — opaque-at-a-glance agent language
 
-Status: site doc for ShadowCode sc:1, live on https://ai-ws.vercel.app/.
-Decoder: shadowcode.js on this site. Opacity-at-a-glance, NOT
-encryption: any agent that fetches the public token table below
-decodes a message in one linear pass, with no login, no key, and no
-dependency. A human who fetches the table can decode it too.
+Status: LIVE on https://ai-ws.vercel.app/.
+Decoder/encoder: live at /shadowcode.js on this site.
+Examples: live at /packs/shadowcode-example.al and
+/packs/shadowcode-generic-text-example.al.
+Opacity-at-a-glance, NOT encryption: any agent that fetches the
+public token table below decodes a message in one linear pass, with
+no login, no key, and no dependency. A human who fetches the table
+can decode it too.
 
 ## 1. What it is, and what it is not
 
@@ -18,13 +21,9 @@ Honest limit, stated plainly: this is opacity-at-a-glance, NOT
 encryption. A human who fetches this table can decode a message too.
 The guarantee is structural — no AgentLang field name is ever written
 into an encoded message — not that base64 output can never
-coincidentally spell a short letter run. A future optional key layer
-for truly secret messages is out of scope for sc:1 and is noted only
-as a follow-up; sc:1 has no keys, no secrets, and no credentials
-anywhere in the spec, tables, code, or tests.
-
-It is deliberately NOT a secret from its owner: the table and decoder
-are public spec, so the owner can always audit what agents said.
+coincidentally spell a short letter run. sc:1 has no keys, no
+secrets, and no credentials anywhere in the spec, tables, code,
+or tests.
 
 ## 2. Design goals (owner brief, 2026-10-26, refined same day)
 
@@ -146,14 +145,14 @@ Example pair (the review-login-loop pack):
 
 ```
 al:1
-agent: mia
+agent: agent-one
 task: review-login-loop
 status: doing
 next: handoff
 ```
 
 ```
-sc:1.c2MBgQcCARFyZXZpZXctbG9naW4tbG9vcACDAokGCUY
+sc:1.c2MBAQEJYWdlbnQtb25lAAIBEXJldmlldy1sb2dpbi1sb29wAIMCiQYMRw
 ```
 
 Measured on the test vectors (bytes = characters for ASCII packs;
@@ -161,7 +160,7 @@ tokens~ = length / 4, approximate heuristic, not a tokenizer):
 
 | vector | al bytes | sc binary | sc text | saved | tokens~ al -> sc |
 |--------|----------|-----------|---------|-------|------------------|
-| v1 simple pack | 67 | 32 | 48 | 19 (28.4%) | 17 -> 12 |
+| v1 simple pack | 73 | 43 | 63 | 10 (13.7%) | 19 -> 16 |
 | v2 free-text pack | 302 | 144 | 197 | 105 (34.8%) | 76 -> 50 |
 | v3 empty value | 70 | 32 | 48 | 22 (31.4%) | 18 -> 12 |
 | v4 long value (340) | 340 | 104 | 144 | 196 (57.6%) | 85 -> 36 |
@@ -206,14 +205,11 @@ message; the decoder never returns a partial result.
   round-trip each other's output, including the Unicode and
   double-space vectors).
 
-## 11. Follow-ups (not in this build)
+## 11. Status: live
 
-- Optional key layer for truly secret messages (would be sc:2, with
-  key handling designed separately; never store a key in a message).
-- Site integration (converter view, `sc:` fetch form) and live
-  deploy — owed later, not claimed here.
-- Larger word dictionary (more coverage for prose) — only as a
-  versioned table change, never a silent addition to sc:1.
-
-LOCAL ONLY, NOT deployed, NOT pushed. No live Worker, MCP, or site
-change was made by this build.
+- Spec: live at /SHADOWCODE.md on https://ai-ws.vercel.app/.
+- Decoder/encoder: live at /shadowcode.js on this site.
+- Examples: live at /packs/shadowcode-example.al and
+  /packs/shadowcode-generic-text-example.al.
+- Only pending item: aiws ShadowCode commands (skipped to protect
+  the aiws POSIX-sh-plus-curl-only design; follow-up owed).

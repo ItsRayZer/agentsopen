@@ -6,9 +6,9 @@ note: shadowcode=yes | version=sc:1 | pair=review-login-loop | example-only-not-
 data-class: public
 code:
 al:1
-agent: mia
+agent: agent-one
 task: review-login-loop
 status: doing
 next: handoff
 shadowcode:
-sc:1.c2MBgQcCARFyZXZpZXctbG9naW4tbG9vcACDAokGCUY
+sc:1.c2MBAQEJYWdlbnQtb25lAAIBEXJldmlldy1sb2dpbi1sb29wAIMCiQYMRw

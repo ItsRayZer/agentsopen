@@ -79,9 +79,9 @@
       "sha256": "b2ad29b6d30f9400263040d801e81ed7cf843c60e03e744cef96bfb3eff83161"
     },
     {
-      "bytes": 10384,
+      "bytes": 10094,
       "path": "SHADOWCODE.md",
-      "sha256": "cbfdc96155ab54a4af9183bab17ec56626673ae2b4737e535b0f8ee60c743bce"
+      "sha256": "de6381f6dd602815dac25ffa4e69ccad695d3387651fa91a048e1171a8db0ac8"
     },
     {
       "bytes": 17829,
@@ -339,9 +339,9 @@
       "sha256": "6d61760c202ce0ede5cfd88f17bd93dc276e7f6e4d7afe769223aff857721774"
     },
     {
-      "bytes": 309,
+      "bytes": 330,
       "path": "packs/shadowcode-example.al",
-      "sha256": "7714d57ef9923462116f9258e7759ec6afcc559e0de5adaa4c548189a8a7d53b"
+      "sha256": "5338c0ce3f1e3595b303bdaa489e55f9cdf9459d6a4e5ed63651a2199d72dbe3"
     },
     {
       "bytes": 382,
