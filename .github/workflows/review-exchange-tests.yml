@@ -31,8 +31,24 @@ on:
     paths:
       - "review-exchange-validator.js"
       - "review-exchange-validator.test.js"
+      - "review-exchange-core.js"
+      - "review-exchange-core.test.js"
+      - "review-exchange-ui.js"
+      - "review-exchange.html"
+      - "review-exchange.css"
+      - "review-exchange-smoke.test.js"
       - "schemas/review-exchange-0.1.0.schema.json"
       - ".github/workflows/review-exchange-tests.yml"
+      - ".github/scripts/manifest-check.js"
+      - "manifest.json"
+      - "files.txt"
+      - "sitemap.xml"
+      - "README.md"
+      - "agent.json"
+      - "agent.txt"
+      - "index.html"
+      - "index.json"
+      - "index.txt"
 
 permissions:
   contents: read
