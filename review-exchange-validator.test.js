@@ -48,6 +48,9 @@ assert.ok(unknownResult.errors.some(e => e.code === "unknown-field"));
 const badHash = { ...artifact, contentHash: "sha256:not-a-real-hash" };
 assert.equal(validator.validateRecord(badHash).ok, false, "malformed hashes must fail");
 
+const nullHash = { ...artifact, contentHash: null };
+assert.equal(validator.validateRecord(nullHash).ok, false, "null hashes must fail schema validation");
+
 const nullOptional = { ...artifact, summary: null };
 assert.equal(validator.validateRecord(nullOptional).ok, false, "optional fields set to null must fail when the schema expects a string");
 
@@ -98,5 +101,11 @@ assert.ok(malformedResult.errors.some(e => e.code === "type"), "malformed check 
 
 const badCheck = { ...review, checks: [{ checkId: "runtime-test", status: "passed-with-unknown" }] };
 assert.equal(validator.validateRecord(badCheck).ok, false, "unknown check statuses must fail");
+
+const nullReviewHash = { ...review, artifactHash: null };
+assert.equal(validator.validateRecord(nullReviewHash).ok, false, "null review hashes must fail schema validation");
+
+const tooManyCompatibilityRows = { ...review, disposition: "insufficient-evidence", compatibility: Array.from({ length: 101 }, (_, i) => ({ target: "runtime-" + i, status: "not-run" })) };
+assert.equal(validator.validateRecord(tooManyCompatibilityRows).ok, false, "compatibility arrays must respect the schema maximum");
 
 console.log("PASS: review-exchange validator metadata fixtures");
