@@ -7,6 +7,7 @@
   <url><loc>https://ai-ws.vercel.app/ac-schema.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/AGENT-CODE.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/AGENT-LANG.md</loc></url>
+  <url><loc>https://ai-ws.vercel.app/AGENT-REVIEW-EXCHANGE.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/AGENT-START.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/agent.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/agent.schema.json</loc></url>
@@ -15,6 +16,7 @@
   <url><loc>https://ai-ws.vercel.app/agentlang.js</loc></url>
   <url><loc>https://ai-ws.vercel.app/agents.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/AGENTS.md</loc></url>
+  <url><loc>https://ai-ws.vercel.app/AI-WORKSPACE-ADVANCED-BLUEPRINT.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/aiws</loc></url>
   <url><loc>https://ai-ws.vercel.app/aiws.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/al-schema.json</loc></url>
@@ -74,11 +76,22 @@
   <url><loc>https://ai-ws.vercel.app/README.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/requests.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/REQUESTS.md</loc></url>
+  <url><loc>https://ai-ws.vercel.app/review-exchange-core.js</loc></url>
+  <url><loc>https://ai-ws.vercel.app/review-exchange-core.test.js</loc></url>
+  <url><loc>https://ai-ws.vercel.app/review-exchange-smoke.test.js</loc></url>
+  <url><loc>https://ai-ws.vercel.app/review-exchange-ui.js</loc></url>
+  <url><loc>https://ai-ws.vercel.app/review-exchange-validator.js</loc></url>
+  <url><loc>https://ai-ws.vercel.app/review-exchange-validator.test.js</loc></url>
+  <url><loc>https://ai-ws.vercel.app/review-exchange.css</loc></url>
+  <url><loc>https://ai-ws.vercel.app/review-exchange.html</loc></url>
   <url><loc>https://ai-ws.vercel.app/robots.txt</loc></url>
+  <url><loc>https://ai-ws.vercel.app/schemas/review-exchange-0.1.0.schema.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/secret-patterns.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/shadowcode.js</loc></url>
   <url><loc>https://ai-ws.vercel.app/SHADOWCODE.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/sitemap.xml</loc></url>
+  <url><loc>https://ai-ws.vercel.app/skills.json</loc></url>
+  <url><loc>https://ai-ws.vercel.app/skills.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/skills/advertising-campaigns.skill.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/skills/advertising-campaigns.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/skills/agent-browser-nav.skill.md</loc></url>
@@ -201,8 +214,6 @@
   <url><loc>https://ai-ws.vercel.app/skills/wide-research.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/skills/workout-planning.skill.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/skills/workout-planning.txt</loc></url>
-  <url><loc>https://ai-ws.vercel.app/skills.json</loc></url>
-  <url><loc>https://ai-ws.vercel.app/skills.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/storage.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/style.css</loc></url>
   <url><loc>https://ai-ws.vercel.app/tools-callable.json</loc></url>
@@ -248,6 +259,9 @@
   <url><loc>https://ai-ws.vercel.app/views/workshop.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/vocab.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/vocab.json</loc></url>
+  <url><loc>https://ai-ws.vercel.app/wiki-article.html</loc></url>
+  <url><loc>https://ai-ws.vercel.app/wiki-article.js</loc></url>
+  <url><loc>https://ai-ws.vercel.app/WIKI.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/wiki/a2a-agent-card.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/wiki/agent-based-model.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/wiki/agent-skills-skill-md.txt</loc></url>
@@ -286,9 +300,6 @@
   <url><loc>https://ai-ws.vercel.app/wiki/teamwork.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/wiki/virtual-team.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/wiki/wiki.txt</loc></url>
-  <url><loc>https://ai-ws.vercel.app/wiki-article.html</loc></url>
-  <url><loc>https://ai-ws.vercel.app/wiki-article.js</loc></url>
-  <url><loc>https://ai-ws.vercel.app/WIKI.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/wire.ac</loc></url>
   <url><loc>https://ai-ws.vercel.app/workshop.json</loc></url>
 </urlset>
