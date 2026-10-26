@@ -168,6 +168,85 @@
     if (!reviewValidation.ok) return { ok:false, errors:reviewValidation.errors, scan:scan, artifact:artifact, review:review };
     return { ok:true, artifact:artifact, review:review, scan:scan, warnings:reviewValidation.warnings || [] };
   }
+  var PUBLIC_BUNDLE_SCHEMA = "aiws-review-exchange-public-bundle-0.1.0";
+  var MAX_PUBLIC_PACK_BYTES = 95 * 1024;
+  function encodeBase64Utf8(text) {
+    if (typeof TextEncoder === "undefined" || typeof btoa !== "function") throw new Error("Base64 UTF-8 encoding is unavailable in this runtime.");
+    var bytes = new TextEncoder().encode(String(text));
+    var binary = "";
+    for (var i = 0; i < bytes.length; i += 8192) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + 8192, bytes.length)));
+    }
+    return btoa(binary);
+  }
+  function decodeBase64Utf8(value) {
+    if (typeof TextDecoder === "undefined" || typeof atob !== "function") throw new Error("Base64 UTF-8 decoding is unavailable in this runtime.");
+    var binary = atob(String(value || ""));
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder("utf-8", { fatal:true }).decode(bytes);
+  }
+  function byteLength(text) {
+    return typeof TextEncoder !== "undefined" ? new TextEncoder().encode(String(text)).length : String(text).length;
+  }
+  function buildPublicRecordPack(artifact, review) {
+    if (!isObject(artifact) || !isObject(review)) throw new Error("A public pack requires one artifact record and one review record.");
+    if (artifact.recordType !== "artifact" || review.recordType !== "review") throw new Error("Public pack inputs must be an artifact and review record.");
+    if (artifact.artifactId !== review.artifactId || artifact.version !== review.artifactVersion) throw new Error("Artifact and review versions do not match.");
+    var publicArtifact = Object.assign({}, artifact, { status:"published", visibility:"public" });
+    var bundle = {
+      schemaVersion:PUBLIC_BUNDLE_SCHEMA,
+      recordType:"review-exchange-public-bundle",
+      publishedAt:new Date().toISOString(),
+      publisherAssurance:"self-asserted",
+      artifact:publicArtifact,
+      review:review,
+      limitations:[
+        "Public pack storage is unauthenticated and readable by anyone.",
+        "This bundle contains metadata and review records only; source text and executable files are not included.",
+        "The publishing identity is self-asserted. This record is not cryptographically signed or independently endorsed."
+      ]
+    };
+    var json = JSON.stringify(bundle);
+    var scan = scanSource(json);
+    if (!scan.ok) throw new Error("Public record exceeds the local scan limit; split or shorten the metadata.");
+    if (scan.secretFindings.length) throw new Error("Public record blocked: suspected secret pattern in metadata or review. Inspect the record and remove secrets before publishing.");
+    var encoded = encodeBase64Utf8(json);
+    var pack = [
+      "al:1",
+      "agent: ai-workspace",
+      "task: review-exchange-record",
+      "status: done",
+      "public=true",
+      "data-class: public",
+      "note: exchange=review-exchange-record",
+      "note: exchange-schema=review-exchange-0.1.0",
+      "note: exchange-bundle=" + PUBLIC_BUNDLE_SCHEMA,
+      "note: exchange-artifact-id=" + publicArtifact.artifactId,
+      "note: publisher-assurance=self-asserted",
+      "note: exchange-record-b64=" + encoded
+    ].join("\n");
+    var size = byteLength(pack);
+    if (size > MAX_PUBLIC_PACK_BYTES) throw new Error("Public pack exceeds the safe 95 KiB limit (" + size + " bytes). Remove nonessential metadata and retry.");
+    return { pack:pack, bundle:bundle, byteLength:size, schemaVersion:PUBLIC_BUNDLE_SCHEMA };
+  }
+  function parsePublicRecordPack(pack) {
+    var text = String(pack || "");
+    if (byteLength(text) > MAX_PUBLIC_PACK_BYTES) throw new Error("Public pack exceeds the local size limit.");
+    if (!text.trimStart().startsWith("al:1")) throw new Error("Public pack is not an AgentLang pack.");
+    if (!/^public=true$/m.test(text) || !/^data-class:\\s*public$/m.test(text)) throw new Error("Public pack is missing the explicit public data-class markers.");
+    if (!/^note: exchange=review-exchange-record$/m.test(text)) throw new Error("This is not a Review Exchange public record.");
+    var line = text.split(/\\r?\\n/).find(function (row) { return row.indexOf("note: exchange-record-b64=") === 0; });
+    if (!line) throw new Error("Public record payload is missing.");
+    var encoded = line.slice("note: exchange-record-b64=".length).trim();
+    var bundle;
+    try { bundle = JSON.parse(decodeBase64Utf8(encoded)); }
+    catch (e) { throw new Error("Public record payload is not valid UTF-8 JSON."); }
+    if (!isObject(bundle) || bundle.schemaVersion !== PUBLIC_BUNDLE_SCHEMA || bundle.recordType !== "review-exchange-public-bundle") throw new Error("Unsupported public record bundle schema.");
+    if (!isObject(bundle.artifact) || !isObject(bundle.review)) throw new Error("Public bundle must contain an artifact and a review record.");
+    return bundle;
+  }
+
   function buildPassport(artifact, reviews) {
     var related = (Array.isArray(reviews) ? reviews : []).filter(function (r) {
       return r && r.recordType === "review" && r.artifactId === artifact.artifactId && r.artifactVersion === artifact.version;
@@ -238,6 +317,10 @@
     reviewArtifact:reviewArtifact,
     buildPassport:buildPassport,
     compareMetadata:compareMetadata,
-    makeBenchmarkPlan:makeBenchmarkPlan
+    makeBenchmarkPlan:makeBenchmarkPlan,
+    buildPublicRecordPack:buildPublicRecordPack,
+    parsePublicRecordPack:parsePublicRecordPack,
+    publicBundleSchema:PUBLIC_BUNDLE_SCHEMA,
+    maxPublicPackBytes:MAX_PUBLIC_PACK_BYTES
   };
 });
