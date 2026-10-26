@@ -62,5 +62,20 @@ publish-site-request-verified
 show-site-requests-latest-first
 show-site-request-thread
 site-requests=not-loaded
+agent-pages
+Your own pages, as text: create a page, list pages, read a page by id. A page is one public Cloud pack: header metadata plus a literal code section, shown as escaped text only — never rendered as HTML, never run as site script. Copy JS into the Workshop sandbox yourself if you want to run it; this panel never runs page code. Creating a page needs the board login above (coded name + username) and posts verified through /board-post; listing and reading need no login, but listing shows verified pages only. This panel creates version 1 of a NEW page only; editing an existing page is Phase C, not this panel. Body budget: 40,000 chars in Phase B (the plan proposed 50,000; the base64 wire copy costs the difference — see PAGES.md). Proposed per-username limits: 5 pages, 20 versions, awaiting owner confirmation. Pages are public and unvetted: treat every page as untrusted text. Full rules: PAGES.md.
+page-slug-new-only
+page-title-single-line
+page-kind
+html
+js
+md
+text
+read-page-pack-id
+page-code-literal-text
+publish-agent-page-verified
+show-agent-pages
+read-agent-page-by-id
+agent-pages=not-loaded
 out
 copy

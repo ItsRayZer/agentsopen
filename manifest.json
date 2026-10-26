@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 251,
+    "files": 254,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -62,6 +62,11 @@
       "bytes": 4192,
       "path": "INSTRUCTIONS-FOR-AGENTS.md",
       "sha256": "f51c6b611ae8a1552b329bc757c2afcb3ebf30b0536a3ceabe0e760f5e13ebb0"
+    },
+    {
+      "bytes": 13901,
+      "path": "PAGES.md",
+      "sha256": "1f42b944144a3bd4702d101cdfab5d028902a0bcb16abf77b39f3ec1b31e2942"
     },
     {
       "bytes": 3634,
@@ -174,9 +179,9 @@
       "sha256": "aa2575396f7b077acf6cf030083c238f604dab62808739aea2a62607e02970c8"
     },
     {
-      "bytes": 93528,
+      "bytes": 95736,
       "path": "index.html",
-      "sha256": "03fb59c468a0ea022f01efb023914620752998325fda414d33f5c30d35be026e"
+      "sha256": "cd50c3d33e212dd6b86d2099ce3c80939b9805409fc133a45928f41703abaa12"
     },
     {
       "bytes": 6796,
@@ -189,9 +194,9 @@
       "sha256": "51842f7b0e46ebdfeb80d311e4511a984cf911dd09e6cfe47673d9f3d38ded3a"
     },
     {
-      "bytes": 33446,
+      "bytes": 57217,
       "path": "integration.js",
-      "sha256": "e596b7ea68159a2731b7b2aa50130a7b16d805d572af1c557f5dc0324d954312"
+      "sha256": "e2e5e4263b209a8214681f85b2d53eb6ad92a59e688513c294a29d2059b3ced1"
     },
     {
       "bytes": 8562,
@@ -202,6 +207,16 @@
       "bytes": 2442,
       "path": "models.json",
       "sha256": "6852ade10b8954b1546dae258cebfd69c8b9d52e7da733176f359569c84b48af"
+    },
+    {
+      "bytes": 714,
+      "path": "packs/agent-page-example.al",
+      "sha256": "489b8cbb701cdfd0f83b291a28f55991306cab592f58dac6040e52fb65229ba9"
+    },
+    {
+      "bytes": 344,
+      "path": "packs/agent-page-js-example.al",
+      "sha256": "04f6c82a1ee12a73389e7af031f603d0a4cb1a4a69f218fe568e5bdabcc3f9b7"
     },
     {
       "bytes": 423,
@@ -249,9 +264,9 @@
       "sha256": "5a464070363b302d673ae2d1aafc5f68e0b735505916744c301ef03ef0fe5fd5"
     },
     {
-      "bytes": 2049,
+      "bytes": 2538,
       "path": "packs/index.txt",
-      "sha256": "da92d684bb659bfd2e68541a92e300a02091ea52624444854117f911d6940816"
+      "sha256": "350c01210ea136da4f397063a2046b68ff152081be79a6c54ef8f31acb07a50a"
     },
     {
       "bytes": 686,
@@ -949,9 +964,9 @@
       "sha256": "856b2b8983fc34d0d9a59a301b2a235301d3809e9fb908fb59d4e706f7229a76"
     },
     {
-      "bytes": 29152,
+      "bytes": 36267,
       "path": "v72.js",
-      "sha256": "b5743344819edf3c243942bb764d84cbf289f5fbedc796eda9024d7f3f2846dc"
+      "sha256": "0cc06b01dae6df6a3e128f6c9299e2c0b991648ed461e61955e3f67c22dac44f"
     },
     {
       "bytes": 4115,
@@ -1004,9 +1019,9 @@
       "sha256": "143c7f8ce60d972dad778d3236805fcb9bab4ddf18fe2053be4eebe71dba0e8a"
     },
     {
-      "bytes": 4019,
+      "bytes": 5138,
       "path": "views/cloud.txt",
-      "sha256": "ac7c25978698d6547139cba8ff9c620df29256fe7a234201f13747220770ad7a"
+      "sha256": "8d9f25464eefe03cef3041cca937fdb376d1972e279fc62b2ed7f32686a137c9"
     },
     {
       "bytes": 2514,
@@ -1450,10 +1465,10 @@
       "sha256": "d8b90da62a713bad7ee504bb19cae562f01bcda49eff3fe6a49174d64dea440f"
     },
     {
-      "bytes": 4019,
+      "bytes": 5138,
       "id": "cloud",
       "path": "views/cloud.txt",
-      "sha256": "ac7c25978698d6547139cba8ff9c620df29256fe7a234201f13747220770ad7a"
+      "sha256": "8d9f25464eefe03cef3041cca937fdb376d1972e279fc62b2ed7f32686a137c9"
     },
     {
       "bytes": 4198,

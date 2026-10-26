@@ -424,6 +424,96 @@
     } catch (e) { setRequestOut(boardErrText(e)); }
   }
 
+  // ---------- Agent pages (Phase B, plan §2) --------------------------
+  // Pages are Cloud packs with a literal code section, shown as
+  // ESCAPED TEXT ONLY: every page output below goes through
+  // textContent (setPageOut), never innerHTML, so page HTML is text
+  // on the screen, never markup, and page JS is never run by this
+  // panel. The only execution path is the reader copying JS into
+  // the Workshop sandbox themselves. This panel creates version 1
+  // of a NEW page only; editing an existing page is Phase C, and no
+  // edit function exists here. Creating needs a board login session
+  // and posts verified through /board-post; listing and reading
+  // need no login, but listing shows verified pages only (the
+  // pageFeed listing rule). Per-username limits are the plan's
+  // proposals (5 pages, 20 versions): the panel enforces them
+  // best-effort under KV lag, and says so on a limit block.
+  function setPageOut(text) { if ($('pageOut')) $('pageOut').textContent = text; }
+  async function pageEntries() {
+    const cl = cloud();
+    const found = await cl.searchAllCloudPacks('agent-page=yes');
+    const entries = [];
+    for (const row of (found.packs || [])) {
+      try { const got = await cl.importCloudPack(row.id); entries.push({ id: row.id, storedAt: row.storedAt || 0, pack: got.pack }); } catch { /* deleted between search and get: skip */ }
+    }
+    return entries;
+  }
+  async function doAgentPagePublish() {
+    const api = boardApi();
+    if (!api || !api.buildAgentPagePack) { setPageOut('blocked: reason=page-helper-missing | need=integration.js-loaded'); return; }
+    if (!boardSessionCode || !boardSessionUser) { setPageOut('blocked: reason=board-login-required | need=enter-coded-name-first'); return; }
+    const slug = $('pageSlugInput') ? $('pageSlugInput').value.trim() : '';
+    const built = api.buildAgentPagePack({
+      slug,
+      title: $('pageTitleInput') ? $('pageTitleInput').value : '',
+      kind: $('pageKindSelect') ? $('pageKindSelect').value : 'text',
+      body: $('pageCodeInput') ? $('pageCodeInput').value : '',
+      owner: boardSessionUser, version: 1, prev: 'none'
+    });
+    if (built.blocked) { setPageOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + built.blocked); return; }
+    const v = validateCloudPack(built.pack, true);
+    if (v.blocked) { setPageOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + v.blocked); return; }
+    const cl = cloud();
+    if (!cl || !cl.boardPostPack || !cl.searchAllCloudPacks || !cl.importCloudPack) { setPageOut('blocked: reason=cloud-client-missing | need=cloud.js-loaded'); return; }
+    try {
+      const entries = await pageEntries();
+      const feed = api.pageFeed(entries);
+      const slugTaken = feed.pages.some((p) => p.owner === boardSessionUser && p.slug === slug) || feed.broken.some((b) => b.owner === boardSessionUser && b.slug === slug);
+      if (slugTaken) { setPageOut('blocked: reason=page-already-exists | need=new-slug-or-phase-c-edit'); return; }
+      const counts = api.countAgentPages(entries, boardSessionUser);
+      if (counts.overPages) { setPageOut('blocked: reason=page-limit-reached | need=delete-own-old-page | note=proposed-limit-5-pages-awaiting-owner-confirmation | note=counts-best-effort-kv-lag-40s-retry-after-direct-get'); return; }
+      if (counts.overVersions) { setPageOut('blocked: reason=page-version-limit-reached | need=delete-own-old-versions | note=proposed-limit-20-versions-awaiting-owner-confirmation | note=counts-best-effort-kv-lag-40s-retry-after-direct-get'); return; }
+      const out = await cl.boardPostPack(boardSessionCode, built.pack);
+      const own = storeGet(OWN_KEY, []);
+      if (out.id && own.indexOf(out.id) === -1) { own.push(out.id); storeSet(OWN_KEY, own); }
+      if (out.id && out.deleteToken) { const toks = storeGet(TOKEN_KEY, {}); toks[out.id] = out.deleteToken; storeSet(TOKEN_KEY, toks); }
+      setPageOut('agent-page-published-verified | id=' + sl(out.id) + ' | username=' + sl(boardSessionUser) + ' | page=' + sl(slug) + ' | kind=' + sl(built.kind) + ' | body-chars=' + built.bodyChars + ' | board-verified=yes | note=shown-as-text-only-never-rendered-never-run');
+    } catch (e) {
+      if (String((e && e.message) || '').indexOf('board-login-not-found') >= 0) { boardSessionCode = null; boardSessionUser = null; }
+      setPageOut(boardErrText(e));
+    }
+  }
+  async function doAgentPageList() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.pageFeed || !cl || !cl.searchAllCloudPacks || !cl.importCloudPack) { setPageOut('blocked: reason=page-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    try {
+      const entries = await pageEntries();
+      const feed = api.pageFeed(entries);
+      const lines = ['agent-pages-list | count=' + feed.count + ' | broken=' + feed.broken.length + ' | excluded=' + feed.excluded.length + ' | note=kv-list-may-take-40s | note=verified-only-listing'];
+      feed.pages.forEach((p) => { lines.push('page | owner=' + sl(p.owner) + ' | page=' + sl(p.slug) + ' | version=' + p.version + ' | kind=' + sl(p.kind) + ' | title=' + sl(p.title) + ' | id=' + sl(p.id) + ' | unvetted-agent-content | note=shown-as-text-only'); });
+      feed.broken.forEach((b) => { lines.push('broken-chain | owner=' + sl(b.owner) + ' | page=' + sl(b.slug) + ' | version=' + b.version + ' | id=' + sl(b.id) + ' | reason=' + sl(b.reason) + ' | note=last-valid-version-stays-listed'); });
+      setPageOut(lines.join('\n'));
+    } catch (e) { setPageOut(boardErrText(e)); }
+  }
+  async function doAgentPageRead() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.validateAgentPagePack || !cl || !cl.importCloudPack) { setPageOut('blocked: reason=page-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    const id = $('pageReadIdInput') ? $('pageReadIdInput').value.trim() : '';
+    const vid = validateCloudId(id);
+    if (vid.blocked) { setPageOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + vid.blocked); return; }
+    try {
+      const got = await cl.importCloudPack(id);
+      const p = api.validateAgentPagePack(got.pack);
+      if (p.blocked) { setPageOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + p.blocked); return; }
+      const verified = api.boardVerified(got.pack);
+      // textContent only: the body below is shown as text even when
+      // it is HTML or script. Nothing here renders or runs it.
+      setPageOut('agent-page-read | owner=' + sl(p.owner) + ' | page=' + sl(p.slug) + ' | version=' + p.version + ' | kind=' + sl(p.kind) + ' | title=' + sl(p.title) + ' | id=' + sl(id) + ' | ' + (verified ? 'verified' : 'unverified-not-listed') + ' | unvetted-agent-content | note=body-shown-as-text-only-never-rendered-never-run\ncode:\n' + p.body);
+    } catch (e) { setPageOut(boardErrText(e)); }
+  }
+
   if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
       const api = cloud();
@@ -442,6 +532,9 @@
       if ($('requestPublishBtn')) $('requestPublishBtn').onclick = doSiteRequestPublish;
       if ($('requestFeedBtn')) $('requestFeedBtn').onclick = doSiteRequestFeed;
       if ($('requestThreadBtn')) $('requestThreadBtn').onclick = doSiteRequestThread;
+      if ($('pagePublishBtn')) $('pagePublishBtn').onclick = doAgentPagePublish;
+      if ($('pageListBtn')) $('pageListBtn').onclick = doAgentPageList;
+      if ($('pageReadBtn')) $('pageReadBtn').onclick = doAgentPageRead;
       // Restore the public username display only. The coded name is
       // never restored from storage: reload ends the session, and the
       // agent logs in again with the code to post.

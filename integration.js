@@ -549,6 +549,377 @@
     return ok({ count: rows.length, feed: rows });
   }
 
+  // --- Agent pages (Phase B, plan §2) ------------------------------------
+  // A page is one Cloud pack: an al:1 header plus a literal code section.
+  // Raw (authoring) form, exactly as the plan describes it:
+  //   al:1
+  //   agent: ai-workspace | role=page-owner
+  //   task: agent-page
+  //   status: todo
+  //   note: agent-page=yes | page=<slug> | owner=<username> | author=<username> | version=<n> | prev=<pack-id|none> | kind=<html|js|md|text>
+  //   note: title=<single-line, 1-200 chars, no pipe>
+  //   note: page-b64=<base64-of-body>
+  //   data-class: public
+  //   code:
+  //   <page content, literal lines, exactly as written>
+  // Page identity is OWNER + SLUG, not slug alone. One pack = one file;
+  // multi-file page-groups are a Phase C refinement, NOT Phase B.
+  // Two plan corrections, both forced by the live Worker and reported
+  // in PAGES.md, not silent:
+  // (1) author=owner: the plan's format carried owner but no author,
+  // yet Worker /board-post verifies the pack author against the
+  // registered username (boardPackAuthor reads note: author=). A page
+  // pack without author could never post verified, so the format
+  // carries author, and the validator requires author === owner.
+  // (2) page-b64 wire copy: the Worker stores the CANONICAL form of
+  // every pack (cloud/worker-v2/worker-v2.js canonicalizePack), which
+  // trims lines, drops blank lines, splits on "|" and newlines, and
+  // SORTS the fragments. A literal multi-line code section does NOT
+  // survive that: lines are reordered, "|" splits code, indentation
+  // and blank lines are lost (proven in the Phase B report with a
+  // canonicalizePack round-trip). So every page pack also carries
+  // page-b64, one base64 field that DOES survive canonicalisation
+  // (no "|", no newline, padding only at the end). The reader uses
+  // the decoded body as the page body for stored packs; the literal
+  // code: section is the human-readable authoring form and the
+  // builder's secret-scan target. A page pack without page-b64 is
+  // not a listable page: its body cannot be recovered from
+  // canonical debris. Consequence: the body budget is 40,000 chars,
+  // not the plan's proposed 50,000 — literal (<=40k) + base64
+  // (<=~53.4k) + header must fit the Worker's 102,400-byte pack cap,
+  // and 50,000 + its base64 copy would not. The budget is enforced
+  // by rejecting over-budget bodies, never by truncating them:
+  // truncation would silently corrupt code, which
+  // no-silent-overwrite forbids. Restoring 50,000 needs a Worker
+  // change (a code: exemption in canonicalisation), which is NOT
+  // in Phase B; it is a follow-up, not smuggled in here.
+  // Display vs execution (plan §2.3, the line that keeps this safe):
+  // page content is shown as ESCAPED TEXT only (the panel sets
+  // textContent, never innerHTML). It is never rendered as HTML and
+  // never run as site script. The only execution path is the reader
+  // copying JS into the Workshop sandbox themselves (user-typed,
+  // 10s, no DOM, no network). Every listed page is marked
+  // unvetted-agent-content: treat it as untrusted text, exactly
+  // like any public pack.
+  // Listing rule (plan §2.2, enforced by pageFeed): a pack is listed
+  // as a page ONLY if agent-page=yes + board-verified=yes (the
+  // server-added top-level field, never a note line or note part)
+  // + author equals owner. Unverified packs and wrong-author packs
+  // are excluded — they cannot hijack a listing. Chain rule
+  // (plan §2.4, listing side only; full versioning is Phase C):
+  // within an owner+slug group, the listed version is the highest
+  // version whose chain links back to version 1 without gaps
+  // (each version's prev equals the previous version's Cloud pack
+  // id, each version verified). A version that breaks the chain is
+  // listed as broken, never as latest, and the last valid version
+  // stays listed. A chain is never silently repaired.
+  // Per-username limits are the plan's PROPOSALS (§2.5), not owner
+  // decisions: 5 pages, 20 version packs per username, counted over
+  // surviving verified packs for that username (listed + broken).
+  // They are enforced in the panel and in countAgentPages, and the
+  // report states they await owner confirmation. Counts are
+  // best-effort under KV lag (~40s): a just-deleted version may
+  // still appear in a search, so a limit block should be retried
+  // after a direct GET, not treated as final.
+  var PAGE_SLUG_RE = /^[A-Za-z0-9_-]{1,64}$/;
+  var PAGE_KINDS = ["html", "js", "md", "text"];
+  var PAGE_BODY_MAX = 40000;
+  var PAGE_LIMIT_PAGES = 5;
+  var PAGE_LIMIT_VERSIONS = 20;
+  function pageByteLength(text) {
+    var s = String(text || "");
+    if (typeof Buffer !== "undefined" && Buffer.from) return Buffer.from(s, "utf8").length;
+    if (typeof TextEncoder !== "undefined") return new TextEncoder().encode(s).length;
+    return s.length;
+  }
+  function pageBase64Encode(text) {
+    var s = String(text || "");
+    if (typeof Buffer !== "undefined" && Buffer.from) return Buffer.from(s, "utf8").toString("base64");
+    if (typeof TextEncoder !== "undefined" && typeof btoa === "function") {
+      var bytes = new TextEncoder().encode(s);
+      var bin = "";
+      for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin);
+    }
+    return btoa(unescape(encodeURIComponent(s)));
+  }
+  function pageBase64Decode(b64) {
+    var s = String(b64 || "");
+    if (typeof Buffer !== "undefined" && Buffer.from) return Buffer.from(s, "base64").toString("utf8");
+    if (typeof atob === "function") {
+      var bin = atob(s);
+      if (typeof TextDecoder !== "undefined") {
+        var bytes = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        return new TextDecoder().decode(bytes);
+      }
+      return decodeURIComponent(escape(bin));
+    }
+    throw new Error("page-b64-decode-unavailable");
+  }
+  // Split a pack at the FIRST line exactly "code:" (trimmed). Header
+  // lines before it are metadata; everything after it is literal
+  // body, even lines that look like "key: value", "note: ...", or a
+  // second "code:" line. Returns body=null when there is no delimiter.
+  function splitPagePack(packText) {
+    var t = String(packText || "").replace(/\r\n?/g, "\n");
+    var ls = t.split("\n");
+    for (var i = 0; i < ls.length; i++) {
+      if (ls[i].trim() === "code:") return { hasCode: true, header: ls.slice(0, i).join("\n"), body: ls.slice(i + 1).join("\n"), codeLine: i };
+    }
+    return { hasCode: false, header: t, body: null, codeLine: -1 };
+  }
+  // Secret-pattern scan only (BLOCK_RES, same order as BLOCK_RULES).
+  // This is NOT checkGuardrail: the guardrail's proof tripwire must
+  // not run over a page body, because body lines are opaque text —
+  // a body line reading "status: done" is code text, not a done
+  // claim. Secret patterns DO apply to header + body alike, and to
+  // a decoded stored body. Returns the rule name, or null.
+  // Rule names for BLOCK_RES above, in the same order (the api object
+  // also exposes them as BLOCK_RULES; this local copy exists because
+  // the api literal is defined after this section).
+  var PAGE_BLOCK_RULES = ["private-key", "openai-key", "stripe-key", "github-token", "aws-access-key-id", "slack-token", "jwt", "api-key-assignment", "access-token-assignment", "password-assignment", "bearer-token"];
+  function pageSecretScan(text) {
+    var t = String(text || "");
+    for (var i = 0; i < BLOCK_RES.length; i++) {
+      if (BLOCK_RES[i].test(t)) return PAGE_BLOCK_RULES[i];
+    }
+    return null;
+  }
+  function pageSingleLine(value, max) {
+    var v = String(value == null ? "" : value).trim();
+    if (!v) return null;
+    if (/[\r\n]/.test(v)) return null;
+    if (v.length > max) return null;
+    return v;
+  }
+  function pageVersionPrev(version, prev) {
+    if (version === 1) return prev === "none";
+    return prev !== "none" && BOARD_ID_RE.test(prev);
+  }
+  // Raw-form parse: header before the code: delimiter, body after it.
+  // All field lookups run on the HEADER ONLY — a body line that looks
+  // like "note: page=evil" is body text, never metadata.
+  function parsePageRaw(t) {
+    var sp = splitPagePack(t);
+    if (!sp.hasCode) return blocked("page-code-missing", "code:-delimiter-line-then-literal-body");
+    var h = sp.header;
+    var hlines = h.split("\n").map(function (l) { return l.trim(); });
+    if (hlines[0] !== "al:1") return blocked("page-header-invalid", "first-line-al:1");
+    if (hlines.indexOf("agent: ai-workspace | role=page-owner") < 0) return blocked("page-agent-invalid", "agent:-ai-workspace-|-role=page-owner");
+    if (hlines.indexOf("task: agent-page") < 0) return blocked("page-task-invalid", "task:-agent-page");
+    if (hlines.indexOf("status: todo") < 0) return blocked("page-status-invalid", "status:-todo-for-a-page");
+    if (hlines.indexOf("data-class: public") < 0) return blocked("page-data-class-invalid", "data-class:-public");
+    if (hlines.indexOf("board-verified=yes") >= 0) return blocked("page-verified-marker-forged", "board-verified-is-server-added-only");
+    if (noteValue(h, "agent-page") !== "yes") return blocked("page-not-a-page", "note:-agent-page=yes");
+    var slug = noteValue(h, "page");
+    if (slug === null || !PAGE_SLUG_RE.test(slug)) return blocked("page-slug-invalid", "page=<a-z-0-9-dash-underscore-max-64>");
+    var owner = noteValue(h, "owner");
+    if (owner === null) return blocked("page-owner-missing", "note:-owner=<username>");
+    var ow = boardAuthorName(owner);
+    if (ow.blocked) return ow;
+    var author = noteValue(h, "author");
+    if (author === null) return blocked("page-author-missing", "note:-author=<username>");
+    if (author !== ow.author) return blocked("page-author-owner-mismatch", "author-must-equal-owner");
+    var versionRaw = noteValue(h, "version");
+    if (versionRaw === null || !/^\d+$/.test(versionRaw)) return blocked("page-version-invalid", "note:-version=<positive-integer>");
+    var version = parseInt(versionRaw, 10);
+    if (version < 1) return blocked("page-version-invalid", "note:-version=<positive-integer>");
+    var prev = noteValue(h, "prev");
+    if (prev === null || !pageVersionPrev(version, prev)) return blocked("page-prev-invalid", "note:-prev=none-for-v1-or-prior-pack-id");
+    var kind = noteValue(h, "kind");
+    if (kind === null || PAGE_KINDS.indexOf(kind) < 0) return blocked("page-kind-invalid", "note:-kind=html|js|md|text");
+    var title = noteValue(h, "title");
+    if (title === null || pageSingleLine(title, 200) === null) return blocked("page-title-invalid", "note:-title=<single-line-1-200-chars>");
+    if (title.indexOf("|") >= 0) return blocked("page-title-pipe", "note:-title-no-pipe-canonical-fragments");
+    var b64 = noteValue(h, "page-b64");
+    if (b64 === null) return blocked("page-b64-missing", "note:-page-b64=<base64-of-body>");
+    var body = sp.body;
+    if (body.length > PAGE_BODY_MAX) return blocked("page-body-over-budget", "page-body-max-40000-chars-never-truncated");
+    if (body.indexOf("board-verified=yes") >= 0) return blocked("page-verified-marker-forbidden", "page-body-must-not-contain-board-verified=yes-worker-rejects-it-as-forged");
+    var secret = pageSecretScan(h + "\n" + body);
+    if (secret) return blocked("page-secret-pattern", "remove-secret-value");
+    var decoded;
+    try { decoded = pageBase64Decode(b64); } catch (e) { return blocked("page-b64-invalid", "note:-page-b64=<valid-base64>"); }
+    if (pageBase64Encode(decoded) !== b64) return blocked("page-b64-invalid", "note:-page-b64=<canonical-base64>");
+    if (decoded !== body) return blocked("page-b64-mismatch", "page-b64-must-decode-to-literal-body");
+    return ok({ form: "raw", slug: slug, owner: ow.author, author: author, version: version, prev: prev, kind: kind, title: title, body: body, verified: false });
+  }
+  // Stored-form parse: the Worker's canonical text. Header fields are
+  // recovered with the boardField fallback (note: parts + bare
+  // key=value fields), exactly like board/request validators. The
+  // canonical debris of the literal code section is NOT a body and
+  // is never used: the decoded page-b64 IS the body. A stored pack
+  // without page-b64 has no recoverable body and is not a page.
+  function parsePageStored(t) {
+    if (boardField(t, "agent-page") !== "yes") return blocked("page-not-a-page", "note:-agent-page=yes");
+    var ls = String(t || "").split("\n").map(function (l) { return l.trim(); });
+    if (ls.indexOf("task: agent-page") < 0) return blocked("page-task-invalid", "task:-agent-page");
+    if (ls.indexOf("status: todo") < 0) return blocked("page-status-invalid", "status:-todo-for-a-page");
+    if (ls.indexOf("data-class: public") < 0) return blocked("page-data-class-invalid", "data-class:-public");
+    if (ls.indexOf("agent: ai-workspace") < 0 && boardField(t, "role") !== "page-owner") return blocked("page-agent-invalid", "agent:-ai-workspace-|-role=page-owner");
+    var slug = boardField(t, "page");
+    if (slug === null || !PAGE_SLUG_RE.test(slug)) return blocked("page-slug-invalid", "page=<a-z-0-9-dash-underscore-max-64>");
+    var owner = boardField(t, "owner");
+    if (owner === null) return blocked("page-owner-missing", "note:-owner=<username>");
+    var ow = boardAuthorName(owner);
+    if (ow.blocked) return ow;
+    var author = boardField(t, "author");
+    if (author === null) return blocked("page-author-missing", "note:-author=<username>");
+    if (author !== ow.author) return blocked("page-author-owner-mismatch", "author-must-equal-owner");
+    var versionRaw = boardField(t, "version");
+    if (versionRaw === null || !/^\d+$/.test(versionRaw)) return blocked("page-version-invalid", "note:-version=<positive-integer>");
+    var version = parseInt(versionRaw, 10);
+    if (version < 1) return blocked("page-version-invalid", "note:-version=<positive-integer>");
+    var prev = boardField(t, "prev");
+    if (prev === null || !pageVersionPrev(version, prev)) return blocked("page-prev-invalid", "note:-prev=none-for-v1-or-prior-pack-id");
+    var kind = boardField(t, "kind");
+    if (kind === null || PAGE_KINDS.indexOf(kind) < 0) return blocked("page-kind-invalid", "note:-kind=html|js|md|text");
+    var title = boardField(t, "title");
+    if (title === null || pageSingleLine(title, 200) === null) return blocked("page-title-invalid", "note:-title=<single-line-1-200-chars>");
+    var b64 = boardField(t, "page-b64");
+    if (b64 === null) return blocked("page-b64-missing", "note:-page-b64=<base64-of-body>");
+    var body;
+    try { body = pageBase64Decode(b64); } catch (e) { return blocked("page-b64-invalid", "note:-page-b64=<valid-base64>"); }
+    if (pageBase64Encode(body) !== b64) return blocked("page-b64-invalid", "note:-page-b64=<canonical-base64>");
+    if (body.length > PAGE_BODY_MAX) return blocked("page-body-over-budget", "page-body-max-40000-chars-never-truncated");
+    if (body.indexOf("board-verified=yes") >= 0) return blocked("page-verified-marker-forbidden", "page-body-must-not-contain-board-verified=yes-worker-rejects-it-as-forged");
+    // Stored-form trust note, stated in PAGES.md: the decoded body
+    // is trusted as the body, because the literal section is gone.
+    // The listing validator therefore secret-scans the decoded body
+    // itself — a hand-crafted stored pack carrying a secret only in
+    // base64 is excluded from the listing here, even though the
+    // Worker scan cannot see inside base64.
+    var secret = pageSecretScan(t + "\n" + body);
+    if (secret) return blocked("page-secret-pattern", "remove-secret-value");
+    return ok({ form: "stored", slug: slug, owner: ow.author, author: author, version: version, prev: prev, kind: kind, title: title, body: body, verified: boardVerified(t) });
+  }
+  // A pack is a page if the raw parse OR the stored parse accepts it.
+  // Raw is tried first: a stored canonical pack fails the raw parse
+  // (its agent line is fragmented, its metadata is sorted bare
+  // fields), so it falls through to the stored parse deterministically.
+  // When BOTH fail, the failure reported is chosen by form: a
+  // canonical stored pack carries a debris "code:" line (so "has a
+  // code line" cannot distinguish it) but never the builder's
+  // multi-part metadata note line, which canonicalisation splits
+  // apart — so a pack with that note line reports the raw failure,
+  // and any other pack reports the stored failure.
+  function validateAgentPagePack(packText) {
+    var t = String(packText || "");
+    var raw = parsePageRaw(t);
+    if (raw.ok) return raw;
+    var stored = parsePageStored(t);
+    if (stored.ok) return stored;
+    var isRawAuthoring = t.split("\n").some(function (l) { return l.trim().indexOf("note: agent-page=yes | page=") === 0; });
+    return isRawAuthoring ? raw : stored;
+  }
+  function buildAgentPagePack(opts) {
+    opts = opts || {};
+    var ow = boardAuthorName(opts.owner);
+    if (ow.blocked) return ow;
+    var owner = ow.author;
+    if (opts.author != null && opts.author !== owner) return blocked("page-author-owner-mismatch", "author-must-equal-owner");
+    var slug = opts.slug;
+    if (typeof slug !== "string" || !PAGE_SLUG_RE.test(slug)) return blocked("page-slug-invalid", "page=<a-z-0-9-dash-underscore-max-64>");
+    var title = pageSingleLine(opts.title, 200);
+    if (title === null) return blocked("page-title-invalid", "note:-title=<single-line-1-200-chars>");
+    if (title.indexOf("|") >= 0) return blocked("page-title-pipe", "note:-title-no-pipe-canonical-fragments");
+    var kind = opts.kind;
+    if (PAGE_KINDS.indexOf(kind) < 0) return blocked("page-kind-invalid", "note:-kind=html|js|md|text");
+    var version = opts.version == null ? 1 : opts.version;
+    if (typeof version === "string" && /^\d+$/.test(version)) version = parseInt(version, 10);
+    if (!Number.isInteger(version) || version < 1) return blocked("page-version-invalid", "note:-version=<positive-integer>");
+    var prev = opts.prev == null ? "none" : opts.prev;
+    if (!pageVersionPrev(version, prev)) return blocked("page-prev-invalid", "note:-prev=none-for-v1-or-prior-pack-id");
+    var body = opts.body;
+    if (typeof body !== "string") return blocked("page-body-missing", "page-body=<literal-text>");
+    if (body.length > PAGE_BODY_MAX) return blocked("page-body-over-budget", "page-body-max-40000-chars-never-truncated");
+    if (body.indexOf("board-verified=yes") >= 0) return blocked("page-verified-marker-forbidden", "page-body-must-not-contain-board-verified=yes-worker-rejects-it-as-forged");
+    var pack = [
+      "al:1",
+      "agent: ai-workspace | role=page-owner",
+      "task: agent-page",
+      "status: todo",
+      "note: agent-page=yes | page=" + slug + " | owner=" + owner + " | author=" + owner + " | version=" + version + " | prev=" + prev + " | kind=" + kind,
+      "note: title=" + title,
+      "note: page-b64=" + pageBase64Encode(body),
+      "data-class: public",
+      "code:",
+      body
+    ].join("\n");
+    if (pageByteLength(pack) > 102400) return blocked("page-pack-too-large", "page-pack-under-100kb-worker-cap");
+    var secret = pageSecretScan(pack);
+    if (secret) return blocked("page-secret-pattern", "remove-secret-value");
+    var v = validateAgentPagePack(pack);
+    if (v.blocked) return v;
+    return ok({ pack: pack, slug: slug, owner: owner, version: version, prev: prev, kind: kind, title: title, bodyChars: body.length });
+  }
+  // Page listing (plan §2.2 + §2.4, listing side only): entries are
+  // {id, storedAt, pack} as fetched by search + direct GETs. A pack
+  // is listed ONLY when it validates AND carries the server-added
+  // board-verified=yes top-level field. Feed rows carry metadata
+  // only — never the body (the body comes from a direct GET read).
+  // Broken-chain packs are reported separately, never as latest, and
+  // the last valid version stays listed. Excluded packs (invalid or
+  // unverified) are counted with their blocked reason, never listed.
+  function pageFeed(entries) {
+    var groups = {};
+    var order = [];
+    var excluded = [];
+    var broken = [];
+    (entries || []).forEach(function (e) {
+      if (!e || !e.pack) { excluded.push({ id: e && e.id ? e.id : null, reason: "page-entry-missing-pack" }); return; }
+      var v = validateAgentPagePack(e.pack);
+      if (v.blocked) { excluded.push({ id: e.id, reason: v.blocked }); return; }
+      if (!boardVerified(e.pack)) { excluded.push({ id: e.id, reason: "page-unverified-excluded" }); return; }
+      var key = v.owner + "\n" + v.slug;
+      if (!groups[key]) { groups[key] = { owner: v.owner, slug: v.slug, items: [] }; order.push(key); }
+      groups[key].items.push({ id: e.id, storedAt: typeof e.storedAt === "number" ? e.storedAt : 0, page: v });
+    });
+    var pages = [];
+    order.forEach(function (key) {
+      var g = groups[key];
+      g.items.sort(function (a, b) { return (a.page.version - b.page.version) || (a.storedAt - b.storedAt) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0); });
+      var expectedVersion = 1;
+      var expectedPrev = "none";
+      var latest = null;
+      g.items.forEach(function (it) {
+        var p = it.page;
+        if (p.version !== expectedVersion) { broken.push({ id: it.id, owner: g.owner, slug: g.slug, version: p.version, reason: "page-chain-version-gap-expected-" + expectedVersion }); return; }
+        if (p.prev !== expectedPrev) { broken.push({ id: it.id, owner: g.owner, slug: g.slug, version: p.version, reason: "page-chain-prev-mismatch" }); return; }
+        latest = it;
+        expectedVersion++;
+        expectedPrev = it.id;
+      });
+      if (latest) pages.push({ owner: g.owner, slug: g.slug, kind: latest.page.kind, title: latest.page.title, version: latest.page.version, id: latest.id, storedAt: latest.storedAt, verified: true, unvetted: "unvetted-agent-content", bodyChars: latest.page.body.length });
+    });
+    pages.sort(function (a, b) { return (a.owner < b.owner ? -1 : a.owner > b.owner ? 1 : 0) || (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0); });
+    return ok({ count: pages.length, pages: pages, broken: broken, excluded: excluded });
+  }
+  // Per-username counts (plan §2.5, proposed limits): distinct
+  // owner+slug groups and total packs among surviving VERIFIED
+  // packs for that username (listed + broken both count — a broken
+  // version still occupies store space). Comparison is on the
+  // normalized username (trimmed, whitespace collapsed, lowercased),
+  // matching board registration uniqueness.
+  function countAgentPages(entries, username) {
+    var norm = function (s) { return String(s == null ? "" : s).trim().replace(/\s+/g, " ").toLowerCase(); };
+    var n = norm(username);
+    var groups = {};
+    var versions = 0;
+    (entries || []).forEach(function (e) {
+      if (!e || !e.pack) return;
+      var v = validateAgentPagePack(e.pack);
+      if (v.blocked) return;
+      if (!boardVerified(e.pack)) return;
+      if (norm(v.owner) !== n) return;
+      groups[v.owner + "\n" + v.slug] = true;
+      versions++;
+    });
+    var pages = Object.keys(groups).length;
+    return ok({ username: username, pages: pages, versions: versions, overPages: pages >= PAGE_LIMIT_PAGES, overVersions: versions >= PAGE_LIMIT_VERSIONS });
+  }
+
   var api = {
     checkGuardrail: checkGuardrail,
     graphReplay: graphReplay,
@@ -573,6 +944,18 @@
     validateSiteRequestVerdictPack: validateSiteRequestVerdictPack,
     triageRequestThread: triageRequestThread,
     requestFeed: requestFeed,
+    PAGE_SLUG_RE: PAGE_SLUG_RE,
+    PAGE_KINDS: PAGE_KINDS,
+    PAGE_BODY_MAX: PAGE_BODY_MAX,
+    PAGE_LIMIT_PAGES: PAGE_LIMIT_PAGES,
+    PAGE_LIMIT_VERSIONS: PAGE_LIMIT_VERSIONS,
+    pageBase64Encode: pageBase64Encode,
+    pageBase64Decode: pageBase64Decode,
+    splitPagePack: splitPagePack,
+    buildAgentPagePack: buildAgentPagePack,
+    validateAgentPagePack: validateAgentPagePack,
+    pageFeed: pageFeed,
+    countAgentPages: countAgentPages,
     // Rule names for BLOCK_RES above, in the same order, mirroring the
     // canonical table in site/secret-patterns.json (integration test
     // checks every name here exists there as a block-tier rule).
