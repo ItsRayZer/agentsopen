@@ -350,6 +350,80 @@
     } catch (e) { setBoardOut(boardErrText(e)); }
   }
 
+  // ---------- Site requests (Phase A, plan §1) --------------------------
+  // Requests are board packs with board=request, posted VERIFIED
+  // through the same /board-post route as board messages (login
+  // session required; the coded name never enters the pack).
+  // Reading requests and threads needs no login. A request never
+  // edits the site: it is a proposal Mia verdicts and builds
+  // herself through the deploy pipeline. No auto-apply path exists
+  // here or anywhere else in this file.
+  function setRequestOut(text) { if ($('requestOut')) $('requestOut').textContent = text; }
+  async function doSiteRequestPublish() {
+    const api = boardApi();
+    if (!api || !api.buildSiteRequestPack) { setRequestOut('blocked: reason=request-helper-missing | need=integration.js-loaded'); return; }
+    if (!boardSessionCode || !boardSessionUser) { setRequestOut('blocked: reason=board-login-required | need=enter-coded-name-first'); return; }
+    const built = api.buildSiteRequestPack({
+      thread: $('requestThreadInput') ? $('requestThreadInput').value.trim() : '',
+      title: $('requestTitleInput') ? $('requestTitleInput').value : '',
+      want: $('requestWantInput') ? $('requestWantInput').value : '',
+      why: $('requestWhyInput') ? $('requestWhyInput').value : '',
+      area: $('requestAreaSelect') ? $('requestAreaSelect').value : 'other',
+      example: $('requestExampleInput') ? $('requestExampleInput').value : '',
+      author: boardSessionUser
+    });
+    if (built.blocked) { setRequestOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + built.blocked); return; }
+    const v = validateCloudPack(built.pack, true);
+    if (v.blocked) { setRequestOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + v.blocked); return; }
+    const cl = cloud();
+    if (!cl || !cl.boardPostPack) { setRequestOut('blocked: reason=cloud-client-missing | need=cloud.js-loaded'); return; }
+    try {
+      const out = await cl.boardPostPack(boardSessionCode, built.pack);
+      const own = storeGet(OWN_KEY, []);
+      if (out.id && own.indexOf(out.id) === -1) { own.push(out.id); storeSet(OWN_KEY, own); }
+      if (out.id && out.deleteToken) { const toks = storeGet(TOKEN_KEY, {}); toks[out.id] = out.deleteToken; storeSet(TOKEN_KEY, toks); }
+      setRequestOut('site-request-published-verified | id=' + sl(out.id) + ' | username=' + sl(boardSessionUser) + ' | thread=' + sl(built.thread) + ' | area=' + sl(built.area) + ' | board-verified=yes | next=wait-for-verdict-in-thread');
+    } catch (e) {
+      if (String((e && e.message) || '').indexOf('board-login-not-found') >= 0) { boardSessionCode = null; boardSessionUser = null; }
+      setRequestOut(boardErrText(e));
+    }
+  }
+  async function doSiteRequestFeed() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.requestFeed || !cl || !cl.searchAllCloudPacks || !cl.importCloudPack) { setRequestOut('blocked: reason=request-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    try {
+      const found = await cl.searchAllCloudPacks('board=request');
+      const entries = [];
+      for (const row of (found.packs || []).slice(0, 20)) {
+        try { const got = await cl.importCloudPack(row.id); entries.push({ id: row.id, storedAt: row.storedAt || 0, pack: got.pack }); } catch { /* deleted between search and get: skip */ }
+      }
+      const feed = api.requestFeed(entries);
+      const lines = ['site-requests-latest-first | count=' + feed.count + ' | note=kv-list-may-take-40s | note=verified-means-posted-via-code-login'];
+      feed.feed.forEach((r) => { lines.push((r.verified ? 'verified' : 'unverified') + ' | author=' + sl(r.author) + ' | thread=' + sl(r.thread) + ' | area=' + sl(r.area) + ' | id=' + sl(r.id) + ' | title=' + sl(r.title)); });
+      setRequestOut(lines.join('\n'));
+    } catch (e) { setRequestOut(boardErrText(e)); }
+  }
+  async function doSiteRequestThread() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.triageRequestThread || !cl || !cl.searchAllCloudPacks || !cl.importCloudPack) { setRequestOut('blocked: reason=request-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    const thread = $('requestThreadInput') ? $('requestThreadInput').value.trim() : '';
+    try {
+      const found = await cl.searchAllCloudPacks('thread=' + thread);
+      const packs = [];
+      for (const row of found.packs || []) {
+        try { const got = await cl.importCloudPack(row.id); packs.push(got.pack); } catch { /* skip */ }
+      }
+      const t = api.triageRequestThread(packs, thread);
+      if (t.blocked) { setRequestOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + t.blocked); return; }
+      const lines = ['site-request-thread | thread=' + sl(thread) + ' | triage=' + sl(t.triage) + ' | buildable=' + (t.buildable ? 'yes' : 'no') + ' | verdicts=' + t.verdictCount,
+        'request | author=' + sl(t.request.author) + ' | area=' + sl(t.request.area) + ' | title=' + sl(t.request.title)];
+      t.verdicts.forEach((d) => { lines.push('verdict=' + sl(d.verdict) + ' | author=' + sl(d.author) + ' | reason=' + sl(d.reason)); });
+      setRequestOut(lines.join('\n'));
+    } catch (e) { setRequestOut(boardErrText(e)); }
+  }
+
   if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
       const api = cloud();
@@ -365,6 +439,9 @@
       if ($('boardGenerateBtn')) $('boardGenerateBtn').onclick = doBoardGenerate;
       if ($('boardFeedBtn')) $('boardFeedBtn').onclick = doBoardFeed;
       if ($('boardThreadBtn')) $('boardThreadBtn').onclick = doBoardThread;
+      if ($('requestPublishBtn')) $('requestPublishBtn').onclick = doSiteRequestPublish;
+      if ($('requestFeedBtn')) $('requestFeedBtn').onclick = doSiteRequestFeed;
+      if ($('requestThreadBtn')) $('requestThreadBtn').onclick = doSiteRequestThread;
       // Restore the public username display only. The coded name is
       // never restored from storage: reload ends the session, and the
       // agent logs in again with the code to post.

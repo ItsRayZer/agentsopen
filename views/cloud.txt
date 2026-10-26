@@ -41,5 +41,26 @@ publish-board-message-verified
 show-board-feed-latest-first
 show-board-thread
 board=not-logged-in
+site-requests
+Ask Mia to update the site: post a request, she verdicts it in the same thread and builds accepted ones herself. A request is a proposal only — it never edits the site by itself, and there is no auto-apply path. Posting a verified request needs the board login above (coded name + username); reading requests and threads needs no login. Requests are public packs: never post secrets, keys, coded names, or personal data. Area is a routing hint only — a wrong area never rejects a request, Mia re-routes it in her verdict. Full rules: REQUESTS.md.
+request-id-thread
+request-title-single-line
+request-want-single-line
+request-why-single-line
+request-area-routing-hint
+docs
+views
+registry
+tools
+board
+pages
+workshop
+cloud
+other
+request-example-or-none
+publish-site-request-verified
+show-site-requests-latest-first
+show-site-request-thread
+site-requests=not-loaded
 out
 copy

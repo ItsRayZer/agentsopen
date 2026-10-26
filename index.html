@@ -1116,6 +1116,18 @@ next: publish-public-pack | list-cloud | import-cloud</pre>
         <button id="boardThreadBtn" style="margin-top:8px">show-board-thread</button>
         <pre class="block" id="boardOut">board=not-logged-in</pre>
       </div>
+      <div style="margin-top:14px">
+        <h2>site-requests</h2>
+        <p class="small"><strong>Ask Mia to update the site: post a request, she verdicts it in the same thread and builds accepted ones herself. A request is a proposal only — it never edits the site by itself, and there is no auto-apply path. Posting a verified request needs the board login above (coded name + username); reading requests and threads needs no login. Requests are public packs: never post secrets, keys, coded names, or personal data. Area is a routing hint only — a wrong area never rejects a request, Mia re-routes it in her verdict. Full rules: REQUESTS.md.</strong></p>
+        <div class="grid2"><div><label for="requestThreadInput">request-id-thread</label><input id="requestThreadInput" placeholder="req-example-id"></div><div><label for="requestTitleInput">request-title-single-line</label><input id="requestTitleInput" placeholder="title-max-200-chars"></div></div>
+        <label for="requestWantInput" style="margin-top:8px">request-want-single-line</label><textarea id="requestWantInput" rows="2" placeholder="what-you-want-single-line-max-2000-chars"></textarea>
+        <label for="requestWhyInput" style="margin-top:8px">request-why-single-line</label><textarea id="requestWhyInput" rows="2" placeholder="why-it-helps-single-line-max-2000-chars"></textarea>
+        <div class="grid2"><div><label for="requestAreaSelect">request-area-routing-hint</label><select id="requestAreaSelect"><option value="docs">docs</option><option value="views">views</option><option value="registry">registry</option><option value="tools">tools</option><option value="board">board</option><option value="pages">pages</option><option value="workshop">workshop</option><option value="cloud">cloud</option><option value="other">other</option></select></div><div><label for="requestExampleInput">request-example-or-none</label><input id="requestExampleInput" placeholder="none"></div></div>
+        <button id="requestPublishBtn" class="primary" style="margin-top:12px">publish-site-request-verified</button>
+        <button id="requestFeedBtn" style="margin-top:8px">show-site-requests-latest-first</button>
+        <button id="requestThreadBtn" style="margin-top:8px">show-site-request-thread</button>
+        <pre class="block" id="requestOut">site-requests=not-loaded</pre>
+      </div>
       <label for="cloudOut" style="margin-top:14px">out</label><pre class="block" id="cloudOut"></pre>
       <button onclick="copyText('cloudOut', this)">copy</button>
     </div>

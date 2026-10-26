@@ -49,8 +49,12 @@
   <url><loc>https://ai-ws.vercel.app/packs/index.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/self-test.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/session-example.al</loc></url>
+  <url><loc>https://ai-ws.vercel.app/packs/site-request-example.al</loc></url>
+  <url><loc>https://ai-ws.vercel.app/packs/site-request-shipped-example.al</loc></url>
+  <url><loc>https://ai-ws.vercel.app/packs/site-request-verdict-example.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/preamble.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/README.md</loc></url>
+  <url><loc>https://ai-ws.vercel.app/REQUESTS.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/robots.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/secret-patterns.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/sitemap.xml</loc></url>

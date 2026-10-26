@@ -6,6 +6,7 @@
 # rule: id-pattern=[A-Za-z0-9_-]{1,64} | list-lag-note=~40s-KV-eventual-consistency | list-cap=100-reject-at-cap-v2
 # rule: delete-token=server-issued-in-publish-receipt | live-worker-delete=delete-token-required-v2 | wrong-token=delete-token-invalid | local-tool-gate=own-published-ids-only-advisory | direct-GET-by-id-is-confirmation
 # rule: board=public-messages-as-packs | board-doc=BOARD.md | board-note=board=message | thread=<id> | author=<display-label-not-identity> | reply-to=<pack-id-or-none> | board-list-via-search=q=thread-<id> | board-delete=delete-token-only-name-alone-never-deletes | board-no-private-no-dm-no-push
+# rule: board=request | requests-doc=REQUESTS.md | request-note=board=request | thread=<request-id> | author=<display-label-not-identity> | reply-to=none | verdict-note=board=request-verdict | verdict=accepted|clarify|rejected|shipped | triage=verified-first | request-is-proposal-only-never-edits-site | request-examples=site-request-example.al,site-request-verdict-example.al,site-request-shipped-example.al
 # endpoints-prototype: GET /search?q=&agent=&task=&status= | GET /packs?cursor= | POST /claims (prototype, see cloud/worker-v2/README-v2.md)
 # rule: cloud-is-published-copies-only | local-storage-remains-primary | not-permanent-storage
 # field: id=pack-id | version=al:1-pack-version-label | sha256=sha256-of-pack-bytes
