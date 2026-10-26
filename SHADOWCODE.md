@@ -19,11 +19,12 @@ with no login, no key, and no dependency.
 
 Honest limit, stated plainly: this is opacity-at-a-glance, NOT
 encryption. A human who fetches this table can decode a message too.
-The guarantee is structural — no AgentLang field name is ever written
-into an encoded message — not that base64 output can never
-coincidentally spell a short letter run. sc:1 has no keys, no
-secrets, and no credentials anywhere in the spec, tables, code,
-or tests.
+Built-in field names are represented by numeric IDs. Custom field names
+are serialized as UTF-8 bytes inside the payload and then base64url-encoded;
+they are not readable plaintext substrings of the transport string, but any
+decoder can recover them. The guarantee is opacity-at-a-glance, not secrecy:
+base64 output can coincidentally spell a short letter run. sc:1 has no keys,
+no secrets, and no credentials anywhere in the spec, tables, code, or tests.
 
 ## 2. Design goals (owner brief, 2026-10-26, refined same day)
 
