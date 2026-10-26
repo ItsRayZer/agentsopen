@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 289,
+    "files": 300,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -34,6 +34,11 @@
       "sha256": "5a79face7de7fb7b89feda0c2f702889e41f0747ac7fe20989c56c69d4e3effc"
     },
     {
+      "path": "AGENT-REVIEW-EXCHANGE.md",
+      "bytes": 11747,
+      "sha256": "8a5bfb0772f2b47050956071a030684ed5648224e7f8efab5dd547599c38571a"
+    },
+    {
       "bytes": 3480,
       "path": "AGENT-START.md",
       "sha256": "0ee12e4c477ec1d231f0b31a368d62260e3f686e5057204e9308866b6657c63c"
@@ -42,6 +47,11 @@
       "bytes": 1874,
       "path": "AGENTS.md",
       "sha256": "1ef594862faa7b3cef31278659eec3631b51fd8149b573940b5d5617f47baa6f"
+    },
+    {
+      "path": "AI-WORKSPACE-ADVANCED-BLUEPRINT.md",
+      "bytes": 42097,
+      "sha256": "8ba78c0587ff3614fca762099ed56413b83854d2511dd3fac79c62bbc69295fb"
     },
     {
       "bytes": 15798,
@@ -74,9 +84,9 @@
       "sha256": "ded43bfd44a6926b43a91545dd2ed93c633ac7508c715c018d60ee5275258f54"
     },
     {
-      "bytes": 3634,
+      "bytes": 4692,
       "path": "README.md",
-      "sha256": "0b31c5e25b283cde0922fa5d0c99e7c47b14270b9ed5ec2a5a4f3a629c9ee550"
+      "sha256": "c34e8deee50cc47dc309d2761b34a7be0b6112c8d25f4a49f6816baa4ff63532"
     },
     {
       "bytes": 9095,
@@ -109,9 +119,9 @@
       "sha256": "9e07a0ecaa2cb93c9c38a4835d4e4c6eeae4c6da7191eea75890243433217e0c"
     },
     {
-      "bytes": 6686,
+      "bytes": 6932,
       "path": "agent.json",
-      "sha256": "90c0be392c9355141c6e3eab9e8d064e46b7d279551cf4d5702992bdc9563fce"
+      "sha256": "d2bc2fd9defad0631f5144ccf50bb0421f5c85ba573425cb3fb1be5dcd6e1a9b"
     },
     {
       "bytes": 797,
@@ -119,9 +129,9 @@
       "sha256": "0773fa2702d43131d7b8d19d0b35a3b8718b0d5baa558296a80ddce9973c0375"
     },
     {
-      "bytes": 988,
+      "bytes": 1279,
       "path": "agent.txt",
-      "sha256": "036c37e069206ec5e9283b5639010933d829ca6e5add1291c79b507cb87102ae"
+      "sha256": "87fdebc66cb112b38d0e45bffb351c0aee54172ff8c4401bcea22c014399c23a"
     },
     {
       "bytes": 70617,
@@ -224,19 +234,19 @@
       "sha256": "4bf5c613b96c1035b52ac1e56b020cf654597c06c63757e22a0d3b832f62b4a6"
     },
     {
-      "bytes": 100189,
+      "bytes": 100275,
       "path": "index.html",
-      "sha256": "4a98a718790723268774b07ae0fb403636e3f58c790ad0bdebe0318f2511541f"
+      "sha256": "e5a66f082eb918a95d520af9c0752cf2ef1d9fb64205a5d614d07b3560de2284"
     },
     {
-      "bytes": 6796,
+      "bytes": 7094,
       "path": "index.json",
-      "sha256": "8d4606ea5689d95c53ece5d0ce201c1b6336143d8f521b793e4633fe1c4bb0b4"
+      "sha256": "40aee3efe02128af03f5942d7ac1f1ca48a91f575ef234674dae8b8481dd46d8"
     },
     {
-      "bytes": 15625,
+      "bytes": 16168,
       "path": "index.txt",
-      "sha256": "51842f7b0e46ebdfeb80d311e4511a984cf911dd09e6cfe47673d9f3d38ded3a"
+      "sha256": "e3ec05eb7386a2913b6a88d22d8d0a34c5ed19d5925d62e56a1ce43392823b2d"
     },
     {
       "bytes": 92048,
@@ -389,9 +399,54 @@
       "sha256": "c8bc99abbcfbc9a3f13b6426fa729be109bb06a31037dc7eb2f34aff9154f03d"
     },
     {
+      "path": "review-exchange-core.js",
+      "bytes": 16412,
+      "sha256": "f0fed29aefe8889b8bf26834f6f534093bef6c1e8cfa3088f4c3ba438c833988"
+    },
+    {
+      "path": "review-exchange-core.test.js",
+      "bytes": 4838,
+      "sha256": "ea1350f451b53db8b9baaa29925eb7c6048d775f5e66d1eac5ed7f3c61949be4"
+    },
+    {
+      "path": "review-exchange-smoke.test.js",
+      "bytes": 2052,
+      "sha256": "502e3e6827d8ba1ac861bf22ccef3c49221378640846babb5d86e603e04f9c90"
+    },
+    {
+      "path": "review-exchange-ui.js",
+      "bytes": 47329,
+      "sha256": "706cd7edfadbe2b698cbd77618ed882fca2e78d40dafea80479874ca6fe432e9"
+    },
+    {
+      "path": "review-exchange-validator.js",
+      "bytes": 13816,
+      "sha256": "1145b18e650133b92a91d12571fa2321acab11e06b7141c0f1a543c57698bac2"
+    },
+    {
+      "path": "review-exchange-validator.test.js",
+      "bytes": 5046,
+      "sha256": "a0a0c24cd65802701dc5c3eefac1c5052f8ed64ac93acc60f6b782351319e573"
+    },
+    {
+      "path": "review-exchange.css",
+      "bytes": 19854,
+      "sha256": "ae795445c05387f77ee1b3197031f3409f641fa97f21e1dafb239cf29299290d"
+    },
+    {
+      "path": "review-exchange.html",
+      "bytes": 17685,
+      "sha256": "3cc8ac3dc259716f3a619efb0e50c69d3e820cdff63321f6d393619fac765273"
+    },
+    {
       "bytes": 112,
       "path": "robots.txt",
       "sha256": "dbceff11f1a1c536b0b5c37991505ac7b5ac273659841b606bdf9eb20a0bb8a6"
+    },
+    {
+      "path": "schemas/review-exchange-0.1.0.schema.json",
+      "bytes": 10540,
+      "sha256": "22611d5e5bad48e6ceb41a00bab1b73f99a7d938d29332f528035ca45ddd907e"
     },
     {
       "bytes": 1947,
@@ -402,6 +457,16 @@
       "bytes": 11175,
       "path": "shadowcode.js",
       "sha256": "6803d23b3695af2aeef2064519361e4dba1f10dc9da0744239c65ecd4817c97b"
+    },
+    {
+      "bytes": 77917,
+      "path": "skills.json",
+      "sha256": "bfe1cede630d2eb77e162068621db2544909880d5f549e4df004d655ea00327f"
+    },
+    {
+      "bytes": 19433,
+      "path": "skills.txt",
+      "sha256": "66e75e8c290ae6812006067b18d2829b32b96d9caa06c9cf424c1aa5a0b34542"
     },
     {
       "bytes": 1084,
@@ -1014,16 +1079,6 @@
       "sha256": "797bd26b5c03700a3c34e390ed86b48d150270695a7542ab55b15bbd48020680"
     },
     {
-      "bytes": 77917,
-      "path": "skills.json",
-      "sha256": "bfe1cede630d2eb77e162068621db2544909880d5f549e4df004d655ea00327f"
-    },
-    {
-      "bytes": 19433,
-      "path": "skills.txt",
-      "sha256": "66e75e8c290ae6812006067b18d2829b32b96d9caa06c9cf424c1aa5a0b34542"
-    },
-    {
       "bytes": 9849,
       "path": "storage.json",
       "sha256": "74a222bdcf3e4b077522bc611295d21fbce14d2c6c43f53f0b1c07e8bfa88bfd"
@@ -1249,6 +1304,16 @@
       "sha256": "3a35fb588108a247a9548d7274ea610faa4f57df2e688d4ad7c166383469ad93"
     },
     {
+      "bytes": 2405,
+      "path": "wiki-article.html",
+      "sha256": "f793df97aba63574261bc94fa8e6ff78ec59cc5247bb623060cebe89b083a4e4"
+    },
+    {
+      "bytes": 4746,
+      "path": "wiki-article.js",
+      "sha256": "ad7ae0a754b4cdcea6187660f3ff970e73a733fca772154358abeb57660653ec"
+    },
+    {
       "bytes": 1015,
       "path": "wiki/a2a-agent-card.txt",
       "sha256": "570d1b3b4a1f3db0fa358434f312c681580454d7f8e4b6529877238260ae6628"
@@ -1437,16 +1502,6 @@
       "bytes": 26083,
       "path": "wiki/wiki.txt",
       "sha256": "b698aa957daf7af5e550ee7fc1689a1dbbead69e6735774971548a4258092611"
-    },
-    {
-      "bytes": 2405,
-      "path": "wiki-article.html",
-      "sha256": "f793df97aba63574261bc94fa8e6ff78ec59cc5247bb623060cebe89b083a4e4"
-    },
-    {
-      "bytes": 4746,
-      "path": "wiki-article.js",
-      "sha256": "ad7ae0a754b4cdcea6187660f3ff970e73a733fca772154358abeb57660653ec"
     },
     {
       "bytes": 26113,
