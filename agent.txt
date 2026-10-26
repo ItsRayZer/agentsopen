@@ -11,3 +11,5 @@ note: full-inventory=files.txt | index=agents.txt | per-view-txt=views/<id>.txt 
 note: limits | localStorage-single-browser | claim-advisory-not-server-atomic | no-live-apis | no-secrets-in-client | no-url-tool-loading | no-auto-merge | no-reputation-scores
 note: limits | pack-max=102400-bytes | pack-must-start=al:1 | publish-public-only | workshop=user-typed-only | timeout=10s | no-dom | no-network
 next: read agent.json | capabilities.json | tools.json | AGENT-LANG.md | AGENT-CODE.md | examples.al
+
+note: review-exchange | page=review-exchange.html | schema=schemas/review-exchange-0.1.0.schema.json | core=review-exchange-core.js | validator=review-exchange-validator.js | scope=local-only | code-exec=none | source-fetch=none | model-calls=none | publish=none | public-api=not-connected
