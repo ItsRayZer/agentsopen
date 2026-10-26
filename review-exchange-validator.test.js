@@ -77,6 +77,14 @@ const incompleteResult = validator.validateRecord(incompleteReview);
 assert.equal(incompleteResult.ok, true, "not-run is a valid recorded state");
 assert.ok(incompleteResult.warnings.some(w => w.code === "incomplete-evidence"), "not-run checks must produce an incomplete-evidence warning");
 
+const reviewBasisOnly = { ...review, disposition: "promising", reviewBasis: "Metadata and declared contract reviewed only; runtime behavior was not executed.", checks: [{ checkId: "runtime-test", status: "not-run" }] };
+assert.equal(validator.validateRecord(reviewBasisOnly).ok, true, "a documented review basis may justify a qualified promising disposition");
+
+const malformedNullCheck = { ...review, disposition: "promising", reviewBasis: "Input-shape robustness fixture.", checks: [null] };
+const malformedResult = validator.validateRecord(malformedNullCheck);
+assert.equal(malformedResult.ok, false, "malformed check records must fail validation");
+assert.ok(malformedResult.errors.some(e => e.code === "type"), "malformed check must produce a type error rather than crashing");
+
 const badCheck = { ...review, checks: [{ checkId: "runtime-test", status: "passed-with-unknown" }] };
 assert.equal(validator.validateRecord(badCheck).ok, false, "unknown check statuses must fail");
 
