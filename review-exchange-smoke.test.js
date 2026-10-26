@@ -14,6 +14,8 @@ for (const file of ["review-exchange-validator.js", "review-exchange-core.js", "
 }
 assert.ok(html.includes('href="review-exchange.css"'));
 assert.ok(html.includes('id="artifactForm"'));
+assert.ok(fs.readFileSync("index.html", "utf8").includes('href="review-exchange.html"'), "main workspace must link to the review page");
+assert.ok(JSON.parse(fs.readFileSync("agent.json", "utf8")).routes.review_exchange === "/review-exchange.html", "agents must discover the review route");
 assert.ok(html.includes('id="importJsonBtn"'));
 assert.ok(html.includes('id="exportBundleBtn"'));
 assert.ok(html.includes('id="compareRunBtn"'));
