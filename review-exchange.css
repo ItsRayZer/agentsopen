@@ -228,6 +228,20 @@ label small { color: var(--muted-2); font-size: 10px; font-weight: 500; }
 .dialog-head h2 { margin: 6px 0 0; font-size: 25px; overflow-wrap: anywhere; }
 .icon-button { width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 10px; color: var(--text); background: var(--panel-2); font-size: 25px; }
 [hidden] { display: none !important; }
+
+.public-exchange-panel { margin: 8px 0 20px; border-color: #30483f; background: linear-gradient(150deg, rgba(18,32,29,.96), rgba(14,19,28,.97)); }
+.public-exchange-panel .section-heading { margin-bottom: 14px; }
+.public-warning { border: 1px solid rgba(255,209,127,.22); border-radius: 12px; padding: 12px 14px; background: rgba(255,209,127,.045); }
+.public-warning strong { display: block; color: var(--amber); font-size: 12px; }
+.public-warning p { margin: 4px 0 0; color: #b4c1d1; font-size: 11px; line-height: 1.55; }
+.public-publish-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: end; gap: 12px; margin-top: 15px; }
+.publish-select-label { min-width: 0; }
+.public-confirm { margin: 12px 0 10px; padding: 10px 11px; border: 1px solid var(--line); border-radius: 10px; background: rgba(0,0,0,.12); }
+.public-confirm span { color: #d0dbea; }
+#publicExchangeStatus[data-kind="error"] { color: var(--red); }
+#publicExchangeStatus[data-kind="success"] { color: var(--mint); }
+.public-record-card { border-color: #2d403a; }
+.public-record-card .card-actions button { min-height: 36px; }
 @media (max-width: 920px) {
   .card-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .top-actions .quiet-link { display: none; }
@@ -256,6 +270,8 @@ label small { color: var(--muted-2); font-size: 10px; font-weight: 500; }
   .form-actions button { width: 100%; }
   .source-box { padding: 13px; }
   .review-metrics, .stats-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .public-publish-row { grid-template-columns: 1fr; align-items: stretch; }
+  .public-publish-row button { width: 100%; }
   .compare-selects { grid-template-columns: 1fr; padding: 13px; }
   .compare-selects button { grid-column: auto; }
   .benchmark-card, .workflow-card { flex-direction: column; }
