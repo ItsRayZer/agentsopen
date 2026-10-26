@@ -1,5 +1,6 @@
 # skills.txt — generated from registry/source.json. Do not hand-edit.
 # one line per skill: id | class | purpose | verified | digest | path
+# skill-md export: /skills/<id>.skill.md, same source, drift-checked (see tools/check_registry.py)
 skill: advertising-campaigns | class=prompt-only | purpose=Plan an advertising campaign draft from a business result, audience, and message. | verified=false | digest=sha256:1594e095c51f06638d29cb8c8a9c09bba5d1a671ad7c28a6fe18d19b8790ed0d | path=skills/advertising-campaigns.txt
 skill: agent-browser-nav | class=prompt-only | purpose=Headless agent-browser protocol template for parsing ac:1 wire streams, data-ac DOM attributes, and fetch-first /views/<id>.txt endpoints without human UI clicks. | verified=false | digest=sha256:1a3843509a3d71b4ebe747df0c1e1f710257609ee8fe13c88228f0d8dc68cd82 | path=skills/agent-browser-nav.txt
 skill: ai-teamwork | class=connector-required | purpose=Discover multi-model debugging options available through the agent's own external-model channels. | verified=false | digest=sha256:7510b3b29fbd226bd9f6a3d16f32871a0877974a517c9e3650ebeb1441d09c34 | path=skills/ai-teamwork.txt

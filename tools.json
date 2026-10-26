@@ -21,7 +21,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "studio",
@@ -41,7 +42,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "compare",
@@ -65,7 +67,8 @@
         "app-creation",
         "code-reviewer",
         "git-commit-quality"
-      ]
+      ],
+      "kind": "resource"
     },
     {
       "name": "swarm",
@@ -85,7 +88,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "models",
@@ -105,7 +109,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "notes",
@@ -125,7 +130,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "prompts",
@@ -145,7 +151,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "snippets",
@@ -165,7 +172,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "format",
@@ -185,7 +193,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "tracker",
@@ -205,7 +214,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "deploy",
@@ -225,7 +235,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "agentlang",
@@ -245,7 +256,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "boot",
@@ -265,7 +277,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "pack",
@@ -317,7 +330,8 @@
         "weekly-review",
         "wide-research",
         "workout-planning"
-      ]
+      ],
+      "kind": "resource"
     },
     {
       "name": "queue",
@@ -337,7 +351,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "talk",
@@ -357,7 +372,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "forge",
@@ -377,7 +393,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "canvas",
@@ -397,7 +414,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "vault",
@@ -417,7 +435,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "workshop",
@@ -437,7 +456,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "router",
@@ -457,7 +477,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "timeline",
@@ -477,7 +498,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "quota",
@@ -497,7 +519,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "audit",
@@ -517,7 +540,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "lab",
@@ -537,7 +561,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "approval",
@@ -557,7 +582,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "gallery",
@@ -577,7 +603,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "shell",
@@ -597,7 +624,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "agentmode",
@@ -617,7 +645,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "cloud",
@@ -637,7 +666,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "language",
@@ -657,7 +687,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "agentcode",
@@ -677,7 +708,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     },
     {
       "name": "aiws",
@@ -697,7 +729,8 @@
         "proof-ref-missing"
       ],
       "schema": "fetch-only | no JSON input schema: this tool is read by fetching its .txt file",
-      "skills": []
+      "skills": [],
+      "kind": "resource"
     }
   ]
 }

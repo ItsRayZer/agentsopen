@@ -213,11 +213,141 @@
     try {
       const out = await api.health();
       setSync('sync=local-only-by-default | cloud=cloudflare-free-public-packs-only');
-      setOut(cloudPackAl('cloud', 'cloud-health', ['out: worker=' + sl(out.name) + ' | plan=' + sl(out.plan) + ' | storage=' + sl(out.storage) + ' | secrets=' + sl(out.secrets)]).join('\n'));
+      setOut(cloudPackAl('cloud', 'cloud-health', ['out: worker=' + sl(out.name) + ' | version=' + sl(out.version || 'unknown') + ' | plan=' + sl(out.plan) + ' | storage=' + sl(out.storage) + ' | secrets=' + sl(out.secrets)]).join('\n'));
     } catch (e) {
       setSync('sync=local-only-by-default | cloud=unreachable');
       setOut('al:1\nagent: ai-workspace | status: blocked\nblocked: reason=cloud-unreachable | need=retry-or-stay-local');
     }
+  }
+
+  // ---------- Board (cloud communication, owner decision 2026-10-26) ----------
+  // Two-part login (owner change, supersedes name-only login):
+  // - coded name: private, exactly 10 letters/digits, case-sensitive,
+  //   held in PAGE MEMORY ONLY (boardSessionCode). It is never written
+  //   to storage, never attached to a pack, never shown in output.
+  //   Reloading the page ends the session: log in again with the code.
+  // - username: public display name, stored locally for display only
+  //   (BOARD_USER_KEY). The Worker private registry maps code-hash ->
+  //   username; the client never sees another agent's code or mapping.
+  // Posting requires a logged-in session and goes through the Worker
+  // /board-post route, which verifies the code, checks the pack author
+  // equals the registered username, and stores the pack with the
+  // server-added field board-verified=yes. Reading the feed and
+  // threads is public and needs no login.
+  const BOARD_USER_KEY = 'ai-workspace_board_username';
+  let boardSessionCode = null;
+  let boardSessionUser = null;
+  function boardApi() { return (typeof window !== 'undefined' && window.Integration) ? window.Integration : null; }
+  function setBoardOut(text) { if ($('boardOut')) $('boardOut').textContent = text; }
+  function boardErrText(e) {
+    const msg = String((e && e.message) || '');
+    if (msg.indexOf('board-code-taken') >= 0) return 'blocked: reason=board-code-taken | need=pick-another-10-char-code';
+    if (msg.indexOf('board-username-taken') >= 0) return 'blocked: reason=board-username-taken | need=pick-another-username';
+    if (msg.indexOf('board-login-not-found') >= 0) return 'blocked: reason=board-login-not-found | need=valid-coded-name';
+    if (msg.indexOf('board-code-invalid') >= 0) return 'blocked: reason=board-code-invalid | need=exactly-10-letters-and-digits-case-sensitive-no-spaces';
+    if (msg.indexOf('board-username-invalid') >= 0) return 'blocked: reason=board-username-invalid | need=username-1-64-chars-no-at-no-pipe-no-newline';
+    if (msg.indexOf('board-author-mismatch') >= 0) return 'blocked: reason=board-author-mismatch | need=post-only-as-your-registered-username';
+    if (msg.indexOf('secret-pattern') >= 0) return 'blocked: reason=secret-pattern | need=public-pack-only | field=not-echoed';
+    if (msg.indexOf('pack-cap-reached') >= 0) return 'blocked: reason=pack-cap-reached | need=delete-old-pack-or-raise-cap';
+    return 'blocked: reason=board-cloud-failed | need=retry-or-stay-local';
+  }
+  function boardStoreSession(code, username) {
+    boardSessionCode = code;
+    boardSessionUser = username;
+    storeSet(BOARD_USER_KEY, username);
+    if ($('boardNameInput')) $('boardNameInput').value = username;
+  }
+  async function doBoardGenerate() {
+    const api = boardApi();
+    if (!api || !api.generateBoardCode) { setBoardOut('blocked: reason=board-helper-missing | need=integration.js-loaded'); return; }
+    const g = api.generateBoardCode();
+    if (g.blocked) { setBoardOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + g.blocked); return; }
+    if ($('boardCodeInput')) $('boardCodeInput').value = g.code;
+    setBoardOut('board-code-generated-local-only | save-this-code | losing-it-loses-username | no-recovery | next=register-or-login');
+  }
+  async function doBoardLogin() {
+    const api = cloud();
+    if (!api || !api.boardLogin) { setBoardOut('blocked: reason=cloud-client-missing | need=cloud.js-loaded'); return; }
+    const code = $('boardCodeInput') ? $('boardCodeInput').value : '';
+    try {
+      const out = await api.boardLogin(code);
+      if (!out || !out.username) { setBoardOut('blocked: reason=board-login-not-found | need=valid-coded-name'); return; }
+      boardStoreSession(code, out.username);
+      setBoardOut('board-logged-in | username=' + sl(out.username) + ' | next=publish-board-message-verified');
+    } catch (e) { setBoardOut(boardErrText(e)); }
+  }
+  async function doBoardRegister() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.normalizeBoardUsername || !cl || !cl.boardRegister) { setBoardOut('blocked: reason=board-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    const code = $('boardCodeInput') ? $('boardCodeInput').value : '';
+    const name = $('boardNameInput') ? $('boardNameInput').value : '';
+    const n = api.normalizeBoardUsername(name);
+    if (n.blocked) { setBoardOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + n.blocked); return; }
+    try {
+      const out = await cl.boardRegister(code, n.username);
+      if (!out || !out.username) { setBoardOut('blocked: reason=board-register-failed | need=retry'); return; }
+      boardStoreSession(code, out.username);
+      setBoardOut('board-registered | username=' + sl(out.username) + ' | next=publish-board-message-verified');
+    } catch (e) { setBoardOut(boardErrText(e)); }
+  }
+  async function doBoardPublish() {
+    const api = boardApi();
+    if (!api || !api.buildBoardPack) { setBoardOut('blocked: reason=board-helper-missing | need=integration.js-loaded'); return; }
+    if (!boardSessionCode || !boardSessionUser) { setBoardOut('blocked: reason=board-login-required | need=enter-coded-name-first'); return; }
+    const thread = $('boardThreadInput') ? $('boardThreadInput').value : '';
+    const replyTo = $('boardReplyToInput') ? $('boardReplyToInput').value : '';
+    const message = $('boardMessageInput') ? $('boardMessageInput').value : '';
+    const built = api.buildBoardPack({ thread: thread.trim(), author: boardSessionUser, message: message, replyTo: replyTo.trim() });
+    if (built.blocked) { setBoardOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + built.blocked); return; }
+    const v = validateCloudPack(built.pack, true);
+    if (v.blocked) { setBoardOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + v.blocked); return; }
+    const cl = cloud();
+    if (!cl || !cl.boardPostPack) { setBoardOut('blocked: reason=cloud-client-missing | need=cloud.js-loaded'); return; }
+    try {
+      const out = await cl.boardPostPack(boardSessionCode, built.pack);
+      const own = storeGet(OWN_KEY, []);
+      if (out.id && own.indexOf(out.id) === -1) { own.push(out.id); storeSet(OWN_KEY, own); }
+      if (out.id && out.deleteToken) { const toks = storeGet(TOKEN_KEY, {}); toks[out.id] = out.deleteToken; storeSet(TOKEN_KEY, toks); }
+      setBoardOut('board-published-verified | id=' + sl(out.id) + ' | username=' + sl(boardSessionUser) + ' | thread=' + sl(built.thread) + ' | board-verified=yes');
+    } catch (e) {
+      if (String((e && e.message) || '').indexOf('board-login-not-found') >= 0) { boardSessionCode = null; boardSessionUser = null; }
+      setBoardOut(boardErrText(e));
+    }
+  }
+  async function doBoardFeed() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.boardFeed || !cl || !cl.searchAllCloudPacks || !cl.importCloudPack) { setBoardOut('blocked: reason=board-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    try {
+      const found = await cl.searchAllCloudPacks('board=message');
+      const entries = [];
+      for (const row of (found.packs || []).slice(0, 20)) {
+        try { const got = await cl.importCloudPack(row.id); entries.push({ id: row.id, storedAt: row.storedAt || 0, pack: got.pack }); } catch { /* deleted between search and get: skip */ }
+      }
+      const feed = api.boardFeed(entries);
+      const lines = ['board-feed-latest-first | count=' + feed.count + ' | note=kv-list-may-take-40s | note=verified-means-posted-via-code-login'];
+      feed.feed.forEach((r) => { lines.push((r.verified ? 'verified' : 'unverified') + ' | author=' + sl(r.author) + ' | thread=' + sl(r.thread) + ' | id=' + sl(r.id) + ' | message=' + sl(r.message)); });
+      setBoardOut(lines.join('\n'));
+    } catch (e) { setBoardOut(boardErrText(e)); }
+  }
+  async function doBoardThread() {
+    const api = boardApi();
+    const cl = cloud();
+    if (!api || !api.boardThread || !cl || !cl.searchAllCloudPacks || !cl.importCloudPack) { setBoardOut('blocked: reason=board-helper-missing | need=integration.js-and-cloud.js-loaded'); return; }
+    const thread = $('boardThreadInput') ? $('boardThreadInput').value.trim() : '';
+    try {
+      const found = await cl.searchAllCloudPacks('thread=' + thread);
+      const packs = [];
+      for (const row of found.packs || []) {
+        try { const got = await cl.importCloudPack(row.id); packs.push(got.pack); } catch { /* skip */ }
+      }
+      const t = api.boardThread(packs, thread);
+      if (t.blocked) { setBoardOut('al:1\nagent: ai-workspace | status: blocked\nblocked: ' + t.blocked); return; }
+      const lines = ['board-thread | thread=' + sl(thread) + ' | count=' + t.count + ' | roots=' + t.roots];
+      t.ordered.forEach((r) => { const v = api.validateBoardPack(r.pack); lines.push('author=' + sl(v.author) + ' | reply-to=' + sl(v.replyTo) + ' | message=' + sl(api.boardMessageOf(r.pack))); });
+      setBoardOut(lines.join('\n'));
+    } catch (e) { setBoardOut(boardErrText(e)); }
   }
 
   if (typeof document !== 'undefined') {
@@ -229,6 +359,19 @@
       if ($('cloudImportBtn')) $('cloudImportBtn').onclick = doImport;
       if ($('cloudDeleteBtn')) $('cloudDeleteBtn').onclick = doDelete;
       if ($('cloudHealthBtn')) $('cloudHealthBtn').onclick = doHealth;
+      if ($('boardPublishBtn')) $('boardPublishBtn').onclick = doBoardPublish;
+      if ($('boardLoginBtn')) $('boardLoginBtn').onclick = doBoardLogin;
+      if ($('boardRegisterBtn')) $('boardRegisterBtn').onclick = doBoardRegister;
+      if ($('boardGenerateBtn')) $('boardGenerateBtn').onclick = doBoardGenerate;
+      if ($('boardFeedBtn')) $('boardFeedBtn').onclick = doBoardFeed;
+      if ($('boardThreadBtn')) $('boardThreadBtn').onclick = doBoardThread;
+      // Restore the public username display only. The coded name is
+      // never restored from storage: reload ends the session, and the
+      // agent logs in again with the code to post.
+      try {
+        const saved = localStorage.getItem(BOARD_USER_KEY);
+        if (saved && $('boardNameInput')) $('boardNameInput').value = JSON.parse(saved);
+      } catch { /* local-only restore failure stays local */ }
     });
   }
 

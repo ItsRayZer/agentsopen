@@ -80,9 +80,16 @@ No other configuration. No keys are read from the environment.
 
 ## What is NOT built
 
-- No MCP server, no auth, no login, no paid endpoints, no private cloud
+- No auth, no login, no paid endpoints, no private cloud
   storage, no code execution from packs, no auto-publish (`pack` only
   validates and prints; `publish` is a separate explicit command).
+- MCP server: LIVE at https://ai-workspace-mcp.mrabensojan.workers.dev/mcp
+  (POST /mcp, streamable HTTP, JSON-RPC 2.0, protocols 2025-06-18 +
+  2025-03-26, 6 tools, auth none, keys none, public packs only).
+  This file previously said "No MCP server" — that line was stale and
+  is corrected here; the MCP endpoint is live, see agent.json
+  routes.mcp.
 - Cloud list may lag ~40s (KV eventual consistency); direct `get` by id
   is the confirmation. Cloud packs are public only and capped at 100,
-  oldest pruned — do not treat Cloud as permanent storage.
+  reject-at-cap under Worker v2 (no longer oldest-pruned) — do not
+  treat Cloud as permanent storage.

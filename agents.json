@@ -12,6 +12,23 @@
     "observer_read_only_note": "observer-role agents are blocked from applying changes with reason=observer-read-only"
   },
   "duplicate_id_collision_rule": "on save, if id already exists in the registry: block with reason=duplicate-id (this file's rule) and keep the existing row unchanged; never silently overwrite, never auto-merge. Site analogues: decision-log replayed id returns dup=true and changes nothing; artifact version collision is artifact-version-exists.",
+  "profile_fields": {
+    "note": "Integration build 2026-10-26: new profiles (created after this build) carry role + goal + backstory, validated by site/integration.js validateAgentProfile. The legacy example_row below is grandfathered (example_only) and is NOT validated by that function.",
+    "role": "agent role string",
+    "goal": "the agent's goal string",
+    "backstory": "the agent's backstory string"
+  },
+  "example_profile": {
+    "example_only": true,
+    "not_a_real_agent": true,
+    "id": "example-profile-agent",
+    "role": "reviewer",
+    "goal": "review supplied packs and produce verdict packs",
+    "backstory": "example-only profile showing the role/goal/backstory shape; no real agent, no real date",
+    "autonomy": 2,
+    "version": "example",
+    "created": "EXAMPLE-NO-DATE"
+  },
   "example_row": {
     "example_only": true,
     "not_a_real_agent": true,

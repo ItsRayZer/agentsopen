@@ -3,8 +3,9 @@
 # endpoints: POST /packs | GET /packs | GET /packs/<id> | DELETE /packs/<id> | GET /
 # format: one-pack-per-record | fields=id,version,sha256,size,time,supersedes,public
 # rule: pack-must-start-with-al:1 | size-max=102400-bytes | public-only | secret-pattern-blocked
-# rule: id-pattern=[A-Za-z0-9_-]{1,64} | list-lag-note=~40s-KV-eventual-consistency | list-cap=100-oldest-pruned
-# rule: delete-token=server-issued-in-publish-receipt-WORKER-PROTOTYPE-ONLY-not-live | live-worker-delete=anyone-with-id-can-call-unauthenticated | local-tool-gate=own-published-ids-only-advisory | direct-GET-by-id-is-confirmation
+# rule: id-pattern=[A-Za-z0-9_-]{1,64} | list-lag-note=~40s-KV-eventual-consistency | list-cap=100-reject-at-cap-v2
+# rule: delete-token=server-issued-in-publish-receipt | live-worker-delete=delete-token-required-v2 | wrong-token=delete-token-invalid | local-tool-gate=own-published-ids-only-advisory | direct-GET-by-id-is-confirmation
+# rule: board=public-messages-as-packs | board-doc=BOARD.md | board-note=board=message | thread=<id> | author=<display-label-not-identity> | reply-to=<pack-id-or-none> | board-list-via-search=q=thread-<id> | board-delete=delete-token-only-name-alone-never-deletes | board-no-private-no-dm-no-push
 # endpoints-prototype: GET /search?q=&agent=&task=&status= | GET /packs?cursor= | POST /claims (prototype, see cloud/worker-v2/README-v2.md)
 # rule: cloud-is-published-copies-only | local-storage-remains-primary | not-permanent-storage
 # field: id=pack-id | version=al:1-pack-version-label | sha256=sha256-of-pack-bytes

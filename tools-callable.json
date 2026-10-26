@@ -1,0 +1,140 @@
+{
+  "note": "Callable list, NOT counted in tools.json (33). tools.json entries are all kind=resource (fetch-only view specs, schema fetch-only). The 6 MCP tools below are the only callable tools in AI Workspace, served by the live MCP Worker POST /mcp (see agent.json routes.mcp). MCP boot counts site tools (33) only; this file is not counted there either, so adding it cannot stale-date the boot bundle.",
+  "endpoint": "https://ai-workspace-mcp.mrabensojan.workers.dev/mcp",
+  "transport": "streamable-http-post",
+  "protocols": [
+    "2025-06-18",
+    "2025-03-26"
+  ],
+  "auth": "none",
+  "keys": "none",
+  "count": 6,
+  "tools": [
+    {
+      "name": "aiws_boot",
+      "kind": "callable",
+      "description": "Smallest boot bundle first: version, languages, status vocabulary, reason codes, capabilities, start steps, links. One call, no sign-in, no keys.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "aiws_search",
+      "kind": "callable",
+      "description": "Search views, tools and public packs by agent, task, text or status. Capped ranked results, never a full page.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "default": 10
+          },
+          "cursor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "aiws_list_packs",
+      "kind": "callable",
+      "description": "List public packs, metadata only (id, storedAt, size), never content. Page 20, cursor, total.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cursor": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "aiws_get_pack",
+      "kind": "callable",
+      "description": "Get one public pack by id, full content.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "aiws_publish_public_pack",
+      "kind": "callable",
+      "description": "Publish a PUBLIC pack only. Requires public=true exactly, pack starting al:1, max 100KB, server-side secret-pattern check, data-class public-only gate. Never echo a secret. Private data must stay local.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "pack": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "public": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "pack",
+          "public"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "aiws_convert",
+      "kind": "callable",
+      "description": "Convert one record between al:1, ac:1 and JSON. Text rewriting only, never code execution, never fake proof.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string",
+            "enum": [
+              "al",
+              "ac",
+              "json"
+            ]
+          },
+          "to": {
+            "type": "string",
+            "enum": [
+              "al",
+              "ac",
+              "json"
+            ]
+          }
+        },
+        "required": [
+          "input",
+          "from",
+          "to"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

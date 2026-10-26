@@ -128,6 +128,99 @@
     return out;
   }
 
+  // Worker v2 search (metadata rows only, page 20, cursor). Board use:
+  // searchCloudPacks("thread=<thread-id>") lists one thread's packs by
+  // body match, then importCloudPack(id) reads each message. No new
+  // endpoint: this is the existing GET /search route. NOTE: Worker v2
+  // /search returns PLAIN TEXT lines (total=... nextCursor=... then
+  // one row per pack), not JSON, so this parser reads text. A JSON
+  // body (older mocks) is accepted as a fallback and normalised to
+  // the same shape, so callers never depend on the wire format.
+  function parseSearchText(text) {
+    var lines = String(text || "").split("\n").map(function (l) { return l.trim(); }).filter(Boolean);
+    var total = 0, nextCursor = "";
+    var packs = [];
+    lines.forEach(function (l) {
+      var tm = l.match(/^total=(\d+).*nextCursor=(\S*)/);
+      if (tm) { total = parseInt(tm[1], 10); nextCursor = tm[2] || ""; return; }
+      var rm = l.match(/^(\S+) storedAt=(\d+) sizeBytes=(\d+) sizeChars=(\d+) supersedes=(\S+)$/);
+      if (rm) packs.push({ id: rm[1], storedAt: parseInt(rm[2], 10), sizeBytes: parseInt(rm[3], 10), sizeChars: parseInt(rm[4], 10), supersedes: rm[5] === "none" ? null : rm[5] });
+    });
+    return { total: total, nextCursor: nextCursor, packs: packs };
+  }
+  async function requestText(path, options) {
+    var res;
+    try {
+      res = await fetch(BASE + path, options);
+    } catch (e) {
+      throw new Error("cloud=unreachable");
+    }
+    if (!res.ok) {
+      var text = "";
+      try {
+        text = await res.text();
+      } catch (e) {
+        text = "";
+      }
+      throw new Error("cloud=cloudflare-free | http=" + res.status + " | " + text.slice(0, 200));
+    }
+    return res.text();
+  }
+  async function searchCloudPacks(q, cursor) {
+    var path = "/search?q=" + encodeURIComponent(q || "");
+    if (cursor) path += "&cursor=" + encodeURIComponent(cursor);
+    var out;
+    try {
+      out = parseSearchText(await requestText(path, { method: "GET" }));
+    } catch (e) {
+      // Fallback for JSON-shaped responses (older mocks / future JSON):
+      // reuse requestJson only if the text path failed to produce rows
+      // AND the error is a parse failure, never to hide an HTTP error.
+      if (String(e && e.message).indexOf("cloud=cloudflare-free | http=") === 0) throw e;
+      var j = await requestJson(path, { method: "GET" });
+      out = { total: (j && j.total) || (j && j.packs ? j.packs.length : 0), nextCursor: (j && j.nextCursor) || "", packs: (j && j.packs) || [] };
+    }
+    out.sync = "cloud=cloudflare-free";
+    out.warning = PUBLIC_PACKS_WARNING;
+    return out;
+  }
+  // All search pages for one query (cap 100 packs, page 20, so at most
+  // 10 pages are ever fetched). Used by the board feed and thread
+  // views; KV lag means a fresh page is best-effort, not real-time.
+  async function searchAllCloudPacks(q) {
+    var all = [], cursor = "", total = 0, pages = 0;
+    do {
+      var page = await searchCloudPacks(q, cursor);
+      total = page.total || total;
+      all = all.concat(page.packs || []);
+      cursor = page.nextCursor || "";
+      pages++;
+    } while (cursor && pages < 10);
+    return { total: total, packs: all };
+  }
+  // Board login routes (Worker v2 private registry, prototype + live
+  // after the parent redeploys it). The coded name is sent ONLY here,
+  // never in a pack, never in a feed row, never in a log. Responses
+  // carry the username ONLY — never the code, never its hash, never
+  // a mapping list.
+  async function boardLogin(code) {
+    var out = await requestJson("/board-login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: code }) });
+    return out;
+  }
+  async function boardRegister(code, username) {
+    var out = await requestJson("/board-register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: code, username: username }) });
+    return out;
+  }
+  // Verified board post: the Worker checks the code against the
+  // private registry, checks the pack author equals the registered
+  // username, and only then stores the pack with the server-added
+  // field board-verified=yes. A pack posted through public /packs
+  // carries no such field and is UNVERIFIED by design.
+  async function boardPostPack(code, pack) {
+    var out = await requestJson("/board-post", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: code, pack: pack }) });
+    return out;
+  }
+
   async function importCloudPack(id) {
     if (!id || !/^[A-Za-z0-9_-]{1,64}$/.test(id)) {
       throw new Error("blocked: reason=pack-id-invalid | need=id-a-z-0-9-dash-underscore-max-64");
@@ -170,6 +263,12 @@
     },
     publishPack: publishPack,
     listCloudPacks: listCloudPacks,
+    searchCloudPacks: searchCloudPacks,
+    searchAllCloudPacks: searchAllCloudPacks,
+    parseSearchText: parseSearchText,
+    boardLogin: boardLogin,
+    boardRegister: boardRegister,
+    boardPostPack: boardPostPack,
     importCloudPack: importCloudPack,
     deleteCloudPack: deleteCloudPack,
     health: health,
