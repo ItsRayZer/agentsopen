@@ -410,13 +410,13 @@
     },
     {
       "path": "review-exchange-validator.js",
-      "bytes": 13699,
-      "sha256": "81b8789340bc1bbde7d8b9c3404c2d02de77816dcb80049bcc1227bfd4dbe65f"
+      "bytes": 13640,
+      "sha256": "f87e8582dd839ff014a7671ff119d1a0134a12cf8ef526e11b6dec0f43a203fe"
     },
     {
       "path": "review-exchange-validator.test.js",
-      "bytes": 5700,
-      "sha256": "45c9039baee00f878dabb372405d21cdd24ddbfd107ab36533752680292ff8f2"
+      "bytes": 6215,
+      "sha256": "7d6f5f74bb333c57fb63ea77e278a492fa99ee50fc987907e55dc86ec606e596"
     },
     {
       "path": "review-exchange.css",
@@ -435,8 +435,8 @@
     },
     {
       "path": "schemas/review-exchange-0.1.0.schema.json",
-      "bytes": 10540,
-      "sha256": "22611d5e5bad48e6ceb41a00bab1b73f99a7d938d29332f528035ca45ddd907e"
+      "bytes": 10434,
+      "sha256": "1eeb8abae6fbef67854b5cf5faaeedbae09b47dee49cd9b1ec3901bf0ceea6d2"
     },
     {
       "bytes": 1947,
