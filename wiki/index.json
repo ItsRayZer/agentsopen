@@ -1,13 +1,25 @@
 {
   "schema": "ai-workspace-wiki-index-1",
   "name": "ai-workspace-wiki-seed",
-  "note": "Generated from site/wiki/*.txt by tools/gen_wiki_index.py; hand edits drift-fail check_wiki_index.py and build-check.js. Wikipedia articles are CC BY-SA 4.0, sourced-from-wikipedia, not Mia-verified; claims without an independent proof ref are unproven, never presented as verified. Site files only: the 102,400-byte Cloud pack cap does not apply to site files, but articles near it must be split, never truncated, before any future Cloud pack step.",
+  "note": "Generated from site/wiki/*.txt by tools/gen_wiki_index.py; hand edits drift-fail check_wiki_index.py and build-check.js. Wikipedia articles are CC BY-SA 4.0, sourced-from-wikipedia, not Mia-verified; claims without an independent proof ref are unproven, never presented as verified. Site files only: the 102,400-byte Cloud pack cap does not apply to site files, but articles near it must be split, never truncated, before any future Cloud pack step. Original summaries (kind original-summary, licence original-summary) are NOT Wikipedia articles and are NOT covered by the CC BY-SA claim above; they are not Mia-verified.",
   "counts": {
     "articles": 22,
+    "summaries": 13,
     "collections": 1,
-    "entries": 23
+    "entries": 36
   },
   "entries": [
+    {
+      "slug": "a2a-agent-card",
+      "title": "A2A Agent Card",
+      "file": "wiki/a2a-agent-card.txt",
+      "kind": "original-summary",
+      "source": "https://a2a-protocol.org/v0.2.5/specification/",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1015,
+      "sha256": "570d1b3b4a1f3db0fa358434f312c681580454d7f8e4b6529877238260ae6628"
+    },
     {
       "slug": "agent-based-model",
       "title": "Agent Based Model",
@@ -18,6 +30,39 @@
       "verification": "sourced-from-wikipedia-not-mia-verified",
       "bytes": 28512,
       "sha256": "3540b7546045d81c583104feb38ef9a9678f0dfbf05025933b69abcb5b4f342b"
+    },
+    {
+      "slug": "agent-skills-skill-md",
+      "title": "Agent Skills Skill Md",
+      "file": "wiki/agent-skills-skill-md.txt",
+      "kind": "original-summary",
+      "source": "https://agentskills.io",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 989,
+      "sha256": "8a49a2f84258053c3dc86b356415551c61ec12561325a4134d59bde019caf16a"
+    },
+    {
+      "slug": "agent-skills-standard-timeline",
+      "title": "Agent Skills Standard Timeline",
+      "file": "wiki/agent-skills-standard-timeline.txt",
+      "kind": "original-summary",
+      "source": "https://agentskills.io",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1018,
+      "sha256": "4d9ef45a6d1c30d51c3d5eefa6ee8934b733f3d5f3dce8c549dc4cd66ae40196"
+    },
+    {
+      "slug": "agents-md-canonical-import",
+      "title": "Agents Md Canonical Import",
+      "file": "wiki/agents-md-canonical-import.txt",
+      "kind": "original-summary",
+      "source": "https://ai-ws.vercel.app/AGENTS.md",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1023,
+      "sha256": "44d2f6a1302b29c2dad55d29a1123200fed25e8bb407a1e71b6a5385503d5509"
     },
     {
       "slug": "artificial-intelligence",
@@ -97,6 +142,28 @@
       "sha256": "cc4dc2c235d48b886a64d1edb8de7b9efc5292fe9cb9ffe5889a8f26d66f7dc8"
     },
     {
+      "slug": "graph-checkpoints-rewind-replay",
+      "title": "Graph Checkpoints Rewind Replay",
+      "file": "wiki/graph-checkpoints-rewind-replay.txt",
+      "kind": "original-summary",
+      "source": "https://ai-ws.vercel.app/integration.js",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1037,
+      "sha256": "51d5fe84f29e50dbb64fde8ed0989147fb03fa56c87c0e68c8b6de2325f88327"
+    },
+    {
+      "slug": "guardrail-packs-tripwires",
+      "title": "Guardrail Packs Tripwires",
+      "file": "wiki/guardrail-packs-tripwires.txt",
+      "kind": "original-summary",
+      "source": "https://ai-ws.vercel.app/integration.js",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1014,
+      "sha256": "fd076d623b19b7609a7fba4cadd8f59922f961f2c44a11258d414f1dba72f563"
+    },
+    {
       "slug": "human-computer-interaction",
       "title": "Human Computer Interaction",
       "file": "wiki/human-computer-interaction.txt",
@@ -163,6 +230,61 @@
       "sha256": "b36c45d34c6cdce16c46447e55538b58e18c21eaa5a675ac9fbbeb025e0826aa"
     },
     {
+      "slug": "mcp-inspector-test-vectors",
+      "title": "Mcp Inspector Test Vectors",
+      "file": "wiki/mcp-inspector-test-vectors.txt",
+      "kind": "original-summary",
+      "source": "https://modelcontextprotocol.io",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1011,
+      "sha256": "a3782a78bf85d80cc351aa53b8f10dba08940f189b53408f99cf1ceda411da7b"
+    },
+    {
+      "slug": "mcp-not-a-runtime",
+      "title": "Mcp Not A Runtime",
+      "file": "wiki/mcp-not-a-runtime.txt",
+      "kind": "original-summary",
+      "source": "https://mpiv.ai/blog/claude-code-mcp-what-operators-actually-need-to-know-2026",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1060,
+      "sha256": "07fdb2efe4a4cc9ef2a86a604c846c756fa60fadb554db9c22f66e591b6e8952"
+    },
+    {
+      "slug": "mcp-primitives-error-codes",
+      "title": "Mcp Primitives Error Codes",
+      "file": "wiki/mcp-primitives-error-codes.txt",
+      "kind": "original-summary",
+      "source": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1102,
+      "sha256": "2ea270ffc632dcd13571540077c1cbb9035e0779adf27cd8597f03090a0a3ccf"
+    },
+    {
+      "slug": "mcp-three-primitives-model",
+      "title": "Mcp Three Primitives Model",
+      "file": "wiki/mcp-three-primitives-model.txt",
+      "kind": "original-summary",
+      "source": "https://modelcontextprotocol.io",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1001,
+      "sha256": "933d2f470e003c71ca1ef328bd25fa94960ae66d89d764bff3d4ff9edd27c758"
+    },
+    {
+      "slug": "mcp-vetting-checklist",
+      "title": "Mcp Vetting Checklist",
+      "file": "wiki/mcp-vetting-checklist.txt",
+      "kind": "original-summary",
+      "source": "https://modelcontextprotocol.io",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 993,
+      "sha256": "cb1ba6e331f5b8f84be3de8c5c4a8f535fe755b95ed5b44db401c3cdcf8071ae"
+    },
+    {
       "slug": "multi-agent-system",
       "title": "Multi Agent System",
       "file": "wiki/multi-agent-system.txt",
@@ -205,6 +327,28 @@
       "verification": "sourced-from-wikipedia-not-mia-verified",
       "bytes": 54195,
       "sha256": "3e7f822ff7e828d4bec9d385b3fe145072858f896e1d9cc81d7da0b418ffe539"
+    },
+    {
+      "slug": "role-goal-backstory-flow-packs",
+      "title": "Role Goal Backstory Flow Packs",
+      "file": "wiki/role-goal-backstory-flow-packs.txt",
+      "kind": "original-summary",
+      "source": "https://ai-ws.vercel.app/integration.js",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1050,
+      "sha256": "49eff9462dee281adaee9d37afa3644df72d7b82190d4e21f5c48cf3e352188d"
+    },
+    {
+      "slug": "session-evaluation-records",
+      "title": "Session Evaluation Records",
+      "file": "wiki/session-evaluation-records.txt",
+      "kind": "original-summary",
+      "source": "https://ai-ws.vercel.app/integration.js",
+      "licence": "original-summary",
+      "verification": "not-mia-verified",
+      "bytes": 1051,
+      "sha256": "f63d3b989059418c2bb581686eee2f72977e26610aaba01c46eb093d2f820b41"
     },
     {
       "slug": "software-agent",

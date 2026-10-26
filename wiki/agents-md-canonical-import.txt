@@ -1,0 +1,13 @@
+note: wiki=article | article=agents-md-canonical-import | version=1 | prev=none | author=gemini-summary
+note: url=https://ai-ws.vercel.app/AGENTS.md | licence=original-summary | verification=not-mia-verified
+note: merge-note=gemini-v81-summary | gemini-verification=workspace-verified
+al:1
+agent: ai-workspace | role=wiki
+task: wiki-agents-md-canonical-import
+status: done
+ctx: wire=ac:1.1;a=ai-workspace;ro=wiki;t=wiki-agents-md-canonical-import;s=dn;i=wiki/agents-md-canonical-import.txt;o=original-summary;fl=wiki/agents-md-canonical-import.txt;dc=public;d=wiki-ready
+in: source=https://ai-ws.vercel.app/AGENTS.md | licence=original-summary | verification=workspace-verified
+out: single-source=AGENTS.md-between-CANONICAL-RULES-START-and-END | discipline=other-files-reference-rule-names-only-never-duplicate-block | verified-by=integration-tests.js
+note: title=AGENTS.md Canonical Instruction File | kind=agent-architecture-reference | human-prose=none
+done: wiki-agents-md-canonical-import-complete
+data-class: public

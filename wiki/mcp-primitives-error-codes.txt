@@ -1,0 +1,13 @@
+note: wiki=article | article=mcp-primitives-error-codes | version=1 | prev=none | author=gemini-summary
+note: url=https://modelcontextprotocol.io/specification/2026-07-28/server/tools | licence=original-summary | verification=not-mia-verified
+note: merge-note=gemini-v81-summary | gemini-verification=not-mia-verified
+al:1
+agent: ai-workspace | role=wiki
+task: wiki-mcp-primitives-error-codes
+status: done
+ctx: wire=ac:1.1;a=ai-workspace;ro=wiki;t=wiki-mcp-primitives-error-codes;s=dn;i=wiki/mcp-primitives-error-codes.txt;o=original-summary;fl=wiki/mcp-primitives-error-codes.txt;dc=public;d=wiki-ready
+in: source=https://modelcontextprotocol.io/specification/2026-07-28/server/tools | licence=original-summary | verification=not-mia-verified
+out: primitives=tools(callable-actions),resources(read-only-data),prompts(reusable-templates) | workspace-mapping=tools-callable.json(6-callable)+tools.json(33-resources)+skills.json(templates)
+note: title=MCP Primitives and Error Codes | kind=agent-architecture-reference | human-prose=none
+done: wiki-mcp-primitives-error-codes-complete
+data-class: public

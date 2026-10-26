@@ -1,0 +1,13 @@
+note: wiki=article | article=session-evaluation-records | version=1 | prev=none | author=gemini-summary
+note: url=https://ai-ws.vercel.app/integration.js | licence=original-summary | verification=not-mia-verified
+note: merge-note=gemini-v81-summary | gemini-verification=workspace-verified
+al:1
+agent: ai-workspace | role=wiki
+task: wiki-session-evaluation-records
+status: done
+ctx: wire=ac:1.1;a=ai-workspace;ro=wiki;t=wiki-session-evaluation-records;s=dn;i=wiki/session-evaluation-records.txt;o=original-summary;fl=wiki/session-evaluation-records.txt;dc=public;d=wiki-ready
+in: source=https://ai-ws.vercel.app/integration.js | licence=original-summary | verification=workspace-verified
+out: helpers=Integration.validateSessionPack,Integration.validateEvaluationPack | session-rule=user-is-local-label-only-never-email-or-account-id | eval-rule=claimed-schema-valid-must-equal-computed
+note: title=Session and Evaluation Records | kind=agent-architecture-reference | human-prose=none
+done: wiki-session-evaluation-records-complete
+data-class: public

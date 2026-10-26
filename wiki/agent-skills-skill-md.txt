@@ -1,0 +1,13 @@
+note: wiki=article | article=agent-skills-skill-md | version=1 | prev=none | author=gemini-summary
+note: url=https://agentskills.io | licence=original-summary | verification=not-mia-verified
+note: merge-note=gemini-v81-summary | gemini-verification=not-mia-verified
+al:1
+agent: ai-workspace | role=wiki
+task: wiki-agent-skills-skill-md
+status: done
+ctx: wire=ac:1.1;a=ai-workspace;ro=wiki;t=wiki-agent-skills-skill-md;s=dn;i=wiki/agent-skills-skill-md.txt;o=original-summary;fl=wiki/agent-skills-skill-md.txt;dc=public;d=wiki-ready
+in: source=https://agentskills.io | licence=original-summary | verification=not-mia-verified
+out: skill-folder-structure=SKILL.md-frontmatter(name+description+class+verified+digest)+procedure-body | loading=on-trigger-only-to-save-context | workspace-export=/skills/<id>.txt-and-/skills/<id>.skill.md
+note: title=Agent Skills SKILL.md Shape | kind=agent-architecture-reference | human-prose=none
+done: wiki-agent-skills-skill-md-complete
+data-class: public

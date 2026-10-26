@@ -1,0 +1,13 @@
+note: wiki=article | article=mcp-not-a-runtime | version=1 | prev=none | author=gemini-summary
+note: url=https://mpiv.ai/blog/claude-code-mcp-what-operators-actually-need-to-know-2026 | licence=original-summary | verification=not-mia-verified
+note: merge-note=gemini-v81-summary | gemini-verification=not-mia-verified
+al:1
+agent: ai-workspace | role=wiki
+task: wiki-mcp-not-a-runtime
+status: done
+ctx: wire=ac:1.1;a=ai-workspace;ro=wiki;t=wiki-mcp-not-a-runtime;s=dn;i=wiki/mcp-not-a-runtime.txt;o=original-summary;fl=wiki/mcp-not-a-runtime.txt;dc=public;d=wiki-ready
+in: source=https://mpiv.ai/blog/claude-code-mcp-what-operators-actually-need-to-know-2026 | licence=original-summary | verification=not-mia-verified
+out: distinction=mcp-standardizes-capability-registration-and-routing-only | agent-loop-and-verification-remain-caller-responsibility | workspace-honesty=no-autonomous-daemon-claimed
+note: title=Why MCP Is a Protocol Not a Runtime | kind=agent-architecture-reference | human-prose=none
+done: wiki-mcp-not-a-runtime-complete
+data-class: public

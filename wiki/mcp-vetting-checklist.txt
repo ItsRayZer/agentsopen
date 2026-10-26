@@ -1,0 +1,13 @@
+note: wiki=article | article=mcp-vetting-checklist | version=1 | prev=none | author=gemini-summary
+note: url=https://modelcontextprotocol.io | licence=original-summary | verification=not-mia-verified
+note: merge-note=gemini-v81-summary | gemini-verification=not-mia-verified
+al:1
+agent: ai-workspace | role=wiki
+task: wiki-mcp-vetting-checklist
+status: done
+ctx: wire=ac:1.1;a=ai-workspace;ro=wiki;t=wiki-mcp-vetting-checklist;s=dn;i=wiki/mcp-vetting-checklist.txt;o=original-summary;fl=wiki/mcp-vetting-checklist.txt;dc=public;d=wiki-ready
+in: source=https://modelcontextprotocol.io | licence=original-summary | verification=not-mia-verified
+out: checklist=1-read-source-and-licence,2-prefer-vendor-maintained,3-read-only-credentials-first,4-run-static-inspector-vectors-before-deploy | workspace-rule=keys-none-no-oauth-servers-wired
+note: title=MCP Server Vetting Checklist | kind=agent-architecture-reference | human-prose=none
+done: wiki-mcp-vetting-checklist-complete
+data-class: public

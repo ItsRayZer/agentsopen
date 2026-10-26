@@ -1,0 +1,13 @@
+note: wiki=article | article=agent-skills-standard-timeline | version=1 | prev=none | author=gemini-summary
+note: url=https://agentskills.io | licence=original-summary | verification=not-mia-verified
+note: merge-note=gemini-v81-summary | gemini-verification=not-mia-verified
+al:1
+agent: ai-workspace | role=wiki
+task: wiki-agent-skills-standard-timeline
+status: done
+ctx: wire=ac:1.1;a=ai-workspace;ro=wiki;t=wiki-agent-skills-standard-timeline;s=dn;i=wiki/agent-skills-standard-timeline.txt;o=original-summary;fl=wiki/agent-skills-standard-timeline.txt;dc=public;d=wiki-ready
+in: source=https://agentskills.io | licence=original-summary | verification=not-mia-verified
+out: structure=one-folder-per-skill | required=SKILL.md-with-yaml-frontmatter | optional=scripts,references,assets | workspace-rendering=skills/<id>.txt+skills/<id>.skill.md
+note: title=Agent Skills Open Standard Structure | kind=agent-architecture-reference | human-prose=none
+done: wiki-agent-skills-standard-timeline-complete
+data-class: public

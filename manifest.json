@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 263,
+    "files": 282,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -84,9 +84,9 @@
       "sha256": "dda7c4c34a27a10ae3efac729ba3dac4e8acfd89aa13e98ac1871bf13a85a416"
     },
     {
-      "bytes": 11016,
+      "bytes": 11318,
       "path": "about.html",
-      "sha256": "e42f397e40974c09438aa49db6b9223100b7e6e95ec32af7e61423ab032e3fba"
+      "sha256": "ef151bc4eb99090895e4a50fd19459c87cd17b4a72ee3f514c4f255beded78bd"
     },
     {
       "bytes": 3746,
@@ -154,6 +154,11 @@
       "sha256": "c4d6bb354c018c27232f1ba215bc8ed332f714bed3af4993532fa511379cef0a"
     },
     {
+      "bytes": 1051,
+      "path": "board.al",
+      "sha256": "e0b462f3c35ab2fd225fdd8a1c4a0e0b7be6ad8de5ef6828c8c65ca5278ab130"
+    },
+    {
       "bytes": 500,
       "path": "boot.txt",
       "sha256": "4291da94ab22b66e5971dc83defb481696f77d1fa337c5c71e56be25409e0b4f"
@@ -192,6 +197,21 @@
       "bytes": 1786,
       "path": "health.al",
       "sha256": "aa2575396f7b077acf6cf030083c238f604dab62808739aea2a62607e02970c8"
+    },
+    {
+      "bytes": 3304,
+      "path": "human.css",
+      "sha256": "8039b75db6ae6262a5d17338305f7c18382590c3e5e519b796c4265309b53050"
+    },
+    {
+      "bytes": 6027,
+      "path": "human.html",
+      "sha256": "9ad41e0293a987d1c6d80c18e2d21bbae6c69890e3f45e17890828ba51e46dc0"
+    },
+    {
+      "bytes": 9891,
+      "path": "human.js",
+      "sha256": "d85f26c52e1d84c220d8e09c9063178ca85dbf8b01a5332557028616a68c453c"
     },
     {
       "bytes": 100420,
@@ -342,6 +362,11 @@
       "bytes": 491,
       "path": "preamble.txt",
       "sha256": "704f4557bb091c23339c0f274f9cec233337693526902b85669e81c0d77f8425"
+    },
+    {
+      "bytes": 909,
+      "path": "requests.al",
+      "sha256": "c8bc99abbcfbc9a3f13b6426fa729be109bb06a31037dc7eb2f34aff9154f03d"
     },
     {
       "bytes": 112,
@@ -1199,9 +1224,29 @@
       "sha256": "3a35fb588108a247a9548d7274ea610faa4f57df2e688d4ad7c166383469ad93"
     },
     {
+      "bytes": 1015,
+      "path": "wiki/a2a-agent-card.txt",
+      "sha256": "570d1b3b4a1f3db0fa358434f312c681580454d7f8e4b6529877238260ae6628"
+    },
+    {
       "bytes": 28512,
       "path": "wiki/agent-based-model.txt",
       "sha256": "3540b7546045d81c583104feb38ef9a9678f0dfbf05025933b69abcb5b4f342b"
+    },
+    {
+      "bytes": 989,
+      "path": "wiki/agent-skills-skill-md.txt",
+      "sha256": "8a49a2f84258053c3dc86b356415551c61ec12561325a4134d59bde019caf16a"
+    },
+    {
+      "bytes": 1018,
+      "path": "wiki/agent-skills-standard-timeline.txt",
+      "sha256": "4d9ef45a6d1c30d51c3d5eefa6ee8934b733f3d5f3dce8c549dc4cd66ae40196"
+    },
+    {
+      "bytes": 1023,
+      "path": "wiki/agents-md-canonical-import.txt",
+      "sha256": "44d2f6a1302b29c2dad55d29a1123200fed25e8bb407a1e71b6a5385503d5509"
     },
     {
       "bytes": 88494,
@@ -1239,19 +1284,29 @@
       "sha256": "cc4dc2c235d48b886a64d1edb8de7b9efc5292fe9cb9ffe5889a8f26d66f7dc8"
     },
     {
+      "bytes": 1037,
+      "path": "wiki/graph-checkpoints-rewind-replay.txt",
+      "sha256": "51d5fe84f29e50dbb64fde8ed0989147fb03fa56c87c0e68c8b6de2325f88327"
+    },
+    {
+      "bytes": 1014,
+      "path": "wiki/guardrail-packs-tripwires.txt",
+      "sha256": "fd076d623b19b7609a7fba4cadd8f59922f961f2c44a11258d414f1dba72f563"
+    },
+    {
       "bytes": 28610,
       "path": "wiki/human-computer-interaction.txt",
       "sha256": "cb60a14d7e3bd412bdd455a48d84882efea13a3994d4fc445e1a656667e45e55"
     },
     {
-      "bytes": 10850,
+      "bytes": 16600,
       "path": "wiki/index.json",
-      "sha256": "37d0bf948a7c6943a848967a1f57f302e35ea79521640b87de6b762910a757e0"
+      "sha256": "85e8568fbcb864a7c6ea7104e63f798c791e6b53b5609c464104220bf9227d25"
     },
     {
-      "bytes": 8487,
+      "bytes": 12934,
       "path": "wiki/index.txt",
-      "sha256": "403a98d21a2ceabc4da80c27feff24c9fe9fc07afac48fd6c910993b7ca1b4ca"
+      "sha256": "4655aef93846aa56c6f7a86d5798bb4954dbea8d0713c5a916814de8a9125b51"
     },
     {
       "bytes": 19349,
@@ -1279,6 +1334,31 @@
       "sha256": "b36c45d34c6cdce16c46447e55538b58e18c21eaa5a675ac9fbbeb025e0826aa"
     },
     {
+      "bytes": 1011,
+      "path": "wiki/mcp-inspector-test-vectors.txt",
+      "sha256": "a3782a78bf85d80cc351aa53b8f10dba08940f189b53408f99cf1ceda411da7b"
+    },
+    {
+      "bytes": 1060,
+      "path": "wiki/mcp-not-a-runtime.txt",
+      "sha256": "07fdb2efe4a4cc9ef2a86a604c846c756fa60fadb554db9c22f66e591b6e8952"
+    },
+    {
+      "bytes": 1102,
+      "path": "wiki/mcp-primitives-error-codes.txt",
+      "sha256": "2ea270ffc632dcd13571540077c1cbb9035e0779adf27cd8597f03090a0a3ccf"
+    },
+    {
+      "bytes": 1001,
+      "path": "wiki/mcp-three-primitives-model.txt",
+      "sha256": "933d2f470e003c71ca1ef328bd25fa94960ae66d89d764bff3d4ff9edd27c758"
+    },
+    {
+      "bytes": 993,
+      "path": "wiki/mcp-vetting-checklist.txt",
+      "sha256": "cb1ba6e331f5b8f84be3de8c5c4a8f535fe755b95ed5b44db401c3cdcf8071ae"
+    },
+    {
       "bytes": 13193,
       "path": "wiki/multi-agent-system.txt",
       "sha256": "1309b6db73923a8f4e2f1654b4686b2cdc5f2012864b0567ed7179edc23f0cfc"
@@ -1297,6 +1377,16 @@
       "bytes": 54195,
       "path": "wiki/remote-work.txt",
       "sha256": "3e7f822ff7e828d4bec9d385b3fe145072858f896e1d9cc81d7da0b418ffe539"
+    },
+    {
+      "bytes": 1050,
+      "path": "wiki/role-goal-backstory-flow-packs.txt",
+      "sha256": "49eff9462dee281adaee9d37afa3644df72d7b82190d4e21f5c48cf3e352188d"
+    },
+    {
+      "bytes": 1051,
+      "path": "wiki/session-evaluation-records.txt",
+      "sha256": "f63d3b989059418c2bb581686eee2f72977e26610aaba01c46eb093d2f820b41"
     },
     {
       "bytes": 18342,
@@ -1322,6 +1412,11 @@
       "bytes": 26083,
       "path": "wiki/wiki.txt",
       "sha256": "b698aa957daf7af5e550ee7fc1689a1dbbead69e6735774971548a4258092611"
+    },
+    {
+      "bytes": 26113,
+      "path": "wire.ac",
+      "sha256": "33d0581dd0b7f47d1d448d90928a2926c50aa61829e8c526c409e0940d8eb171"
     },
     {
       "bytes": 1566,
