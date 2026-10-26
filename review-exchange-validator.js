@@ -23,22 +23,22 @@
   function add(errors, path, code, message) { errors.push({ path: path, code: code, message: message }); }
   function checkString(o, key, required, max, errors, path) {
     var v = o[key];
-    if (v === undefined || v === null) {
+    if (v === undefined) {
       if (required) add(errors, path + "." + key, "required", "Required string is missing.");
       return;
     }
-    if (typeof v !== "string" || (required && !v.trim())) add(errors, path + "." + key, "type", "Expected a non-empty string.");
+    if (v === null || typeof v !== "string" || (required && !v.trim())) add(errors, path + "." + key, "type", "Expected a non-empty string.");
     else if (max && v.length > max) add(errors, path + "." + key, "max-length", "String exceeds " + max + " characters.");
   }
   function checkEnum(o, key, values, required, errors, path) {
     var v = o[key];
-    if (v === undefined || v === null) {
+    if (v === undefined) {
       if (required) add(errors, path + "." + key, "required", "Required value is missing.");
     } else if (values.indexOf(v) < 0) add(errors, path + "." + key, "enum", "Unsupported value.");
   }
   function checkArray(o, key, required, max, errors, path) {
     var v = o[key];
-    if (v === undefined || v === null) {
+    if (v === undefined) {
       if (required) add(errors, path + "." + key, "required", "Required array is missing.");
       return null;
     }
