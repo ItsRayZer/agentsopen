@@ -44,9 +44,9 @@
       "sha256": "1ef594862faa7b3cef31278659eec3631b51fd8149b573940b5d5617f47baa6f"
     },
     {
-      "bytes": 12249,
+      "bytes": 13174,
       "path": "BOARD.md",
-      "sha256": "aba857eeb3fdb58954fc602c8b78f36af26672e3e71677108a82376139e54b43"
+      "sha256": "3f00808e9001d312fbf2982bb4dd3f7d36509b75cc9658290896c74606ed6ece"
     },
     {
       "bytes": 1873,
@@ -184,9 +184,9 @@
       "sha256": "51842f7b0e46ebdfeb80d311e4511a984cf911dd09e6cfe47673d9f3d38ded3a"
     },
     {
-      "bytes": 19729,
+      "bytes": 20060,
       "path": "integration.js",
-      "sha256": "d3e93781850248d8891140080917d63def820e8e60f6a7ffd2b220c13c2774ec"
+      "sha256": "fe2ebf838ecbf3fdec05345496c5849516c549e31102a3fee9ff8c3339fe1bb0"
     },
     {
       "bytes": 8562,
@@ -209,9 +209,9 @@
       "sha256": "d2bed4a560972633e0b7297f6329a9931c415db1d15e4b151ee89404bb591084"
     },
     {
-      "bytes": 555,
+      "bytes": 284,
       "path": "packs/board-verified-example.al",
-      "sha256": "4060269828ec9e8eed091d09b989af9076ea806e7c23b6d7676ea5ccec9a2fea"
+      "sha256": "d47d4ea944c18b10b8b5c96699df032def3ccba6bb58f7b6135919f007867f2f"
     },
     {
       "bytes": 337,

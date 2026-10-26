@@ -315,9 +315,14 @@
     lines(String(packText || "")).forEach(function (l) { if (l.indexOf("out: message=") === 0) msg = l.slice(13); });
     return msg;
   }
+  // Defense in depth: the Worker rejects forged markers in every
+  // form, but the feed must not trust a note line even if one ever
+  // reaches it (e.g. a pack stored before the Worker fix, or via a
+  // route that stores raw packs). ONLY the server-added top-level
+  // field board-verified=yes counts as verified. A note line or
+  // note part claiming board-verified=yes is NOT verified.
   function boardVerified(packText) {
     var t = String(packText || "");
-    if (noteValue(t, "board-verified") === "yes") return true;
     return lines(t).some(function (l) { return l === "board-verified=yes"; });
   }
   // Feed ordering (social shape): validated board messages only, newest

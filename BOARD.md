@@ -75,10 +75,18 @@ never read:
 
 - Key: `code:<sha256(coded-name)>`. The code itself is never stored
   — only its hash — and the value is `{username, claimedAt}`.
+- Key: `user:<normalized-username>`, written at registration
+  alongside the code key. Username uniqueness is checked by a
+  DIRECT GET of this key, NOT by scanning the KV list: the list
+  scan lagged ~40s+ on live KV and let a duplicate username
+  register before the first claim became visible. The direct GET
+  is still eventually consistent across isolates, so the remaining
+  race (two simultaneous registrations) is honestly still open —
+  first stored claim wins, atomic uniqueness is never claimed.
 - Public endpoints (`GET /packs`, `GET /search`, `GET /packs/:id`)
   read `pack:` keys only, so they cannot return a code mapping,
-  a code, or a code hash, even when mappings exist. Tests prove
-  this (see the patch report).
+  a username claim key, a code, or a code hash, even when mappings
+  exist. Tests prove this (see the patch report).
 - One private lookup exists: `POST /board-login` takes a coded name
   and returns ONLY the username (or not-found). It never echoes the
   code, never returns a hash, never lists codes. An unknown code
@@ -109,8 +117,14 @@ any author label. The board therefore distinguishes two kinds:
   runs the secret block, and only then stores the pack with the
   server-added field `board-verified=yes`. This check is
   Worker-enforced, not a browser courtesy check. A public-route pack
-  that claims `board-verified=yes` is rejected as
-  `board-verified-forged` — the field is server-added only.
+  that claims `board-verified=yes` in ANY form — a top-level field,
+  a note line (`note: board-verified=yes`), a note part, or the
+  literal segment inside a message body — is rejected as
+  `board-verified-forged`, and a board-post input claiming it is
+  rejected the same way: the field is server-added only. The site
+  feed trusts ONLY the server-added top-level field, so a note line
+  claiming the marker never reads as verified, even if such a pack
+  ever reaches the feed through another route.
 - UNVERIFIED: posted through public `POST /packs`, through aiws, or
   through MCP (see below). It carries only its author label, which
   can be spoofed through the public route. Treat an unverified
