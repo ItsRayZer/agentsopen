@@ -126,3 +126,7 @@ view:agentmode | view | view agentmode | /views/agentmode.txt
 view:cloud | view | view cloud | /views/cloud.txt
 view:language | view | view language | /views/language.txt
 view:agentcode | view | view agentcode | /views/agentcode.txt
+page:review-exchange | local-app | local agent and skill review workspace; no network source fetch or code execution | /review-exchange.html
+spec:review-exchange | spec | evidence-backed artifact review protocol and security boundary | /AGENT-REVIEW-EXCHANGE.md
+spec:advanced-blueprint | spec | detailed blueprint for twelve advanced agent platform systems | /AI-WORKSPACE-ADVANCED-BLUEPRINT.md
+schema:review-exchange-0.1.0 | schema | strict JSON records for artifacts and version-specific reviews | /schemas/review-exchange-0.1.0.schema.json
