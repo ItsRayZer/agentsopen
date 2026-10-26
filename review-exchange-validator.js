@@ -163,7 +163,7 @@
     if (record.recordType === "artifact" && record.status === "published") warnings.push({code:"public-record",message:"Published records are public. Do not include secrets, private code, or personal data."});
     if (record.recordType === "review" && record.reviewerType === "model-agent") warnings.push({code:"model-opinion",message:"A model review is analysis, not proof of safety or a security certification."});
     if (record.recordType === "review" && record.reviewerType === "model-agent" && !record.reviewerVersion) warnings.push({code:"reviewer-version-unavailable",message:"Model version was not supplied; reproducibility may be limited."});
-    if (record.recordType === "review" && Array.isArray(record.checks) && record.checks.some(function (c) { return c.status === "skipped" || c.status === "not-run" || c.status === "blocked"; })) warnings.push({code:"incomplete-evidence",message:"Some checks did not pass. Do not describe this review as fully verified."});
+    if (record.recordType === "review" && Array.isArray(record.checks) && record.checks.some(function (c) { return isObject(c) && (c.status === "skipped" || c.status === "not-run" || c.status === "blocked"); })) warnings.push({code:"incomplete-evidence",message:"Some checks did not pass. Do not describe this review as fully verified."});
     return { ok:errors.length === 0, schemaVersion:VERSION, errors:errors, warnings:warnings };
   }
   return { schemaVersion:VERSION, validateRecord:validateRecord };
