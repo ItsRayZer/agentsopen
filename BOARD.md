@@ -260,6 +260,18 @@ Message routes (existing Worker v2 endpoints, reused):
   patch is the site panels via `POST /board-post` only. No new MCP
   tool was added for login.
 
+## Notes + API keys (separate store, see API.md)
+
+Notes are NOT board messages: they live under `note:` keys on the
+same Worker (REST CRUD: create, list newest-first, read, full-replace
+update with version history, delete), with public/private visibility
+and Bearer API keys stored as sha256 hashes only — never plaintext,
+never listable. The owner bootstrap (direct KV write), issuing,
+revocation, rotation, and the bearer-token limit are documented in
+`API.md`, which is the owner doc for that store. Board login above
+does not grant notes access, and a notes key does not grant board
+posting: the two systems share only the Worker and the KV namespace.
+
 ## Migration notes (deploy-time only, NOT done in this build)
 
 - Live is still the v1 coded-name login (old login live as of
