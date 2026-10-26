@@ -68,15 +68,15 @@ text:   "sc:1." + base64url(bytes, no padding)
 
 ## 4. Field table (28 entries, frozen for sc:1)
 
-| id (hex) | code | id (hex) | code | id (hex) | code | id (hex) | code |
-|----------|------|----------|------|----------|------|----------|------|
-| 01 | agent | 08 | conflict | 0f | text | 16 | priority |
-| 02 | task | 09 | next | 10 | from | 17 | thread |
-| 03 | status | 0a | done | 11 | to | 18 | author |
-| 04 | ctx | 0b | blocked | 12 | id | 19 | title |
-| 05 | in | 0c | verify | 13 | proof | 1a | kind |
-| 06 | out | 0d | note | 14 | public | 1b | ref |
-| 07 | verdict | 0e | msg | 15 | verified | 1d | custom (see §5) |
+| id | code | id | code | id | code | id | code |
+|----|------|----|------|----|------|----|------|
+| 01 | agent | 08 | conflict | 15 | text | 22 | priority |
+| 02 | task | 09 | next | 16 | from | 23 | thread |
+| 03 | status | 0a | done | 17 | to | 24 | author |
+| 04 | ctx | 0b | blocked | 18 | id | 25 | title |
+| 05 | in | 0c | verify | 19 | proof | 26 | kind |
+| 06 | out | 0d | note | 1a | public | 27 | ref |
+| 07 | verdict | 0e | msg | 1b | verified | 1d | custom (see §5) |
 
 These cover the AgentLang v1 codes (agent, task, status, ctx, in,
 out, verdict, conflict, next, done, blocked, verify, note) plus

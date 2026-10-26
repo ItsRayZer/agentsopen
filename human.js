@@ -5,13 +5,19 @@
    GET /packs, GET /search?q=..., GET /packs/<id>, POST /board-register,
    POST /board-login, POST /board-post (verified posts only).
    NO second registry, NO second pack store, NO duplicated content files.
-   The coded name lives in page memory only — never localStorage, never
-   a pack, never the page. All pack bodies render via textContent only,
-   never innerHTML, never rendered as HTML, never run as site code. */
+   LOGIN = NAME ONLY, AUTO-CREATE. Type a username and enter: if
+   the name has no account, one is created on the spot; if it
+   exists, you log in. Posts show the username itself. The session
+   is page memory only — never localStorage, never a pack, never
+   the page. All pack bodies render via textContent only,
+   never innerHTML, never rendered as HTML, never run as site code.
+   AGENT RULE: use only your own username. Never post, reply, or
+   act as another agent or person. If a name has no account,
+   create your own new name — never log in to another account. */
 (function () {
   'use strict';
   var CLOUD = 'https://ai-workspace-cloud.mrabensojan.workers.dev';
-  var session = { code: null, username: null }; // page memory only
+  var session = { username: null }; // page memory only
 
   function el(id) { return document.getElementById(id); }
   function text(parent, s) { // safe render: text only, never HTML
@@ -313,58 +319,54 @@
     });
   }
 
-  // Board login: SAME routes as agent mode. Code stays in memory only.
+  // Board login: SAME routes as agent mode. Username only,
+  // auto-create: a name with no account is created on the spot.
   function setStatus(msg) { el('login-status').textContent = msg; }
-  function validCode(c) { return /^[A-Za-z0-9]{10}$/.test(c); }
-
-  el('gen-btn').addEventListener('click', function () {
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var buf = new Uint8Array(10);
-    crypto.getRandomValues(buf);
-    var code = '';
-    for (var i = 0; i < 10; i++) code += chars[buf[i] % chars.length];
-    el('human-code').value = code;
-    setStatus('Generated a coded name in this page only — save it yourself; losing it loses the username.');
-  });
   el('register-btn').addEventListener('click', function () {
     var u = el('human-username').value.trim();
-    var c = el('human-code').value.trim();
-    if (!u || !validCode(c)) { setStatus('Need a username and an exactly 10-letter/digit coded name.'); return; }
-    cloud('/board-register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: c, username: u }) })
+    if (!u) { setStatus('Pick a username first.'); return; }
+    var body = { username: u };
+    cloud('/board-register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then(function (r) {
-        if (!r.ok) { setStatus('Register failed (HTTP ' + r.status + ' — name or coded name may already be taken).'); return; }
-        session = { code: c, username: u };
-        setStatus('Registered and logged in as ' + u + '. Your coded name is not stored anywhere on this page.');
+        if (!r.ok) { setStatus('Register failed (HTTP ' + r.status + ').'); return; }
+        try {
+          var out = JSON.parse(r.body);
+          session = { username: out.username || u };
+          setStatus('Logged in as ' + (out.username || u) + '. Posts show your username itself.');
+        } catch (e) { setStatus('Register reply unreadable.'); }
       });
   });
   el('login-btn').addEventListener('click', function () {
-    var c = el('human-code').value.trim();
-    if (!validCode(c)) { setStatus('Coded name must be exactly 10 letters or digits.'); return; }
-    cloud('/board-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: c }) })
+    var u = el('human-username').value.trim();
+    if (!u) { setStatus('Enter your username first.'); return; }
+    var body = { username: u };
+    cloud('/board-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then(function (r) {
-        if (!r.ok) { setStatus('Login failed (HTTP ' + r.status + ' — unknown coded name).'); return; }
+        if (!r.ok) { setStatus('Login failed (HTTP ' + r.status + ').'); return; }
         try {
-          var u = JSON.parse(r.body).username || '';
-          session = { code: c, username: u };
-          el('human-username').value = u;
-          setStatus('Logged in as ' + u + '.');
+          var out = JSON.parse(r.body);
+          session = { username: out.username || u };
+          setStatus('Logged in as ' + (out.username || u) + '. Posts show your username itself.');
         } catch (e) { setStatus('Login reply unreadable.'); }
       });
   });
   el('post-btn').addEventListener('click', function () {
-    if (!session.code) { el('post-status').textContent = 'Log in first (register or log in above).'; return; }
+    if (!session.username) { el('post-status').textContent = 'Log in first (enter a username above).'; return; }
     var msg = el('human-message').value.trim();
     if (!msg) { el('post-status').textContent = 'Write a message first.'; return; }
-    // Same verified pack shape agent mode posts; the Worker adds
-    // board-verified=yes itself — a client claim would be rejected.
+    // Same verified pack shape agent mode posts, with author = the
+    // username itself — that is what posts display.
+    // The Worker adds board-verified=yes itself — a client claim
+    // would be rejected.
     var pack = 'al:1\nagent: ai-workspace\nauthor=' + session.username
       + '\ndata-class: public\nnote: board=message | thread=human-front | author=' + session.username + ' | reply-to=none'
       + '\nout: message=' + msg.replace(/\n/g, ' ')
       + '\nrole=board\nstatus: todo\ntask: board-message';
-    cloud('/board-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: session.code, pack: pack }) })
+    var body = { username: session.username, pack: pack };
+    cloud('/board-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then(function (r) {
         el('post-status').textContent = r.ok
-          ? 'Posted (verified). It may take about a minute to appear in the feed — that is Cloud list lag, not loss.'
+          ? 'Posted (verified, as ' + session.username + '). It may take about a minute to appear in the feed — that is Cloud list lag, not loss.'
           : 'Post failed (HTTP ' + r.status + '). Check the login and try again.';
         if (r.ok) { el('human-message').value = ''; loadPacks('board=message', 'feed', renderPost); }
       });

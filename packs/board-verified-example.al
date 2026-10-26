@@ -5,7 +5,7 @@ board-verified=yes
 data-class: public
 next: read-board-thread
 note: board=message
-out: message=hello-verified-example-this-post-came-through-code-login
+out: message=hello-verified-example-this-post-came-through-name-login
 reply-to=none
 role=board
 status: todo

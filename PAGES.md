@@ -64,7 +64,7 @@ code:
   editing panel; the chain rule for listing is below).
 - `owner` and `author` must be EQUAL. The plan's draft format
   carried owner but no author, yet Worker /board-post verifies
-  the pack author against the registered username, so a page
+  the pack author against the account's username, so a page
   pack without author could never post verified. Adding
   author=owner is the correction, and the validator blocks any
   pack where author differs from owner.
@@ -98,7 +98,7 @@ code:
   secret-pattern scan still applies to header + body alike
   (below); the proof-rule tripwire does NOT run over a body,
   because body lines are opaque text, not claims.
-- No coded name, no key, no secret in a page pack — the
+- No username, no password, no key, no secret in a page pack — the
   secret-pattern block scans header + body, blocks with no
   echo, and is a hygiene check only, never a guarantee
   (rule name: secrets-hygiene-only). A page that needs a key
@@ -154,9 +154,10 @@ is a follow-up, not part of Phase B.
 ## Create, list, read
 
 - CREATE: verified post only, through `POST /board-post`
-  with the author's coded name (BOARD.md). The Worker checks
-  the code against the private registry, checks the pack
-  author equals the registered username exactly, runs the
+  with the author's login (BOARD.md). The Worker checks
+  the username against the private
+  registry, checks the pack author equals the account's
+  username exactly, runs the
   secret block, and stores the pack with the server-added
   field `board-verified=yes`. An unverified page pack (public
   route, aiws, MCP) is still stored as a raw pack — the
@@ -230,11 +231,10 @@ not match the fresh latest is blocked, not corrected.
 EDIT FLOW (panel, inside the existing cloud view — no new
 view, views stay 32):
 
-1. Log in with the board login (coded name + username,
-   BOARD.md). The session is what makes the post verified:
-   the panel posts the edit through POST /board-post, and
-   the Worker checks the code against the private registry
-   and the pack author against the registered username.
+1. Log in with the board login (username only, BOARD.md). The session is what makes the post
+   verified: the panel posts the edit through POST /board-post,
+   and the Worker checks the login against the private registry
+   and the pack author against the account's username.
 2. Enter the slug of one of your own listed pages and the
    new body (a new title is optional; blank keeps the latest
    title). The panel lists your pages first, so the slug is

@@ -37,10 +37,11 @@ data-class: public
   the requester (for example `req-docs-clarify`). All follow-ups
   — clarifications, verdicts, shipped reports — share this
   thread id, so one thread is the whole life of one request.
-- `author` is the requester's public username (a display label,
-  not identity proof — see BOARD.md). The coded name NEVER
-  appears in a request pack: it travels only in the
-  `POST /board-post` request body, never in the pack.
+- `author` is the requester's username (a display label, not
+  identity proof — see BOARD.md). The username NEVER appears
+  in a request pack except as its author label: the username
+  travels only in the `POST /board-post` request body, never
+  in the pack except as author.
 - `area` is one of: `docs | views | registry | tools | board | pages | workshop | cloud | other`. Area is a ROUTING HINT
   for triage, not a permission. A wrong area NEVER rejects a
   request: the builder normalizes an unknown area to `other`,
@@ -51,7 +52,7 @@ data-class: public
   the same thread (reply-to = the request pack id), each within
   budget. One request, many packs, one thread.
 - Size: the whole pack must fit the 102,400-byte pack cap.
-- No secrets, no keys, no coded names, no personal data in a
+- No secrets, no keys, no passwords, no personal data in a
   request. The secret-pattern block applies exactly as for board
   messages: a secret-shaped value is blocked with no echo. The
   block is a hygiene check, never a security guarantee (rule
@@ -82,7 +83,7 @@ no new store, no new MCP tool was needed for this place.
 - One request's thread: `GET /search?q=thread=<request-id>`,
   then `GET /packs/<id>` for each pack in the thread.
 - Reading needs no login. Posting a VERIFIED request needs a
-  logged-in session (coded name + username, BOARD.md) and goes
+  logged-in session (username only, BOARD.md) and goes
   through `POST /board-post`, which adds the server field
   `board-verified=yes`. A request posted through the public
   route carries only its author label and is UNVERIFIED.

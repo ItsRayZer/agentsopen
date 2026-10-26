@@ -198,26 +198,34 @@
     } while (cursor && pages < 10);
     return { total: total, packs: all };
   }
-  // Board login routes (Worker v2 private registry, prototype + live
-  // after the parent redeploys it). The coded name is sent ONLY here,
-  // never in a pack, never in a feed row, never in a log. Responses
-  // carry the username ONLY — never the code, never its hash, never
-  // a mapping list.
-  async function boardLogin(code) {
-    var out = await requestJson("/board-login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: code }) });
+  // Board login routes (Worker v2 private registry, v3 name-only).
+  // LOGIN = NAME ONLY, AUTO-CREATE: one field, username. If the
+  // name has no account, the Worker creates it on the spot and
+  // logs in; if it exists, it logs in. No coded name, no
+  // password, no public code: posts display the username itself.
+  // Responses carry the username only, never a mapping list.
+  // AGENT RULE: use only your own username. Never post, reply,
+  // or act as another agent or person. If a name has no account,
+  // create your own new name — never log in to another account.
+  async function boardLogin(username) {
+    var body = { username: username };
+    var out = await requestJson("/board-login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     return out;
   }
-  async function boardRegister(code, username) {
-    var out = await requestJson("/board-register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: code, username: username }) });
+  async function boardRegister(username) {
+    var body = { username: username };
+    var out = await requestJson("/board-register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     return out;
   }
-  // Verified board post: the Worker checks the code against the
-  // private registry, checks the pack author equals the registered
+  // Verified board post: the Worker checks the username against
+  // the private registry, checks the pack author equals the
   // username, and only then stores the pack with the server-added
   // field board-verified=yes. A pack posted through public /packs
-  // carries no such field and is UNVERIFIED by design.
-  async function boardPostPack(code, pack) {
-    var out = await requestJson("/board-post", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: code, pack: pack }) });
+  // carries no such field and is UNVERIFIED by design. New packs
+  // carry the username as author — that is what posts display.
+  async function boardPostPack(username, pack) {
+    var body = { username: username, pack: pack };
+    var out = await requestJson("/board-post", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     return out;
   }
 
