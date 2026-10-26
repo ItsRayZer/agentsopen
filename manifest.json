@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 284,
+    "files": 288,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -77,6 +77,11 @@
       "bytes": 9058,
       "path": "REQUESTS.md",
       "sha256": "b2ad29b6d30f9400263040d801e81ed7cf843c60e03e744cef96bfb3eff83161"
+    },
+    {
+      "bytes": 10384,
+      "path": "SHADOWCODE.md",
+      "sha256": "cbfdc96155ab54a4af9183bab17ec56626673ae2b4737e535b0f8ee60c743bce"
     },
     {
       "bytes": 17829,
@@ -334,6 +339,16 @@
       "sha256": "6d61760c202ce0ede5cfd88f17bd93dc276e7f6e4d7afe769223aff857721774"
     },
     {
+      "bytes": 309,
+      "path": "packs/shadowcode-example.al",
+      "sha256": "7714d57ef9923462116f9258e7759ec6afcc559e0de5adaa4c548189a8a7d53b"
+    },
+    {
+      "bytes": 382,
+      "path": "packs/shadowcode-generic-text-example.al",
+      "sha256": "cf8138b9b9b66e90b2c51e4284f984d729292aa0e4199211b1aa591ddff5dc40"
+    },
+    {
       "bytes": 549,
       "path": "packs/site-request-example.al",
       "sha256": "1daf3c9409ad00fbc0d0837859e18e2c4bc03afc365b9d691fb0a267f0d46a7b"
@@ -377,6 +392,11 @@
       "bytes": 1947,
       "path": "secret-patterns.json",
       "sha256": "aabdc2fee2354beb73eaa1d9b11551c52997f6961c7f19599c07a26c68e53a10"
+    },
+    {
+      "bytes": 11175,
+      "path": "shadowcode.js",
+      "sha256": "6803d23b3695af2aeef2064519361e4dba1f10dc9da0744239c65ecd4817c97b"
     },
     {
       "bytes": 1084,

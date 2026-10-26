@@ -61,6 +61,8 @@
   <url><loc>https://ai-ws.vercel.app/packs/index.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/self-test.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/session-example.al</loc></url>
+  <url><loc>https://ai-ws.vercel.app/packs/shadowcode-example.al</loc></url>
+  <url><loc>https://ai-ws.vercel.app/packs/shadowcode-generic-text-example.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/site-request-example.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/site-request-shipped-example.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/site-request-verdict-example.al</loc></url>
@@ -73,6 +75,8 @@
   <url><loc>https://ai-ws.vercel.app/REQUESTS.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/robots.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/secret-patterns.json</loc></url>
+  <url><loc>https://ai-ws.vercel.app/shadowcode.js</loc></url>
+  <url><loc>https://ai-ws.vercel.app/SHADOWCODE.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/sitemap.xml</loc></url>
   <url><loc>https://ai-ws.vercel.app/skills/advertising-campaigns.skill.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/skills/advertising-campaigns.txt</loc></url>
