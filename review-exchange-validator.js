@@ -102,7 +102,7 @@
   }
   function validateReview(o, errors) {
     var path = "review";
-    checkKeys(o, ["schemaVersion","recordType","reviewId","artifactId","artifactVersion","artifactHash","reviewerType","reviewerId","reviewerVersion","checklistVersion","environment","createdAt","checks","findings","compatibility","limitations","conflictsOfInterest","reproduction","disposition","signatureStatus"], errors, path);
+    checkKeys(o, ["schemaVersion","recordType","reviewId","artifactId","artifactVersion","artifactHash","reviewerType","reviewerId","reviewerVersion","checklistVersion","environment","createdAt","checks","findings","compatibility","limitations","conflictsOfInterest","reviewBasis","reproduction","disposition","signatureStatus"], errors, path);
     if (o.schemaVersion !== VERSION) add(errors, path + ".schemaVersion", "version", "Unsupported schema version.");
     if (o.recordType !== "review") add(errors, path + ".recordType", "record-type", "Expected recordType=review.");
     ["reviewId","artifactId","artifactVersion"].forEach(function (k) { checkString(o, k, true, 120, errors, path); });
@@ -146,11 +146,12 @@
       if (c.evidenceRefs !== undefined) checkStringArray({ refs:c.evidenceRefs }, "refs", 100, 500, errors, p);
     });
     ["limitations","conflictsOfInterest"].forEach(function (k) { if (o[k] !== undefined) checkStringArray(o, k, k === "limitations" ? 100 : 50, k === "limitations" ? 1000 : 500, errors, path); });
+    checkString(o, "reviewBasis", false, 3000, errors, path);
     checkString(o, "reproduction", false, 5000, errors, path);
     checkEnum(o, "disposition", DISPOSITIONS, true, errors, path);
     checkEnum(o, "signatureStatus", ["verified","unsigned","invalid","unavailable"], false, errors, path);
-    if (o.reviewerType === "model-agent" && !o.reviewerVersion) add(errors, path + ".reviewerVersion", "reviewer-provenance", "Model-based reviews should identify the reviewer/model version when available.");
-    if (o.disposition === "promising" && checks.every(function (c) { return c.status !== "passed"; })) add(errors, path + ".disposition", "evidence-mismatch", "A promising disposition needs at least one passed check or a clearly documented review basis.");
+
+    if (o.disposition === "promising" && !checks.some(function (c) { return isObject(c) && c.status === "passed"; }) && !(typeof o.reviewBasis === "string" && o.reviewBasis.trim())) add(errors, path + ".disposition", "evidence-mismatch", "A promising disposition needs a passed check or a documented reviewBasis.");
   }
   function validateRecord(record) {
     var errors = [];
@@ -161,6 +162,7 @@
     var warnings = [];
     if (record.recordType === "artifact" && record.status === "published") warnings.push({code:"public-record",message:"Published records are public. Do not include secrets, private code, or personal data."});
     if (record.recordType === "review" && record.reviewerType === "model-agent") warnings.push({code:"model-opinion",message:"A model review is analysis, not proof of safety or a security certification."});
+    if (record.recordType === "review" && record.reviewerType === "model-agent" && !record.reviewerVersion) warnings.push({code:"reviewer-version-unavailable",message:"Model version was not supplied; reproducibility may be limited."});
     if (record.recordType === "review" && Array.isArray(record.checks) && record.checks.some(function (c) { return c.status === "skipped" || c.status === "not-run" || c.status === "blocked"; })) warnings.push({code:"incomplete-evidence",message:"Some checks did not pass. Do not describe this review as fully verified."});
     return { ok:errors.length === 0, schemaVersion:VERSION, errors:errors, warnings:warnings };
   }
