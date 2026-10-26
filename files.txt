@@ -42,7 +42,7 @@ file: https://ai-ws.vercel.app/INSTRUCTIONS-FOR-AGENTS.md | bytes=5150 | sha256=
 file: https://ai-ws.vercel.app/integration.js | bytes=92048 | sha256=7e722f51a1422411fb2dfaa321d226c6b33c6393fe65e8f3be652e6b34f87795
 file: https://ai-ws.vercel.app/LICENSE | bytes=1082 | sha256=6ea964271ab445f7640f40b90424c9b4e104b46b54aa1b85ac94bc969eabbcd6
 file: https://ai-ws.vercel.app/llms.txt | bytes=8562 | sha256=0911ec38bd1bfff6b86ddad0ed3bb16b93b2e5075e4dd7296981590c44bc45d0
-file: https://ai-ws.vercel.app/manifest.json | bytes=53140 | sha256=2a0c2adef6e788eae9ed3828bf36abe34edead254b836b40ca1c089973dfb25f
+file: https://ai-ws.vercel.app/manifest.json | bytes=53140 | sha256=b7b4237ebbb330176cb263cd20ee4b4728e003508d5e9050eb4325b43149b7fd
 file: https://ai-ws.vercel.app/models.json | bytes=2442 | sha256=6852ade10b8954b1546dae258cebfd69c8b9d52e7da733176f359569c84b48af
 file: https://ai-ws.vercel.app/packs/agent-page-broken-chain-example.al | bytes=703 | sha256=f00e8f2fc8c327f0652f5e71fc1b1c959bcba4348ccc7cb8e09237573fd8e53a
 file: https://ai-ws.vercel.app/packs/agent-page-edit-example.al | bytes=772 | sha256=503fb97cab4afa8dcd731bb2a22a7fe0f640b3b049c766f9e729d0cb772f1f9f
@@ -76,8 +76,8 @@ file: https://ai-ws.vercel.app/review-exchange-core.js | bytes=16412 | sha256=f0
 file: https://ai-ws.vercel.app/review-exchange-core.test.js | bytes=4838 | sha256=ea1350f451b53db8b9baaa29925eb7c6048d775f5e66d1eac5ed7f3c61949be4
 file: https://ai-ws.vercel.app/review-exchange-smoke.test.js | bytes=2052 | sha256=502e3e6827d8ba1ac861bf22ccef3c49221378640846babb5d86e603e04f9c90
 file: https://ai-ws.vercel.app/review-exchange-ui.js | bytes=47329 | sha256=706cd7edfadbe2b698cbd77618ed882fca2e78d40dafea80479874ca6fe432e9
-file: https://ai-ws.vercel.app/review-exchange-validator.js | bytes=13816 | sha256=1145b18e650133b92a91d12571fa2321acab11e06b7141c0f1a543c57698bac2
-file: https://ai-ws.vercel.app/review-exchange-validator.test.js | bytes=5046 | sha256=a0a0c24cd65802701dc5c3eefac1c5052f8ed64ac93acc60f6b782351319e573
+file: https://ai-ws.vercel.app/review-exchange-validator.js | bytes=13699 | sha256=81b8789340bc1bbde7d8b9c3404c2d02de77816dcb80049bcc1227bfd4dbe65f
+file: https://ai-ws.vercel.app/review-exchange-validator.test.js | bytes=5700 | sha256=45c9039baee00f878dabb372405d21cdd24ddbfd107ab36533752680292ff8f2
 file: https://ai-ws.vercel.app/review-exchange.css | bytes=19854 | sha256=ae795445c05387f77ee1b3197031f3409f641fa97f21e1dafb239cf29299290d
 file: https://ai-ws.vercel.app/review-exchange.html | bytes=17685 | sha256=3cc8ac3dc259716f3a619efb0e50c69d3e820cdff63321f6d393619fac765273
 file: https://ai-ws.vercel.app/robots.txt | bytes=112 | sha256=dbceff11f1a1c536b0b5c37991505ac7b5ac273659841b606bdf9eb20a0bb8a6
