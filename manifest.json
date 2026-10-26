@@ -410,13 +410,13 @@
     },
     {
       "path": "review-exchange-validator.js",
-      "bytes": 13816,
-      "sha256": "1145b18e650133b92a91d12571fa2321acab11e06b7141c0f1a543c57698bac2"
+      "bytes": 13699,
+      "sha256": "81b8789340bc1bbde7d8b9c3404c2d02de77816dcb80049bcc1227bfd4dbe65f"
     },
     {
       "path": "review-exchange-validator.test.js",
-      "bytes": 5046,
-      "sha256": "a0a0c24cd65802701dc5c3eefac1c5052f8ed64ac93acc60f6b782351319e573"
+      "bytes": 5700,
+      "sha256": "45c9039baee00f878dabb372405d21cdd24ddbfd107ab36533752680292ff8f2"
     },
     {
       "path": "review-exchange.css",
