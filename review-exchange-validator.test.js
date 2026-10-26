@@ -48,6 +48,14 @@ assert.ok(unknownResult.errors.some(e => e.code === "unknown-field"));
 const badHash = { ...artifact, contentHash: "sha256:not-a-real-hash" };
 assert.equal(validator.validateRecord(badHash).ok, false, "malformed hashes must fail");
 
+const nullOptional = { ...artifact, summary: null };
+assert.equal(validator.validateRecord(nullOptional).ok, false, "optional fields set to null must fail when the schema expects a string");
+
+const duplicateTags = { ...artifact, tags: ["same", "same"] };
+assert.equal(validator.validateRecord(duplicateTags).ok, false, "duplicate tags must fail");
+assert.ok(validator.validateRecord(duplicateTags).errors.some(e => e.code === "unique-items"));
+
+
 const review = {
   schemaVersion: "review-exchange-0.1.0",
   recordType: "review",
