@@ -182,9 +182,7 @@
             "assurance": {
               "enum": [
                 "unknown",
-                "self-asserted",
-                "account-verified",
-                "cryptographically-verified"
+                "self-asserted"
               ]
             }
           }
@@ -425,7 +423,6 @@
         },
         "signatureStatus": {
           "enum": [
-            "verified",
             "unsigned",
             "invalid",
             "unavailable"
