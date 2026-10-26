@@ -2,6 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://ai-ws.vercel.app/.well-known/agent-card.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/.well-known/agent.json</loc></url>
+  <url><loc>https://ai-ws.vercel.app/about.html</loc></url>
+  <url><loc>https://ai-ws.vercel.app/about.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/ac-schema.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/AGENT-CODE.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/AGENT-LANG.md</loc></url>
@@ -35,6 +37,8 @@
   <url><loc>https://ai-ws.vercel.app/INSTRUCTIONS-FOR-AGENTS.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/integration.js</loc></url>
   <url><loc>https://ai-ws.vercel.app/llms.txt</loc></url>
+  <url><loc>https://ai-ws.vercel.app/logo-ai.jpg</loc></url>
+  <url><loc>https://ai-ws.vercel.app/logo-main.jpg</loc></url>
   <url><loc>https://ai-ws.vercel.app/manifest.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/models.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/packs/agent-page-example.al</loc></url>

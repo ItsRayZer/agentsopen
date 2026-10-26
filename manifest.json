@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 254,
+    "files": 258,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -77,6 +77,16 @@
       "bytes": 9058,
       "path": "REQUESTS.md",
       "sha256": "b2ad29b6d30f9400263040d801e81ed7cf843c60e03e744cef96bfb3eff83161"
+    },
+    {
+      "bytes": 6640,
+      "path": "about.html",
+      "sha256": "071703ea063287040c00c741c98e89a4e872dc4989f6e3fddbdba1254c9834a6"
+    },
+    {
+      "bytes": 3746,
+      "path": "about.txt",
+      "sha256": "b768cd2ccd06ed81403ab3a184540ced8347049722a82779588c5b93d132da7c"
     },
     {
       "bytes": 4477,
@@ -202,6 +212,16 @@
       "bytes": 8562,
       "path": "llms.txt",
       "sha256": "0911ec38bd1bfff6b86ddad0ed3bb16b93b2e5075e4dd7296981590c44bc45d0"
+    },
+    {
+      "bytes": 51629,
+      "path": "logo-ai.jpg",
+      "sha256": "69741a2ffeb5715ec9bdf1e88e63b7064b082e580ea4c04e922cc4f039a0056e"
+    },
+    {
+      "bytes": 58952,
+      "path": "logo-main.jpg",
+      "sha256": "6ad8e4ef682e988680a748a10e1f9861c266c32650392a37145d4d0f45136593"
     },
     {
       "bytes": 2442,
