@@ -80,7 +80,7 @@
     if (o.sourceUrl !== undefined && (typeof o.sourceUrl !== "string" || !/^https?:\/\/[^/\s?#]+(?:[/?#][^\s]*)?$/i.test(o.sourceUrl))) add(errors, path + ".sourceUrl", "url-format", "Source URL must be a valid HTTP or HTTPS URI without whitespace.");
     checkString(o, "sourceRevision", false, 256, errors, path);
     checkString(o, "contentHash", false, 80, errors, path);
-    if (o.contentHash !== undefined && o.contentHash !== null && !HASH_RE.test(o.contentHash)) add(errors, path + ".contentHash", "hash-format", "Expected sha256 followed by 64 lowercase hexadecimal characters.");
+    if (o.contentHash !== undefined && !HASH_RE.test(o.contentHash)) add(errors, path + ".contentHash", "hash-format", "Expected sha256 followed by 64 lowercase hexadecimal characters.");
     checkString(o, "license", false, 120, errors, path);
     ["tags","capabilities","permissions","dependencies","supportedRuntimes","sideEffects","requiredSecrets"].forEach(function (k) {
       var limits = { tags:[30,48], capabilities:[100,120], permissions:[100,120], dependencies:[100,256], supportedRuntimes:[50,120], sideEffects:[50,160], requiredSecrets:[50,120] }[k];
@@ -108,7 +108,7 @@
     if (o.recordType !== "review") add(errors, path + ".recordType", "record-type", "Expected recordType=review.");
     ["reviewId","artifactId","artifactVersion"].forEach(function (k) { checkString(o, k, true, 120, errors, path); });
     checkString(o, "artifactHash", false, 80, errors, path);
-    if (o.artifactHash !== undefined && o.artifactHash !== null && !HASH_RE.test(o.artifactHash)) add(errors, path + ".artifactHash", "hash-format", "Expected sha256 followed by 64 lowercase hexadecimal characters.");
+    if (o.artifactHash !== undefined && !HASH_RE.test(o.artifactHash)) add(errors, path + ".artifactHash", "hash-format", "Expected sha256 followed by 64 lowercase hexadecimal characters.");
     checkEnum(o, "reviewerType", REVIEWER_TYPES, true, errors, path);
     ["reviewerId","reviewerVersion","checklistVersion"].forEach(function (k) { checkString(o, k, false, 160, errors, path); });
     checkString(o, "environment", false, 500, errors, path);
@@ -137,8 +137,8 @@
       if (f.confidence !== undefined && (typeof f.confidence !== "number" || f.confidence < 0 || f.confidence > 1)) add(errors, p + ".confidence", "range", "Expected a number from 0 to 1.");
       if (f.evidenceRefs !== undefined) checkStringArray({ refs:f.evidenceRefs }, "refs", 100, 500, errors, p);
     });
-    if (o.compatibility !== undefined && !Array.isArray(o.compatibility)) add(errors, path + ".compatibility", "type", "Expected an array.");
-    if (Array.isArray(o.compatibility)) o.compatibility.forEach(function (c, i) {
+    var compatibility = checkArray(o, "compatibility", false, 100, errors, path);
+    if (Array.isArray(compatibility)) compatibility.forEach(function (c, i) {
       var p = path + ".compatibility[" + i + "]";
       if (!isObject(c)) { add(errors, p, "type", "Expected an object."); return; }
       checkKeys(c, ["target","status","evidenceRefs"], errors, p);
