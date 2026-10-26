@@ -274,6 +274,231 @@
     });
     qs("compareRunBtn").disabled=state.artifacts.filter(function(a){return validator.validateRecord(a).ok;}).length<2;
   }
+  function setPublicStatus(message, kind) {
+    var el = qs("publicExchangeStatus");
+    if (!el) return;
+    el.textContent = String(message || "");
+    el.dataset.kind = kind || "info";
+  }
+  function renderPublishSelect() {
+    var select = qs("publishArtifactSelect");
+    var publishButton = qs("publishSelectedPublicBtn");
+    if (!select || !publishButton) return;
+    var previous = select.value;
+    var records = state.artifacts.filter(function (a) {
+      return validator.validateRecord(a).ok && !!latestReviewFor(a);
+    });
+    select.textContent = "";
+    if (!records.length) {
+      select.appendChild(node("option", "", "No reviewed artifact versions available"));
+      select.value = "";
+      publishButton.disabled = true;
+      return;
+    }
+    records.forEach(function (a) {
+      var opt = node("option", "", a.name + " · " + a.version + " · " + a.artifactType);
+      opt.value = artifactKey(a);
+      select.appendChild(opt);
+    });
+    if (records.some(function (a) { return artifactKey(a) === previous; })) select.value = previous;
+    else if (lastArtifactKey && records.some(function (a) { return artifactKey(a) === lastArtifactKey; })) select.value = lastArtifactKey;
+    publishButton.disabled = false;
+  }
+  function validatePublicBundle(bundle, cloudId) {
+    if (!bundle || bundle.schemaVersion !== core.publicBundleSchema || bundle.recordType !== "review-exchange-public-bundle") {
+      throw new Error("Unsupported public Review Exchange bundle.");
+    }
+    if (!bundle.artifact || !bundle.review) throw new Error("Public bundle must include an artifact and review.");
+    if (bundle.publisherAssurance !== "self-asserted") throw new Error("Unsupported publisher assurance; record is not imported.");
+    if (bundle.artifact.status !== "published" || bundle.artifact.visibility !== "public") {
+      throw new Error("Public artifact record is missing published/public markers.");
+    }
+    var av = validator.validateRecord(bundle.artifact);
+    var rv = validator.validateRecord(bundle.review);
+    if (!av.ok || !rv.ok) throw new Error("Public bundle contains schema-invalid records.");
+    if (bundle.artifact.artifactId !== bundle.review.artifactId || bundle.artifact.version !== bundle.review.artifactVersion) {
+      throw new Error("Artifact and review versions in the public bundle do not match.");
+    }
+    if (bundle.artifact.contentHash && bundle.review.artifactHash && bundle.artifact.contentHash !== bundle.review.artifactHash) {
+      throw new Error("Review hash does not match the artifact version.");
+    }
+    return {
+      cloudId:String(cloudId || ""),
+      bundle:bundle,
+      artifact:bundle.artifact,
+      review:bundle.review,
+      fetchedAt:new Date().toISOString(),
+      trust:"public-unverified"
+    };
+  }
+  function renderPublicRecords() {
+    var list = qs("publicReviewList");
+    if (!list) return;
+    list.textContent = "";
+    if (!state.publicRecords.length) {
+      list.appendChild(node("div", "empty-state", "No public Review Exchange records loaded. Search is manual; nothing is fetched automatically."));
+      return;
+    }
+    state.publicRecords.forEach(function (record) {
+      var a = record.artifact, r = record.review;
+      var card = node("article", "artifact-card public-record-card");
+      var top = node("div", "card-top");
+      top.appendChild(node("span", "type-pill", a.artifactType));
+      top.appendChild(node("span", "state-pill", "public · unsigned"));
+      card.appendChild(top);
+      card.appendChild(node("h3", "", a.name + " · " + a.version));
+      appendP(card, a.summary || "No summary supplied.");
+      appendP(card, "Artifact " + a.artifactId + " · pack " + record.cloudId, "small");
+      appendP(card, "Review: " + r.disposition + " · " + r.reviewerType + " · " + r.checks.length + " checks · " + r.findings.length + " findings", "small");
+      appendP(card, "Publisher identity and review claims are self-asserted. The record has not been independently authenticated by this directory.", "small");
+      var actions = node("div", "card-actions");
+      actions.appendChild(button("Import local copy", "secondary", "public-import", record.cloudId));
+      actions.appendChild(button("Review JSON", "secondary", "public-review-export", record.cloudId));
+      card.appendChild(actions);
+      list.appendChild(card);
+    });
+  }
+  async function loadPublicRecords() {
+    var btn = qs("loadPublicRecordsBtn");
+    if (!window.AIWorkspaceCloud || typeof window.AIWorkspaceCloud.searchCloudPacks !== "function") {
+      setPublicStatus("Public exchange unavailable: cloud.js did not load. Local review still works.", "error");
+      return;
+    }
+    if (btn) { btn.disabled = true; btn.textContent = "Searching public packs…"; }
+    setPublicStatus("Searching the public pack index. Public listings may lag recent publishes by roughly 40 seconds.", "info");
+    var records = [], skipped = 0, total = 0;
+    try {
+      var page = await window.AIWorkspaceCloud.searchCloudPacks("review-exchange-record");
+      total = Number(page.total || 0);
+      var candidates = (page.packs || []).slice(0, 20);
+      for (var i = 0; i < candidates.length; i++) {
+        var item = candidates[i];
+        if (!item || !item.id) { skipped++; continue; }
+        try {
+          var fetched = await window.AIWorkspaceCloud.importCloudPack(item.id);
+          var bundle = core.parsePublicRecordPack(fetched.pack);
+          records.push(validatePublicBundle(bundle, item.id));
+        } catch (e) {
+          skipped++;
+        }
+      }
+      state.publicRecords = records;
+      renderPublicRecords();
+      setPublicStatus("Search returned " + total + " matching pack metadata row(s); inspected " + candidates.length + " and loaded " + records.length + " valid Review Exchange record(s). " + skipped + " unrelated, malformed, or unavailable pack(s) were skipped. Public content is untrusted.", records.length ? "success" : "info");
+      logEvent("public-records-searched", records.length + " valid / " + skipped + " skipped");
+    } catch (e) {
+      setPublicStatus("Public search failed: " + String(e.message || e) + ". Local records are unchanged.", "error");
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = "Search community records"; }
+    }
+  }
+  function stableJson(value) {
+    if (Array.isArray(value)) return "[" + value.map(stableJson).join(",") + "]";
+    if (value && typeof value === "object") {
+      return "{" + Object.keys(value).sort().map(function (key) { return JSON.stringify(key) + ":" + stableJson(value[key]); }).join(",") + "}";
+    }
+    return JSON.stringify(value);
+  }
+  async function publishSelectedPublicRecord() {
+    var btn = qs("publishSelectedPublicBtn");
+    if (!qs("confirmPublicPublish").checked) {
+      setPublicStatus("Publication blocked: tick the public-consent checkbox after reviewing the warning.", "error");
+      return;
+    }
+    if (!window.AIWorkspaceCloud || typeof window.AIWorkspaceCloud.publishPack !== "function") {
+      setPublicStatus("Public publishing unavailable: cloud.js did not load. No data was sent.", "error");
+      return;
+    }
+    var artifact = findArtifact(qs("publishArtifactSelect").value);
+    var review = artifact && latestReviewFor(artifact);
+    if (!artifact || !review) {
+      setPublicStatus("Select an artifact version with a saved review first.", "error");
+      return;
+    }
+    if (artifact.contentHash && review.artifactHash && artifact.contentHash !== review.artifactHash) {
+      setPublicStatus("Publication blocked: review hash does not match the selected artifact version.", "error");
+      return;
+    }
+    var publishedCopy = Object.assign({}, artifact, { status:"published", visibility:"public" });
+    var av = validator.validateRecord(publishedCopy), rv = validator.validateRecord(review);
+    if (!av.ok || !rv.ok) {
+      setPublicStatus("Publication blocked: artifact or review record failed schema validation.", "error");
+      return;
+    }
+    var prepared;
+    try { prepared = core.buildPublicRecordPack(publishedCopy, review); }
+    catch (e) { setPublicStatus("Publication blocked before network access: " + String(e.message || e), "error"); return; }
+    if (btn) { btn.disabled = true; btn.textContent = "Publishing public record…"; }
+    setPublicStatus("Sending only the artifact metadata and review record to the public pack store. Source text is not included.", "info");
+    var receipt;
+    try {
+      receipt = await window.AIWorkspaceCloud.publishPack(prepared.pack);
+    } catch (e) {
+      setPublicStatus("Public publication request failed: " + String(e.message || e) + ". Check the public pack list before retrying, in case the request reached the server.", "error");
+      if (btn) { btn.disabled = false; btn.textContent = "Publish public record ↗"; }
+      return;
+    }
+    var cloudId = receipt && (receipt.id || receipt.packId);
+    if (!cloudId || !/^[A-Za-z0-9_-]{1,64}$/.test(String(cloudId))) {
+      setPublicStatus("The public store returned a write response without a valid pack ID. Publication cannot be confirmed; search the community records before retrying.", "error");
+      if (btn) { btn.disabled = false; btn.textContent = "Publish public record ↗"; }
+      return;
+    }
+    try {
+      var readBack = await window.AIWorkspaceCloud.importCloudPack(String(cloudId));
+      if (readBack.pack !== prepared.pack) throw new Error("direct GET payload differed from the submitted pack");
+      var remote = validatePublicBundle(core.parsePublicRecordPack(readBack.pack), String(cloudId));
+      state.publicRecords = [remote].concat(state.publicRecords.filter(function (x) { return x.cloudId !== String(cloudId); }));
+      renderPublicRecords();
+      logEvent("public-record-published", String(cloudId) + " · public · self-asserted");
+      setPublicStatus("Published and confirmed by direct GET: pack " + cloudId + ". The data is public, unsigned, and self-asserted—not a safety certification.", "success");
+    } catch (e) {
+      setPublicStatus("The server returned a pack ID (" + cloudId + "), but direct read-back could not confirm the exact record: " + String(e.message || e) + ". Do not treat it as verified; search the community records to re-check.", "error");
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = "Publish public record ↗"; }
+    }
+  }
+  function importPublicRecord(cloudId) {
+    var remote = state.publicRecords.find(function (x) { return x.cloudId === String(cloudId); });
+    if (!remote) { setPublicStatus("Public record is not loaded. Search the exchange again.", "error"); return; }
+    var remoteArtifact = remote.artifact, remoteReview = remote.review;
+    var existingArtifact = findArtifact(artifactKey(remoteArtifact));
+    var localArtifact = Object.assign({}, remoteArtifact, { status:"draft", visibility:"local" });
+    if (existingArtifact) {
+      var existingComparable = Object.assign({}, existingArtifact, { status:"draft", visibility:"local" });
+      if (stableJson(existingComparable) !== stableJson(localArtifact)) {
+        setPublicStatus("Import blocked: this artifact ID and version already exist locally with different metadata. Compare versions before resolving the conflict.", "error");
+        return;
+      }
+    }
+    var existingReview = state.reviews.find(function (r) { return r.reviewId === remoteReview.reviewId; });
+    if (existingReview && stableJson(existingReview) !== stableJson(remoteReview)) {
+      setPublicStatus("Import blocked: a different local review already uses this review ID.", "error");
+      return;
+    }
+    if (existingArtifact && existingReview) {
+      setPublicStatus("This exact artifact version and review are already in your local catalog.", "info");
+      return;
+    }
+    var bundle = {
+      schemaVersion:BUNDLE_VERSION,
+      exportedAt:new Date().toISOString(),
+      artifacts:existingArtifact ? [] : [localArtifact],
+      reviews:existingReview ? [] : [remoteReview],
+      benchmarks:[],
+      workflows:[],
+      events:[]
+    };
+    try {
+      var result = mergeImported(bundle);
+      if (!result.saved) return;
+      renderAll();
+      logEvent("public-record-imported", String(cloudId) + " · " + remoteArtifact.artifactId + "@" + remoteArtifact.version);
+      setPublicStatus("Imported a local copy of " + remoteArtifact.name + ". The public review remains an untrusted, unsigned claim; no code was installed or executed.", "success");
+    } catch (e) {
+      setPublicStatus("Import rejected without changes: " + String(e.message || e), "error");
+    }
+  }
   function showDetails(key) {
     var artifact=findArtifact(key);if(!artifact){setStatus("Artifact version not found in local storage.","error");return;}
     qs("detailTitle").textContent=artifact.name+" · "+artifact.version;
