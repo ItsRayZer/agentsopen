@@ -14,9 +14,9 @@
   ],
   "files": [
     {
-      "bytes": 5810,
+      "bytes": 6506,
       "path": ".well-known/agent.json",
-      "sha256": "7134f4b038bd91d1f4a99d881eea5493fa1beaa4f96e5ad1a57c0a0c33b9e2be"
+      "sha256": "39e6fe326d3aa762758a4c5de45c44219ad2e9527fceb473c42720cc6ea7fc6d"
     },
     {
       "bytes": 9912,
@@ -29,9 +29,9 @@
       "sha256": "5a79face7de7fb7b89feda0c2f702889e41f0747ac7fe20989c56c69d4e3effc"
     },
     {
-      "bytes": 2672,
+      "bytes": 3151,
       "path": "AGENT-START.md",
-      "sha256": "0464b17824cd16ddb761cc017f2308af9eaf791add93dada400920a72268d1f6"
+      "sha256": "9b587d626cdd67afb782e64c784e8c1ef68922390a15ae4c0c814f45275463f8"
     },
     {
       "bytes": 1873,
@@ -59,9 +59,9 @@
       "sha256": "9e07a0ecaa2cb93c9c38a4835d4e4c6eeae4c6da7191eea75890243433217e0c"
     },
     {
-      "bytes": 5810,
+      "bytes": 6506,
       "path": "agent.json",
-      "sha256": "7134f4b038bd91d1f4a99d881eea5493fa1beaa4f96e5ad1a57c0a0c33b9e2be"
+      "sha256": "39e6fe326d3aa762758a4c5de45c44219ad2e9527fceb473c42720cc6ea7fc6d"
     },
     {
       "bytes": 797,
@@ -169,9 +169,9 @@
       "sha256": "51842f7b0e46ebdfeb80d311e4511a984cf911dd09e6cfe47673d9f3d38ded3a"
     },
     {
-      "bytes": 7897,
+      "bytes": 8382,
       "path": "llms.txt",
-      "sha256": "d15d286e645f92ebb55fc06080f8d9fb154e686551c0ef454e3a8e1f1d920a71"
+      "sha256": "6e780a317d8e8d25d0d18a6b0ee116e9b38eca761b29db36c9a05f3c5a250b70"
     },
     {
       "bytes": 2442,

@@ -6,12 +6,12 @@ task: boot
 status: todo
 note: canonical-fetch-index | views=32 | per-view-txt=views/<id>.txt | browser-alias=?view=<id> | hashes=sha256-of-file-bytes | regenerate-with-generate-txt.js
 note: inventory | every-agent-file-below
-file: https://ai-ws.vercel.app/.well-known/agent.json | bytes=5810 | sha256=7134f4b038bd91d1f4a99d881eea5493fa1beaa4f96e5ad1a57c0a0c33b9e2be
+file: https://ai-ws.vercel.app/.well-known/agent.json | bytes=6506 | sha256=39e6fe326d3aa762758a4c5de45c44219ad2e9527fceb473c42720cc6ea7fc6d
 file: https://ai-ws.vercel.app/ac-schema.json | bytes=4477 | sha256=9e07a0ecaa2cb93c9c38a4835d4e4c6eeae4c6da7191eea75890243433217e0c
 file: https://ai-ws.vercel.app/AGENT-CODE.md | bytes=9912 | sha256=eaee1e8a6bc516fc8cbee67cbcba8d2c2e9a302cc371764c040af6a3a8e55fe8
 file: https://ai-ws.vercel.app/AGENT-LANG.md | bytes=20249 | sha256=5a79face7de7fb7b89feda0c2f702889e41f0747ac7fe20989c56c69d4e3effc
-file: https://ai-ws.vercel.app/AGENT-START.md | bytes=2672 | sha256=0464b17824cd16ddb761cc017f2308af9eaf791add93dada400920a72268d1f6
-file: https://ai-ws.vercel.app/agent.json | bytes=5810 | sha256=7134f4b038bd91d1f4a99d881eea5493fa1beaa4f96e5ad1a57c0a0c33b9e2be
+file: https://ai-ws.vercel.app/AGENT-START.md | bytes=3151 | sha256=9b587d626cdd67afb782e64c784e8c1ef68922390a15ae4c0c814f45275463f8
+file: https://ai-ws.vercel.app/agent.json | bytes=6506 | sha256=39e6fe326d3aa762758a4c5de45c44219ad2e9527fceb473c42720cc6ea7fc6d
 file: https://ai-ws.vercel.app/agent.schema.json | bytes=797 | sha256=0773fa2702d43131d7b8d19d0b35a3b8718b0d5baa558296a80ddce9973c0375
 file: https://ai-ws.vercel.app/agent.txt | bytes=988 | sha256=036c37e069206ec5e9283b5639010933d829ca6e5add1291c79b507cb87102ae
 file: https://ai-ws.vercel.app/agentcode.js | bytes=70617 | sha256=9796928f9687308321af8b2a50a931d23ed81f3f555bed7ab285b406e5ebab84
@@ -36,8 +36,8 @@ file: https://ai-ws.vercel.app/index.html | bytes=88464 | sha256=f26282a519b5aa8
 file: https://ai-ws.vercel.app/index.json | bytes=6796 | sha256=8d4606ea5689d95c53ece5d0ce201c1b6336143d8f521b793e4633fe1c4bb0b4
 file: https://ai-ws.vercel.app/index.txt | bytes=15625 | sha256=51842f7b0e46ebdfeb80d311e4511a984cf911dd09e6cfe47673d9f3d38ded3a
 file: https://ai-ws.vercel.app/INSTRUCTIONS-FOR-AGENTS.md | bytes=4192 | sha256=f51c6b611ae8a1552b329bc757c2afcb3ebf30b0536a3ceabe0e760f5e13ebb0
-file: https://ai-ws.vercel.app/llms.txt | bytes=7897 | sha256=d15d286e645f92ebb55fc06080f8d9fb154e686551c0ef454e3a8e1f1d920a71
-file: https://ai-ws.vercel.app/manifest.json | bytes=28416 | sha256=fbad369196744c78cb83002f701d244c58e5fd36b78d371c26b8656d517ff22c
+file: https://ai-ws.vercel.app/llms.txt | bytes=8382 | sha256=6e780a317d8e8d25d0d18a6b0ee116e9b38eca761b29db36c9a05f3c5a250b70
+file: https://ai-ws.vercel.app/manifest.json | bytes=28416 | sha256=65edf22c418b5df708d8bd3bf1c4ea79b294aa3541bbcdbb7e084138d4c0a72d
 file: https://ai-ws.vercel.app/models.json | bytes=2442 | sha256=6852ade10b8954b1546dae258cebfd69c8b9d52e7da733176f359569c84b48af
 file: https://ai-ws.vercel.app/packs/index.txt | bytes=1350 | sha256=9ae61f42d51daf9c0f5b5476d48770646b31b6a931d9e6045ffb61065f71344f
 file: https://ai-ws.vercel.app/packs/self-test.al | bytes=686 | sha256=b9aecf84a125a669be3af34b9a26741b7434fc8e434b3175c8b9788635247a92

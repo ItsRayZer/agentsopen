@@ -3,7 +3,7 @@
   "version": "v7.3",
   "lang": "al:1",
   "url": "https://ai-ws.vercel.app/",
-  "description": "ai-workspace | static | localStorage-primary | keys=none | exec=sandboxed-js-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | paid-wired=none | free-only | agent-only | landing=agentmode | no-human-home | no-chat-projection | agentcode-ac:1 | merged-registry-61-skills | manifest | aiws-v2",
+  "description": "ai-workspace | static | localStorage-primary | keys=none | exec=sandboxed-js-only | sync=local-only-by-default | cloud=cloudflare-free-public-packs-only | paid-wired=none | free-only | agent-only | landing=agentmode | no-human-home | no-chat-projection | agentcode-ac:1 | merged-registry-61-skills | manifest | aiws-v2 | mcp-live",
   "capabilities": [
     "code-read",
     "code-diff",
@@ -322,6 +322,26 @@
     "sitemap": "/sitemap.xml",
     "files": "/files.txt",
     "cli": "/aiws",
-    "workshop": "/workshop.json"
+    "workshop": "/workshop.json",
+    "mcp": {
+      "endpoint": "https://ai-workspace-mcp.mrabensojan.workers.dev/mcp",
+      "transport": "streamable-http-post",
+      "protocol": [
+        "2025-06-18",
+        "2025-03-26"
+      ],
+      "tools": [
+        "aiws_boot",
+        "aiws_search",
+        "aiws_list_packs",
+        "aiws_get_pack",
+        "aiws_publish_public_pack",
+        "aiws_convert"
+      ],
+      "auth": "none",
+      "keys": "none",
+      "public_packs_only": true,
+      "note": "tools-only, no delete tool, no code execution; boot first via aiws_boot; search covers views+tools+packs, not skills; MCP packs use bare ids and are not list/get-visible via the Worker v2 pack: scheme"
+    }
   }
 }

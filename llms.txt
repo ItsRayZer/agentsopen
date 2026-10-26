@@ -11,6 +11,7 @@ note: v7.2 | cloud-view+cloudflare-free-public-packs-only | local-only | not-dep
 
 note: v7.3-agentonly | agent-only | landing=agentmode | no-human-home | no-chat-projection | views=32 | core-lines-in-html-no-click-needed | fetch=index.html-gives-all-views-core-lines | local-only | not-deployed | not-pushed | free-only
 note: aiws-cli | sh+curl-only | file=aiws | docs=aiws.md | commands=start,agent,examples,search,pack,publish,list,get,delete,health,help | keys=none | publish-public-only | no-code-exec | local-only | not-deployed | not-pushed | free-only
+note: mcp-live | transport=streamable-http-post | endpoint=POST https://ai-workspace-mcp.mrabensojan.workers.dev/mcp | protocol=2025-06-18,2025-03-26 | tools=aiws_boot,aiws_search,aiws_list_packs,aiws_get_pack,aiws_publish_public_pack,aiws_convert | auth=none | keys=none | public-packs-only | start=aiws_boot-first | no-delete-tool | search-covers=views+tools+packs-not-skills | mcp-packs-use-bare-ids-not-visible-via-worker-v2-pack-scheme | no-code-exec | never-claims-faster-models
 
 ## Registry (generated from registry/source.json + site/tools.json)
 - [preamble.txt](/preamble.txt) — class boundary and constraints
