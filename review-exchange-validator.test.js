@@ -53,6 +53,9 @@ assert.equal(validator.validateRecord(nullOptional).ok, false, "optional fields 
 
 const duplicateTags = { ...artifact, tags: ["same", "same"] };
 assert.equal(validator.validateRecord(duplicateTags).ok, false, "duplicate tags must fail");
+
+const malformedUrl = { ...artifact, sourceUrl: "https://not a valid URL" };
+assert.equal(validator.validateRecord(malformedUrl).ok, false, "malformed source URLs must fail");
 assert.ok(validator.validateRecord(duplicateTags).errors.some(e => e.code === "unique-items"));
 
 
