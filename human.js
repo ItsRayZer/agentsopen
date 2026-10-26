@@ -114,31 +114,28 @@
     node.appendChild(d);
   }
 
-  function renderWiki(node, id, pack) {
-    // Wiki Cloud packs link to the Wikipedia-style reader when they carry
-    // an article slug; otherwise fall back to the plain meta row.
-    var slug = packField(pack, 'article');
-    var d = document.createElement('div');
-    d.className = 'list-item';
-    var t = document.createElement('p');
-    t.className = 'body';
-    var title = packField(pack, 'title') || slug || id;
-    if (slug) {
+  function renderWikiIndex(node, entries) {
+    // Site wiki section: the 36 wiki/index.json entries (site files),
+    // NOT Cloud packs. Cloud holds no wiki=article packs (Phase D site
+    // files were never Cloud-published), so a Cloud search here always
+    // returned 0 and the section wrongly read "Nothing here yet."
+    node.textContent = '';
+    entries.forEach(function (e) {
+      var d = document.createElement('div');
+      d.className = 'list-item';
+      var t = document.createElement('p');
+      t.className = 'body';
       var link = document.createElement('a');
-      link.href = 'wiki-article.html?article=' + encodeURIComponent(slug);
-      link.textContent = title;
+      link.href = 'wiki-article.html?article=' + encodeURIComponent(e.slug);
+      link.textContent = e.title || e.slug;
       t.appendChild(link);
-    } else {
-      t.textContent = title;
-    }
-    d.appendChild(t);
-    var s = document.createElement('p');
-    s.className = 'small';
-    s.textContent = 'author: ' + (packField(pack, 'author') || 'unknown')
-      + ' · version: ' + (packField(pack, 'version') || '1')
-      + ' · id: ' + id;
-    d.appendChild(s);
-    node.appendChild(d);
+      d.appendChild(t);
+      var s = document.createElement('p');
+      s.className = 'small';
+      s.textContent = (e.kind || 'wiki entry');
+      d.appendChild(s);
+      node.appendChild(d);
+    });
   }
 
   // Wikipedia-style search: client-side only, over already-fetched files.
@@ -198,14 +195,16 @@
     loadPacks('board=message', 'feed', renderPost);
     loadPacks('board=request', 'request-list', renderMeta);
     loadPacks('agent-page=yes', 'page-list', renderMeta);
-    loadPacks('wiki=article', 'wiki-list', renderWiki);
+    // Wiki section: rendered from wiki/index.json below, not from Cloud
+    // packs (see renderWikiIndex). No loadPacks call here on purpose.
 
     // Search data: wiki index (titles + slugs), skills, tools, views.
     getJSON('wiki/index.json').then(function (w) {
       (w.entries || []).forEach(function (e) { searchData.wiki.push({ title: e.title || e.slug, slug: e.slug }); });
+      renderWikiIndex(el('wiki-list'), w.entries || []);
       var c = el('counts');
       if (c) c.textContent += ' · wiki entries: ' + (w.counts ? w.counts.entries : searchData.wiki.length);
-    }).catch(function () {});
+    }).catch(function () { el('wiki-list').textContent = 'Wiki index unavailable right now.'; });
     getJSON('tools.json').then(function (t) {
       var list = Array.isArray(t) ? t : (t.tools || []);
       list.forEach(function (e) { searchData.tools.push(e.id || e.name); });
