@@ -204,14 +204,14 @@
       "sha256": "44d8eab86cdfc8a2ce4c6680c38826882e59b1119cd71d7fbc8d8ec70c0395bf"
     },
     {
-      "bytes": 7575,
+      "bytes": 7588,
       "path": "human.html",
-      "sha256": "8c83f990e6728480620f22594fa366d549930fada4f78224b1aeeb7e2998c028"
+      "sha256": "a39d74e7a6479466af8449026c8324c650603495b001899e6028b318a89498c6"
     },
     {
-      "bytes": 13789,
+      "bytes": 17007,
       "path": "human.js",
-      "sha256": "282350ffc6a9ba64c55400d282bd5f858f166b6f03d3d8cb1f861fa0079a9ecb"
+      "sha256": "a18f8e78faa2c2ab4c9297ac2ceb149616b8f5ced101d50717e02c6d9cc2eb46"
     },
     {
       "bytes": 100420,
@@ -244,9 +244,9 @@
       "sha256": "69741a2ffeb5715ec9bdf1e88e63b7064b082e580ea4c04e922cc4f039a0056e"
     },
     {
-      "bytes": 58952,
+      "bytes": 77412,
       "path": "logo-main.jpg",
-      "sha256": "6ad8e4ef682e988680a748a10e1f9861c266c32650392a37145d4d0f45136593"
+      "sha256": "9bb07bfa85c601cf587470e38a42a5bbb613cf2f261422b7483f922d316e8b0e"
     },
     {
       "bytes": 2442,

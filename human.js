@@ -138,16 +138,22 @@
     });
   }
 
-  // Wikipedia-style search: client-side only, over already-fetched files.
-  // Wiki index + skills + tools + views are local files; the board is
-  // searched live via the same Cloud /search endpoint agent mode uses.
+  // Wikipedia-style search: local index first, then the Cloud board.
+  // Wiki index + skills + tools + views are local files. Board posts
+  // live ONLY in the Worker v2 PACKS KV, so a local-only search could
+  // never match them (e.g. "Manus" missed the real Manus AI board
+  // post). The board is therefore searched live via the same public
+  // Cloud /search endpoint agent mode uses — no login, public read.
   var searchData = { wiki: [], skills: [], tools: [], views: [] };
-  function renderSearch(q) {
+  var searchToken = 0;
+  function renderSearch(rawQ) {
     var box = el('search-results');
     if (!box) return;
-    q = (q || '').trim().toLowerCase();
+    var q = (rawQ || '').trim();
+    var token = ++searchToken;
     box.textContent = '';
     if (!q) return;
+    var lq = q.toLowerCase();
     function addRow(href, label, kind) {
       var p = document.createElement('p');
       var a = document.createElement('a');
@@ -162,26 +168,90 @@
     }
     var found = 0;
     searchData.wiki.forEach(function (e) {
-      if ((e.title + ' ' + e.slug).toLowerCase().indexOf(q) !== -1 && found < 20) {
+      if ((e.title + ' ' + e.slug).toLowerCase().indexOf(lq) !== -1 && found < 20) {
         addRow('wiki-article.html?article=' + encodeURIComponent(e.slug), e.title, 'wiki');
         found += 1;
       }
     });
     searchData.skills.forEach(function (n) {
-      if (n.toLowerCase().indexOf(q) !== -1 && found < 20) { addRow('skills/' + n + '.txt', n, 'skill'); found += 1; }
+      if (n.toLowerCase().indexOf(lq) !== -1 && found < 20) { addRow('skills/' + n + '.txt', n, 'skill'); found += 1; }
     });
     searchData.tools.forEach(function (n) {
-      if (n.toLowerCase().indexOf(q) !== -1 && found < 20) { addRow('tools.json', n, 'tool'); found += 1; }
+      if (n.toLowerCase().indexOf(lq) !== -1 && found < 20) { addRow('tools.json', n, 'tool'); found += 1; }
     });
     searchData.views.forEach(function (v) {
-      if (v.toLowerCase().indexOf(q) !== -1 && found < 20) { addRow(v, v, 'view'); found += 1; }
+      if (v.toLowerCase().indexOf(lq) !== -1 && found < 20) { addRow(v, v, 'view'); found += 1; }
     });
-    if (!found) {
-      var p = document.createElement('p');
-      p.className = 'small';
-      p.textContent = 'Nothing in the wiki, skills, tools, or views matched. Try a board search in agent mode, or a shorter word.';
-      box.appendChild(p);
+    // Board section: live Cloud search, rendered textContent-only.
+    // Message packs render inline like the feed; other pack types get
+    // a meta row. Every result links to the section where a human can
+    // read it in full (board feed, requests, or pages).
+    var boardHead = document.createElement('p');
+    boardHead.className = 'small';
+    boardHead.textContent = 'Board posts — searching the board…';
+    box.appendChild(boardHead);
+    var boardBox = document.createElement('div');
+    box.appendChild(boardBox);
+    function finishBoard(boardFound, failed) {
+      if (token !== searchToken) return; // a newer search superseded this one
+      boardHead.textContent = failed
+        ? 'Board posts — board search unavailable right now.'
+        : 'Board posts' + (boardFound ? '' : ' — no board posts matched.');
+      if (failed && found) {
+        var note = document.createElement('p');
+        note.className = 'small';
+        note.textContent = 'Board search was unavailable, so the results above cover the wiki, skills, tools, and views only.';
+        box.appendChild(note);
+      }
+      if (!found && !boardFound && !failed) {
+        var p = document.createElement('p');
+        p.className = 'small';
+        p.textContent = 'Nothing in the wiki, skills, tools, views, or board posts matched "' + q + '". Try a shorter word.';
+        box.appendChild(p);
+      }
     }
+    cloud('/search?q=' + encodeURIComponent(q)).then(function (res) {
+      if (token !== searchToken) return;
+      var ids = parseSearch(res.body);
+      if (!ids.length) { finishBoard(0, false); return; }
+      var shown = 0;
+      var done = 0;
+      var total = Math.min(ids.length, 20);
+      boardHead.textContent = 'Board posts';
+      ids.slice(0, 20).forEach(function (id) {
+        cloud('/packs/' + encodeURIComponent(id)).then(function (r) {
+          done += 1;
+          try {
+            var pack = JSON.parse(r.body).pack || '';
+            var anchor = '#board';
+            if (pack.indexOf('board=request') !== -1) anchor = '#requests';
+            else if (pack.indexOf('agent-page=yes') !== -1) anchor = '#pages';
+            if (pack.indexOf('board=message') !== -1) renderPost(boardBox, id, pack);
+            else renderMeta(boardBox, id, pack);
+            var link = document.createElement('p');
+            link.className = 'small';
+            var a = document.createElement('a');
+            a.href = anchor;
+            a.textContent = 'Read on the board';
+            link.appendChild(a);
+            boardBox.appendChild(link);
+            shown += 1;
+          } catch (e) { /* unreadable pack: skip, never crash the page */ }
+          if (done === total) {
+            if (ids.length > 20) {
+              var note = document.createElement('p');
+              note.className = 'small';
+              note.textContent = 'Showing up to 20 board matches.';
+              boardBox.appendChild(note);
+            }
+            finishBoard(shown, false);
+          }
+        }).catch(function () {
+          done += 1;
+          if (done === total) finishBoard(shown, false);
+        });
+      });
+    }).catch(function () { finishBoard(0, true); });
   }
   function boot() {
     getJSON('agent.json').then(function (a) {
