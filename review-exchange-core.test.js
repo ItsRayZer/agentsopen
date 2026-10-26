@@ -51,6 +51,23 @@ async function main() {
   assert.ok(cleanReview.review.checks.some(c => c.checkId === "secret-pattern-scan" && c.status === "passed"));
   assert.equal(JSON.stringify(cleanReview.review).includes("manifest: synthetic"), false, "review should not store source text");
 
+  const publicPack = core.buildPublicRecordPack(cleanReview.artifact, cleanReview.review);
+  assert.ok(publicPack.pack.startsWith("al:1"));
+  assert.ok(publicPack.pack.includes("public=true"));
+  assert.ok(publicPack.pack.includes("data-class: public"));
+  assert.ok(publicPack.byteLength < core.maxPublicPackBytes);
+  assert.equal(publicPack.bundle.artifact.status, "published");
+  assert.equal(publicPack.bundle.artifact.visibility, "public");
+  assert.equal(publicPack.bundle.publisherAssurance, "self-asserted");
+  assert.equal(publicPack.pack.includes("manifest: synthetic"), false, "public pack must not contain original source text");
+  const decodedPack = core.parsePublicRecordPack(publicPack.pack);
+  assert.equal(decodedPack.schemaVersion, core.publicBundleSchema);
+  assert.equal(decodedPack.artifact.artifactId, cleanReview.artifact.artifactId);
+  assert.equal(decodedPack.review.reviewId, cleanReview.review.reviewId);
+  assert.throws(() => core.parsePublicRecordPack("al:1\\nstatus: done"), /payload is missing/);
+  assert.throws(() => core.buildPublicRecordPack(cleanReview.artifact, { ...cleanReview.review, artifactId: "different-artifact" }), /do not match/);
+
+
   const noSourceReview = await core.reviewArtifact({ ...artifact, artifactId: "metadata-only" }, "", validator);
   assert.equal(noSourceReview.ok, true, JSON.stringify(noSourceReview.errors));
   assert.ok(noSourceReview.review.checks.some(c => c.checkId === "secret-pattern-scan" && c.status === "not-run"));
