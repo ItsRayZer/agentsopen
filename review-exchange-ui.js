@@ -309,6 +309,9 @@
       throw new Error("Unsupported public Review Exchange bundle.");
     }
     if (!bundle.artifact || !bundle.review) throw new Error("Public bundle must include an artifact and review.");
+    var remoteScan = core.scanSource(JSON.stringify(bundle));
+    if (!remoteScan.ok) throw new Error("Public bundle exceeds local inspection limits.");
+    if (remoteScan.secretFindings.length) throw new Error("Public bundle contains a suspected secret pattern and was not displayed or imported.");
     if (bundle.publisherAssurance !== "self-asserted") throw new Error("Unsupported publisher assurance; record is not imported.");
     if (bundle.artifact.status !== "published" || bundle.artifact.visibility !== "public") {
       throw new Error("Public artifact record is missing published/public markers.");
