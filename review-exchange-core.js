@@ -234,9 +234,9 @@
     var text = String(pack || "");
     if (byteLength(text) > MAX_PUBLIC_PACK_BYTES) throw new Error("Public pack exceeds the local size limit.");
     if (!text.trimStart().startsWith("al:1")) throw new Error("Public pack is not an AgentLang pack.");
-    if (!/^public=true$/m.test(text) || !/^data-class:\\s*public$/m.test(text)) throw new Error("Public pack is missing the explicit public data-class markers.");
+    if (!/^public=true$/m.test(text) || !/^data-class:\s*public$/m.test(text)) throw new Error("Public pack is missing the explicit public data-class markers.");
     if (!/^note: exchange=review-exchange-record$/m.test(text)) throw new Error("This is not a Review Exchange public record.");
-    var line = text.split(/\\r?\\n/).find(function (row) { return row.indexOf("note: exchange-record-b64=") === 0; });
+    var line = text.split(/\r?\n/).find(function (row) { return row.indexOf("note: exchange-record-b64=") === 0; });
     if (!line) throw new Error("Public record payload is missing.");
     var encoded = line.slice("note: exchange-record-b64=".length).trim();
     var bundle;
