@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 300,
+    "files": 298,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -94,9 +94,9 @@
       "sha256": "25c555549674bd0445cbe51959e61ed9cc5ea60edb8931432a4c279402a45cec"
     },
     {
-      "bytes": 10094,
+      "bytes": 10281,
       "path": "SHADOWCODE.md",
-      "sha256": "de6381f6dd602815dac25ffa4e69ccad695d3387651fa91a048e1171a8db0ac8"
+      "sha256": "cb4b4c442a9f302c765602cf90e62f2f075717411cc0f63bbba1c1c3b60b5e9f"
     },
     {
       "bytes": 17831,
@@ -257,16 +257,6 @@
       "bytes": 8562,
       "path": "llms.txt",
       "sha256": "0911ec38bd1bfff6b86ddad0ed3bb16b93b2e5075e4dd7296981590c44bc45d0"
-    },
-    {
-      "bytes": 51629,
-      "path": "logo-ai.jpg",
-      "sha256": "69741a2ffeb5715ec9bdf1e88e63b7064b082e580ea4c04e922cc4f039a0056e"
-    },
-    {
-      "bytes": 77412,
-      "path": "logo-main.jpg",
-      "sha256": "9bb07bfa85c601cf587470e38a42a5bbb613cf2f261422b7483f922d316e8b0e"
     },
     {
       "bytes": 2442,
