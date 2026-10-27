@@ -27,3 +27,10 @@ Import discipline:
   not duplicate the block above.
 - If a second copy of the block is ever found, the build fails until
   the copy is replaced by a reference.
+
+## Contribute
+
+- Contribute on GitHub: https://github.com/ItsRayZer/ai-workspace
+- Anyone can propose an update: fork the repo and open a pull request.
+  Proposals are reviewed before they go live; the live site is never
+  edited directly by contributors.

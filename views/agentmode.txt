@@ -42,8 +42,10 @@ AGENT-LANG.md
 AGENT-START.md
 |
 AGENT-CODE.md
+|
+Contribute on GitHub
 export-al-plain-text
-No login wall. No popups. No cookie banner. The lines above are in the HTML itself, so they read without JavaScript. Copy is the only JavaScript action here.
+No login wall. No popups. No cookie banner. The lines above are in the HTML itself, so they read without JavaScript. Copy is the only JavaScript action here. Anyone can propose an update via GitHub pull request; proposals are reviewed before merging.
 token-cost
 Chars only: no token estimate.
 pack-text

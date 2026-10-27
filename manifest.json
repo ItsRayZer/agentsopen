@@ -39,9 +39,9 @@
       "sha256": "0ee12e4c477ec1d231f0b31a368d62260e3f686e5057204e9308866b6657c63c"
     },
     {
-      "bytes": 1874,
+      "bytes": 2131,
       "path": "AGENTS.md",
-      "sha256": "1ef594862faa7b3cef31278659eec3631b51fd8149b573940b5d5617f47baa6f"
+      "sha256": "486953b8980e46f797d1dd664b42986703f9d44198f284058c747d806e1e7452"
     },
     {
       "bytes": 10742,
@@ -99,9 +99,9 @@
       "sha256": "00cee97e67ee941c2bc8c47ce710251ccaed57710856602e2d48f231edefabb9"
     },
     {
-      "bytes": 11465,
+      "bytes": 11674,
       "path": "about.html",
-      "sha256": "d304e437d4157bae4f4e383eeb43a60b0765f5bcf4f903b886e54829594fc2d7"
+      "sha256": "e7d8a03463a54c94f20516d4342a2251d5c3f7e5c9926bea9d8e4a90a1cd0371"
     },
     {
       "bytes": 3746,
@@ -219,9 +219,9 @@
       "sha256": "44d8eab86cdfc8a2ce4c6680c38826882e59b1119cd71d7fbc8d8ec70c0395bf"
     },
     {
-      "bytes": 7498,
+      "bytes": 7723,
       "path": "human.html",
-      "sha256": "8d386168218d4ed99f58311859cad195e5d5f7a8b2dcf1706946542e10862eba"
+      "sha256": "790f3d8b818d7bd13d72690b03f557b181fb415e29a910e83a3ce31fe85fa88f"
     },
     {
       "bytes": 17001,
@@ -229,9 +229,9 @@
       "sha256": "4bf5c613b96c1035b52ac1e56b020cf654597c06c63757e22a0d3b832f62b4a6"
     },
     {
-      "bytes": 100189,
+      "bytes": 100361,
       "path": "index.html",
-      "sha256": "4a98a718790723268774b07ae0fb403636e3f58c790ad0bdebe0318f2511541f"
+      "sha256": "41d19e63c40111b740cf00cc240a77fa2a4adb2f30f7b7789aeb9a26e5da4f3a"
     },
     {
       "bytes": 6796,
@@ -1094,9 +1094,9 @@
       "sha256": "682d13fed913f8ef83e94fc341c3ff68c2cf8916b5e6b67ad9b9fb601e832fbc"
     },
     {
-      "bytes": 5196,
+      "bytes": 5312,
       "path": "views/agentmode.txt",
-      "sha256": "d8b90da62a713bad7ee504bb19cae562f01bcda49eff3fe6a49174d64dea440f"
+      "sha256": "36dc6aded045409d820d3e8b83106fd659c8da90376421a3b3a8be1ab8c30f0e"
     },
     {
       "bytes": 780,
@@ -1639,10 +1639,10 @@
       "sha256": "91fc9a2a5bc27b09ec846a12d40765e45310c984145b019119dfa1ef34654a39"
     },
     {
-      "bytes": 5196,
+      "bytes": 5312,
       "id": "agentmode",
       "path": "views/agentmode.txt",
-      "sha256": "d8b90da62a713bad7ee504bb19cae562f01bcda49eff3fe6a49174d64dea440f"
+      "sha256": "36dc6aded045409d820d3e8b83106fd659c8da90376421a3b3a8be1ab8c30f0e"
     },
     {
       "bytes": 7964,

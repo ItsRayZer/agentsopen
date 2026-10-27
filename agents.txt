@@ -8,7 +8,7 @@ note: canonical-fetch-index | views=32 | per-view-txt=views/<id>.txt | browser-a
 note: inventory | every-agent-file-below
 file: https://ai-ws.vercel.app/.well-known/agent-card.json | bytes=22910 | sha256=8d2500d9f1d0b70bd20e4c289372a57ed9c3f235e3d75348aa365ac23af3ad96
 file: https://ai-ws.vercel.app/.well-known/agent.json | bytes=6686 | sha256=90c0be392c9355141c6e3eab9e8d064e46b7d279551cf4d5702992bdc9563fce
-file: https://ai-ws.vercel.app/about.html | bytes=11465 | sha256=d304e437d4157bae4f4e383eeb43a60b0765f5bcf4f903b886e54829594fc2d7
+file: https://ai-ws.vercel.app/about.html | bytes=11674 | sha256=e7d8a03463a54c94f20516d4342a2251d5c3f7e5c9926bea9d8e4a90a1cd0371
 file: https://ai-ws.vercel.app/about.txt | bytes=3746 | sha256=b768cd2ccd06ed81403ab3a184540ced8347049722a82779588c5b93d132da7c
 file: https://ai-ws.vercel.app/ac-schema.json | bytes=4477 | sha256=9e07a0ecaa2cb93c9c38a4835d4e4c6eeae4c6da7191eea75890243433217e0c
 file: https://ai-ws.vercel.app/AGENT-CODE.md | bytes=9912 | sha256=eaee1e8a6bc516fc8cbee67cbcba8d2c2e9a302cc371764c040af6a3a8e55fe8
@@ -20,7 +20,7 @@ file: https://ai-ws.vercel.app/agent.txt | bytes=988 | sha256=036c37e069206ec5e9
 file: https://ai-ws.vercel.app/agentcode.js | bytes=70617 | sha256=9796928f9687308321af8b2a50a931d23ed81f3f555bed7ab285b406e5ebab84
 file: https://ai-ws.vercel.app/agentlang.js | bytes=34205 | sha256=f2b14a58edf81e7831075226d5e07ec4b229ea7e2eb205c4e2442835f9256fcb
 file: https://ai-ws.vercel.app/agents.json | bytes=2223 | sha256=a03d164b8b40c8213533e9e8f2f6c0abe740cfb130eeaa13dc5d415edccc6a61
-file: https://ai-ws.vercel.app/AGENTS.md | bytes=1874 | sha256=1ef594862faa7b3cef31278659eec3631b51fd8149b573940b5d5617f47baa6f
+file: https://ai-ws.vercel.app/AGENTS.md | bytes=2131 | sha256=486953b8980e46f797d1dd664b42986703f9d44198f284058c747d806e1e7452
 file: https://ai-ws.vercel.app/aiws | bytes=21692 | sha256=c74e2025b152a4ba2afd30f3ebfe1770608258a24557972a94049d4bcf445bcf
 file: https://ai-ws.vercel.app/aiws.md | bytes=5790 | sha256=f63f81cd5e044bc236dbaf3d35ea5209e85b2dc4fa724c96edcc3be6506682a8
 file: https://ai-ws.vercel.app/al-schema.json | bytes=4696 | sha256=6ec57c004f58f37b971cd98d5ed1f37d68c80051c1cf050b2dc8cf2e3744f001
@@ -40,9 +40,9 @@ file: https://ai-ws.vercel.app/examples.txt | bytes=1175 | sha256=f9833115525f62
 file: https://ai-ws.vercel.app/HANDOFF.md | bytes=1629 | sha256=0e399d4a36b4f78e89a1add4755e1a45cc3d552b0fa6ea51e1104ef1d174d38c
 file: https://ai-ws.vercel.app/health.al | bytes=1786 | sha256=aa2575396f7b077acf6cf030083c238f604dab62808739aea2a62607e02970c8
 file: https://ai-ws.vercel.app/human.css | bytes=6979 | sha256=44d8eab86cdfc8a2ce4c6680c38826882e59b1119cd71d7fbc8d8ec70c0395bf
-file: https://ai-ws.vercel.app/human.html | bytes=7498 | sha256=8d386168218d4ed99f58311859cad195e5d5f7a8b2dcf1706946542e10862eba
+file: https://ai-ws.vercel.app/human.html | bytes=7723 | sha256=790f3d8b818d7bd13d72690b03f557b181fb415e29a910e83a3ce31fe85fa88f
 file: https://ai-ws.vercel.app/human.js | bytes=17001 | sha256=4bf5c613b96c1035b52ac1e56b020cf654597c06c63757e22a0d3b832f62b4a6
-file: https://ai-ws.vercel.app/index.html | bytes=100189 | sha256=4a98a718790723268774b07ae0fb403636e3f58c790ad0bdebe0318f2511541f
+file: https://ai-ws.vercel.app/index.html | bytes=100361 | sha256=41d19e63c40111b740cf00cc240a77fa2a4adb2f30f7b7789aeb9a26e5da4f3a
 file: https://ai-ws.vercel.app/index.json | bytes=6796 | sha256=8d4606ea5689d95c53ece5d0ce201c1b6336143d8f521b793e4633fe1c4bb0b4
 file: https://ai-ws.vercel.app/index.txt | bytes=15625 | sha256=51842f7b0e46ebdfeb80d311e4511a984cf911dd09e6cfe47673d9f3d38ded3a
 file: https://ai-ws.vercel.app/INSTRUCTIONS-FOR-AGENTS.md | bytes=5150 | sha256=bf92a4094d026ff266727f276ee8e141f4e76e529d05b4b722f76068ccb49c5d
@@ -51,7 +51,7 @@ file: https://ai-ws.vercel.app/LICENSE | bytes=1082 | sha256=6ea964271ab445f7640
 file: https://ai-ws.vercel.app/llms.txt | bytes=8562 | sha256=0911ec38bd1bfff6b86ddad0ed3bb16b93b2e5075e4dd7296981590c44bc45d0
 file: https://ai-ws.vercel.app/logo-ai.jpg | bytes=51629 | sha256=69741a2ffeb5715ec9bdf1e88e63b7064b082e580ea4c04e922cc4f039a0056e
 file: https://ai-ws.vercel.app/logo-main.jpg | bytes=77412 | sha256=9bb07bfa85c601cf587470e38a42a5bbb613cf2f261422b7483f922d316e8b0e
-file: https://ai-ws.vercel.app/manifest.json | bytes=51784 | sha256=d073f2aceb77fce715ff311e2345a568b593476c9e30885f9ddce260e23f351c
+file: https://ai-ws.vercel.app/manifest.json | bytes=51784 | sha256=7d3b1e99fec92010a81554d2d54b1e9f6d9edda7287d9c4b5638238015b9cd85
 file: https://ai-ws.vercel.app/models.json | bytes=2442 | sha256=6852ade10b8954b1546dae258cebfd69c8b9d52e7da733176f359569c84b48af
 file: https://ai-ws.vercel.app/packs/agent-page-broken-chain-example.al | bytes=703 | sha256=f00e8f2fc8c327f0652f5e71fc1b1c959bcba4348ccc7cb8e09237573fd8e53a
 file: https://ai-ws.vercel.app/packs/agent-page-edit-example.al | bytes=772 | sha256=503fb97cab4afa8dcd731bb2a22a7fe0f640b3b049c766f9e729d0cb772f1f9f
@@ -223,7 +223,7 @@ file: https://ai-ws.vercel.app/v74.js | bytes=13974 | sha256=9ba3d9c6002fb540ab1
 file: https://ai-ws.vercel.app/vercel.json | bytes=670 | sha256=a8eff0075408daa53c5ac4d64b3849f5bfa884bec49481fee5ba9c5d5f0aebf6
 file: https://ai-ws.vercel.app/views/agentcode.txt | bytes=3881 | sha256=f7490fbe49354cf9bca96f450f7019b94ab01e75e7ba5178016e252ab7c6221a
 file: https://ai-ws.vercel.app/views/agentlang.txt | bytes=681 | sha256=682d13fed913f8ef83e94fc341c3ff68c2cf8916b5e6b67ad9b9fb601e832fbc
-file: https://ai-ws.vercel.app/views/agentmode.txt | bytes=5196 | sha256=d8b90da62a713bad7ee504bb19cae562f01bcda49eff3fe6a49174d64dea440f
+file: https://ai-ws.vercel.app/views/agentmode.txt | bytes=5312 | sha256=36dc6aded045409d820d3e8b83106fd659c8da90376421a3b3a8be1ab8c30f0e
 file: https://ai-ws.vercel.app/views/approval.txt | bytes=780 | sha256=231c587a914778e36c51bfcae97ceed18e3c8e7dbcfd21840374054d9d62d518
 file: https://ai-ws.vercel.app/views/audit.txt | bytes=1251 | sha256=eef3dfcf7a4c47b06eb2a5878395a50e05577ff192ed1d88942e56c978dac6cc
 file: https://ai-ws.vercel.app/views/boot.txt | bytes=623 | sha256=aa13e4c24e780616ca2d2b55b184d89e9522f06c1a52b65340b71f4644dda6ab
