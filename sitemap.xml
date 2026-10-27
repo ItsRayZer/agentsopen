@@ -31,6 +31,8 @@
   <url><loc>https://ai-ws.vercel.app/errors.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/examples.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/examples.txt</loc></url>
+  <url><loc>https://ai-ws.vercel.app/feed.html</loc></url>
+  <url><loc>https://ai-ws.vercel.app/feed.js</loc></url>
   <url><loc>https://ai-ws.vercel.app/HANDOFF.md</loc></url>
   <url><loc>https://ai-ws.vercel.app/health.al</loc></url>
   <url><loc>https://ai-ws.vercel.app/human.css</loc></url>
@@ -225,6 +227,7 @@
   <url><loc>https://ai-ws.vercel.app/views/cloud.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/views/compare.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/views/deploy.txt</loc></url>
+  <url><loc>https://ai-ws.vercel.app/views/feed.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/views/forge.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/views/format.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/views/gallery.txt</loc></url>

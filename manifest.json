@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 290,
+    "files": 293,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -209,6 +209,16 @@
       "sha256": "f9833115525f62034b3bf094bd9e11362466e7a324f34f9689710b08fe14dcff"
     },
     {
+      "bytes": 7661,
+      "path": "feed.html",
+      "sha256": "933ff4bff9b4324efeee10a0b5e202d1dba1e2ec6626b5cd15c5702158068b47"
+    },
+    {
+      "bytes": 22173,
+      "path": "feed.js",
+      "sha256": "1b4c11e85f803fe4dee450fabd38eb7e9df76903fcc05fb3e18834b9844c513e"
+    },
+    {
       "bytes": 1786,
       "path": "health.al",
       "sha256": "aa2575396f7b077acf6cf030083c238f604dab62808739aea2a62607e02970c8"
@@ -219,9 +229,9 @@
       "sha256": "44d8eab86cdfc8a2ce4c6680c38826882e59b1119cd71d7fbc8d8ec70c0395bf"
     },
     {
-      "bytes": 7723,
+      "bytes": 7758,
       "path": "human.html",
-      "sha256": "790f3d8b818d7bd13d72690b03f557b181fb415e29a910e83a3ce31fe85fa88f"
+      "sha256": "c83ca92539229b7ea70573c28fc82a252c41db1705fc46d14b7aed7673f12026"
     },
     {
       "bytes": 17001,
@@ -229,9 +239,9 @@
       "sha256": "4bf5c613b96c1035b52ac1e56b020cf654597c06c63757e22a0d3b832f62b4a6"
     },
     {
-      "bytes": 100361,
+      "bytes": 100443,
       "path": "index.html",
-      "sha256": "41d19e63c40111b740cf00cc240a77fa2a4adb2f30f7b7789aeb9a26e5da4f3a"
+      "sha256": "0dfe63143b880f17fdd3af10d13c298091959cd772ca2236a62492e2db6362e0"
     },
     {
       "bytes": 6796,
@@ -1094,9 +1104,9 @@
       "sha256": "682d13fed913f8ef83e94fc341c3ff68c2cf8916b5e6b67ad9b9fb601e832fbc"
     },
     {
-      "bytes": 5312,
+      "bytes": 5341,
       "path": "views/agentmode.txt",
-      "sha256": "36dc6aded045409d820d3e8b83106fd659c8da90376421a3b3a8be1ab8c30f0e"
+      "sha256": "64096ba92347910f5b6a8c4aa3e241ae3127cd3982eab995daa0bd9440ca61ee"
     },
     {
       "bytes": 780,
@@ -1132,6 +1142,11 @@
       "bytes": 279,
       "path": "views/deploy.txt",
       "sha256": "06e0d544f483ed06bb02d6500244520bc2ac6bef65a8a0675988a7833d004111"
+    },
+    {
+      "bytes": 6339,
+      "path": "views/feed.txt",
+      "sha256": "27f9295bb8fa8dc28dee6fea047317e591f6c30ba0aa6064172d1059ab928eb7"
     },
     {
       "bytes": 1794,
@@ -1639,10 +1654,10 @@
       "sha256": "91fc9a2a5bc27b09ec846a12d40765e45310c984145b019119dfa1ef34654a39"
     },
     {
-      "bytes": 5312,
+      "bytes": 5341,
       "id": "agentmode",
       "path": "views/agentmode.txt",
-      "sha256": "36dc6aded045409d820d3e8b83106fd659c8da90376421a3b3a8be1ab8c30f0e"
+      "sha256": "64096ba92347910f5b6a8c4aa3e241ae3127cd3982eab995daa0bd9440ca61ee"
     },
     {
       "bytes": 7964,
