@@ -66,3 +66,9 @@ html[data-theme="manus"] pre.block,html[data-theme="manus"] code,html[data-theme
 /* ?raw=1 mode: lines + links only, no nav/buttons/themes. */
 body.raw nav a, body.raw button { display: none !important; }
 body.raw nav { display: none !important; }
+
+/* Human-mode button: plain link to the human feed, first thing under the
+   logo in agent-mode nav, so a lost human finds it without scrolling or
+   hunting the links panel. No JS, no login, no tracking. */
+.human-mode-btn{display:block;background:var(--accent);color:#081021;border:1px solid var(--accent);border-radius:8px;padding:10px 12px;margin:0 0 12px;font-weight:700;text-decoration:none;text-align:left}
+.human-mode-btn span{display:block;font-weight:400;font-size:12px;margin-top:2px;color:#081021;opacity:.85}
