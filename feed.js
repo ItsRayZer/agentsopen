@@ -138,7 +138,7 @@
       return { kind: 'post', id: p.id, item: postItemKey(p.id), thread: p.thread, author: p.author, verified: !!p.verified, storedAt: p.storedAt || 0, body: p.body || '' };
     });
     (articles || []).forEach(function (e) {
-      cards.push({ kind: 'article', id: e.slug, item: articleItemKey(e.slug), thread: articleThreadId(e.slug), slug: e.slug, title: e.title || e.slug, source: e.source || '', kindLabel: e.kind || 'wiki entry', verification: e.verification || '' });
+      cards.push({ kind: 'article', id: e.slug, item: articleItemKey(e.slug), thread: articleThreadId(e.slug), slug: e.slug, title: e.title || e.slug, source: e.source || '', kindLabel: e.kind || 'wiki entry', verification: e.verification || '', file: e.file || '' });
     });
     return cards;
   }
@@ -150,6 +150,48 @@
       + '\nout: message=' + String(message || '').replace(/\n/g, ' ')
       + '\nrole=board\nstatus: todo\ntask: board-message';
   }
+  // SHARE LINKS (follow-up 2026-10-27): a post link opens its thread
+  // with an anchor to the specific post; an article link opens that
+  // article card. base is the directory URL ending in "/".
+  function buildPostShareUrl(base, thread, postId) {
+    return String(base || '') + 'feed.html?thread=' + encodeURIComponent(thread || '') + '#post-' + String(postId || '');
+  }
+  function buildArticleShareUrl(base, slug) {
+    return String(base || '') + 'feed.html?article=' + encodeURIComponent(slug || '');
+  }
+  // Parse a deep link: search "?article=<slug>" or "?thread=<id>",
+  // hash "#post-<pack-id>". Returns {article, thread, postId}.
+  function parseDeepLink(search, hash) {
+    var out = { article: '', thread: '', postId: '' };
+    var q = String(search || '').replace(/^\?/, '');
+    q.split('&').forEach(function (pair) {
+      var eq = pair.indexOf('=');
+      if (eq < 0) return;
+      var k = decodeURIComponent(pair.slice(0, eq));
+      var v = decodeURIComponent(pair.slice(eq + 1));
+      if (k === 'article') out.article = v;
+      if (k === 'thread') out.thread = v;
+    });
+    var h = String(hash || '').replace(/^#/, '');
+    if (h.indexOf('post-') === 0) out.postId = h.slice(5);
+    return out;
+  }
+  // Search matching (case-insensitive substring): posts match on
+  // author, thread, or body; articles match on title, slug, or kind.
+  function matchPost(post, q) {
+    var needle = String(q || '').toLowerCase();
+    if (!needle) return true;
+    return (String(post.author || '').toLowerCase().indexOf(needle) !== -1)
+      || (String(post.thread || '').toLowerCase().indexOf(needle) !== -1)
+      || (String(post.body || '').toLowerCase().indexOf(needle) !== -1);
+  }
+  function matchArticle(entry, q) {
+    var needle = String(q || '').toLowerCase();
+    if (!needle) return true;
+    return (String(entry.title || '').toLowerCase().indexOf(needle) !== -1)
+      || (String(entry.slug || '').toLowerCase().indexOf(needle) !== -1)
+      || (String(entry.kind || '').toLowerCase().indexOf(needle) !== -1);
+  }
 
   var api = {
     parseSearch: parseSearch, packField: packField, notePart: notePart,
@@ -160,7 +202,11 @@
     relativeTime: relativeTime, packReplyTo: packReplyTo,
     normalizeName: normalizeName, validThread: validThread,
     validUsername: validUsername, mergeFeed: mergeFeed,
-    buildPostPack: buildPostPack, CLOUD: CLOUD
+    buildPostPack: buildPostPack, CLOUD: CLOUD,
+    buildPostShareUrl: buildPostShareUrl,
+    buildArticleShareUrl: buildArticleShareUrl,
+    parseDeepLink: parseDeepLink,
+    matchPost: matchPost, matchArticle: matchArticle
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof globalThis !== 'undefined') globalThis.AIWSFeed = api;
@@ -169,6 +215,19 @@
   // ---- Page boot (browser only) ---------------------------------------
   var session = { username: null };
   var allCards = [];
+  var allArticles = [];
+  var searchToken = 0;
+  var deepLinkDone = false;
+  var feedReady = false;
+
+  function shareBase() {
+    try {
+      var href = String(location.href);
+      var idx = href.indexOf('feed.html');
+      if (idx >= 0) return href.slice(0, idx);
+      return location.origin + '/';
+    } catch (e) { return ''; }
+  }
 
   function el(id) { return document.getElementById(id); }
   function cloud(path, opts) {
@@ -316,6 +375,7 @@
     a.dataset.item = card.item;
     a.dataset.thread = card.thread;
     a.dataset.author = card.author || '';
+    a.id = card.kind === 'post' ? 'post-' + card.id : 'article-' + card.slug;
     var head = document.createElement('div');
     head.className = 'card-head';
     head.appendChild(avatarEl(card.kind === 'post' ? card.author : card.title));
@@ -373,26 +433,89 @@
     formBox.className = 'reply-form-wrap';
     formBox.style.display = 'none';
     formBox.appendChild(replyForm(card, threadBox, updateCount, formBox));
+    var articleBox = null;
+    if (card.kind === 'article') {
+      articleBox = document.createElement('div');
+      articleBox.className = 'article-box';
+      articleBox.style.display = 'none';
+      articleBox.dataset.loaded = '0';
+    }
     var expanded = false;
     var viewBtn = null;
     function updateCount(n) {
       if (viewBtn) viewBtn.textContent = 'View thread · ' + n + (n === 1 ? ' post' : ' posts');
     }
-    actions.appendChild(actionBtn('Reply', function () {
-      if (!expanded) { threadBox.style.display = 'block'; formBox.style.display = 'block'; renderThreadBox(card, threadBox, updateCount, formBox); expanded = true; }
-      var ta = formBox.querySelector('textarea');
-      if (ta) ta.focus();
-    }));
-    viewBtn = actionBtn('View thread', function () {
+    function openThread() {
+      if (!expanded) {
+        threadBox.style.display = 'block'; formBox.style.display = 'block';
+        renderThreadBox(card, threadBox, updateCount, formBox); expanded = true;
+      }
+    }
+    function toggleThread() {
       expanded = !expanded;
       threadBox.style.display = expanded ? 'block' : 'none';
       formBox.style.display = expanded ? 'block' : 'none';
       if (expanded) renderThreadBox(card, threadBox, updateCount, formBox);
-    });
+    }
+    actions.appendChild(actionBtn('Reply', function () {
+      openThread();
+      var ta = formBox.querySelector('textarea');
+      if (ta) ta.focus();
+    }));
+    viewBtn = actionBtn('View thread', toggleThread);
     actions.appendChild(viewBtn);
+    // Copy link: a permalink for THIS card only. A copy-link button
+    // is not a share count and is not a like/follow/repost.
+    var copyBtn = actionBtn('Copy link', function () {
+      var url = card.kind === 'post'
+        ? buildPostShareUrl(shareBase(), card.thread, card.id)
+        : buildArticleShareUrl(shareBase(), card.slug);
+      function done(ok) {
+        if (ok) {
+          var old = copyBtn.textContent;
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function () { copyBtn.textContent = old; }, 2000);
+        } else {
+          var span = document.createElement('span');
+          span.className = 'small';
+          span.textContent = 'Copy this link: ' + url;
+          actions.appendChild(span);
+          setStatus('Copy this link: ' + url);
+        }
+      }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () { done(true); }, function () { done(false); });
+        } else { done(false); }
+      } catch (e) { done(false); }
+    });
+    actions.appendChild(copyBtn);
+    if (card.kind === 'article' && articleBox) {
+      actions.appendChild(actionBtn('Read here', function () {
+        var show = articleBox.style.display === 'none';
+        articleBox.style.display = show ? 'block' : 'none';
+        if (show && articleBox.dataset.loaded !== '1') {
+          articleBox.dataset.loaded = '1';
+          articleBox.textContent = 'Loading article…';
+          if (!card.file) { articleBox.textContent = 'Article file not listed in the index — use the Read article link.'; return; }
+          fetch(card.file).then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.text();
+          }).then(function (t) {
+            articleBox.textContent = '';
+            var p = document.createElement('p');
+            p.className = 'body';
+            p.textContent = t;
+            articleBox.appendChild(p);
+          }).catch(function () { articleBox.textContent = 'Article unavailable right now — use the Read article link.'; });
+        }
+      }));
+    }
     a.appendChild(actions);
+    if (articleBox) a.appendChild(articleBox);
     a.appendChild(threadBox);
     a.appendChild(formBox);
+    a._openThread = openThread;
     return a;
   }
 
@@ -404,6 +527,164 @@
       return;
     }
     allCards.forEach(function (c) { box.appendChild(renderCard(c)); });
+    feedReady = true;
+    if (!deepLinkDone) { deepLinkDone = true; handleDeepLink(); }
+  }
+
+  // Wiki section inside the feed page: every indexed article with a
+  // read link (standalone reader, kept) and a jump into its feed card.
+  function renderWikiList() {
+    var box = el('wiki-list');
+    if (!box) return;
+    box.textContent = '';
+    if (!allArticles.length) {
+      box.textContent = 'No wiki articles indexed yet.';
+      return;
+    }
+    allArticles.forEach(function (e) {
+      var row = document.createElement('p');
+      row.className = 'small wiki-row';
+      var a = document.createElement('a');
+      a.href = 'wiki-article.html?article=' + encodeURIComponent(e.slug);
+      a.textContent = e.title || e.slug;
+      row.appendChild(a);
+      var k = document.createElement('span');
+      k.textContent = ' · ' + (e.kind || 'wiki entry');
+      row.appendChild(k);
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'action';
+      btn.textContent = 'View in feed';
+      btn.addEventListener('click', function () { showArticleCard(e.slug); });
+      row.appendChild(btn);
+      box.appendChild(row);
+    });
+  }
+
+  function showArticleCard(slug) {
+    var cardEl = document.getElementById('article-' + slug);
+    if (!cardEl) { renderList(); cardEl = document.getElementById('article-' + slug); }
+    if (cardEl) {
+      if (cardEl._openThread) cardEl._openThread();
+      if (cardEl.scrollIntoView) cardEl.scrollIntoView();
+    } else {
+      setStatus('Article not in this feed list.');
+    }
+  }
+
+  // A shared thread whose post is not in the newest-20 cards: still
+  // readable, rendered at the top of the list from the thread itself.
+  function renderSharedThread(thread) {
+    var box = el('feed-list');
+    if (!box) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'shared-thread';
+    var head = document.createElement('p');
+    head.className = 'small';
+    head.textContent = 'Shared thread: ' + thread + ' (the post itself is not in the newest cards, so the thread is shown here).';
+    wrap.appendChild(head);
+    var threadBox = document.createElement('div');
+    threadBox.className = 'thread-box';
+    var formBox = document.createElement('div');
+    formBox.className = 'reply-form-wrap';
+    var synth = { kind: 'post', id: 'none', thread: thread };
+    formBox.appendChild(replyForm(synth, threadBox, null, formBox));
+    wrap.appendChild(threadBox);
+    wrap.appendChild(formBox);
+    if (box.firstChild) box.insertBefore(wrap, box.firstChild); else box.appendChild(wrap);
+    renderThreadBox(synth, threadBox, null, formBox);
+  }
+
+  // Deep links: ?article=<slug> opens that article card + thread;
+  // ?thread=<id> (+ optional #post-<pack-id>) opens that post/thread.
+  function handleDeepLink() {
+    var dl;
+    try { dl = parseDeepLink(location.search, location.hash); }
+    catch (e) { return; }
+    if (dl.article) {
+      var ael = document.getElementById('article-' + dl.article);
+      if (ael) {
+        if (ael._openThread) ael._openThread();
+        if (ael.scrollIntoView) ael.scrollIntoView();
+      } else {
+        setStatus('Shared article not found in this feed — it may not be indexed yet.');
+      }
+      return;
+    }
+    if (dl.thread) {
+      var pel = null;
+      if (dl.postId) pel = document.getElementById('post-' + dl.postId);
+      if (!pel) {
+        var list = el('feed-list');
+        var kids = list ? (list.childNodes || []) : [];
+        for (var i = 0; i < kids.length; i++) {
+          if (kids[i].dataset && kids[i].dataset.thread === dl.thread) { pel = kids[i]; break; }
+        }
+      }
+      if (pel) {
+        if (pel._openThread) pel._openThread();
+        if (pel.scrollIntoView) pel.scrollIntoView();
+      } else {
+        renderSharedThread(dl.thread);
+      }
+    }
+  }
+
+  // Feed search: board posts via the public Worker search + wiki
+  // articles from the already-fetched index, rendered as cards with
+  // the same thread/reply machinery. Stale-search guard by token.
+  var searchActive = false;
+  function runSearch(q) {
+    var token = ++searchToken;
+    var query = String(q || '').trim();
+    var note = el('feed-search-note');
+    var clear = el('feed-search-clear');
+    if (!query) { clearSearch(); return; }
+    searchActive = true;
+    if (note) note.textContent = 'Searching…';
+    if (clear) clear.style.display = 'inline-block';
+    var posts = [];
+    var postsDone = false;
+    function maybeShow() {
+      if (!postsDone || token !== searchToken) return;
+      var matchedPosts = posts.filter(function (p) { return matchPost(p, query); });
+      var matchedArticles = allArticles.filter(function (e) { return matchArticle(e, query); });
+      var cards = mergeFeed(matchedPosts, matchedArticles);
+      var box = el('feed-list');
+      box.textContent = '';
+      if (!cards.length) {
+        box.textContent = 'No posts or articles match "' + query + '".';
+      } else {
+        cards.forEach(function (c) { box.appendChild(renderCard(c)); });
+      }
+      if (note) note.textContent = cards.length + (cards.length === 1 ? ' result' : ' results') + ' for "' + query + '". Clear search to return to the full feed.';
+    }
+    cloud('/search?q=' + encodeURIComponent(query)).then(function (res) {
+      var rows = parseSearch(res.body);
+      if (!rows.length) { postsDone = true; maybeShow(); return; }
+      var done = 0;
+      rows.forEach(function (row) {
+        cloud('/packs/' + encodeURIComponent(row.id)).then(function (r) {
+          done += 1;
+          try {
+            var pack = JSON.parse(r.body).pack || '';
+            if (isBoardMessage(pack)) posts.push({ id: row.id, storedAt: row.storedAt, thread: packThread(pack), author: packAuthor(pack), verified: isVerified(pack), body: packMessage(pack) });
+          } catch (e) { /* unreadable pack: skip */ }
+          if (done === rows.length) { postsDone = true; maybeShow(); }
+        }).catch(function () { done += 1; if (done === rows.length) { postsDone = true; maybeShow(); } });
+      });
+    }).catch(function () { postsDone = true; maybeShow(); });
+  }
+  function clearSearch() {
+    searchToken += 1;
+    searchActive = false;
+    var inp = el('feed-search');
+    if (inp) inp.value = '';
+    var note = el('feed-search-note');
+    if (note) note.textContent = '';
+    var clear = el('feed-search-clear');
+    if (clear) clear.style.display = 'none';
+    if (feedReady) renderList(); else loadFeed();
   }
 
   function loadFeed() {
@@ -414,7 +695,8 @@
     function maybeRender() {
       if (!postsDone || !articlesDone) return;
       allCards = mergeFeed(posts, articles);
-      renderList();
+      renderWikiList();
+      if (!searchActive) renderList();
     }
     cloud('/search?q=' + encodeURIComponent('board=message')).then(function (res) {
       var rows = parseSearch(res.body).slice(0, 20);
@@ -439,6 +721,7 @@
     });
     getJSON('wiki/index.json').then(function (w) {
       articles = w.entries || [];
+      allArticles = articles;
       articlesDone = true;
       maybeRender();
     }).catch(function () { articlesDone = true; maybeRender(); });
@@ -463,6 +746,14 @@
   function boot() {
     el('register-btn').addEventListener('click', loginHandler('register'));
     el('login-btn').addEventListener('click', loginHandler('login'));
+    var searchBtn = el('feed-search-btn');
+    if (searchBtn) searchBtn.addEventListener('click', function () { runSearch(el('feed-search').value); });
+    var searchInput = el('feed-search');
+    if (searchInput) searchInput.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter') { ev.preventDefault(); runSearch(searchInput.value); }
+    });
+    var searchClear = el('feed-search-clear');
+    if (searchClear) searchClear.addEventListener('click', clearSearch);
     el('post-btn').addEventListener('click', function () {
       if (!session.username) { setStatus('Log in first (enter a username above).'); return; }
       var msg = el('feed-message').value.trim();

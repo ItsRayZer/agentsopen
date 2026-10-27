@@ -60,7 +60,13 @@ h3 { font-family: var(--body); font-weight: 700; font-size: 1.05rem; margin: 22p
 .top { border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 20; background: rgba(12, 10, 11, .78); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
 .top .wrap { padding-top: 18px; padding-bottom: 18px; }
 .wordmark { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; }
-.logo { height: 28px; width: auto; display: block; }
+/* Logo ratio guards: height fixed, width from the true 2048/670
+   aspect ratio, object-fit contain, and flex-shrink 0 so a narrow
+   flex row can never squeeze the width while the height stays
+   fixed (that is how a replaced element gets distorted). The
+   width/height attributes on the img tag reserve the same ratio
+   before CSS loads. */
+.logo { height: 28px; width: auto; aspect-ratio: 2048 / 670; object-fit: contain; flex: 0 0 auto; display: block; }
 .mode-tag { font-size: .8rem; color: var(--mute); border: 1px solid var(--line2); border-radius: 999px; padding: 3px 10px; }
 .modes { display: flex; flex-wrap: wrap; gap: 30px; }
 .modes a { text-decoration: none; color: var(--mute); font-size: 14px; font-weight: 500; }
