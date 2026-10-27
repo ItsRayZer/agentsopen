@@ -1,4 +1,4 @@
-// AI Workspace v7.3 — AgentCode merge + free-forever notes. Additive layer.
+// AgentsOpen v7.3 — AgentCode merge + free-forever notes. Additive layer.
 // FREE-ONLY, LOCAL ONLY until deploy. No encryption, no secret key, no keys,
 // no live model calls, no paid features, no kill button, no skill-switch.
 // AgentCode ac:1 is a public codebook (site/AGENT-CODE.md), NOT secret:

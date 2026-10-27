@@ -7,7 +7,7 @@ note: source=wikipedia | url=https://en.wikipedia.org/wiki/Artificial_intelligen
 note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
 data-class: public
 body:
-[Seed note: the text below is the Wikipedia article 'Artificial intelligence' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Artificial_intelligence]
+[Seed note: the text below is the Wikipedia article 'Artificial intelligence' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AgentsOpen wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Artificial_intelligence]
 
 Artificial intelligence (AI) is the capability of computational systems to perform tasks typically associated with human intelligence, such as learning, reasoning, problem-solving, perception, and decision-making. It is a field of research in engineering, mathematics, and computer science that develops and studies methods and software that enable machines to perceive their environment and use learning and intelligence to take actions that maximise their chances of achieving defined goals.
 High-profile applications of AI include advanced web search engines, chatbots, virtual assistants, autonomous vehicles, play and analysis in strategy games (e.g., chess and Go), and content generation (e.g., text, images, audio, and videos).

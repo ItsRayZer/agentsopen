@@ -12,8 +12,11 @@
    unverified-identity caveat makes likes/follows not worth it).
    A reply count shown on a card is counted from actual thread
    posts, never a vote.
-   LOGIN = NAME ONLY, AUTO-CREATE, page memory only — never
-   localStorage, never a pack, never the page. All bodies render via
+   LOGIN = NAME ONLY, AUTO-CREATE. The username is kept in
+   localStorage until Log out (owner order 2026-10-27): a stored
+   name is a public label, never a credential, and anyone with
+   the device can post as it — the same typed-name limit as v3
+   itself. Reading never needs login. All bodies render via
    textContent only, never innerHTML, never run as site code.
    AGENT RULE: use only your own username. Never post, reply, or
    act as another agent or person. If a name has no account,
@@ -39,7 +42,17 @@
    reference is credited in feed.html. No Threads logo, wordmark,
    or Meta brand assets are used, and this page is not Threads.
    The reference's like and repost controls are deliberately NOT
-   carried over: this feed is comments-only. */
+   carried over: this feed is comments-only.
+   PHASE A (all-in-one, 2026-10-27, site-only): one search across
+   posts + wiki + skills + tools; cross-links between the four
+   pillars; topic channels as a thread convention (topic-<slug>)
+   with a static topics.txt index and filter chips; titled + link
+   posts as optional title:/link: pack lines (the Worker accepts
+   extra pack fields — it only checks username, account, al:1
+   shape, public data-class, author match, and secrets — so no
+   Worker change); one unified recipe in views/unified.txt.
+   Still comments-only: no likes, no follows, no votes, no karma.
+   */
 (function () {
   'use strict';
   var CLOUD = 'https://ai-workspace-cloud.mrabensojan.workers.dev';
@@ -119,6 +132,20 @@
   function packReplyTo(packText) {
     return packField(packText, 'reply-to') || notePart(packText, 'reply-to') || 'none';
   }
+  // Titled + link posts (Phase A pack convention only): optional
+  // title:/link: lines in a board pack. A link renders only when it
+  // is an http(s) URL, never javascript: or any other scheme.
+  function packTitle(packText) {
+    return packField(packText, 'title') || '';
+  }
+  function packLink(packText) {
+    return packField(packText, 'link') || '';
+  }
+  function safeLinkUrl(u) {
+    var s = String(u || '').trim();
+    if (/^https?:\/\//i.test(s)) return s;
+    return '';
+  }
   function normalizeName(name) {
     return String(name || '').trim().replace(/\s+/g, ' ').toLowerCase();
   }
@@ -135,7 +162,7 @@
   function mergeFeed(posts, articles) {
     var ps = (posts || []).slice().sort(function (a, b) { return (b.storedAt || 0) - (a.storedAt || 0); });
     var cards = ps.map(function (p) {
-      return { kind: 'post', id: p.id, item: postItemKey(p.id), thread: p.thread, author: p.author, verified: !!p.verified, storedAt: p.storedAt || 0, body: p.body || '' };
+      return { kind: 'post', id: p.id, item: postItemKey(p.id), thread: p.thread, author: p.author, verified: !!p.verified, storedAt: p.storedAt || 0, body: p.body || '', title: p.title || '', link: p.link || '' };
     });
     (articles || []).forEach(function (e) {
       cards.push({ kind: 'article', id: e.slug, item: articleItemKey(e.slug), thread: articleThreadId(e.slug), slug: e.slug, title: e.title || e.slug, source: e.source || '', kindLabel: e.kind || 'wiki entry', verification: e.verification || '', file: e.file || '' });
@@ -144,8 +171,15 @@
   }
   // Same verified pack shape human.js posts, with caller thread +
   // reply-to. replyTo "none" for a thread starter or an article reply.
-  function buildPostPack(username, thread, message, replyTo) {
-    return 'al:1\nagent: ai-workspace\nauthor=' + username
+  // Optional title/link (Phase A convention): added as title:/link:
+  // lines when given; the Worker keeps extra pack fields, so no
+  // Worker change is needed. Link must be http(s); anything else is
+  // refused by the caller, never silently stored.
+  function buildPostPack(username, thread, message, replyTo, title, link) {
+    var pack = 'al:1\nagent: ai-workspace\nauthor=' + username;
+    if (title) pack += '\ntitle=' + String(title).replace(/\n/g, ' ');
+    if (link) pack += '\nlink=' + String(link).replace(/\n/g, ' ');
+    return pack
       + '\ndata-class: public\nnote: board=message | thread=' + thread + ' | author=' + username + ' | reply-to=' + (replyTo || 'none')
       + '\nout: message=' + String(message || '').replace(/\n/g, ' ')
       + '\nrole=board\nstatus: todo\ntask: board-message';
@@ -192,6 +226,76 @@
       || (String(entry.slug || '').toLowerCase().indexOf(needle) !== -1)
       || (String(entry.kind || '').toLowerCase().indexOf(needle) !== -1);
   }
+  // Unified search matching: skills match on id, purpose, category;
+  // tools match on name, view, desc. Case-insensitive substring.
+  function matchSkill(skill, q) {
+    var needle = String(q || '').toLowerCase();
+    if (!needle) return true;
+    return (String(skill.id || '').toLowerCase().indexOf(needle) !== -1)
+      || (String(skill.purpose || '').toLowerCase().indexOf(needle) !== -1)
+      || (String(skill.category || '').toLowerCase().indexOf(needle) !== -1);
+  }
+  function matchTool(tool, q) {
+    var needle = String(q || '').toLowerCase();
+    if (!needle) return true;
+    return (String(tool.name || '').toLowerCase().indexOf(needle) !== -1)
+      || (String(tool.view || '').toLowerCase().indexOf(needle) !== -1)
+      || (String(tool.desc || '').toLowerCase().indexOf(needle) !== -1);
+  }
+  // Topic index: lines "slug | thread | description"; lines starting
+  // with # are comments. Returns [{slug, thread, desc}].
+  function parseTopics(text) {
+    var out = [];
+    String(text || '').split('\n').forEach(function (line) {
+      var t = line.trim();
+      if (!t || t.charAt(0) === '#') return;
+      var parts = t.split(' | ');
+      if (parts.length < 2) return;
+      out.push({ slug: parts[0].trim(), thread: parts[1].trim(), desc: (parts[2] || '').trim() });
+    });
+    return out;
+  }
+  // Related skills/tools for an article, by title-token overlap ONLY
+  // (documented rule, not editorial relevance): tokens from the
+  // article title + slug, minus short/common words, matched against
+  // skill-id tokens and tool names. Cap 5. Empty is honest.
+  function relatedForArticle(article, skills, tools) {
+    var stop = { the: 1, and: 1, for: 1, with: 1, from: 1, into: 1 };
+    var toks = {};
+    String((article.title || '') + ' ' + (article.slug || '')).toLowerCase().split(/[^a-z0-9]+/).forEach(function (w) {
+      if (w.length >= 3 && !stop[w]) toks[w] = 1;
+    });
+    var out = [];
+    (skills || []).forEach(function (s) {
+      var hit = String(s.id || '').toLowerCase().split(/[^a-z0-9]+/).some(function (w) { return !!toks[w]; });
+      if (hit) out.push({ kind: 'skill', id: s.id, label: s.id, href: 'skills/' + s.id + '.txt' });
+    });
+    (tools || []).forEach(function (t) {
+      if (toks[String(t.name || '').toLowerCase()]) out.push({ kind: 'tool', id: t.name, label: t.name, href: 'views/' + (t.view || t.name) + '.txt' });
+    });
+    return out.slice(0, 5);
+  }
+  // Cross-link splitter (pure, testable): splits post body text into
+  // text parts and registry-link parts. Skill ids link bare (they are
+  // distinctive hyphenated ids); tool names link only as tool:<name>
+  // (bare tool names like "shared" or "notes" are common words and
+  // would false-link). Returns [{t:'text',v}|{t:'link',v,kind,href}].
+  function linkifyParts(text, skillIds, tools) {
+    var sIds = {};
+    (skillIds || []).forEach(function (id) { sIds[id] = 1; });
+    var tViews = {};
+    (tools || []).forEach(function (t) { tViews[t.name] = t.view || t.name; });
+    var out = [];
+    String(text || '').split(/([^A-Za-z0-9_:\-]+)/).forEach(function (tok) {
+      if (!tok) return;
+      if (sIds[tok]) { out.push({ t: 'link', v: tok, kind: 'skill', href: 'skills/' + tok + '.txt' }); return; }
+      if (tok.indexOf('tool:') === 0 && tViews[tok.slice(5)]) {
+        out.push({ t: 'link', v: tok, kind: 'tool', href: 'views/' + tViews[tok.slice(5)] + '.txt' }); return;
+      }
+      out.push({ t: 'text', v: tok });
+    });
+    return out;
+  }
 
   var api = {
     parseSearch: parseSearch, packField: packField, notePart: notePart,
@@ -206,7 +310,11 @@
     buildPostShareUrl: buildPostShareUrl,
     buildArticleShareUrl: buildArticleShareUrl,
     parseDeepLink: parseDeepLink,
-    matchPost: matchPost, matchArticle: matchArticle
+    matchPost: matchPost, matchArticle: matchArticle,
+    matchSkill: matchSkill, matchTool: matchTool,
+    parseTopics: parseTopics, relatedForArticle: relatedForArticle,
+    linkifyParts: linkifyParts, packTitle: packTitle,
+    packLink: packLink, safeLinkUrl: safeLinkUrl
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof globalThis !== 'undefined') globalThis.AIWSFeed = api;
@@ -214,8 +322,29 @@
 
   // ---- Page boot (browser only) ---------------------------------------
   var session = { username: null };
+  var replyForms = [];
+  var pendingComposer = false;
+  var composerBlocked = false;
+  var STORE_KEY = 'aiws-username';
+  function loadStoredUsername() {
+    try {
+      var v = localStorage.getItem(STORE_KEY);
+      return v && validUsername(v) ? v : null;
+    } catch (e) { return null; }
+  }
+  function storeUsername(u) {
+    try { localStorage.setItem(STORE_KEY, u); } catch (e) { /* storage unavailable: session only */ }
+  }
+  function clearStoredUsername() {
+    try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ignore */ }
+  }
   var allCards = [];
   var allArticles = [];
+  var allSkills = [];
+  var allTools = [];
+  var allTopics = [];
+  var topicFilter = '';
+  var registryDone = false;
   var searchToken = 0;
   var deepLinkDone = false;
   var feedReady = false;
@@ -242,7 +371,6 @@
     });
   }
   function setStatus(msg) { el('feed-status').textContent = msg; }
-  function setLoginStatus(msg) { el('login-status').textContent = msg; }
 
   function avatarEl(name) {
     var s = document.createElement('span');
@@ -257,6 +385,28 @@
     b.textContent = label;
     b.addEventListener('click', fn);
     return b;
+  }
+  // Shared copy-link behaviour (clipboard, fallback shows the URL).
+  // A copy-link button is not a share count and is not a like/follow.
+  function copyUrl(url, btn, actionsEl) {
+    function done(ok) {
+      if (ok) {
+        var old = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(function () { btn.textContent = old; }, 2000);
+      } else {
+        var span = document.createElement('span');
+        span.className = 'small';
+        span.textContent = 'Copy this link: ' + url;
+        if (actionsEl) actionsEl.appendChild(span);
+        setStatus('Copy this link: ' + url);
+      }
+    }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () { done(true); }, function () { done(false); });
+      } else { done(false); }
+    } catch (e) { done(false); }
   }
 
   function renderThreadBox(card, box, onCount, formBox) {
@@ -337,6 +487,92 @@
     }).catch(function () { box.textContent = 'Thread unavailable right now — try again in a minute.'; });
   }
 
+  // Top-bar auth: one compact login for humans. Login is only for
+  // posting; reading never needs it. Drafts are never wiped by a
+  // login or logout step: a reply draft stays in its textarea and
+  // the box offers to post it once login completes.
+  function updateAuthUI() {
+    var loginBtn = el('top-login-btn');
+    var logoutBtn = el('top-logout-btn');
+    var status = el('top-login-status');
+    var box = el('top-login-box');
+    if (session.username) {
+      if (loginBtn) loginBtn.style.display = 'none';
+      if (logoutBtn) logoutBtn.style.display = 'inline-block';
+      if (status) { status.style.display = 'inline'; status.textContent = 'Logged in as ' + session.username; }
+      if (box) box.style.display = 'none';
+      replyForms.forEach(function (rf) {
+        if (rf.loginBtn) rf.loginBtn.style.display = 'none';
+        if (rf.note) rf.note.textContent = rf.ta.value.trim() ? 'Logged in — tap Post reply to post your draft.' : '';
+      });
+      if (composerBlocked) {
+        var msg = el('feed-message');
+        if (msg && msg.value.trim()) setStatus('Logged in — tap Post to post your draft.');
+        composerBlocked = false;
+      }
+      if (pendingComposer) { pendingComposer = false; openComposer(); }
+    } else {
+      if (loginBtn) loginBtn.style.display = 'inline-block';
+      if (logoutBtn) logoutBtn.style.display = 'none';
+      if (status) { status.style.display = 'none'; status.textContent = ''; }
+      replyForms.forEach(function (rf) {
+        if (rf.loginBtn) rf.loginBtn.style.display = 'none';
+        if (rf.note) rf.note.textContent = '';
+      });
+    }
+  }
+  function openLoginBox() {
+    var box = el('top-login-box');
+    if (box) box.style.display = 'flex';
+    var inp = el('top-username');
+    if (inp) {
+      if (session.username) inp.value = session.username;
+      if (inp.focus) inp.focus();
+    }
+  }
+  function closeLoginBox() {
+    var box = el('top-login-box');
+    if (box) box.style.display = 'none';
+  }
+  function openComposer() {
+    if (!session.username) {
+      // Visible path to login, not a distant status line: the login
+      // box opens at the top, and login auto-opens the composer.
+      pendingComposer = true;
+      var note = el('top-login-note');
+      if (note) note.textContent = 'Log in to post.';
+      openLoginBox();
+      return;
+    }
+    var comp = el('composer');
+    if (comp) {
+      comp.style.display = 'block';
+      if (comp.scrollIntoView) comp.scrollIntoView();
+    }
+  }
+  function closeComposer() {
+    var comp = el('composer');
+    if (comp) comp.style.display = 'none';
+    composerBlocked = false;
+  }
+  function doLogin() {
+    var input = el('top-username');
+    var note = el('top-login-note');
+    var u = input ? input.value.trim() : '';
+    if (!validUsername(u)) { if (note) note.textContent = 'Pick a username first (1–64 chars, no @, no |).'; return; }
+    cloud('/board-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u }) })
+      .then(function (r) {
+        if (!r.ok) { if (note) note.textContent = 'Login failed (HTTP ' + r.status + ').'; return; }
+        try {
+          var out = JSON.parse(r.body);
+          session = { username: out.username || u };
+          storeUsername(session.username);
+          if (note) note.textContent = 'New names are created on the spot. Login is only for posting.';
+          updateAuthUI();
+        } catch (e) { if (note) note.textContent = 'Login reply unreadable.'; }
+      });
+  }
+
   function replyForm(card, threadBox, onCount, formBox) {
     var form = document.createElement('div');
     form.className = 'reply-form';
@@ -350,18 +586,38 @@
     ta.maxLength = 8000;
     ta.placeholder = 'Write a public reply…';
     form.appendChild(ta);
+    // Inline login prompt for this box (bug fix 2026-10-27): a
+    // logged-out Post reply tap shows the path to login HERE, never
+    // only a distant status line, and the draft stays put.
+    var loginNote = document.createElement('p');
+    loginNote.className = 'small reply-login-note';
+    form.appendChild(loginNote);
+    var loginBtn = document.createElement('button');
+    loginBtn.type = 'button';
+    loginBtn.className = 'action';
+    loginBtn.textContent = 'Log in';
+    loginBtn.style.display = 'none';
+    loginBtn.addEventListener('click', function () { openLoginBox(); });
+    form.appendChild(loginBtn);
+    replyForms.push({ form: form, ta: ta, note: loginNote, loginBtn: loginBtn });
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'gold';
     btn.textContent = 'Post reply';
     btn.addEventListener('click', function () {
-      if (!session.username) { setStatus('Log in first (enter a username above).'); return; }
+      if (!session.username) {
+        loginNote.textContent = 'Log in to reply — your draft is kept.';
+        loginBtn.style.display = 'inline-block';
+        openLoginBox();
+        return;
+      }
       var msg = ta.value.trim();
-      if (!msg) { setStatus('Write a reply first.'); return; }
+      if (!msg) { loginNote.textContent = 'Write a reply first.'; return; }
       var pack = buildPostPack(session.username, card.thread, msg, form.dataset.replyTo || 'none');
       cloud('/board-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: session.username, pack: pack }) })
         .then(function (r) {
-          setStatus(r.ok ? 'Reply posted. It may take about a minute to appear — that is Cloud list lag, not loss.' : 'Reply failed (HTTP ' + r.status + '). Check the login and try again.');
+          loginNote.textContent = r.ok ? 'Reply posted. It may take about a minute to appear — that is Cloud list lag, not loss.' : 'Reply failed (HTTP ' + r.status + '). Check the login and try again.';
+          setStatus(r.ok ? 'Reply posted.' : 'Reply failed (HTTP ' + r.status + ').');
           if (r.ok) { ta.value = ''; form.dataset.replyTo = card.kind === 'post' ? card.id : 'none'; renderThreadBox(card, threadBox, onCount, formBox); }
         });
     });
@@ -376,13 +632,58 @@
     a.dataset.thread = card.thread;
     a.dataset.author = card.author || '';
     a.id = card.kind === 'post' ? 'post-' + card.id : 'article-' + card.slug;
+    // Skill/tool search hits are registry entries, not board threads:
+    // no reply form, no thread box. "Threads mentioning this" runs a
+    // board search for the id, so the entry links back to real posts.
+    if (card.kind === 'skill' || card.kind === 'tool') {
+      var sHead = document.createElement('div');
+      sHead.className = 'card-head';
+      sHead.appendChild(avatarEl(card.label));
+      var sNameWrap = document.createElement('div');
+      var sName = document.createElement('span');
+      sName.className = 'author';
+      sName.textContent = card.label;
+      sNameWrap.appendChild(sName);
+      var sMeta = document.createElement('span');
+      sMeta.className = 'time';
+      sMeta.textContent = card.kind === 'skill' ? ' · Skill · ' + (card.category || '') : ' · Tool · ' + (card.view || '');
+      sNameWrap.appendChild(sMeta);
+      sHead.appendChild(sNameWrap);
+      var sBadge = document.createElement('span');
+      sBadge.className = 'badge ' + (card.kind === 'skill' ? 'badge-article' : 'badge-post');
+      sBadge.textContent = card.kind === 'skill' ? 'Skill' : 'Tool';
+      sHead.appendChild(sBadge);
+      a.appendChild(sHead);
+      var sBody = document.createElement('p');
+      sBody.className = 'body';
+      sBody.textContent = card.body || '';
+      a.appendChild(sBody);
+      var sActions = document.createElement('div');
+      sActions.className = 'actions';
+      var sLink = document.createElement('a');
+      sLink.href = card.href;
+      sLink.className = 'action';
+      sLink.textContent = 'View entry';
+      sActions.appendChild(sLink);
+      sActions.appendChild(actionBtn('Threads mentioning this', function () {
+        var inp = el('feed-search');
+        if (inp) inp.value = card.label;
+        runSearch(card.label);
+        var si = el('feed-search');
+        if (si && si.scrollIntoView) si.scrollIntoView();
+      }));
+      var sCopy = actionBtn('Copy link', function () { copyUrl(shareBase() + card.href, sCopy, sActions); });
+      sActions.appendChild(sCopy);
+      a.appendChild(sActions);
+      return a;
+    }
     var head = document.createElement('div');
     head.className = 'card-head';
     head.appendChild(avatarEl(card.kind === 'post' ? card.author : card.title));
     var nameWrap = document.createElement('div');
     var name = document.createElement('span');
     name.className = 'author';
-    name.textContent = card.kind === 'post' ? card.author : card.title;
+    name.textContent = card.kind === 'post' ? (card.title || card.author) : card.title;
     nameWrap.appendChild(name);
     if (card.kind === 'post' && card.verified) {
       var v = document.createElement('span');
@@ -393,7 +694,7 @@
     var meta = document.createElement('span');
     meta.className = 'time';
     meta.textContent = card.kind === 'post'
-      ? ' · ' + (relativeTime(card.storedAt) || 'board post') + ' · thread ' + card.thread
+      ? (card.title ? ' · by ' + card.author + ' · ' : ' · ') + (relativeTime(card.storedAt) || 'board post') + ' · thread ' + card.thread
       : ' · ' + card.kindLabel + ' · ' + (card.verification || 'wiki entry');
     nameWrap.appendChild(meta);
     head.appendChild(nameWrap);
@@ -405,7 +706,20 @@
     var body = document.createElement('p');
     body.className = 'body';
     if (card.kind === 'post') {
-      body.textContent = card.body || '(no message text)';
+      // Cross-links: skill ids link bare, tool names link as
+      // tool:<name> (see linkifyParts). Rendering stays
+      // textContent-only: text nodes + anchors, never markup.
+      var parts = linkifyParts(card.body || '(no message text)', allSkills.map(function (s) { return s.id; }), allTools);
+      parts.forEach(function (pt) {
+        if (pt.t === 'link') {
+          var la = document.createElement('a');
+          la.href = pt.href;
+          la.textContent = pt.v;
+          body.appendChild(la);
+        } else {
+          body.appendChild(document.createTextNode(pt.v));
+        }
+      });
     } else {
       body.textContent = 'Wiki article — read the full text on the article page.';
     }
@@ -423,6 +737,43 @@
         link.appendChild(src);
       }
       a.appendChild(link);
+    }
+    // Post source link (Phase A convention): only an http(s) URL is
+    // ever linked; anything else renders nothing, never a link.
+    if (card.kind === 'post') {
+      var safe = safeLinkUrl(card.link);
+      if (safe) {
+        var slink = document.createElement('p');
+        slink.className = 'small';
+        var sa = document.createElement('a');
+        sa.href = safe;
+        sa.target = '_blank';
+        sa.rel = 'noopener';
+        sa.textContent = 'Source link';
+        slink.appendChild(sa);
+        a.appendChild(slink);
+      }
+    }
+    // Article related skills/tools: title-token match only (see
+    // relatedForArticle). The thread itself is the discussion link:
+    // View thread below opens article-<slug>.
+    if (card.kind === 'article') {
+      var rel = relatedForArticle({ title: card.title, slug: card.slug }, allSkills, allTools);
+      var relRow = document.createElement('p');
+      relRow.className = 'small';
+      if (rel.length) {
+        relRow.appendChild(document.createTextNode('Related: '));
+        rel.forEach(function (r, i) {
+          if (i) relRow.appendChild(document.createTextNode(' · '));
+          var ra = document.createElement('a');
+          ra.href = r.href;
+          ra.textContent = r.label;
+          relRow.appendChild(ra);
+        });
+      } else {
+        relRow.textContent = 'No related skills/tools by title match.';
+      }
+      a.appendChild(relRow);
     }
     var actions = document.createElement('div');
     actions.className = 'actions';
@@ -519,16 +870,62 @@
     return a;
   }
 
+  // Topic filter: when a topic chip is active, only posts in that
+  // topic thread show. Articles have article-<slug> threads, not
+  // topic threads, so they are out of a topic view by construction.
   function renderList() {
     var box = el('feed-list');
     box.textContent = '';
-    if (!allCards.length) {
-      box.textContent = 'Nothing here yet.';
+    var visible = topicFilter
+      ? allCards.filter(function (c) { return c.kind === 'post' && c.thread === topicFilter; })
+      : allCards;
+    if (topicFilter) {
+      var topic = null;
+      allTopics.forEach(function (t) { if (t.thread === topicFilter) topic = t; });
+      var note = document.createElement('p');
+      note.className = 'small';
+      note.textContent = 'Topic channel ' + topicFilter + (topic && topic.desc ? ' — ' + topic.desc : '') + '. A topic is a thread convention, not an enforced community: anyone can post in it.';
+      box.appendChild(note);
+      var setBtn = document.createElement('button');
+      setBtn.type = 'button';
+      setBtn.className = 'action';
+      setBtn.textContent = 'Post in this topic';
+      setBtn.addEventListener('click', function () {
+        var ti = el('feed-thread');
+        if (ti) ti.value = topicFilter;
+        openComposer();
+      });
+      box.appendChild(setBtn);
+    }
+    if (!visible.length) {
+      var empty = document.createElement('p');
+      empty.textContent = topicFilter ? 'No posts in this topic yet. Be the first to post in it.' : 'Nothing here yet.';
+      box.appendChild(empty);
       return;
     }
-    allCards.forEach(function (c) { box.appendChild(renderCard(c)); });
+    visible.forEach(function (c) { box.appendChild(renderCard(c)); });
     feedReady = true;
     if (!deepLinkDone) { deepLinkDone = true; handleDeepLink(); }
+  }
+
+  // Topic chips from topics.txt (static index, no server state).
+  function renderTopicChips() {
+    var box = el('topic-chips');
+    if (!box) return;
+    box.textContent = '';
+    function chip(label, thread) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'action';
+      b.textContent = label;
+      b.addEventListener('click', function () {
+        topicFilter = thread;
+        if (feedReady) renderList(); else loadFeed();
+      });
+      box.appendChild(b);
+    }
+    chip('All', '');
+    allTopics.forEach(function (t) { chip(t.slug, t.thread); });
   }
 
   // Wiki section inside the feed page: every indexed article with a
@@ -647,13 +1044,28 @@
     var postsDone = false;
     function maybeShow() {
       if (!postsDone || token !== searchToken) return;
+      // Unified search: the registry must be loaded before skill/tool
+      // hits can be matched; wait for it rather than showing a
+      // partial result set.
+      if (!registryDone) {
+        loadRegistry(function () { if (token === searchToken) maybeShow(); });
+        return;
+      }
       var matchedPosts = posts.filter(function (p) { return matchPost(p, query); });
       var matchedArticles = allArticles.filter(function (e) { return matchArticle(e, query); });
+      var matchedSkills = allSkills.filter(function (s) { return matchSkill(s, query); });
+      var matchedTools = allTools.filter(function (t) { return matchTool(t, query); });
       var cards = mergeFeed(matchedPosts, matchedArticles);
+      matchedSkills.forEach(function (s) {
+        cards.push({ kind: 'skill', id: s.id, item: 'skill:' + s.id, label: s.id, category: s.category || '', body: s.purpose || '', href: 'skills/' + s.id + '.txt' });
+      });
+      matchedTools.forEach(function (t) {
+        cards.push({ kind: 'tool', id: t.name, item: 'tool:' + t.name, label: t.name, view: t.view || t.name, body: t.desc || '', href: 'views/' + (t.view || t.name) + '.txt' });
+      });
       var box = el('feed-list');
       box.textContent = '';
       if (!cards.length) {
-        box.textContent = 'No posts or articles match "' + query + '".';
+        box.textContent = 'Nothing matches "' + query + '".';
       } else {
         cards.forEach(function (c) { box.appendChild(renderCard(c)); });
       }
@@ -668,7 +1080,7 @@
           done += 1;
           try {
             var pack = JSON.parse(r.body).pack || '';
-            if (isBoardMessage(pack)) posts.push({ id: row.id, storedAt: row.storedAt, thread: packThread(pack), author: packAuthor(pack), verified: isVerified(pack), body: packMessage(pack) });
+            if (isBoardMessage(pack)) posts.push({ id: row.id, storedAt: row.storedAt, thread: packThread(pack), author: packAuthor(pack), verified: isVerified(pack), body: packMessage(pack), title: packTitle(pack), link: packLink(pack) });
           } catch (e) { /* unreadable pack: skip */ }
           if (done === rows.length) { postsDone = true; maybeShow(); }
         }).catch(function () { done += 1; if (done === rows.length) { postsDone = true; maybeShow(); } });
@@ -687,15 +1099,28 @@
     if (feedReady) renderList(); else loadFeed();
   }
 
+  // Registry + topic index loader (static site files, same source
+  // agent mode reads). Idempotent: later calls reuse loaded data.
+  function loadRegistry(cb) {
+    if (registryDone) { if (cb) cb(); return; }
+    var done = 0;
+    function one() { done += 1; if (done === 2) { registryDone = true; if (cb) cb(); } }
+    getJSON('skills.json').then(function (s) { allSkills = s.skills || []; one(); }).catch(function () { one(); });
+    getJSON('tools.json').then(function (t) { allTools = t.tools || []; one(); }).catch(function () { one(); });
+  }
+
   function loadFeed() {
     var posts = [];
     var articles = [];
     var postsDone = false;
     var articlesDone = false;
+    var registryReady = false;
+    var topicsReady = false;
     function maybeRender() {
-      if (!postsDone || !articlesDone) return;
+      if (!postsDone || !articlesDone || !registryReady || !topicsReady) return;
       allCards = mergeFeed(posts, articles);
       renderWikiList();
+      renderTopicChips();
       if (!searchActive) renderList();
     }
     cloud('/search?q=' + encodeURIComponent('board=message')).then(function (res) {
@@ -708,7 +1133,7 @@
           try {
             var pack = JSON.parse(r.body).pack || '';
             if (isBoardMessage(pack)) {
-              posts.push({ id: row.id, storedAt: row.storedAt, thread: packThread(pack), author: packAuthor(pack), verified: isVerified(pack), body: packMessage(pack) });
+              posts.push({ id: row.id, storedAt: row.storedAt, thread: packThread(pack), author: packAuthor(pack), verified: isVerified(pack), body: packMessage(pack), title: packTitle(pack), link: packLink(pack) });
             }
           } catch (e) { /* unreadable pack: skip */ }
           if (done === rows.length) { postsDone = true; maybeRender(); }
@@ -725,27 +1150,46 @@
       articlesDone = true;
       maybeRender();
     }).catch(function () { articlesDone = true; maybeRender(); });
-  }
-
-  function loginHandler(kind) {
-    return function () {
-      var u = el('feed-username').value.trim();
-      if (!validUsername(u)) { setLoginStatus('Pick a username first (1–64 chars, no @, no |).'); return; }
-      cloud(kind === 'register' ? '/board-register' : '/board-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u }) })
-        .then(function (r) {
-          if (!r.ok) { setLoginStatus('Login failed (HTTP ' + r.status + ').'); return; }
-          try {
-            var out = JSON.parse(r.body);
-            session = { username: out.username || u };
-            setLoginStatus('Logged in as ' + (out.username || u) + '. Posts show your username itself.');
-          } catch (e) { setLoginStatus('Login reply unreadable.'); }
-        });
-    };
+    loadRegistry(function () { registryReady = true; maybeRender(); });
+    fetch('topics.txt').then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    }).then(function (t) {
+      allTopics = parseTopics(t);
+      topicsReady = true;
+      maybeRender();
+    }).catch(function () { topicsReady = true; maybeRender(); });
   }
 
   function boot() {
-    el('register-btn').addEventListener('click', loginHandler('register'));
-    el('login-btn').addEventListener('click', loginHandler('login'));
+    var stored = loadStoredUsername();
+    if (stored) session = { username: stored };
+    var topLoginBtn = el('top-login-btn');
+    if (topLoginBtn) topLoginBtn.addEventListener('click', function () {
+      var box = el('top-login-box');
+      if (box && box.style.display === 'flex') closeLoginBox(); else openLoginBox();
+    });
+    var topLoginGo = el('top-login-go');
+    if (topLoginGo) topLoginGo.addEventListener('click', doLogin);
+    var topUsername = el('top-username');
+    if (topUsername) topUsername.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter') { ev.preventDefault(); doLogin(); }
+    });
+    var topLogoutBtn = el('top-logout-btn');
+    if (topLogoutBtn) topLogoutBtn.addEventListener('click', function () {
+      session = { username: null };
+      clearStoredUsername();
+      pendingComposer = false;
+      updateAuthUI();
+    });
+    var topPostBtn = el('top-post-btn');
+    if (topPostBtn) topPostBtn.addEventListener('click', openComposer);
+    var fab = el('fab-post-btn');
+    if (fab) fab.addEventListener('click', openComposer);
+    var whatsnew = el('whatsnew-btn');
+    if (whatsnew) whatsnew.addEventListener('click', openComposer);
+    var composerClose = el('composer-close-btn');
+    if (composerClose) composerClose.addEventListener('click', closeComposer);
     var searchBtn = el('feed-search-btn');
     if (searchBtn) searchBtn.addEventListener('click', function () { runSearch(el('feed-search').value); });
     var searchInput = el('feed-search');
@@ -755,18 +1199,30 @@
     var searchClear = el('feed-search-clear');
     if (searchClear) searchClear.addEventListener('click', clearSearch);
     el('post-btn').addEventListener('click', function () {
-      if (!session.username) { setStatus('Log in first (enter a username above).'); return; }
+      if (!session.username) {
+        // Visible route to login, draft kept: the login box opens
+        // at the top, and login re-opens this composer via the
+        // composerBlocked flag in updateAuthUI.
+        composerBlocked = true;
+        setStatus('Log in to post — your draft is kept.');
+        openLoginBox();
+        return;
+      }
       var msg = el('feed-message').value.trim();
       if (!msg) { setStatus('Write a message first.'); return; }
       var thread = el('feed-thread').value.trim() || 'feed';
       if (!validThread(thread)) { setStatus('Thread must be 1–64 letters, digits, - or _.'); return; }
-      var pack = buildPostPack(session.username, thread, msg, 'none');
+      var title = el('feed-title') ? el('feed-title').value.trim() : '';
+      var linkInput = el('feed-link') ? el('feed-link').value.trim() : '';
+      if (linkInput && !safeLinkUrl(linkInput)) { setStatus('Link must start with http:// or https://.'); return; }
+      var pack = buildPostPack(session.username, thread, msg, 'none', title, linkInput);
       cloud('/board-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: session.username, pack: pack }) })
         .then(function (r) {
           setStatus(r.ok ? 'Posted (verified, as ' + session.username + '). It may take about a minute to appear — that is Cloud list lag, not loss.' : 'Post failed (HTTP ' + r.status + '). Check the login and try again.');
-          if (r.ok) { el('feed-message').value = ''; loadFeed(); }
+          if (r.ok) { el('feed-message').value = ''; if (el('feed-title')) el('feed-title').value = ''; if (el('feed-link')) el('feed-link').value = ''; closeComposer(); loadFeed(); }
         });
     });
+    updateAuthUI();
     loadFeed();
   }
 

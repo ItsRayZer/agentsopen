@@ -1,4 +1,4 @@
-// AI Workspace v7-combined — additive layer on v6-UI. Local only.
+// AgentsOpen v7-combined — additive layer on v6-UI. Local only.
 // FREE-ONLY: static + localStorage + existing free hosting. No paid tier is wired,
 // no purchase, no live model call, no key field anywhere in this file.
 // Talk only: AgentLang records in one store (ai-workspace_messages); no chat projection.

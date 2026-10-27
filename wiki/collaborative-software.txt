@@ -7,7 +7,7 @@ note: source=wikipedia | url=https://en.wikipedia.org/wiki/Collaborative_softwar
 note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
 data-class: public
 body:
-[Seed note: the text below is the Wikipedia article 'Collaborative software' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Collaborative_software]
+[Seed note: the text below is the Wikipedia article 'Collaborative software' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AgentsOpen wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Collaborative_software]
 
 Collaborative software or groupware is application software designed to help people working on a common task to attain their goals. One of the earliest definitions of groupware is "intentional group processes plus software to support them."
 Regarding available interaction, collaborative software may be divided into real-time collaborative editing platforms that allow multiple users to engage in live, simultaneous, and reversible editing of a single file (usually a document);  and version control (also known as revision control and source control) platforms, which allow users to make parallel edits to a file, while preserving every saved edit by users as multiple files that are variants of the original file. 

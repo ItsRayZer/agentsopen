@@ -28,8 +28,8 @@
       "source": "https://en.wikipedia.org/wiki/Agent-based_model",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 28512,
-      "sha256": "3540b7546045d81c583104feb38ef9a9678f0dfbf05025933b69abcb5b4f342b"
+      "bytes": 28510,
+      "sha256": "713cf3e6f4dce29fd9d90766ac01af563d1196baa3f2c5f03e7c83a901626f73"
     },
     {
       "slug": "agent-skills-skill-md",
@@ -72,8 +72,8 @@
       "source": "https://en.wikipedia.org/wiki/Artificial_intelligence",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 88494,
-      "sha256": "9ec25ddfc225a5db57665b597e726fdf3b91d2baa3145d94e4a1ea026ce52764"
+      "bytes": 88492,
+      "sha256": "941c4cf98bd98b72c81a056c2460d6c06d0122edf415a804a4f1ef7e87285465"
     },
     {
       "slug": "collaboration",
@@ -83,8 +83,8 @@
       "source": "https://en.wikipedia.org/wiki/Collaboration",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 35038,
-      "sha256": "a1bf007be55490b8d40f85338c16649943f5b92d909d736a047989e25d1b460b"
+      "bytes": 35036,
+      "sha256": "9e8ba19dea2850d6a69e98dfbaeb0633b28389d61667580346b8347c96f7c286"
     },
     {
       "slug": "collaborative-software",
@@ -94,8 +94,8 @@
       "source": "https://en.wikipedia.org/wiki/Collaborative_software",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 13085,
-      "sha256": "ca50ef422ed5e9db7d485bfb4f803a72ae2a35ecfacce792253af283546e5d46"
+      "bytes": 13083,
+      "sha256": "8b8e2e4d9de59a5bf2c3f78dee612709c34e9839b4dc4c8c95ce5c7c76adc9bb"
     },
     {
       "slug": "collective-intelligence",
@@ -105,8 +105,8 @@
       "source": "https://en.wikipedia.org/wiki/Collective_intelligence",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 90782,
-      "sha256": "175132652117a1c64b1332bc88e4fea08a3c51d240561a9d45213e95910334ab"
+      "bytes": 90780,
+      "sha256": "a19f4c1d1972bb566b91a099dbf08cd54576435e2c025d9121f74e7599a81391"
     },
     {
       "slug": "computer-supported-cooperative-work",
@@ -116,8 +116,8 @@
       "source": "https://en.wikipedia.org/wiki/Computer-supported_cooperative_work",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 73964,
-      "sha256": "3259f524846257dc7cc1897958bfcde37b2710b23dca4bb6b5ae4578ea359624"
+      "bytes": 73962,
+      "sha256": "f7d461643d4a16088d9ae17d644f7c45c33289d49e4a698eedb929bcec507534"
     },
     {
       "slug": "distributed-artificial-intelligence",
@@ -127,19 +127,19 @@
       "source": "https://en.wikipedia.org/wiki/Distributed_artificial_intelligence",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 11368,
-      "sha256": "f2cf4a5677ed226fa02d8d488df1d00e68024c7c933cbdec8ff7c980a79d6f61"
+      "bytes": 11366,
+      "sha256": "8016d98fd065aa7b76304c5f5b8e37a964ad7a06cc57e0c08ed15e90498f1942"
     },
     {
       "slug": "extra-ai-workspace-items",
-      "title": "Extra AI workspace items",
+      "title": "Extra AgentsOpen items",
       "file": "wiki/extra-ai-workspace-items.txt",
       "kind": "summary-collection",
       "source": "multiple \u2014 see file for per-item source links",
       "licence": "original-summaries + linked sources",
       "verification": "not-mia-verified",
-      "bytes": 5410,
-      "sha256": "cc4dc2c235d48b886a64d1edb8de7b9efc5292fe9cb9ffe5889a8f26d66f7dc8"
+      "bytes": 5406,
+      "sha256": "8201b1378aa192810991e43c3b3c1ba3ad745114455c0e926dde7a300aa864bd"
     },
     {
       "slug": "graph-checkpoints-rewind-replay",
@@ -171,8 +171,8 @@
       "source": "https://en.wikipedia.org/wiki/Human%E2%80%93computer_interaction",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 28610,
-      "sha256": "cb60a14d7e3bd412bdd455a48d84882efea13a3994d4fc445e1a656667e45e55"
+      "bytes": 28608,
+      "sha256": "8cb6aef24da876d9b8f0550a3aae9d11fa970db6caeb1446d304c16aac52470f"
     },
     {
       "slug": "intelligent-agent",
@@ -182,8 +182,8 @@
       "source": "https://en.wikipedia.org/wiki/Intelligent_agent",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 19349,
-      "sha256": "8078966729b9063813a041cd929066305f6b7ccd87d26e30a3a90fb9a6981472"
+      "bytes": 19347,
+      "sha256": "d96a32e01090f70a6e0ab01e871febb2a4710c22d6824b1354043c71fe86e3b1"
     },
     {
       "slug": "knowledge-base",
@@ -193,8 +193,8 @@
       "source": "https://en.wikipedia.org/wiki/Knowledge_base",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 8582,
-      "sha256": "17efc976c621355be4a92422b05cd9403763438761d9d8be667f30e06318b4c6"
+      "bytes": 8580,
+      "sha256": "408c095cbed272d72d54b0016089313eb79b5eff679f88bd90cb0439729f0bac"
     },
     {
       "slug": "knowledge-management",
@@ -204,8 +204,8 @@
       "source": "https://en.wikipedia.org/wiki/Knowledge_management",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 29351,
-      "sha256": "48e065a2a8bb96ad6afca6f93dde63f1cb30745e9914fd54c07bacd9b07c913e"
+      "bytes": 29349,
+      "sha256": "e834739f56f269858f22e03b2fdf11351b3c8cf966b8815aebd6034839ff101d"
     },
     {
       "slug": "knowledge-representation-and-reasoning",
@@ -215,8 +215,8 @@
       "source": "https://en.wikipedia.org/wiki/Knowledge_representation_and_reasoning",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 28749,
-      "sha256": "f9535f8481fbf258a3c010628514cdbeb839ce23450fd9d31d28eb24474c36e0"
+      "bytes": 28747,
+      "sha256": "3b4a1a3431567da8c328ef894b70686e8c1fa96846ea2a8ec090bb6f26aba7ab"
     },
     {
       "slug": "machine-learning",
@@ -226,8 +226,8 @@
       "source": "https://en.wikipedia.org/wiki/Machine_learning",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 61092,
-      "sha256": "b36c45d34c6cdce16c46447e55538b58e18c21eaa5a675ac9fbbeb025e0826aa"
+      "bytes": 61090,
+      "sha256": "5830cbe7e81fdac8cf014c69ecad69eb8d366528c4c28430b19b6c3bc42e23f3"
     },
     {
       "slug": "mcp-inspector-test-vectors",
@@ -292,8 +292,8 @@
       "source": "https://en.wikipedia.org/wiki/Multi-agent_system",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 13193,
-      "sha256": "1309b6db73923a8f4e2f1654b4686b2cdc5f2012864b0567ed7179edc23f0cfc"
+      "bytes": 13191,
+      "sha256": "e988a28bdb190501bb21850af6f84955f4e5ca5499e4fdf9f3fd1aacbca05a50"
     },
     {
       "slug": "natural-language-processing",
@@ -303,8 +303,8 @@
       "source": "https://en.wikipedia.org/wiki/Natural_language_processing",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 33054,
-      "sha256": "b549ff9d3a16c4d44534ce6a2518b0b6efa592298f2d065c9254022118e368ca"
+      "bytes": 33052,
+      "sha256": "55c71ebd339e961027f8bce61a7ee6f7bed34d234f423b21961c765846cc8427"
     },
     {
       "slug": "open-collaboration",
@@ -314,8 +314,8 @@
       "source": "https://en.wikipedia.org/wiki/Open_collaboration",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 4815,
-      "sha256": "e972f01455040945b6814cc60565ef6349488909eb80905de773a642eacee033"
+      "bytes": 4813,
+      "sha256": "13484ec1dd51df3a57cc98161ac7d9eec8992e9b73ab944d73984c577273b920"
     },
     {
       "slug": "remote-work",
@@ -325,8 +325,8 @@
       "source": "https://en.wikipedia.org/wiki/Remote_work",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 54195,
-      "sha256": "3e7f822ff7e828d4bec9d385b3fe145072858f896e1d9cc81d7da0b418ffe539"
+      "bytes": 54193,
+      "sha256": "213bfe026fc5a5e8146e08101ac5535a37d06e881ea59b16fd61ec1fe14c0d1d"
     },
     {
       "slug": "role-goal-backstory-flow-packs",
@@ -358,8 +358,8 @@
       "source": "https://en.wikipedia.org/wiki/Software_agent",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 18342,
-      "sha256": "d1a0003bbb47025e8694561e1b42b4565945b81bb9d66c34d9036f54b5227765"
+      "bytes": 18340,
+      "sha256": "b4e24a539df4b053a6f1a4660639cdcde1bdbfdef4f6f3164726f09164a5e34a"
     },
     {
       "slug": "swarm-intelligence",
@@ -369,8 +369,8 @@
       "source": "https://en.wikipedia.org/wiki/Swarm_intelligence",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 20660,
-      "sha256": "8e464c353ce9648ab5aa529f8eeb39f7b31f6d83a74b846fcdb5c6f05fc16737"
+      "bytes": 20658,
+      "sha256": "b216434610a1559cec84974abed380cb18cdbe728bbe4f4f0253b4f3ab753932"
     },
     {
       "slug": "teamwork",
@@ -380,8 +380,8 @@
       "source": "https://en.wikipedia.org/wiki/Teamwork",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 16418,
-      "sha256": "f36d39c4358af80c2143a716e4d3fdccc64ee7a33cc29d452c52951479cf088b"
+      "bytes": 16416,
+      "sha256": "7a92df93320e91ff2ec5a4696a201e190e2ae709e7b62de661de0c1d358eb097"
     },
     {
       "slug": "virtual-team",
@@ -391,8 +391,8 @@
       "source": "https://en.wikipedia.org/wiki/Virtual_team",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 58284,
-      "sha256": "a9385bbd7b328134237181bbd91d30dba291097f33568abc553c0316f6637f6d"
+      "bytes": 58282,
+      "sha256": "48bbcfee01f6f8dbd69811f0b1e9419e67e7bc6f19ca93bb9db404ffd60004e7"
     },
     {
       "slug": "wiki",
@@ -402,8 +402,8 @@
       "source": "https://en.wikipedia.org/wiki/Wiki",
       "licence": "CC-BY-SA-4.0",
       "verification": "sourced-from-wikipedia-not-mia-verified",
-      "bytes": 26083,
-      "sha256": "b698aa957daf7af5e550ee7fc1689a1dbbead69e6735774971548a4258092611"
+      "bytes": 26081,
+      "sha256": "9c3475cd3f2e2d2a38449ed8db4eb3896bb5030a81737ced90d75d61a2be6faa"
     }
   ]
 }

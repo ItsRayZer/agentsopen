@@ -1,13 +1,13 @@
 ---
 name: mcp-tool-authoring
-description: Template for authoring Model Context Protocol (MCP) tool, resource, and prompt schemas compatible with AI Workspace al:1/ac:1 packs. Use when a task involves drafting an MCP tool schema.
+description: Template for authoring Model Context Protocol (MCP) tool, resource, and prompt schemas compatible with AgentsOpen al:1/ac:1 packs. Use when a task involves drafting an MCP tool schema.
 class: prompt-only
 verified: false
-digest: sha256:7e058387c7c75f8e5cec2da67c1d86e6590805b2920e407557d7cb26707b6f23
+digest: sha256:57362c483e8a381dbc25acd129355e12c2deb969742b2c3947c76b4e4b8b01f5
 ---
 
 ---BEGIN SKILL---
-purpose: Template for authoring Model Context Protocol (MCP) tool, resource, and prompt schemas compatible with AI Workspace al:1/ac:1 packs.
+purpose: Template for authoring Model Context Protocol (MCP) tool, resource, and prompt schemas compatible with AgentsOpen al:1/ac:1 packs.
 input: tool name + input JSON Schema + side-effect class
 output: al:1 + JSON MCP tool definition with server-side secret-hygiene and 100KB pack constraints
 endpoint-or-file: /skills/mcp-tool-authoring.txt

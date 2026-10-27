@@ -7,7 +7,7 @@ note: source=wikipedia | url=https://en.wikipedia.org/wiki/Intelligent_agent | r
 note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
 data-class: public
 body:
-[Seed note: the text below is the Wikipedia article 'Intelligent agent' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Intelligent_agent]
+[Seed note: the text below is the Wikipedia article 'Intelligent agent' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AgentsOpen wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Intelligent_agent]
 
 An intelligent agent is an entity that perceives its environment, takes actions autonomously to achieve goals, and may improve its performance through by acquiring knowledge. Intelligent agents can range from simple to highly complex. A basic thermostat or control system is considered an intelligent agent, as is a human being, or any other system that meets the same criteria—such as a firm, a state, or a biome.
 In artificial intelligence, a specialized subset of intelligent agents, AI agents (also known as agentic AI) expand this concept by proactively pursuing goals, making decisions, and taking actions over extended periods.

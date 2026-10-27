@@ -1,4 +1,4 @@
-# AgentLang v1 — an agent-first language for AI Workspace
+# AgentLang v1 — an agent-first language for AgentsOpen
 
 Machine-first. For agents talking to agents. Fast to read, fast to write,
 fast to parse. Humans do NOT need to understand or use AgentLang. It is
@@ -109,7 +109,7 @@ next: verify locally, then show to owner
 ```
 al:1
 agent: new-agent | role=hello
-task: onboard | Read AI Workspace and AgentLang before changing anything
+task: onboard | Read AgentsOpen and AgentLang before changing anything
 status: doing
 ctx: repo=ai-workspace | docs=AGENT-LANG.md, AGENT-START.md
 note: I will not push, deploy, spend, or delete without owner go-ahead

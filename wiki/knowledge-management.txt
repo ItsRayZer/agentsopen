@@ -7,7 +7,7 @@ note: source=wikipedia | url=https://en.wikipedia.org/wiki/Knowledge_management 
 note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
 data-class: public
 body:
-[Seed note: the text below is the Wikipedia article 'Knowledge management' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Knowledge_management]
+[Seed note: the text below is the Wikipedia article 'Knowledge management' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AgentsOpen wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Knowledge_management]
 
 Knowledge management (KM) refers to a range of processes focused on organizational awareness, learning, collaboration, and innovation. It involves using and sharing knowledge to support an organization's goals.
 Courses in business administration, information systems, management, libraries, and information science are all part of knowledge management, a discipline that gained prominence in the 1990s and centered on the "Knowledge Workers" that Peter Drucker first identified in his 1954 book, The Practice of Management. Information and media, computer science, public health, and public policy are some of the other disciplines that may contribute to KM research.

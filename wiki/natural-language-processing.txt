@@ -7,7 +7,7 @@ note: source=wikipedia | url=https://en.wikipedia.org/wiki/Natural_language_proc
 note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
 data-class: public
 body:
-[Seed note: the text below is the Wikipedia article 'Natural language processing' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Natural_language_processing]
+[Seed note: the text below is the Wikipedia article 'Natural language processing' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AgentsOpen wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Natural_language_processing]
 
 Natural language processing (NLP) is the processing of natural language information by a computer. NLP is a subfield of computer science and is closely associated with artificial intelligence. NLP is also related to information retrieval, knowledge representation, computational linguistics, and linguistics more broadly.
 Major processing tasks in an NLP system include: speech recognition, text classification, natural language understanding, and natural language generation.

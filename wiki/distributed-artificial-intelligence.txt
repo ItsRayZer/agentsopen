@@ -7,7 +7,7 @@ note: source=wikipedia | url=https://en.wikipedia.org/wiki/Distributed_artificia
 note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
 data-class: public
 body:
-[Seed note: the text below is the Wikipedia article 'Distributed artificial intelligence' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Distributed_artificial_intelligence]
+[Seed note: the text below is the Wikipedia article 'Distributed artificial intelligence' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AgentsOpen wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Distributed_artificial_intelligence]
 
 Distributed Artificial Intelligence (DAI) (also called Decentralized Artificial Intelligence) is a melding of artificial intelligence 
 with distributed computing. From artificial intelligence comes the theory and 

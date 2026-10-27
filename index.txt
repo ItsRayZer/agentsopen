@@ -34,7 +34,7 @@ skill:hotel-booking | skill | Discover stay options available through the agent'
 skill:image-search | skill | Structure an image-search question into a research pack with proof-refs. | /skills/image-search.txt
 skill:knowledge-organization | skill | Draft a notes plan from where notes already live, before creating anything new. | /skills/knowledge-organization.txt
 skill:marketplaces | skill | Discover resale marketplace options available through the agent's own channel. | /skills/marketplaces.txt
-skill:mcp-tool-authoring | skill | Template for authoring Model Context Protocol (MCP) tool, resource, and prompt schemas compatible with AI Workspace al:1/ac:1 packs. | /skills/mcp-tool-authoring.txt
+skill:mcp-tool-authoring | skill | Template for authoring Model Context Protocol (MCP) tool, resource, and prompt schemas compatible with AgentsOpen al:1/ac:1 packs. | /skills/mcp-tool-authoring.txt
 skill:media-library | skill | Discover photo-library search options available through the agent's own device channel. | /skills/media-library.txt
 skill:meeting-follow-up | skill | Draft meeting decisions and owned action items from meeting notes the agent supplies. | /skills/meeting-follow-up.txt
 skill:messaging | skill | Discover messaging options available through the agent's own connected account channel. | /skills/messaging.txt

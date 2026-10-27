@@ -1,4 +1,4 @@
-// AI Workspace — local-only workbench. No keys, no trackers. Network: public-import fetch + tools.json fetch only; sync=local-only; cloud=cloudflare-free-public-packs-only.
+// AgentsOpen — local-only workbench. No keys, no trackers. Network: public-import fetch + tools.json fetch only; sync=local-only; cloud=cloudflare-free-public-packs-only.
 // State is kept in localStorage so work survives a refresh.
 const $ = (id) => document.getElementById(id);
 const store = {
@@ -112,7 +112,7 @@ async function copyText(id, btn) {
 }
 if (typeof window !== 'undefined') window.copyText = copyText;
 // ---- Code Studio ----
-let files = store.get('ai-workspace_files', [{ name: 'example.py', content: 'def greet(name):\n    return f"Hello, {name}"\n\nprint(greet("AI Workspace"))\n' }]);
+let files = store.get('ai-workspace_files', [{ name: 'example.py', content: 'def greet(name):\n    return f"Hello, {name}"\n\nprint(greet("AgentsOpen"))\n' }]);
 let activeFile = 0;
 function renderFiles() {
   const tabs = $('fileTabs'); const list = $('fileList');
@@ -669,7 +669,7 @@ status: verify
 next: show to owner, deploy only on go-ahead`,
 `al:1
 agent: new-agent | role=hello
-task: onboard | Read AI Workspace and AgentLang before changing anything
+task: onboard | Read AgentsOpen and AgentLang before changing anything
 status: doing
 ctx: repo=ai-workspace | docs=AGENT-LANG.md, AGENT-START.md
 note: I will not push, deploy, spend, or delete without owner go-ahead

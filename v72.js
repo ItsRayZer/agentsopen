@@ -1,4 +1,4 @@
-// AI Workspace v7.2 — Cloudflare cloud merge, additive layer on v7.1. LOCAL ONLY.
+// AgentsOpen v7.2 — Cloudflare cloud merge, additive layer on v7.1. LOCAL ONLY.
 // FREE-ONLY: Cloudflare Workers free plan + KV, workers.dev only, public packs only.
 // Local storage remains the primary store; cloud packs are published copies only.
 // No private cloud storage, no auth, no key fields, no live model calls, no paid

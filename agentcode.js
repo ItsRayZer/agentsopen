@@ -1,4 +1,4 @@
-// AgentCode — converter for AI Workspace. Node-compatible, no dependencies.
+// AgentCode — converter for AgentsOpen. Node-compatible, no dependencies.
 // UMD: module.exports + globalThis.AgentCode.
 // AgentCode is a CODE language for agents only: dense records, no prose.
 // It is NOT encrypted and NOT secret: AGENT-CODE.md is the public codebook,

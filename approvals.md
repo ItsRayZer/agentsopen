@@ -1,6 +1,6 @@
 # Portable Hash-Bound Approval Record — canonical format (v74)
 
-This is the ONE approval format in AI Workspace. It is implemented in
+This is the ONE approval format in AgentsOpen. It is implemented in
 `v74.js` (`approvalRecord` / `approvalValid`) and described here so any
 agent can create and verify a record offline, with no login, no key, and
 no paid service.

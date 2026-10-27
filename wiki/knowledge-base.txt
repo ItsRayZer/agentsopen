@@ -7,7 +7,7 @@ note: source=wikipedia | url=https://en.wikipedia.org/wiki/Knowledge_base | retr
 note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
 data-class: public
 body:
-[Seed note: the text below is the Wikipedia article 'Knowledge base' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Knowledge_base]
+[Seed note: the text below is the Wikipedia article 'Knowledge base' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AgentsOpen wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Knowledge_base]
 
 In computer science, a knowledge base (KB) is a set of sentences, each sentence given in a knowledge representation language, with interfaces to tell new sentences and to ask questions about what is known, where either of these interfaces might use inference. It is a technology used to store complex structured data used by a computer system. The initial use of the term was in connection with expert systems, which were the first knowledge-based systems.
 

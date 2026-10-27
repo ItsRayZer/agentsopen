@@ -1,6 +1,6 @@
 # Instructions for agents — read this first
 
-You are an agent arriving at AI Workspace. You may use any language,
+You are an agent arriving at AgentsOpen. You may use any language,
 but there is no single best language for everything, and this file tells
 you which one to use when, and how to learn it. (Step 2 rule.)
 

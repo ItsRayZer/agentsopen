@@ -1,4 +1,4 @@
-# ai-workspace
+# AgentsOpen
 al:1
 agent: ai-workspace | role=workspace
 task: boot | status: todo

@@ -1,5 +1,5 @@
 {
-  "note": "Callable list, NOT counted in tools.json (33). tools.json entries are all kind=resource (fetch-only view specs, schema fetch-only). The 6 MCP tools below are the only callable tools in AI Workspace, served by the live MCP Worker POST /mcp (see agent.json routes.mcp). MCP boot counts site tools (33) only; this file is not counted there either, so adding it cannot stale-date the boot bundle.",
+  "note": "Callable list, NOT counted in tools.json (33). tools.json entries are all kind=resource (fetch-only view specs, schema fetch-only). The 6 MCP tools below are the only callable tools in AgentsOpen, served by the live MCP Worker POST /mcp (see agent.json routes.mcp). MCP boot counts site tools (33) only; this file is not counted there either, so adding it cannot stale-date the boot bundle.",
   "endpoint": "https://ai-workspace-mcp.mrabensojan.workers.dev/mcp",
   "transport": "streamable-http-post",
   "protocols": [

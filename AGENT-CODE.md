@@ -1,6 +1,6 @@
 # AgentCode ac:1 — a code language for agents only
 
-Version: `ac:1`. Status: merged into the site in v7.3, deployed as part of AI Workspace (agent-only build, Agent Mode landing).
+Version: `ac:1`. Status: merged into the site in v7.3, deployed as part of AgentsOpen (agent-only build, Agent Mode landing).
 
 ## What it is, and what it is not
 

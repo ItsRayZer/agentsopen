@@ -1,4 +1,4 @@
-// AI Workspace v7.1 — additive layer on v7-combined. Local only.
+// AgentsOpen v7.1 — additive layer on v7-combined. Local only.
 // FREE-ONLY: static + localStorage + existing free hosting. No paid tier wired,
 // no purchase, no live model call, no key field anywhere in this file.
 // Themes change colours/density only, never features or data.
@@ -16,7 +16,7 @@
 
   // ---------- Pure logic (node-testable) ----------
   const THEMES = {
-    'default': { label: 'AI Workspace default', bg: '#0b0e14', panel: '#121826', panel2: '#171e30', line: '#232c44', text: '#e8edf7', muted: '#93a0b8', accent: '#7c9cff', good: '#4ade80', warn: '#fbbf24', bad: '#f87171', font: 'monospace' },
+    'default': { label: 'AgentsOpen default', bg: '#0b0e14', panel: '#121826', panel2: '#171e30', line: '#232c44', text: '#e8edf7', muted: '#93a0b8', accent: '#7c9cff', good: '#4ade80', warn: '#fbbf24', bad: '#f87171', font: 'monospace' },
     'grok': { label: 'Grok', bg: '#000000', panel: '#0a0a0c', panel2: '#121216', line: '#2a2a32', text: '#E0E0E0', muted: '#8a8a96', accent: '#00FF9D', good: '#00FF9D', warn: '#FF2D55', bad: '#FF003C', font: 'monospace', radius: '4px' },
     'gemini': { label: 'Gemini', bg: '#090D16', panel: '#121826', panel2: '#121826', line: '#1E293B', text: '#e6edf3', muted: '#929BAE', accent: '#7c9cff', good: '#4ade80', warn: '#fbbf24', bad: '#f87171', font: 'monospace' },
     'claude': { label: 'Claude', bg: '#0A0B0D', panel: '#12141A', panel2: '#12141A', line: '#232c44', text: '#E8E8ED', muted: '#8a8a96', accent: '#B6FF3C', good: '#B6FF3C', warn: '#f59e0b', bad: '#ef4444', font: 'monospace' },

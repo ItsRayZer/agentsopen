@@ -3,7 +3,7 @@
    index.html :root, read via the GitHub connector, read-only):
    display "Bricolage Grotesque", body "Figtree", bg #0c0a0b,
    panel #151113, text #f2ece4, muted #a0959a, gold #d8bd93 accent.
-   AI Workspace content only: no Axofy logo, name, SMM content, or
+   AgentsOpen content only: no Axofy logo, name, SMM content, or
    business text. Layout is Wikipedia-style (search + section grid +
    article reading); type and theme are Axofy. Code snippets stay
    monospace — code is code, not prose. */
@@ -66,7 +66,7 @@ h3 { font-family: var(--body); font-weight: 700; font-size: 1.05rem; margin: 22p
    fixed (that is how a replaced element gets distorted). The
    width/height attributes on the img tag reserve the same ratio
    before CSS loads. */
-.logo { height: 28px; width: auto; aspect-ratio: 2048 / 670; object-fit: contain; flex: 0 0 auto; display: block; }
+.logo { height: 28px; width: auto; aspect-ratio: 2048 / 274; object-fit: contain; flex: 0 0 auto; display: block; }
 .mode-tag { font-size: .8rem; color: var(--mute); border: 1px solid var(--line2); border-radius: 999px; padding: 3px 10px; }
 .modes { display: flex; flex-wrap: wrap; gap: 30px; }
 .modes a { text-decoration: none; color: var(--mute); font-size: 14px; font-weight: 500; }

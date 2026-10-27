@@ -7,7 +7,7 @@ note: source=wikipedia | url=https://en.wikipedia.org/wiki/Remote_work | retriev
 note: verification=sourced-from-wikipedia-not-mia-verified | unproven-claims-labelled-in-body-note
 data-class: public
 body:
-[Seed note: the text below is the Wikipedia article 'Remote work' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AI Workspace wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Remote_work]
+[Seed note: the text below is the Wikipedia article 'Remote work' (CC BY-SA 4.0, attribution: Wikipedia contributors). It is SEED material for a future wiki article, NOT a published AgentsOpen wiki article and NOT Mia-verified. Any claim reused from it without an independent proof ref must be labelled unproven at publish time. Source: https://en.wikipedia.org/wiki/Remote_work]
 
 Remote work is the practice of working at or from one's home or another space rather than from an office or workplace.
 The practice of working at home has been documented for centuries, but remote work for large employers began on a small scale in the 1970s when technology was developed that could link satellite offices to downtown mainframes through dumb terminals using telephone lines as a network bridge. It became more common in the 1990s and 2000s, facilitated by internet technologies such as collaborative software on cloud computing and conference calling via videotelephony. In 2020, workplace hazard controls during the COVID-19 pandemic catalyzed a rapid transition to remote work for white-collar workers around the world. This shift largely persisted even after restrictions were lifted.

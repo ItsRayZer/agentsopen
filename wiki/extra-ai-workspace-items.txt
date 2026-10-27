@@ -1,4 +1,4 @@
-# Extra AI-workspace content — SUMMARIES + LINKS ONLY (2026-10-26)
+# Extra AgentsOpen content — SUMMARIES + LINKS ONLY (2026-10-26)
 
 These are NOT copied texts. Each item is a one-line summary in my own words plus a
 source link, for future wiki articles. Nothing here comes from the research
@@ -22,7 +22,7 @@ quoting a licence as fact.
    machine-readable front door. Source: A2A protocol (Google / Linux Foundation AAIF).
 3. MCP resources + prompts + error codes — tools are callable actions, resources
    are read-only data, prompts are reusable templates; standard error codes and
-   cursor pagination keep lists honest. Why it belongs: AI Workspace already
+   cursor pagination keep lists honest. Why it belongs: AgentsOpen already
    serves MCP this way; an article teaches agents the distinction.
    Source: https://modelcontextprotocol.io (official MCP docs, per search results 2026-10-26)
 4. AGENTS.md canonical instruction file — one instruction source, other files

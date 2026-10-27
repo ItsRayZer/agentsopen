@@ -1,6 +1,6 @@
 {
   "$schema": "/schemas/registry-0.1.0.json",
-  "contentHash": "sha256:f88d04213a4be423efb62e1f65273b5f899911f0cf6426158d61fe4362770339",
+  "contentHash": "sha256:b6db3fe2c9456934007baebf3d3c27d88700d4687fd0cdb964703ae80875a06b",
   "counts": {
     "connector-required": 30,
     "prompt-only": 31,
@@ -214,7 +214,7 @@
       "excludedReason": "n/a",
       "id": "custom-connector-setup",
       "input": "plain text (discovery query — no workspace call)",
-      "limits": "describes a setup flow only; it does not connect anything from inside AI Workspace; credentials go through the new connector's own secure flow, never through this workspace",
+      "limits": "describes a setup flow only; it does not connect anything from inside AgentsOpen; credentials go through the new connector's own secure flow, never through this workspace",
       "output": "none — registry entry only; result comes from agent's own channel, never from this workspace",
       "permissions": "none",
       "purpose": "Describe how a new service connector is set up through its own documented secure flow, without connecting anything here.",
@@ -1058,7 +1058,7 @@
       "limits": "prompt-only-template | no-live-service-call | no-account | no-booking | no-send",
       "output": "al:1 + JSON MCP tool definition with server-side secret-hygiene and 100KB pack constraints",
       "permissions": "none",
-      "purpose": "Template for authoring Model Context Protocol (MCP) tool, resource, and prompt schemas compatible with AI Workspace al:1/ac:1 packs.",
+      "purpose": "Template for authoring Model Context Protocol (MCP) tool, resource, and prompt schemas compatible with AgentsOpen al:1/ac:1 packs.",
       "references": [
         "none"
       ],

@@ -45,6 +45,8 @@
   <url><loc>https://ai-ws.vercel.app/integration.js</loc></url>
   <url><loc>https://ai-ws.vercel.app/LICENSE</loc></url>
   <url><loc>https://ai-ws.vercel.app/llms.txt</loc></url>
+  <url><loc>https://ai-ws.vercel.app/logo-agentsopen-transparent.png</loc></url>
+  <url><loc>https://ai-ws.vercel.app/logo-agentsopen.jpg</loc></url>
   <url><loc>https://ai-ws.vercel.app/logo-ai.jpg</loc></url>
   <url><loc>https://ai-ws.vercel.app/logo-main.jpg</loc></url>
   <url><loc>https://ai-ws.vercel.app/manifest.json</loc></url>
@@ -211,6 +213,7 @@
   <url><loc>https://ai-ws.vercel.app/tools-callable.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/tools.json</loc></url>
   <url><loc>https://ai-ws.vercel.app/tools.txt</loc></url>
+  <url><loc>https://ai-ws.vercel.app/topics.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/v7.js</loc></url>
   <url><loc>https://ai-ws.vercel.app/v71.js</loc></url>
   <url><loc>https://ai-ws.vercel.app/v72.js</loc></url>
@@ -248,6 +251,7 @@
   <url><loc>https://ai-ws.vercel.app/views/talk.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/views/timeline.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/views/tracker.txt</loc></url>
+  <url><loc>https://ai-ws.vercel.app/views/unified.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/views/vault.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/views/workshop.txt</loc></url>
   <url><loc>https://ai-ws.vercel.app/vocab.al</loc></url>

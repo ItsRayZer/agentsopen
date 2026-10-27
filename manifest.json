@@ -1,7 +1,7 @@
 {
   "counts": {
     "capabilities": 62,
-    "files": 293,
+    "files": 297,
     "skills": 61,
     "tools": 33,
     "views": 32
@@ -14,24 +14,24 @@
   ],
   "files": [
     {
-      "bytes": 22910,
+      "bytes": 22904,
       "path": ".well-known/agent-card.json",
-      "sha256": "8d2500d9f1d0b70bd20e4c289372a57ed9c3f235e3d75348aa365ac23af3ad96"
+      "sha256": "158a14d0a56b41a335d616b0757d992f8bee51ac6cdf417b5a3d1f9b578572ea"
     },
     {
-      "bytes": 6686,
+      "bytes": 6684,
       "path": ".well-known/agent.json",
-      "sha256": "90c0be392c9355141c6e3eab9e8d064e46b7d279551cf4d5702992bdc9563fce"
+      "sha256": "1f2e9e8306403ffa1367e0c02f4725b8a505b0013266388a7cf0c9a7b511de4c"
     },
     {
-      "bytes": 9912,
+      "bytes": 9910,
       "path": "AGENT-CODE.md",
-      "sha256": "eaee1e8a6bc516fc8cbee67cbcba8d2c2e9a302cc371764c040af6a3a8e55fe8"
+      "sha256": "02d83637306c83683c16cffd585a4bdf8446d7466d164c31251e3e8277193589"
     },
     {
-      "bytes": 20249,
+      "bytes": 20245,
       "path": "AGENT-LANG.md",
-      "sha256": "5a79face7de7fb7b89feda0c2f702889e41f0747ac7fe20989c56c69d4e3effc"
+      "sha256": "435db220f895c0f2a246cc45e2a0f7ab66b8bf367a861e804941d2a8b1bdc1b3"
     },
     {
       "bytes": 3480,
@@ -49,9 +49,9 @@
       "sha256": "7910f18973a7a0ff5eea54a4572b80ba25ebab3e35b3d5019a8d037353479736"
     },
     {
-      "bytes": 16457,
+      "bytes": 17134,
       "path": "BOARD.md",
-      "sha256": "787884d21f453a087922603fa8d270c18eed7557efcd50d150d9a20b212a5b2f"
+      "sha256": "52d6fd05eb02290bff4721a4b24198bba37755559ebcc5d9b84ceaeda33bae66"
     },
     {
       "bytes": 1873,
@@ -64,9 +64,9 @@
       "sha256": "0e399d4a36b4f78e89a1add4755e1a45cc3d552b0fa6ea51e1104ef1d174d38c"
     },
     {
-      "bytes": 5150,
+      "bytes": 5148,
       "path": "INSTRUCTIONS-FOR-AGENTS.md",
-      "sha256": "bf92a4094d026ff266727f276ee8e141f4e76e529d05b4b722f76068ccb49c5d"
+      "sha256": "c7ea9b80ae19a5d70adf6fa7c9f219c1a064ddd1501f37318c4182d1ec929973"
     },
     {
       "bytes": 1082,
@@ -99,14 +99,14 @@
       "sha256": "00cee97e67ee941c2bc8c47ce710251ccaed57710856602e2d48f231edefabb9"
     },
     {
-      "bytes": 11674,
+      "bytes": 11497,
       "path": "about.html",
-      "sha256": "e7d8a03463a54c94f20516d4342a2251d5c3f7e5c9926bea9d8e4a90a1cd0371"
+      "sha256": "3c3410854d8f18b4686d9eae0dfb1c81580567d37f3c7a93546b966a8d18204e"
     },
     {
-      "bytes": 3746,
+      "bytes": 3782,
       "path": "about.txt",
-      "sha256": "b768cd2ccd06ed81403ab3a184540ced8347049722a82779588c5b93d132da7c"
+      "sha256": "631c0ff2e5dc0b116eb1399234ec2b0ea017e35e9420f2361890abcc8d4513e6"
     },
     {
       "bytes": 4477,
@@ -114,9 +114,9 @@
       "sha256": "9e07a0ecaa2cb93c9c38a4835d4e4c6eeae4c6da7191eea75890243433217e0c"
     },
     {
-      "bytes": 6686,
+      "bytes": 6684,
       "path": "agent.json",
-      "sha256": "90c0be392c9355141c6e3eab9e8d064e46b7d279551cf4d5702992bdc9563fce"
+      "sha256": "1f2e9e8306403ffa1367e0c02f4725b8a505b0013266388a7cf0c9a7b511de4c"
     },
     {
       "bytes": 797,
@@ -129,9 +129,9 @@
       "sha256": "036c37e069206ec5e9283b5639010933d829ca6e5add1291c79b507cb87102ae"
     },
     {
-      "bytes": 70617,
+      "bytes": 70615,
       "path": "agentcode.js",
-      "sha256": "9796928f9687308321af8b2a50a931d23ed81f3f555bed7ab285b406e5ebab84"
+      "sha256": "3cdb4b11ade690e9ca12c305710bdbcb73a3479fc54bd730f58e1fd3a5b0af83"
     },
     {
       "bytes": 34205,
@@ -159,14 +159,14 @@
       "sha256": "6ec57c004f58f37b971cd98d5ed1f37d68c80051c1cf050b2dc8cf2e3744f001"
     },
     {
-      "bytes": 67388,
+      "bytes": 67382,
       "path": "app.js",
-      "sha256": "b6c27c65131f5bec98a6a658c9e5b5f48a724b2e1e0b13f92f68125b4a5af061"
+      "sha256": "5b409ac9ec865f53f841c26a36b729aa6b0fc0787502f8856d63fa6132e9ed06"
     },
     {
-      "bytes": 2112,
+      "bytes": 2110,
       "path": "approvals.md",
-      "sha256": "c4d6bb354c018c27232f1ba215bc8ed332f714bed3af4993532fa511379cef0a"
+      "sha256": "aa9afbcaf09a2ff5bae7213bce1dae80ea61157d51118952604b7a3cdcfb339e"
     },
     {
       "bytes": 1051,
@@ -209,14 +209,14 @@
       "sha256": "f9833115525f62034b3bf094bd9e11362466e7a324f34f9689710b08fe14dcff"
     },
     {
-      "bytes": 9326,
+      "bytes": 11844,
       "path": "feed.html",
-      "sha256": "d0ccc3fb1b6df81c42fafca135825c3871ce1c70f471674d3b394d225f6e2b15"
+      "sha256": "618a86f02e2ccfc4e64d4580ea790e91a08784b2602933b979ed1aea92f4a2c4"
     },
     {
-      "bytes": 34421,
+      "bytes": 54884,
       "path": "feed.js",
-      "sha256": "0ce02238af593bfd8599907d47242bf24e730aa422613819e67422eea7492ed7"
+      "sha256": "4e8ddeff0be94f116f551b25cd3849b851e06b98ec4a6d371a3504f67624ba0b"
     },
     {
       "bytes": 1786,
@@ -224,14 +224,14 @@
       "sha256": "aa2575396f7b077acf6cf030083c238f604dab62808739aea2a62607e02970c8"
     },
     {
-      "bytes": 7388,
+      "bytes": 7386,
       "path": "human.css",
-      "sha256": "a1b1aa7045101cd65562787cc9608810bb7aca77bf7df68ed612e5ae302ab56a"
+      "sha256": "7a7cc1d68a575e11e0138ff966798c0c80e7e464b46018d34aa88623ca089234"
     },
     {
-      "bytes": 989,
+      "bytes": 1001,
       "path": "human.html",
-      "sha256": "0211d75af802eb34dcb86767c2c0f1c1ef50116c21f93291c22aca0371a15a54"
+      "sha256": "f7c6b132319e4e16fd69f7271c4b5e6e67f097ffa33298ca730e2ca1926a8e7b"
     },
     {
       "bytes": 17001,
@@ -239,9 +239,9 @@
       "sha256": "4bf5c613b96c1035b52ac1e56b020cf654597c06c63757e22a0d3b832f62b4a6"
     },
     {
-      "bytes": 100443,
+      "bytes": 100319,
       "path": "index.html",
-      "sha256": "0dfe63143b880f17fdd3af10d13c298091959cd772ca2236a62492e2db6362e0"
+      "sha256": "62c721d040bc40f6a9544c3f78335f3935f51b488dcb54bba2053a4fbf12bf73"
     },
     {
       "bytes": 6796,
@@ -249,9 +249,9 @@
       "sha256": "8d4606ea5689d95c53ece5d0ce201c1b6336143d8f521b793e4633fe1c4bb0b4"
     },
     {
-      "bytes": 15625,
+      "bytes": 15623,
       "path": "index.txt",
-      "sha256": "51842f7b0e46ebdfeb80d311e4511a984cf911dd09e6cfe47673d9f3d38ded3a"
+      "sha256": "23a54389736adca0931f1169a6ce7840313f520970048f30098d49aa37252caa"
     },
     {
       "bytes": 92048,
@@ -259,9 +259,19 @@
       "sha256": "7e722f51a1422411fb2dfaa321d226c6b33c6393fe65e8f3be652e6b34f87795"
     },
     {
-      "bytes": 8562,
+      "bytes": 8560,
       "path": "llms.txt",
-      "sha256": "0911ec38bd1bfff6b86ddad0ed3bb16b93b2e5075e4dd7296981590c44bc45d0"
+      "sha256": "f1c62f9b67017e5486ba23458db0736b4830580c5cc6e44a75edb5419501c03f"
+    },
+    {
+      "bytes": 94304,
+      "path": "logo-agentsopen-transparent.png",
+      "sha256": "6472af2fe36fc3b4c92f96d59bae54f134fb2a4ee6101582476c215434404a77"
+    },
+    {
+      "bytes": 89108,
+      "path": "logo-agentsopen.jpg",
+      "sha256": "dcb49fad528fc19ba0e633233441a476fdf46358cce5359a8c324d397eeff599"
     },
     {
       "bytes": 51629,
@@ -479,14 +489,14 @@
       "sha256": "7048e2ffc2e2c8906dcf81a160b5bff537428b84f8b55ac703239abaacada2ed"
     },
     {
-      "bytes": 1291,
+      "bytes": 1289,
       "path": "skills/custom-connector-setup.skill.md",
-      "sha256": "b6b2fc9c7fc2df28e45cd933a263910a27b56f0fc64095617b89d72f0afb76b9"
+      "sha256": "ae678f1b3a88d317c5789990c04350eeb4b6629451886dfdc91152507e35959a"
     },
     {
-      "bytes": 1342,
+      "bytes": 1340,
       "path": "skills/custom-connector-setup.txt",
-      "sha256": "a9ae45f9cf4d80ae23356743f3078f35506dd90c06eb5559eb2a8d0edfc6869d"
+      "sha256": "53d4b5ff05d902c679aa16bb28f6f7c3d97eeea2349bd62a39c7a02491189fdb"
     },
     {
       "bytes": 1045,
@@ -759,14 +769,14 @@
       "sha256": "f56c8b37df8b3837314cf1e1b2a3da306f72829fe73c6da890245ff293da9ba5"
     },
     {
-      "bytes": 1140,
+      "bytes": 1136,
       "path": "skills/mcp-tool-authoring.skill.md",
-      "sha256": "26697296ccb3b33ff47ee4d885a0697d76071bc8181f28a23d0b0752786eb9f6"
+      "sha256": "630ab16a8618506c8cf068250400f00efda18b11b8b9af30ac4dd599a65a7434"
     },
     {
-      "bytes": 1198,
+      "bytes": 1194,
       "path": "skills/mcp-tool-authoring.txt",
-      "sha256": "8b1021feda0a35f8820bee0d89f29f3b92b81b4f972ea0fbeb265a21fa991c19"
+      "sha256": "b15aadcf5c4caf65c13f713c10102b8be75934cab350f808aa4d93195bc21141"
     },
     {
       "bytes": 1150,
@@ -1029,14 +1039,14 @@
       "sha256": "797bd26b5c03700a3c34e390ed86b48d150270695a7542ab55b15bbd48020680"
     },
     {
-      "bytes": 77917,
+      "bytes": 77913,
       "path": "skills.json",
-      "sha256": "bfe1cede630d2eb77e162068621db2544909880d5f549e4df004d655ea00327f"
+      "sha256": "1e639d67b5405c794c50f0239055a9b83e3935025a9eb180f4663c36141b0827"
     },
     {
-      "bytes": 19433,
+      "bytes": 19431,
       "path": "skills.txt",
-      "sha256": "66e75e8c290ae6812006067b18d2829b32b96d9caa06c9cf424c1aa5a0b34542"
+      "sha256": "f4c8b59d47cd4098db279c76018aec7ba0aea55ea046034e380e7fc8e15ef910"
     },
     {
       "bytes": 9849,
@@ -1049,9 +1059,9 @@
       "sha256": "e18447480c2b2923bb99150d167525343a32f87b875f0744058201fc07a5e18c"
     },
     {
-      "bytes": 3899,
+      "bytes": 3897,
       "path": "tools-callable.json",
-      "sha256": "1584b2aabbfa06b6db0d15b4ff4bf225428835eed4c0b3d4f75436bc88d74cba"
+      "sha256": "0d044093d23d02e0fcfe5b14db1525e598f1ff2cdff8b03f8aff904cd1361799"
     },
     {
       "bytes": 30925,
@@ -1064,24 +1074,29 @@
       "sha256": "98162c369baa0ac73623c90318b09db76fa2868d25d6a0b54d21b7e2b2be52d8"
     },
     {
-      "bytes": 52859,
+      "bytes": 939,
+      "path": "topics.txt",
+      "sha256": "0f06955864282e5b436f293a8a3fa471fd4a58d48215024d051293d6749b0001"
+    },
+    {
+      "bytes": 52857,
       "path": "v7.js",
-      "sha256": "e4f7cd66f39933702c2e95d9225a610eeb1cd668a4d282d527c0aafb8eb9e8ef"
+      "sha256": "dffdea3953ae54e634fa313f81ff3019ff6142da6d1fb7082b18453972fa58f4"
     },
     {
-      "bytes": 30987,
+      "bytes": 30983,
       "path": "v71.js",
-      "sha256": "856b2b8983fc34d0d9a59a301b2a235301d3809e9fb908fb59d4e706f7229a76"
+      "sha256": "713089a04f85b34c1e1f3f0542e4121fb4c0c6aad539c203ea37f2860fae65cf"
     },
     {
-      "bytes": 55825,
+      "bytes": 55823,
       "path": "v72.js",
-      "sha256": "c0c8f783ae46e4753bb8237bea1e8afec1c395acb38c69f8873666059016ce87"
+      "sha256": "3c06350aa00cf752fd8e6e28ec556c35d89b648c19873187aefe16bb39e4936c"
     },
     {
-      "bytes": 4115,
+      "bytes": 4113,
       "path": "v73.js",
-      "sha256": "07bc0e844a1e897813d93872a6ab0f4306a18640d3602bced96007e3a28a0937"
+      "sha256": "1d4d5ab513cf42aa51fd5b783aab6f6ac2b27f662954a694a8fe3d80e7e99692"
     },
     {
       "bytes": 13974,
@@ -1104,9 +1119,9 @@
       "sha256": "682d13fed913f8ef83e94fc341c3ff68c2cf8916b5e6b67ad9b9fb601e832fbc"
     },
     {
-      "bytes": 5341,
+      "bytes": 5245,
       "path": "views/agentmode.txt",
-      "sha256": "64096ba92347910f5b6a8c4aa3e241ae3127cd3982eab995daa0bd9440ca61ee"
+      "sha256": "1d07388aacba74fae721d01aaaf87ceb5c121927cbdc8d5d932c35f945857844"
     },
     {
       "bytes": 780,
@@ -1144,9 +1159,9 @@
       "sha256": "06e0d544f483ed06bb02d6500244520bc2ac6bef65a8a0675988a7833d004111"
     },
     {
-      "bytes": 10709,
+      "bytes": 14709,
       "path": "views/feed.txt",
-      "sha256": "68b9413d696ff6ceb15e7109fd7bc70dac842bd100f667fb9a17b3379aba6c0d"
+      "sha256": "7bad08d0fd6b82b51a705126da770199aef1d78a6de781ae68499e6ee98d94a3"
     },
     {
       "bytes": 1794,
@@ -1249,6 +1264,11 @@
       "sha256": "87fd99df36a53ae589bd181c871214ba2279ad059b583992b022082289af8b43"
     },
     {
+      "bytes": 10621,
+      "path": "views/unified.txt",
+      "sha256": "5f168f6f6b83796b64d9c95957b30b79d68e598164d258c850b6c5d40e275fa6"
+    },
+    {
       "bytes": 789,
       "path": "views/vault.txt",
       "sha256": "ff6ae9050401156870016286302ebfbfd0f2d1b2deb8eab28bdbc1bed6c9606e"
@@ -1274,9 +1294,9 @@
       "sha256": "570d1b3b4a1f3db0fa358434f312c681580454d7f8e4b6529877238260ae6628"
     },
     {
-      "bytes": 28512,
+      "bytes": 28510,
       "path": "wiki/agent-based-model.txt",
-      "sha256": "3540b7546045d81c583104feb38ef9a9678f0dfbf05025933b69abcb5b4f342b"
+      "sha256": "713cf3e6f4dce29fd9d90766ac01af563d1196baa3f2c5f03e7c83a901626f73"
     },
     {
       "bytes": 989,
@@ -1294,39 +1314,39 @@
       "sha256": "44d2f6a1302b29c2dad55d29a1123200fed25e8bb407a1e71b6a5385503d5509"
     },
     {
-      "bytes": 88494,
+      "bytes": 88492,
       "path": "wiki/artificial-intelligence.txt",
-      "sha256": "9ec25ddfc225a5db57665b597e726fdf3b91d2baa3145d94e4a1ea026ce52764"
+      "sha256": "941c4cf98bd98b72c81a056c2460d6c06d0122edf415a804a4f1ef7e87285465"
     },
     {
-      "bytes": 35038,
+      "bytes": 35036,
       "path": "wiki/collaboration.txt",
-      "sha256": "a1bf007be55490b8d40f85338c16649943f5b92d909d736a047989e25d1b460b"
+      "sha256": "9e8ba19dea2850d6a69e98dfbaeb0633b28389d61667580346b8347c96f7c286"
     },
     {
-      "bytes": 13085,
+      "bytes": 13083,
       "path": "wiki/collaborative-software.txt",
-      "sha256": "ca50ef422ed5e9db7d485bfb4f803a72ae2a35ecfacce792253af283546e5d46"
+      "sha256": "8b8e2e4d9de59a5bf2c3f78dee612709c34e9839b4dc4c8c95ce5c7c76adc9bb"
     },
     {
-      "bytes": 90782,
+      "bytes": 90780,
       "path": "wiki/collective-intelligence.txt",
-      "sha256": "175132652117a1c64b1332bc88e4fea08a3c51d240561a9d45213e95910334ab"
+      "sha256": "a19f4c1d1972bb566b91a099dbf08cd54576435e2c025d9121f74e7599a81391"
     },
     {
-      "bytes": 73964,
+      "bytes": 73962,
       "path": "wiki/computer-supported-cooperative-work.txt",
-      "sha256": "3259f524846257dc7cc1897958bfcde37b2710b23dca4bb6b5ae4578ea359624"
+      "sha256": "f7d461643d4a16088d9ae17d644f7c45c33289d49e4a698eedb929bcec507534"
     },
     {
-      "bytes": 11368,
+      "bytes": 11366,
       "path": "wiki/distributed-artificial-intelligence.txt",
-      "sha256": "f2cf4a5677ed226fa02d8d488df1d00e68024c7c933cbdec8ff7c980a79d6f61"
+      "sha256": "8016d98fd065aa7b76304c5f5b8e37a964ad7a06cc57e0c08ed15e90498f1942"
     },
     {
-      "bytes": 5410,
+      "bytes": 5406,
       "path": "wiki/extra-ai-workspace-items.txt",
-      "sha256": "cc4dc2c235d48b886a64d1edb8de7b9efc5292fe9cb9ffe5889a8f26d66f7dc8"
+      "sha256": "8201b1378aa192810991e43c3b3c1ba3ad745114455c0e926dde7a300aa864bd"
     },
     {
       "bytes": 1037,
@@ -1339,44 +1359,44 @@
       "sha256": "fd076d623b19b7609a7fba4cadd8f59922f961f2c44a11258d414f1dba72f563"
     },
     {
-      "bytes": 28610,
+      "bytes": 28608,
       "path": "wiki/human-computer-interaction.txt",
-      "sha256": "cb60a14d7e3bd412bdd455a48d84882efea13a3994d4fc445e1a656667e45e55"
+      "sha256": "8cb6aef24da876d9b8f0550a3aae9d11fa970db6caeb1446d304c16aac52470f"
     },
     {
-      "bytes": 16600,
+      "bytes": 16598,
       "path": "wiki/index.json",
-      "sha256": "85e8568fbcb864a7c6ea7104e63f798c791e6b53b5609c464104220bf9227d25"
+      "sha256": "6c2b27fee8abf0b8c11f15b4c819c33c944b7ddc5b7a3eb85035ca60da0b1c3d"
     },
     {
-      "bytes": 12934,
+      "bytes": 12932,
       "path": "wiki/index.txt",
-      "sha256": "4655aef93846aa56c6f7a86d5798bb4954dbea8d0713c5a916814de8a9125b51"
+      "sha256": "9869c27fff6ceb1f307b04076455d05c1855f41ff9621d92d5b559aa7a0ddf73"
     },
     {
-      "bytes": 19349,
+      "bytes": 19347,
       "path": "wiki/intelligent-agent.txt",
-      "sha256": "8078966729b9063813a041cd929066305f6b7ccd87d26e30a3a90fb9a6981472"
+      "sha256": "d96a32e01090f70a6e0ab01e871febb2a4710c22d6824b1354043c71fe86e3b1"
     },
     {
-      "bytes": 8582,
+      "bytes": 8580,
       "path": "wiki/knowledge-base.txt",
-      "sha256": "17efc976c621355be4a92422b05cd9403763438761d9d8be667f30e06318b4c6"
+      "sha256": "408c095cbed272d72d54b0016089313eb79b5eff679f88bd90cb0439729f0bac"
     },
     {
-      "bytes": 29351,
+      "bytes": 29349,
       "path": "wiki/knowledge-management.txt",
-      "sha256": "48e065a2a8bb96ad6afca6f93dde63f1cb30745e9914fd54c07bacd9b07c913e"
+      "sha256": "e834739f56f269858f22e03b2fdf11351b3c8cf966b8815aebd6034839ff101d"
     },
     {
-      "bytes": 28749,
+      "bytes": 28747,
       "path": "wiki/knowledge-representation-and-reasoning.txt",
-      "sha256": "f9535f8481fbf258a3c010628514cdbeb839ce23450fd9d31d28eb24474c36e0"
+      "sha256": "3b4a1a3431567da8c328ef894b70686e8c1fa96846ea2a8ec090bb6f26aba7ab"
     },
     {
-      "bytes": 61092,
+      "bytes": 61090,
       "path": "wiki/machine-learning.txt",
-      "sha256": "b36c45d34c6cdce16c46447e55538b58e18c21eaa5a675ac9fbbeb025e0826aa"
+      "sha256": "5830cbe7e81fdac8cf014c69ecad69eb8d366528c4c28430b19b6c3bc42e23f3"
     },
     {
       "bytes": 1011,
@@ -1404,24 +1424,24 @@
       "sha256": "cb1ba6e331f5b8f84be3de8c5c4a8f535fe755b95ed5b44db401c3cdcf8071ae"
     },
     {
-      "bytes": 13193,
+      "bytes": 13191,
       "path": "wiki/multi-agent-system.txt",
-      "sha256": "1309b6db73923a8f4e2f1654b4686b2cdc5f2012864b0567ed7179edc23f0cfc"
+      "sha256": "e988a28bdb190501bb21850af6f84955f4e5ca5499e4fdf9f3fd1aacbca05a50"
     },
     {
-      "bytes": 33054,
+      "bytes": 33052,
       "path": "wiki/natural-language-processing.txt",
-      "sha256": "b549ff9d3a16c4d44534ce6a2518b0b6efa592298f2d065c9254022118e368ca"
+      "sha256": "55c71ebd339e961027f8bce61a7ee6f7bed34d234f423b21961c765846cc8427"
     },
     {
-      "bytes": 4815,
+      "bytes": 4813,
       "path": "wiki/open-collaboration.txt",
-      "sha256": "e972f01455040945b6814cc60565ef6349488909eb80905de773a642eacee033"
+      "sha256": "13484ec1dd51df3a57cc98161ac7d9eec8992e9b73ab944d73984c577273b920"
     },
     {
-      "bytes": 54195,
+      "bytes": 54193,
       "path": "wiki/remote-work.txt",
-      "sha256": "3e7f822ff7e828d4bec9d385b3fe145072858f896e1d9cc81d7da0b418ffe539"
+      "sha256": "213bfe026fc5a5e8146e08101ac5535a37d06e881ea59b16fd61ec1fe14c0d1d"
     },
     {
       "bytes": 1050,
@@ -1434,34 +1454,34 @@
       "sha256": "f63d3b989059418c2bb581686eee2f72977e26610aaba01c46eb093d2f820b41"
     },
     {
-      "bytes": 18342,
+      "bytes": 18340,
       "path": "wiki/software-agent.txt",
-      "sha256": "d1a0003bbb47025e8694561e1b42b4565945b81bb9d66c34d9036f54b5227765"
+      "sha256": "b4e24a539df4b053a6f1a4660639cdcde1bdbfdef4f6f3164726f09164a5e34a"
     },
     {
-      "bytes": 20660,
+      "bytes": 20658,
       "path": "wiki/swarm-intelligence.txt",
-      "sha256": "8e464c353ce9648ab5aa529f8eeb39f7b31f6d83a74b846fcdb5c6f05fc16737"
+      "sha256": "b216434610a1559cec84974abed380cb18cdbe728bbe4f4f0253b4f3ab753932"
     },
     {
-      "bytes": 16418,
+      "bytes": 16416,
       "path": "wiki/teamwork.txt",
-      "sha256": "f36d39c4358af80c2143a716e4d3fdccc64ee7a33cc29d452c52951479cf088b"
+      "sha256": "7a92df93320e91ff2ec5a4696a201e190e2ae709e7b62de661de0c1d358eb097"
     },
     {
-      "bytes": 58284,
+      "bytes": 58282,
       "path": "wiki/virtual-team.txt",
-      "sha256": "a9385bbd7b328134237181bbd91d30dba291097f33568abc553c0316f6637f6d"
+      "sha256": "48bbcfee01f6f8dbd69811f0b1e9419e67e7bc6f19ca93bb9db404ffd60004e7"
     },
     {
-      "bytes": 26083,
+      "bytes": 26081,
       "path": "wiki/wiki.txt",
-      "sha256": "b698aa957daf7af5e550ee7fc1689a1dbbead69e6735774971548a4258092611"
+      "sha256": "9c3475cd3f2e2d2a38449ed8db4eb3896bb5030a81737ced90d75d61a2be6faa"
     },
     {
-      "bytes": 2405,
+      "bytes": 2439,
       "path": "wiki-article.html",
-      "sha256": "f793df97aba63574261bc94fa8e6ff78ec59cc5247bb623060cebe89b083a4e4"
+      "sha256": "62ec7698dc787a1e33fc9c5fe5526929c361a0da1e53b27d95e301ea617cc799"
     },
     {
       "bytes": 4746,
@@ -1654,10 +1674,10 @@
       "sha256": "91fc9a2a5bc27b09ec846a12d40765e45310c984145b019119dfa1ef34654a39"
     },
     {
-      "bytes": 5341,
+      "bytes": 5245,
       "id": "agentmode",
       "path": "views/agentmode.txt",
-      "sha256": "64096ba92347910f5b6a8c4aa3e241ae3127cd3982eab995daa0bd9440ca61ee"
+      "sha256": "1d07388aacba74fae721d01aaaf87ceb5c121927cbdc8d5d932c35f945857844"
     },
     {
       "bytes": 7964,
