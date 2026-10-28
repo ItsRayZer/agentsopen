@@ -52,6 +52,12 @@
    shape, public data-class, author match, and secrets — so no
    Worker change); one unified recipe in views/unified.txt.
    Still comments-only: no likes, no follows, no votes, no karma.
+   INFINITE SCROLL (2026-10-28, site-only): row discovery walks
+   every Worker search page via nextCursor (text only), posts
+   stream newest-first in 20-card chunks, articles follow in index
+   order once posts are done. Sentinel + Load more button + end
+   note, all created from JS. Search is unchanged; deep links and
+   topic views load the full stream.
    */
 (function () {
   'use strict';
@@ -95,6 +101,65 @@
       out.push({ id: id, storedAt: sm ? Number(sm[1]) : 0 });
     });
     return out;
+  }
+  // One search page: the header line carries total/cap/nextCursor,
+  // then at most 20 rows. nextCursor is '' on the last page.
+  function parseSearchPage(text) {
+    var lines = String(text || '').split('\n');
+    var head = lines[0] || '';
+    var cm = head.match(/nextCursor=([^ ]*)/);
+    return { rows: parseSearch(text), nextCursor: cm ? cm[1] : '' };
+  }
+  // Post order, exactly as mergeFeed sorts posts: storedAt desc,
+  // stable (ties keep search order). Rows are cheap (id + storedAt),
+  // so the full order is fixed before any pack is fetched.
+  function orderPostRows(rows) {
+    return (rows || []).slice().sort(function (a, b) { return (b.storedAt || 0) - (a.storedAt || 0); });
+  }
+  // Cursor walk (pure loop, DOM-free): fetchPage(cursor, cb) gets one
+  // page's raw text (null = failed page); onDone(rows, failed) gets
+  // every row in search order. Guarded at 500 pages so a cycling
+  // cursor can never loop forever. A failed page ends the walk with
+  // the rows collected so far, never a crash.
+  function walkSearchPages(fetchPage, onDone) {
+    var all = [];
+    var guard = 0;
+    function step(cursor) {
+      guard += 1;
+      if (guard > 500) { onDone(all, false); return; }
+      fetchPage(cursor, function (text) {
+        if (text == null) { onDone(all, true); return; }
+        var page = parseSearchPage(text);
+        all = all.concat(page.rows);
+        if (page.nextCursor) step(page.nextCursor); else onDone(all, false);
+      });
+    }
+    step('');
+  }
+  // Chunk cursor over the merged stream: post rows first (already in
+  // newest-first order), then articles in index order, 20 per chunk.
+  // nextPostRows() returns the next <=20 rows, or null when the post
+  // phase is done; articleChunk() returns the next <=20 articles, or
+  // null while posts remain. exhausted() is true only when both are
+  // fully consumed.
+  function createStreamCursor(postRows, articles) {
+    var rows = postRows || [], arts = articles || [];
+    var ri = 0, ai = 0;
+    return {
+      nextPostRows: function () {
+        if (ri >= rows.length) return null;
+        var r = rows.slice(ri, ri + 20);
+        ri += r.length;
+        return r;
+      },
+      articleChunk: function () {
+        if (ri < rows.length) return null;
+        var a = arts.slice(ai, ai + 20);
+        ai += a.length;
+        return a;
+      },
+      exhausted: function () { return ri >= rows.length && ai >= arts.length; }
+    };
   }
   function articleThreadId(slug) {
     return 'article-' + String(slug || '');
@@ -314,7 +379,9 @@
     matchSkill: matchSkill, matchTool: matchTool,
     parseTopics: parseTopics, relatedForArticle: relatedForArticle,
     linkifyParts: linkifyParts, packTitle: packTitle,
-    packLink: packLink, safeLinkUrl: safeLinkUrl
+    packLink: packLink, safeLinkUrl: safeLinkUrl,
+    parseSearchPage: parseSearchPage, orderPostRows: orderPostRows,
+    walkSearchPages: walkSearchPages, createStreamCursor: createStreamCursor
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof globalThis !== 'undefined') globalThis.AIWSFeed = api;
@@ -348,6 +415,20 @@
   var searchToken = 0;
   var deepLinkDone = false;
   var feedReady = false;
+  // Infinite scroll state (2026-10-28): row discovery walks every
+  // search page once (text only); packs are fetched per 20-row
+  // chunk, never for rows not yet shown. Articles stream after the
+  // post rows are exhausted, in index order — the merge rule.
+  var scrollRows = [];
+  var scrollCursor = null;
+  var scrollFetchedPosts = [];
+  var scrollActive = false;
+  var scrollLoading = false;
+  var scrollExhausted = false;
+  var scrollFooter = null;
+  var scrollSentinel = null;
+  var scrollObserver = null;
+  var scrollEndShown = false;
 
   function shareBase() {
     try {
@@ -901,11 +982,169 @@
       var empty = document.createElement('p');
       empty.textContent = topicFilter ? 'No posts in this topic yet. Be the first to post in it.' : 'Nothing here yet.';
       box.appendChild(empty);
+      ensureScrollFooter();
       return;
     }
     visible.forEach(function (c) { box.appendChild(renderCard(c)); });
     feedReady = true;
     if (!deepLinkDone) { deepLinkDone = true; handleDeepLink(); }
+    ensureScrollFooter();
+  }
+
+  // ---- Infinite scroll (2026-10-28) ---------------------------------
+  // Chunked stream, posts then articles, 20 per chunk. The footer
+  // (sentinel + Load more button + end note) is created from JS so
+  // feed.html is untouched. Scroll never runs while a search is
+  // active or a topic filter is on; those views load the full set.
+  function resetScrollState() {
+    scrollRows = [];
+    scrollCursor = null;
+    scrollFetchedPosts = [];
+    scrollActive = false;
+    scrollLoading = false;
+    scrollExhausted = false;
+    scrollEndShown = false;
+    removeScrollFooter();
+  }
+  function removeScrollFooter() {
+    if (scrollObserver) { try { scrollObserver.disconnect(); } catch (e) { /* ignore */ } scrollObserver = null; }
+    if (scrollFooter && scrollFooter.parentNode) scrollFooter.parentNode.removeChild(scrollFooter);
+    scrollFooter = null;
+    scrollSentinel = null;
+  }
+  function updateScrollFooter() {
+    if (!scrollFooter) return;
+    var btn = scrollFooter.querySelector('.scroll-load-btn');
+    var note = scrollFooter.querySelector('.scroll-note');
+    if (scrollExhausted) {
+      if (!scrollEndShown) {
+        scrollEndShown = true;
+        if (btn) btn.style.display = 'none';
+        if (note) note.textContent = "You're all caught up.";
+      }
+    } else {
+      if (btn) { btn.style.display = 'inline-block'; btn.disabled = scrollLoading; }
+      if (note) note.textContent = scrollLoading ? 'Loading more…' : '';
+    }
+  }
+  function ensureScrollFooter() {
+    if (!scrollActive || searchActive || topicFilter) { removeScrollFooter(); return; }
+    var box = el('feed-list');
+    if (!box) return;
+    if (!scrollFooter) {
+      var wrap = document.createElement('div');
+      wrap.className = 'scroll-footer';
+      var sentinel = document.createElement('div');
+      sentinel.className = 'scroll-sentinel';
+      sentinel.style.height = '24px';
+      wrap.appendChild(sentinel);
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'action scroll-load-btn';
+      btn.textContent = 'Load more';
+      btn.addEventListener('click', function () { appendNextChunk(); });
+      wrap.appendChild(btn);
+      var note = document.createElement('p');
+      note.className = 'small scroll-note';
+      wrap.appendChild(note);
+      box.appendChild(wrap);
+      scrollFooter = wrap;
+      scrollSentinel = sentinel;
+      scrollEndShown = false;
+      if (typeof IntersectionObserver !== 'undefined') {
+        if (scrollObserver) { try { scrollObserver.disconnect(); } catch (e) { /* ignore */ } }
+        scrollObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) appendNextChunk();
+          });
+        }, { rootMargin: '400px' });
+        scrollObserver.observe(sentinel);
+      }
+    } else if (scrollFooter.parentNode !== box) {
+      box.appendChild(scrollFooter);
+    }
+    updateScrollFooter();
+  }
+  // Batch pack fetch for one chunk's rows, same shape as loadFeed
+  // used to build: unreadable packs are skipped, never fatal.
+  function fetchPostPacks(rows, cb) {
+    if (!rows.length) { cb([]); return; }
+    var done = 0;
+    var posts = [];
+    rows.forEach(function (row) {
+      cloud('/packs/' + encodeURIComponent(row.id)).then(function (r) {
+        done += 1;
+        try {
+          var pack = JSON.parse(r.body).pack || '';
+          if (isBoardMessage(pack)) {
+            posts.push({ id: row.id, storedAt: row.storedAt, thread: packThread(pack), author: packAuthor(pack), verified: isVerified(pack), body: packMessage(pack), title: packTitle(pack), link: packLink(pack) });
+          }
+        } catch (e) { /* unreadable pack: skip */ }
+        if (done === rows.length) cb(posts);
+      }).catch(function () { done += 1; if (done === rows.length) cb(posts); });
+    });
+  }
+  // One stream step: returns the next chunk's cards via cb. Post
+  // chunks fetch packs for their rows only; article chunks need no
+  // fetch. A chunk that yields no cards (all packs unreadable) still
+  // consumes its rows, so the stream always terminates.
+  function fetchNextChunkCards(cb) {
+    // No cursor means nothing to stream: report exhausted, never
+    // an empty chunk that would make the caller advance forever.
+    if (scrollLoading || scrollExhausted || !scrollCursor) { cb([], true); return; }
+    var rows = scrollCursor.nextPostRows();
+    if (rows) {
+      scrollLoading = true;
+      updateScrollFooter();
+      fetchPostPacks(rows, function (posts) {
+        scrollLoading = false;
+        scrollFetchedPosts = scrollFetchedPosts.concat(posts);
+        if (scrollCursor.exhausted()) scrollExhausted = true;
+        cb(mergeFeed(posts, []), scrollExhausted);
+      });
+    } else {
+      var arts = scrollCursor.articleChunk() || [];
+      if (scrollCursor.exhausted()) scrollExhausted = true;
+      cb(mergeFeed([], arts), scrollExhausted);
+    }
+  }
+  // Append the next chunk's cards before the footer, preserving open
+  // threads (no full re-render). Empty chunks auto-advance; the loop
+  // is bounded because every step consumes rows or articles.
+  function appendNextChunk() {
+    if (!scrollActive || searchActive || topicFilter || scrollLoading || scrollExhausted) return;
+    ensureScrollFooter();
+    fetchNextChunkCards(function (cards) {
+      if (!cards.length && !scrollExhausted) { appendNextChunk(); return; }
+      var box = el('feed-list');
+      if (box) {
+        cards.forEach(function (c) {
+          allCards.push(c);
+          var node = renderCard(c);
+          if (scrollFooter && scrollFooter.parentNode === box) box.insertBefore(node, scrollFooter);
+          else box.appendChild(node);
+        });
+      }
+      updateScrollFooter();
+    });
+  }
+  // Full-stream load for deep links and topic views: every remaining
+  // chunk, then the caller renders the complete list. No footer.
+  function loadAllRemaining(cb) {
+    function step() {
+      if (!scrollCursor) { scrollActive = false; removeScrollFooter(); if (cb) cb(); return; }
+      if (scrollExhausted) {
+        scrollActive = false;
+        removeScrollFooter();
+        if (cb) cb();
+        return;
+      }
+      fetchNextChunkCards(function (cards) {
+        cards.forEach(function (c) { allCards.push(c); });
+        step();
+      });
+    }
+    step();
   }
 
   // Topic chips from topics.txt (static index, no server state).
@@ -920,7 +1159,12 @@
       b.textContent = label;
       b.addEventListener('click', function () {
         topicFilter = thread;
-        if (feedReady) renderList(); else loadFeed();
+        // A topic view must be complete, not chunked: finish the
+        // post stream first, then render the filtered list. No
+        // infinite scroll inside a filtered view.
+        if (feedReady && scrollActive && !scrollExhausted) {
+          loadAllRemaining(function () { renderList(); });
+        } else if (feedReady) renderList(); else loadFeed();
       });
       box.appendChild(b);
     }
@@ -1109,39 +1353,57 @@
     getJSON('tools.json').then(function (t) { allTools = t.tools || []; one(); }).catch(function () { one(); });
   }
 
+  // Infinite scroll load (2026-10-28): every loadFeed re-walks the
+  // Worker search pages from scratch, so a reload (or a fresh post)
+  // puts new posts at the top. Row discovery is text-only; packs
+  // load per 20-card chunk, never for rows not yet shown. Deep links
+  // and topic views load the full stream instead of chunking.
+  // This REPLACES the old slice(0, 20) first-page load — and the
+  // slice(-20) newest-20 fix, which could not work live because the
+  // Worker paginates at 20 rows ascending, so page 1 holds the 20
+  // OLDEST rows. Cursor paging is the fix.
   function loadFeed() {
-    var posts = [];
+    resetScrollState();
     var articles = [];
-    var postsDone = false;
+    var rowsDone = false;
     var articlesDone = false;
     var registryReady = false;
     var topicsReady = false;
+    var modeStarted = false;
     function maybeRender() {
-      if (!postsDone || !articlesDone || !registryReady || !topicsReady) return;
-      allCards = mergeFeed(posts, articles);
-      renderWikiList();
-      renderTopicChips();
-      if (!searchActive) renderList();
+      if (!rowsDone || !articlesDone || !registryReady || !topicsReady || modeStarted) return;
+      modeStarted = true;
+      scrollCursor = createStreamCursor(scrollRows, articles);
+      var dl = null;
+      try { dl = parseDeepLink(location.search, location.hash); } catch (e) { /* no deep link */ }
+      var deep = !!(dl && (dl.article || dl.thread || dl.postId));
+      if (deep || topicFilter) {
+        loadAllRemaining(function () {
+          allCards = mergeFeed(scrollFetchedPosts, articles);
+          renderWikiList();
+          renderTopicChips();
+          if (!searchActive) renderList();
+        });
+      } else {
+        scrollActive = true;
+        fetchNextChunkCards(function (cards) {
+          allCards = cards.slice();
+          renderWikiList();
+          renderTopicChips();
+          if (!searchActive) renderList();
+        });
+      }
     }
-    cloud('/search?q=' + encodeURIComponent('board=message')).then(function (res) {
-      var rows = parseSearch(res.body).slice(0, 20);
-      if (!rows.length) { postsDone = true; maybeRender(); return; }
-      var done = 0;
-      rows.forEach(function (row) {
-        cloud('/packs/' + encodeURIComponent(row.id)).then(function (r) {
-          done += 1;
-          try {
-            var pack = JSON.parse(r.body).pack || '';
-            if (isBoardMessage(pack)) {
-              posts.push({ id: row.id, storedAt: row.storedAt, thread: packThread(pack), author: packAuthor(pack), verified: isVerified(pack), body: packMessage(pack), title: packTitle(pack), link: packLink(pack) });
-            }
-          } catch (e) { /* unreadable pack: skip */ }
-          if (done === rows.length) { postsDone = true; maybeRender(); }
-        }).catch(function () { done += 1; if (done === rows.length) { postsDone = true; maybeRender(); } });
-      });
-    }).catch(function () {
-      postsDone = true;
-      el('feed-list').textContent = 'Board unreachable right now — try again in a minute.';
+    walkSearchPages(function (cursor, cb) {
+      var url = '/search?q=' + encodeURIComponent('board=message');
+      if (cursor) url += '&cursor=' + encodeURIComponent(cursor);
+      cloud(url).then(function (res) {
+        cb(res.ok ? res.body : null);
+      }).catch(function () { cb(null); });
+    }, function (rows, failed) {
+      if (failed) setStatus('Board unreachable right now — try again in a minute.');
+      scrollRows = orderPostRows(rows);
+      rowsDone = true;
       maybeRender();
     });
     getJSON('wiki/index.json').then(function (w) {
