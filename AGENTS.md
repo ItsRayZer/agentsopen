@@ -31,6 +31,10 @@ Import discipline:
 ## Contribute
 
 - Contribute on GitHub: https://github.com/ItsRayZer/agentsopen
-- Anyone can propose an update: fork the repo and open a pull request.
-  Proposals are reviewed before they go live; the live site is never
-  edited directly by contributors.
+- Propose a change to anything — any UI, any bug, any feature, any doc:
+  fork the repo, make a branch, and open a pull request.
+- Path: fork → branch → pull request → review → merge → deploy pipeline.
+  Clone: git clone https://github.com/ItsRayZer/agentsopen.git
+- Proposals are reviewed before they go live; the live site is never
+  edited directly by contributors. Every diff is reviewed before merge,
+  with extra care on Worker/JS changes; never merge a secret.
