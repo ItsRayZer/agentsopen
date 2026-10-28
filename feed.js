@@ -234,6 +234,69 @@
     });
     return cards;
   }
+  // Feed-list thread units (pure, testable): group merged stream
+  // cards by thread id into ONE unit per thread. A post unit's main
+  // card is its earliest post (the starter by time); its replies
+  // follow in conversation order (storedAt-ascending). An article
+  // card heads its article-<slug> unit when reply posts exist for
+  // that thread; articles without replies are singleton units.
+  // Units WITH posts order by latest post in the thread (newest
+  // activity first); article singletons (no posts, no dates) come
+  // after, in index order — today's articles-after-posts rule.
+  // Posts with no thread each get their own unit (never merged).
+  // Grouping uses each post's EXISTING thread: posts are never
+  // moved between threads (packs are immutable, others' authorship).
+  function groupStreamCards(cards) {
+    var postGroups = {};
+    var articlesByThread = {};
+    var articleOrder = [];
+    (cards || []).forEach(function (c) {
+      if (c.kind === 'article') {
+        if (!articlesByThread[c.thread]) { articlesByThread[c.thread] = c; articleOrder.push(c); }
+        return;
+      }
+      if (c.kind !== 'post') return;
+      var key = c.thread ? c.thread : ('single:' + c.id);
+      if (!postGroups[key]) postGroups[key] = { thread: c.thread || '', posts: [] };
+      postGroups[key].posts.push(c);
+    });
+    var units = [];
+    Object.keys(postGroups).forEach(function (key) {
+      var g = postGroups[key];
+      var posts = g.posts.slice().sort(function (a, b) { return (a.storedAt || 0) - (b.storedAt || 0); });
+      var latest = 0;
+      posts.forEach(function (p) { if (p.storedAt > latest) latest = p.storedAt; });
+      var art = g.thread ? articlesByThread[g.thread] : null;
+      units.push({ thread: g.thread, kind: art ? 'article' : 'post', main: art || posts[0], posts: posts, article: art || null, latestAt: latest, size: posts.length + (art ? 1 : 0) });
+    });
+    articleOrder.forEach(function (a) {
+      if (!postGroups[a.thread]) {
+        units.push({ thread: a.thread, kind: 'article', main: a, posts: [], article: a, latestAt: 0, size: 1 });
+      }
+    });
+    var withPosts = units.filter(function (u) { return u.posts.length; });
+    var singletons = units.filter(function (u) { return !u.posts.length; });
+    withPosts.sort(function (a, b) { return (b.latestAt || 0) - (a.latestAt || 0); });
+    return withPosts.concat(singletons);
+  }
+
+  // Chunk thread units for endless scroll: fill each chunk up to
+  // ~budget cards without ever splitting a unit. A unit larger than
+  // the budget goes alone in its chunk, whole. Size counts rendered
+  // cards: reply posts plus the article card when one heads a unit.
+  function chunkUnits(units, budget) {
+    var chunks = [];
+    var cur = [];
+    var curSize = 0;
+    (units || []).forEach(function (u) {
+      var s = u.size || 1;
+      if (cur.length && curSize + s > budget) { chunks.push(cur); cur = []; curSize = 0; }
+      cur.push(u); curSize += s;
+    });
+    if (cur.length) chunks.push(cur);
+    return chunks;
+  }
+
   // Same verified pack shape human.js posts, with caller thread +
   // reply-to. replyTo "none" for a thread starter or an article reply.
   // Optional title/link (Phase A convention): added as title:/link:
@@ -362,7 +425,44 @@
     return out;
   }
 
+  // Thread tree builder (pure, testable): turns a flat, storedAt-
+  // ascending item list into a reply tree for the thread view.
+  // - The main post (starterId, when given and not 'none') is
+  //   excluded: it is shown above the chain, never duplicated in it.
+  // - A reply whose replyTo names another chain item becomes that
+  //   item's child; replies to 'none', to the starter, or to an
+  //   unknown id are top-level (orphans are shown, never dropped).
+  // - Children always stay in conversation order (oldest-first);
+  //   newestFirst only reverses the top level. Returns
+  //   { chain: [nodes], replyCount: n } where a node is
+  //   { item, children: [nodes] } and replyCount counts every
+  //   chain item (all descendants), never the starter.
+  function buildThreadTree(items, starterId, newestFirst) {
+    var list = (items || []).slice();
+    var byId = {};
+    list.forEach(function (it) { byId[it.id] = it; });
+    var nodes = {};
+    list.forEach(function (it) { nodes[it.id] = { item: it, children: [] }; });
+    var top = [];
+    var count = 0;
+    list.forEach(function (it) {
+      if (starterId && starterId !== 'none' && it.id === starterId) return;
+      count += 1;
+      var parentId = it.replyTo;
+      if (parentId && parentId !== 'none' && parentId !== starterId && nodes[parentId] && parentId !== it.id) {
+        nodes[parentId].children.push(nodes[it.id]);
+      } else {
+        top.push(nodes[it.id]);
+      }
+    });
+    if (newestFirst) top.reverse();
+    return { chain: top, replyCount: count };
+  }
+
   var api = {
+    buildThreadTree: buildThreadTree,
+    groupStreamCards: groupStreamCards,
+    chunkUnits: chunkUnits,
     parseSearch: parseSearch, packField: packField, notePart: notePart,
     packThread: packThread, packAuthor: packAuthor, packMessage: packMessage,
     isBoardMessage: isBoardMessage, isVerified: isVerified,
@@ -429,6 +529,12 @@
   var scrollSentinel = null;
   var scrollObserver = null;
   var scrollEndShown = false;
+  // Feed-list unit chunks (2026-10-28): the stream is grouped into
+  // thread units FIRST, then chunked by whole units (see chunkUnits).
+  // scrollRenderedUnits is what renderList shows in stream mode.
+  var scrollUnitChunks = [];
+  var scrollUnitIdx = 0;
+  var scrollRenderedUnits = [];
 
   function shareBase() {
     try {
@@ -490,6 +596,11 @@
     } catch (e) { done(false); }
   }
 
+  // Thread-view chain sort: 'old' (conversation order, the default)
+  // or 'new' (top level newest-first; nested replies always stay in
+  // conversation order). Set only by the thread view's sort control.
+  var threadChainSort = 'old';
+
   function renderThreadBox(card, box, onCount, formBox) {
     box.textContent = 'Loading thread…';
     cloud('/search?q=' + encodeURIComponent('thread=' + card.thread)).then(function (res) {
@@ -514,58 +625,106 @@
           if (done === rows.length) {
             items.sort(function (a, b) { return (a.storedAt || 0) - (b.storedAt || 0); });
             if (onCount) onCount(items.length);
+            var tree = buildThreadTree(items, card.id, threadChainSort === 'new');
             var countLine = document.createElement('p');
-            countLine.className = 'small';
-            countLine.textContent = items.length + (items.length === 1 ? ' post' : ' posts') + ' in this thread.';
+            countLine.className = 'small tv-count';
+            countLine.textContent = tree.replyCount + (tree.replyCount === 1 ? ' reply' : ' replies');
             box.appendChild(countLine);
-            var byId = {};
-            items.forEach(function (it) { byId[it.id] = it.author; });
-            items.forEach(function (it) {
-              var d = document.createElement('div');
-              d.className = 'reply';
-              if (it.replyTo && it.replyTo !== 'none' && byId[it.replyTo]) {
-                var parent = document.createElement('p');
-                parent.className = 'small reply-parent';
-                parent.textContent = 'A reply to ' + byId[it.replyTo] + '\'s post';
-                d.appendChild(parent);
-              }
-              var h = document.createElement('p');
-              h.className = 'reply-head';
-              h.appendChild(avatarEl(it.author));
-              var n = document.createElement('span');
-              n.className = 'author';
-              n.textContent = it.author;
-              h.appendChild(n);
-              if (it.verified) {
-                var v = document.createElement('span');
-                v.className = 'verified';
-                v.textContent = ' · verified';
-                h.appendChild(v);
-              }
-              var t = document.createElement('span');
-              t.className = 'time';
-              t.textContent = ' · ' + (relativeTime(it.storedAt) || 'board post');
-              h.appendChild(t);
-              d.appendChild(h);
-              var b = document.createElement('p');
-              b.className = 'body';
-              b.textContent = it.body;
-              d.appendChild(b);
-              var rb = actionBtn('Reply to this', function () {
-                var form = formBox ? formBox.querySelector('.reply-form') : box.querySelector('.reply-form');
-                if (form) {
-                  form.dataset.replyTo = it.id;
-                  form.querySelector('textarea').focus();
-                  form.querySelector('.reply-to-note').textContent = 'Replying to ' + it.author + ' (id ' + it.id.slice(0, 8) + '…).';
-                }
-              });
-              d.appendChild(rb);
-              box.appendChild(d);
-            });
+            if (!tree.replyCount) {
+              var none = document.createElement('p');
+              none.className = 'small';
+              none.textContent = 'No replies yet. Be the first to reply below.';
+              box.appendChild(none);
+              return;
+            }
+            tree.chain.forEach(function (node) { box.appendChild(renderReplyNode(node, 0, formBox, box)); });
           }
         }).catch(function () { done += 1; if (done === rows.length && !box.hasChildNodes()) box.textContent = 'Thread unavailable right now.'; });
       });
     }).catch(function () { box.textContent = 'Thread unavailable right now — try again in a minute.'; });
+  }
+
+  // One reply row for the thread view: avatar column + content, the
+  // Threads-style row without any like/follow/repost/share control.
+  // Only interaction is Reply (the existing replyForm path).
+  function renderReplyRow(it, formBox, box) {
+    var d = document.createElement('div');
+    d.className = 'tv-reply';
+    d.dataset.replyId = it.id;
+    var col = document.createElement('div');
+    col.className = 'tv-avatar-col';
+    col.appendChild(avatarEl(it.author));
+    d.appendChild(col);
+    var main = document.createElement('div');
+    main.className = 'tv-reply-main';
+    var h = document.createElement('p');
+    h.className = 'tv-reply-head';
+    var n = document.createElement('span');
+    n.className = 'author';
+    n.textContent = it.author;
+    h.appendChild(n);
+    if (it.verified) {
+      var v = document.createElement('span');
+      v.className = 'verified';
+      v.textContent = ' · verified';
+      h.appendChild(v);
+    }
+    var t = document.createElement('span');
+    t.className = 'time';
+    t.textContent = ' · ' + (relativeTime(it.storedAt) || 'board post');
+    h.appendChild(t);
+    main.appendChild(h);
+    var b = document.createElement('p');
+    b.className = 'body';
+    b.textContent = it.body;
+    main.appendChild(b);
+    var rb = actionBtn('Reply to this', function () {
+      var form = formBox ? formBox.querySelector('.reply-form') : box.querySelector('.reply-form');
+      if (form) {
+        form.dataset.replyTo = it.id;
+        form.querySelector('textarea').focus();
+        form.querySelector('.reply-to-note').textContent = 'Replying to ' + it.author + ' (id ' + it.id.slice(0, 8) + '…).';
+      }
+    });
+    main.appendChild(rb);
+    d.appendChild(main);
+    return d;
+  }
+
+  // A reply node with its nested replies behind a collapsed
+  // "Show replies" toggle (connector line via CSS). Beyond depth 6
+  // the subtree flattens into plain rows so no chain can nest
+  // without bound. Needs formBox/box only for the Reply buttons.
+  function renderReplyNode(node, depth, formBox, box) {
+    var d = renderReplyRow(node.item, formBox, box);
+    if (!node.children.length) return d;
+    var kids = document.createElement('div');
+    kids.className = 'tv-children';
+    kids.style.display = 'none';
+    node.children.forEach(function (child) {
+      if (depth + 1 >= 6) {
+        renderReplyFlat(child, kids, formBox, box);
+      } else {
+        kids.appendChild(renderReplyNode(child, depth + 1, formBox, box));
+      }
+    });
+    var main = d.querySelector('.tv-reply-main');
+    var toggle = actionBtn('Show replies (' + node.children.length + ')', function () {
+      var show = kids.style.display === 'none';
+      kids.style.display = show ? 'block' : 'none';
+      toggle.textContent = show ? 'Hide replies' : 'Show replies (' + node.children.length + ')';
+    });
+    toggle.className = 'action tv-toggle';
+    if (main) main.appendChild(toggle);
+    d.appendChild(kids);
+    return d;
+  }
+
+  // Flat walk of a subtree: the node row, then every descendant in
+  // conversation order, with no further toggles.
+  function renderReplyFlat(node, into, formBox, box) {
+    into.appendChild(renderReplyRow(node.item, formBox, box));
+    node.children.forEach(function (child) { renderReplyFlat(child, into, formBox, box); });
   }
 
   // Top-bar auth: one compact login for humans. Login is only for
@@ -616,6 +775,7 @@
     if (box) box.style.display = 'none';
   }
   function openComposer() {
+    if (threadViewOpen) exitThreadView();
     if (!session.username) {
       // Visible path to login, not a distant status line: the login
       // box opens at the top, and login auto-opens the composer.
@@ -706,7 +866,223 @@
     return form;
   }
 
-  function renderCard(card) {
+  // ---- Dedicated thread view (2026-10-28, layout only) -----------
+  // Replaces the card's old inline thread box with one centered
+  // thread page: back header, main post, sort control, reply chain
+  // with nested Show-replies collapse, and a sticky bottom reply
+  // bar. Posting still goes through the UNCHANGED replyForm path
+  // (board-post, v3 login, draft preservation). No likes, follows,
+  // reposts, share counts, or view counts anywhere: comments only.
+  var threadViewOpen = false;
+  var threadViewCard = null;
+  var threadHiddenDisplay = null;
+
+  function threadViewEl() { return el('thread-view'); }
+
+  function enterThreadViewMode() {
+    var view = threadViewEl();
+    var main = null;
+    try { main = document.querySelector('main'); } catch (e) { main = null; }
+    threadHiddenDisplay = [];
+    if (main) {
+      var kids = main.childNodes || [];
+      for (var i = 0; i < kids.length; i++) {
+        var s = kids[i];
+        if (!s || s.tagName !== 'SECTION' || s.id === 'thread-view') continue;
+        threadHiddenDisplay.push({ el: s, display: s.style.display });
+        s.style.display = 'none';
+      }
+    }
+    if (view) view.style.display = '';
+    threadViewOpen = true;
+  }
+
+  function exitThreadViewMode() {
+    var view = threadViewEl();
+    if (threadHiddenDisplay) {
+      threadHiddenDisplay.forEach(function (rec) { rec.el.style.display = rec.display; });
+      threadHiddenDisplay = null;
+    }
+    if (view) { view.style.display = 'none'; view.textContent = ''; }
+    threadViewOpen = false;
+    threadViewCard = null;
+  }
+
+  function exitThreadView() { exitThreadViewMode(); }
+
+  // Main post block for the thread view: same header/body pieces as
+  // a card (avatar initials, name, verified, time, linkified body),
+  // without actions or boxes. Skipped for shared threads, where the
+  // main post is not loaded (id 'none') — the chain carries it.
+  function renderThreadMain(card, into) {
+    if (!card || card.id === 'none') return;
+    var wrap = document.createElement('div');
+    wrap.className = 'tv-main';
+    var head = document.createElement('div');
+    head.className = 'tv-head';
+    head.appendChild(avatarEl(card.kind === 'post' ? card.author : card.title));
+    var nameWrap = document.createElement('div');
+    var name = document.createElement('span');
+    name.className = 'author';
+    name.textContent = card.kind === 'post' ? (card.title || card.author) : card.title;
+    nameWrap.appendChild(name);
+    if (card.kind === 'post' && card.verified) {
+      var v = document.createElement('span');
+      v.className = 'verified';
+      v.textContent = ' · verified';
+      nameWrap.appendChild(v);
+    }
+    var meta = document.createElement('span');
+    meta.className = 'time';
+    meta.textContent = card.kind === 'post'
+      ? (card.title ? ' · by ' + card.author + ' · ' : ' · ') + (relativeTime(card.storedAt) || 'board post')
+      : ' · ' + (card.kindLabel || 'wiki entry') + ' · ' + (card.verification || '');
+    nameWrap.appendChild(meta);
+    head.appendChild(nameWrap);
+    wrap.appendChild(head);
+    var body = document.createElement('p');
+    body.className = 'body';
+    if (card.kind === 'post') {
+      var parts = linkifyParts(card.body || '(no message text)', allSkills.map(function (s) { return s.id; }), allTools);
+      parts.forEach(function (pt) {
+        if (pt.t === 'link') {
+          var la = document.createElement('a');
+          la.href = pt.href;
+          la.textContent = pt.v;
+          body.appendChild(la);
+        } else {
+          body.appendChild(document.createTextNode(pt.v));
+        }
+      });
+    } else {
+      body.textContent = 'Wiki article — read the full text on the article page.';
+    }
+    wrap.appendChild(body);
+    if (card.kind === 'article') {
+      var link = document.createElement('p');
+      link.className = 'small';
+      var anchor = document.createElement('a');
+      anchor.href = 'wiki-article.html?article=' + encodeURIComponent(card.slug);
+      anchor.textContent = 'Read article: ' + card.title;
+      link.appendChild(anchor);
+      wrap.appendChild(link);
+    }
+    if (card.kind === 'post') {
+      var safe = safeLinkUrl(card.link);
+      if (safe) {
+        var slink = document.createElement('p');
+        slink.className = 'small';
+        var sa = document.createElement('a');
+        sa.href = safe;
+        sa.target = '_blank';
+        sa.rel = 'noopener';
+        sa.textContent = 'Source link';
+        slink.appendChild(sa);
+        wrap.appendChild(slink);
+      }
+    }
+    into.appendChild(wrap);
+  }
+
+  function openThreadView(card, focusComposer, updateCount) {
+    var view = threadViewEl();
+    if (!view) return;
+    threadViewCard = card;
+    view.textContent = '';
+    var header = document.createElement('div');
+    header.className = 'tv-header';
+    var back = document.createElement('button');
+    back.type = 'button';
+    back.className = 'action tv-back';
+    back.textContent = '← Thread';
+    back.addEventListener('click', function () { exitThreadView(); });
+    header.appendChild(back);
+    view.appendChild(header);
+    if (card.id === 'none') {
+      var shared = document.createElement('p');
+      shared.className = 'small';
+      shared.textContent = 'Shared thread: ' + card.thread;
+      view.appendChild(shared);
+    }
+    renderThreadMain(card, view);
+    // Sort control: oldest/newest ONLY. There is no vote signal, so
+    // no Top-by-votes sort exists here; nested replies always stay
+    // in conversation order.
+    var sortRow = document.createElement('div');
+    sortRow.className = 'tv-sort';
+    var sortLabel = document.createElement('span');
+    sortLabel.className = 'small';
+    sortLabel.textContent = 'Order: ';
+    sortRow.appendChild(sortLabel);
+    var chainBox = document.createElement('div');
+    chainBox.className = 'tv-chain';
+    var formBox = document.createElement('div');
+    formBox.className = 'tv-composer-form';
+    function refreshChain() {
+      renderThreadBox(card, chainBox, updateCount, formBox);
+    }
+    var oldBtn = actionBtn('Oldest first', function () {
+      threadChainSort = 'old';
+      oldBtn.setAttribute('aria-pressed', 'true');
+      newBtn.setAttribute('aria-pressed', 'false');
+      refreshChain();
+    });
+    var newBtn = actionBtn('Newest first', function () {
+      threadChainSort = 'new';
+      newBtn.setAttribute('aria-pressed', 'true');
+      oldBtn.setAttribute('aria-pressed', 'false');
+      refreshChain();
+    });
+    oldBtn.setAttribute('aria-pressed', threadChainSort === 'old' ? 'true' : 'false');
+    newBtn.setAttribute('aria-pressed', threadChainSort === 'new' ? 'true' : 'false');
+    sortRow.appendChild(oldBtn);
+    sortRow.appendChild(newBtn);
+    var sortNote = document.createElement('span');
+    sortNote.className = 'small';
+    sortNote.textContent = 'Nested replies stay in conversation order.';
+    sortRow.appendChild(sortNote);
+    view.appendChild(sortRow);
+    // See more like this: ONLY from real topics.txt channels, and
+    // ONLY when this thread IS one of them. Never invented.
+    var topic = null;
+    if (card.kind === 'post') {
+      allTopics.forEach(function (t) { if (t.thread === card.thread) topic = t; });
+    }
+    if (topic) {
+      var more = document.createElement('div');
+      more.className = 'tv-seemore';
+      var moreBtn = actionBtn('See more like this in ' + topic.slug, function () {
+        exitThreadView();
+        topicFilter = topic.thread;
+        if (feedReady && scrollActive && !scrollExhausted) {
+          loadAllRemaining(function () { renderList(); });
+        } else if (feedReady) renderList(); else loadFeed();
+      });
+      more.appendChild(moreBtn);
+      view.appendChild(more);
+    }
+    view.appendChild(chainBox);
+    // Bottom reply bar: the unchanged replyForm, presented as a
+    // sticky bar. Same posting path, login flow, draft handling.
+    var composer = document.createElement('div');
+    composer.className = 'tv-composer';
+    composer.appendChild(avatarEl(session.username || '?'));
+    composer.appendChild(formBox);
+    formBox.appendChild(replyForm(card, chainBox, updateCount, formBox));
+    var ta = formBox.querySelector('textarea');
+    if (ta) {
+      ta.placeholder = card.kind === 'post' ? 'Reply to ' + (card.author || 'this thread') : 'Reply in this thread';
+    }
+    view.appendChild(composer);
+    enterThreadViewMode();
+    refreshChain();
+    if (focusComposer && ta) ta.focus();
+  }
+
+  // opts.hideCardActions (feed-list units only): suppress the card's
+  // own Reply / View thread / Copy link — the unit supplies one set
+  // at its foot. Read here stays: it belongs to the article head.
+  function renderCard(card, opts) {
     var a = document.createElement('article');
     a.className = 'feed-card';
     a.dataset.item = card.item;
@@ -858,13 +1234,6 @@
     }
     var actions = document.createElement('div');
     actions.className = 'actions';
-    var threadBox = document.createElement('div');
-    threadBox.className = 'thread-box';
-    threadBox.style.display = 'none';
-    var formBox = document.createElement('div');
-    formBox.className = 'reply-form-wrap';
-    formBox.style.display = 'none';
-    formBox.appendChild(replyForm(card, threadBox, updateCount, formBox));
     var articleBox = null;
     if (card.kind === 'article') {
       articleBox = document.createElement('div');
@@ -872,30 +1241,21 @@
       articleBox.style.display = 'none';
       articleBox.dataset.loaded = '0';
     }
-    var expanded = false;
     var viewBtn = null;
     function updateCount(n) {
       if (viewBtn) viewBtn.textContent = 'View thread · ' + n + (n === 1 ? ' post' : ' posts');
     }
     function openThread() {
-      if (!expanded) {
-        threadBox.style.display = 'block'; formBox.style.display = 'block';
-        renderThreadBox(card, threadBox, updateCount, formBox); expanded = true;
-      }
+      openThreadView(card, false, updateCount);
     }
-    function toggleThread() {
-      expanded = !expanded;
-      threadBox.style.display = expanded ? 'block' : 'none';
-      formBox.style.display = expanded ? 'block' : 'none';
-      if (expanded) renderThreadBox(card, threadBox, updateCount, formBox);
+    var showCardActions = !opts || !opts.hideCardActions;
+    if (showCardActions) {
+      actions.appendChild(actionBtn('Reply', function () {
+        openThreadView(card, true, updateCount);
+      }));
+      viewBtn = actionBtn('View thread', openThread);
+      actions.appendChild(viewBtn);
     }
-    actions.appendChild(actionBtn('Reply', function () {
-      openThread();
-      var ta = formBox.querySelector('textarea');
-      if (ta) ta.focus();
-    }));
-    viewBtn = actionBtn('View thread', toggleThread);
-    actions.appendChild(viewBtn);
     // Copy link: a permalink for THIS card only. A copy-link button
     // is not a share count and is not a like/follow/repost.
     var copyBtn = actionBtn('Copy link', function () {
@@ -921,7 +1281,7 @@
         } else { done(false); }
       } catch (e) { done(false); }
     });
-    actions.appendChild(copyBtn);
+    if (showCardActions) actions.appendChild(copyBtn);
     if (card.kind === 'article' && articleBox) {
       actions.appendChild(actionBtn('Read here', function () {
         var show = articleBox.style.display === 'none';
@@ -943,12 +1303,124 @@
         }
       }));
     }
-    a.appendChild(actions);
+    if (actions.childNodes.length) a.appendChild(actions);
     if (articleBox) a.appendChild(articleBox);
-    a.appendChild(threadBox);
-    a.appendChild(formBox);
     a._openThread = openThread;
     return a;
+  }
+
+  // One reply row inside a feed-list unit: flat, display-only, no
+  // per-row Reply button — the unit has ONE Reply control at its
+  // foot. Avatar column + connector rail via CSS (.unit-rows).
+  function renderUnitRow(p) {
+    var d = document.createElement('div');
+    d.className = 'tv-reply unit-row';
+    d.dataset.replyId = p.id;
+    var col = document.createElement('div');
+    col.className = 'tv-avatar-col';
+    col.appendChild(avatarEl(p.author));
+    d.appendChild(col);
+    var main = document.createElement('div');
+    main.className = 'tv-reply-main';
+    var h = document.createElement('p');
+    h.className = 'tv-reply-head';
+    var n = document.createElement('span');
+    n.className = 'author';
+    n.textContent = p.author;
+    h.appendChild(n);
+    if (p.verified) {
+      var v = document.createElement('span');
+      v.className = 'verified';
+      v.textContent = ' · verified';
+      h.appendChild(v);
+    }
+    var t = document.createElement('span');
+    t.className = 'time';
+    t.textContent = ' · ' + (relativeTime(p.storedAt) || 'board post');
+    h.appendChild(t);
+    main.appendChild(h);
+    var b = document.createElement('p');
+    b.className = 'body';
+    var parts = linkifyParts(p.body || '(no message text)', allSkills.map(function (s) { return s.id; }), allTools);
+    parts.forEach(function (pt) {
+      if (pt.t === 'link') {
+        var la = document.createElement('a');
+        la.href = pt.href;
+        la.textContent = pt.v;
+        b.appendChild(la);
+      } else {
+        b.appendChild(document.createTextNode(pt.v));
+      }
+    });
+    main.appendChild(b);
+    if (p.link) {
+      var safe = safeLinkUrl(p.link);
+      if (safe) {
+        var slink = document.createElement('p');
+        slink.className = 'small';
+        var sa = document.createElement('a');
+        sa.href = safe;
+        sa.target = '_blank';
+        sa.rel = 'noopener';
+        sa.textContent = 'Source link';
+        slink.appendChild(sa);
+        main.appendChild(slink);
+      }
+    }
+    d.appendChild(main);
+    return d;
+  }
+
+  // One feed-list thread unit: head (starter post or article card,
+  // without its own actions) + reply rows in conversation order +
+  // ONE Reply control, View thread, and Copy link at the foot.
+  // The unit node carries dataset.thread + _openThread so deep
+  // links find the unit exactly like they found a card.
+  function renderUnit(unit) {
+    var wrap = document.createElement('div');
+    wrap.className = 'feed-unit';
+    if (unit.thread) wrap.dataset.thread = unit.thread;
+    var repCard = unit.main;
+    var head = null;
+    if (repCard) head = renderCard(repCard, { hideCardActions: true });
+    if (head) wrap.appendChild(head);
+    var rows = unit.kind === 'article' ? unit.posts : unit.posts.slice(1);
+    if (rows.length) {
+      var stack = document.createElement('div');
+      stack.className = 'unit-rows';
+      rows.forEach(function (p) { stack.appendChild(renderUnitRow(p)); });
+      wrap.appendChild(stack);
+    }
+    var actions = document.createElement('div');
+    actions.className = 'actions unit-actions';
+    var viewBtn = null;
+    function threadLabel(n) {
+      if (!n) return 'View thread';
+      var word = unit.kind === 'article'
+        ? (n === 1 ? 'reply' : 'replies')
+        : (n === 1 ? 'post' : 'posts');
+      return 'View thread · ' + n + ' ' + word;
+    }
+    function updateCount(n) {
+      if (viewBtn) viewBtn.textContent = threadLabel(n);
+    }
+    actions.appendChild(actionBtn('Reply', function () {
+      openThreadView(repCard, true, updateCount);
+    }));
+    viewBtn = actionBtn(threadLabel(unit.posts.length), function () {
+      openThreadView(repCard, false, updateCount);
+    });
+    actions.appendChild(viewBtn);
+    if (unit.thread) {
+      var shareUrl = unit.kind === 'article' && unit.article
+        ? buildArticleShareUrl(shareBase(), unit.article.slug)
+        : buildPostShareUrl(shareBase(), unit.thread, repCard ? repCard.id : '');
+      var copyBtn = actionBtn('Copy link', function () { copyUrl(shareUrl, copyBtn, actions); });
+      actions.appendChild(copyBtn);
+    }
+    wrap.appendChild(actions);
+    wrap._openThread = function () { openThreadView(repCard, false, updateCount); };
+    return wrap;
   }
 
   // Topic filter: when a topic chip is active, only posts in that
@@ -957,10 +1429,10 @@
   function renderList() {
     var box = el('feed-list');
     box.textContent = '';
-    var visible = topicFilter
-      ? allCards.filter(function (c) { return c.kind === 'post' && c.thread === topicFilter; })
-      : allCards;
+    // Topic views stay per-post rows: they are lookup views, not
+    // the social stream, so grouping is deliberately not applied.
     if (topicFilter) {
+      var visible = allCards.filter(function (c) { return c.kind === 'post' && c.thread === topicFilter; });
       var topic = null;
       allTopics.forEach(function (t) { if (t.thread === topicFilter) topic = t; });
       var note = document.createElement('p');
@@ -977,22 +1449,40 @@
         openComposer();
       });
       box.appendChild(setBtn);
+      if (!visible.length) {
+        var emptyTopic = document.createElement('p');
+        emptyTopic.textContent = 'No posts in this topic yet. Be the first to post in it.';
+        box.appendChild(emptyTopic);
+        ensureScrollFooter();
+        return;
+      }
+      visible.forEach(function (c) { box.appendChild(renderCard(c)); });
+      feedReady = true;
+      if (!deepLinkDone) { deepLinkDone = true; handleDeepLink(); }
+      ensureScrollFooter();
+      return;
     }
-    if (!visible.length) {
+    // Social stream: thread units. Stream mode shows only units
+    // rendered so far (appendNextChunk adds whole units); full-load
+    // mode (deep links) groups everything in allCards.
+    var units = (scrollActive && !searchActive) ? scrollRenderedUnits : groupStreamCards(allCards);
+    if (!units.length) {
       var empty = document.createElement('p');
-      empty.textContent = topicFilter ? 'No posts in this topic yet. Be the first to post in it.' : 'Nothing here yet.';
+      empty.textContent = 'Nothing here yet.';
       box.appendChild(empty);
       ensureScrollFooter();
       return;
     }
-    visible.forEach(function (c) { box.appendChild(renderCard(c)); });
+    units.forEach(function (u) { box.appendChild(renderUnit(u)); });
     feedReady = true;
     if (!deepLinkDone) { deepLinkDone = true; handleDeepLink(); }
     ensureScrollFooter();
   }
 
   // ---- Infinite scroll (2026-10-28) ---------------------------------
-  // Chunked stream, posts then articles, 20 per chunk. The footer
+  // Unit-chunked stream: the full stream is grouped into thread
+  // units first (buildStreamUnits), then chunked by whole units,
+  // ~20 cards per chunk, never splitting a unit. The footer
   // (sentinel + Load more button + end note) is created from JS so
   // feed.html is untouched. Scroll never runs while a search is
   // active or a topic filter is on; those views load the full set.
@@ -1004,6 +1494,9 @@
     scrollLoading = false;
     scrollExhausted = false;
     scrollEndShown = false;
+    scrollUnitChunks = [];
+    scrollUnitIdx = 0;
+    scrollRenderedUnits = [];
     removeScrollFooter();
   }
   function removeScrollFooter() {
@@ -1108,25 +1601,47 @@
       cb(mergeFeed([], arts), scrollExhausted);
     }
   }
-  // Append the next chunk's cards before the footer, preserving open
-  // threads (no full re-render). Empty chunks auto-advance; the loop
-  // is bounded because every step consumes rows or articles.
+  // Full-stream unit build for the social stream: walk every cursor
+  // chunk (reusing fetchNextChunkCards, so unreadable packs still
+  // skip cleanly), then group the WHOLE stream into thread units
+  // BEFORE any chunking. First paint therefore shows complete units
+  // — a thread's starter plus all its replies — never a unit that
+  // grows headless as older posts arrive. Cost, stated plainly:
+  // the stream path now fetches every pack up front instead of
+  // lazily per chunk; rows still walk paged, and at board size
+  // (tens of packs) the extra fetch is one batch. Search and topic
+  // views keep their own per-post paths and never pay this.
+  function buildStreamUnits(cb) {
+    var cards = [];
+    function step() {
+      if (!scrollCursor || scrollExhausted) { cb(groupStreamCards(cards), cards); return; }
+      fetchNextChunkCards(function (chunk) {
+        cards = cards.concat(chunk);
+        step();
+      });
+    }
+    step();
+  }
+  // Append the next UNIT chunk before the footer. Units are whole
+  // by construction: a chunk holds complete units only, so no
+  // thread ever splits across a chunk boundary. No re-render of
+  // earlier units, no fetch here (packs already loaded by the build).
   function appendNextChunk() {
     if (!scrollActive || searchActive || topicFilter || scrollLoading || scrollExhausted) return;
     ensureScrollFooter();
-    fetchNextChunkCards(function (cards) {
-      if (!cards.length && !scrollExhausted) { appendNextChunk(); return; }
-      var box = el('feed-list');
-      if (box) {
-        cards.forEach(function (c) {
-          allCards.push(c);
-          var node = renderCard(c);
-          if (scrollFooter && scrollFooter.parentNode === box) box.insertBefore(node, scrollFooter);
-          else box.appendChild(node);
-        });
-      }
-      updateScrollFooter();
-    });
+    if (scrollUnitIdx >= scrollUnitChunks.length) { scrollExhausted = true; updateScrollFooter(); return; }
+    var chunk = scrollUnitChunks[scrollUnitIdx++];
+    var box = el('feed-list');
+    if (box) {
+      chunk.forEach(function (u) {
+        scrollRenderedUnits.push(u);
+        var node = renderUnit(u);
+        if (scrollFooter && scrollFooter.parentNode === box) box.insertBefore(node, scrollFooter);
+        else box.appendChild(node);
+      });
+    }
+    if (scrollUnitIdx >= scrollUnitChunks.length) scrollExhausted = true;
+    updateScrollFooter();
   }
   // Full-stream load for deep links and topic views: every remaining
   // chunk, then the caller renders the complete list. No footer.
@@ -1204,6 +1719,14 @@
 
   function showArticleCard(slug) {
     var cardEl = document.getElementById('article-' + slug);
+    // Stream mode: an article in a not-yet-rendered unit chunk is
+    // not in the DOM yet — drain the remaining unit chunks first
+    // (bounded: chunks are finite), then fall back as before.
+    if (!cardEl && scrollActive && !searchActive && !topicFilter && !scrollExhausted) {
+      var guard = 0;
+      while (!scrollExhausted && guard++ < 10000) appendNextChunk();
+      cardEl = document.getElementById('article-' + slug);
+    }
     if (!cardEl) { renderList(); cardEl = document.getElementById('article-' + slug); }
     if (cardEl) {
       if (cardEl._openThread) cardEl._openThread();
@@ -1216,24 +1739,29 @@
   // A shared thread whose post is not in the newest-20 cards: still
   // readable, rendered at the top of the list from the thread itself.
   function renderSharedThread(thread) {
-    var box = el('feed-list');
-    if (!box) return;
-    var wrap = document.createElement('div');
-    wrap.className = 'shared-thread';
-    var head = document.createElement('p');
-    head.className = 'small';
-    head.textContent = 'Shared thread: ' + thread + ' (the post itself is not in the newest cards, so the thread is shown here).';
-    wrap.appendChild(head);
-    var threadBox = document.createElement('div');
-    threadBox.className = 'thread-box';
-    var formBox = document.createElement('div');
-    formBox.className = 'reply-form-wrap';
-    var synth = { kind: 'post', id: 'none', thread: thread };
-    formBox.appendChild(replyForm(synth, threadBox, null, formBox));
-    wrap.appendChild(threadBox);
-    wrap.appendChild(formBox);
-    if (box.firstChild) box.insertBefore(wrap, box.firstChild); else box.appendChild(wrap);
-    renderThreadBox(synth, threadBox, null, formBox);
+    openThreadView({ kind: 'post', id: 'none', thread: thread, author: '', body: '', link: null }, false, null);
+  }
+
+  // Deep-link #post-<id>: after the thread view opens, scroll to
+  // that post's row inside the chain. Bounded poll because the
+  // chain renders asynchronously (pack fetches); gives up quietly
+  // when the post is the main post (not a chain row) or unreadable.
+  function jumpToThreadPost(postId) {
+    var tries = 0;
+    (function tick() {
+      var view = threadViewEl();
+      var row = null;
+      if (view) {
+        var stack = [view];
+        while (stack.length && !row) {
+          var n = stack.pop();
+          if (n.dataset && n.dataset.replyId === postId) row = n;
+          else if (n.childNodes) for (var i = 0; i < n.childNodes.length; i++) stack.push(n.childNodes[i]);
+        }
+      }
+      if (row) { if (row.scrollIntoView) row.scrollIntoView(); return; }
+      if (++tries < 30) setTimeout(tick, 100);
+    })();
   }
 
   // Deep links: ?article=<slug> opens that article card + thread;
@@ -1265,6 +1793,7 @@
       if (pel) {
         if (pel._openThread) pel._openThread();
         if (pel.scrollIntoView) pel.scrollIntoView();
+        if (dl.postId) jumpToThreadPost(dl.postId);
       } else {
         renderSharedThread(dl.thread);
       }
@@ -1355,9 +1884,10 @@
 
   // Infinite scroll load (2026-10-28): every loadFeed re-walks the
   // Worker search pages from scratch, so a reload (or a fresh post)
-  // puts new posts at the top. Row discovery is text-only; packs
-  // load per 20-card chunk, never for rows not yet shown. Deep links
-  // and topic views load the full stream instead of chunking.
+  // puts new posts at the top. Row discovery is text-only; the
+  // stream path then fetches every pack once to group whole thread
+  // units before chunking (see buildStreamUnits for the tradeoff).
+  // Deep links and topic views load the full stream instead of chunking.
   // This REPLACES the old slice(0, 20) first-page load — and the
   // slice(-20) newest-20 fix, which could not work live because the
   // Worker paginates at 20 rows ascending, so page 1 holds the 20
@@ -1386,8 +1916,18 @@
         });
       } else {
         scrollActive = true;
-        fetchNextChunkCards(function (cards) {
+        buildStreamUnits(function (units, cards) {
           allCards = cards.slice();
+          scrollUnitChunks = chunkUnits(units, 20);
+          scrollUnitIdx = 0;
+          scrollRenderedUnits = [];
+          if (scrollUnitChunks.length) {
+            scrollRenderedUnits = scrollUnitChunks[0].slice();
+            scrollUnitIdx = 1;
+          }
+          // The walk set scrollExhausted at cursor end; from here
+          // on the footer reports CHUNK exhaustion, not walk end.
+          scrollExhausted = scrollUnitIdx >= scrollUnitChunks.length;
           renderWikiList();
           renderTopicChips();
           if (!searchActive) renderList();

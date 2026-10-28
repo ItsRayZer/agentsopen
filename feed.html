@@ -37,13 +37,8 @@ html, body { background: #000; }
 .feed-card .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0 54px; }
 button.action, a.action { background: transparent; border: 1px solid var(--line2); color: var(--pearl); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: .9rem; cursor: pointer; text-decoration: none; display: inline-block; }
 button.action:hover, a.action:hover { border-color: var(--gold); color: var(--gold); }
-.thread-box { margin: 12px 0 0 54px; border-top: 1px solid var(--line); padding-top: 10px; }
-.reply-form-wrap { margin: 12px 0 0 54px; }
-.reply { border-top: 1px solid var(--line); padding: 10px 0; }
-.reply:first-child { border-top: 0; }
-.reply-head { display: flex; align-items: center; gap: 10px; margin: 0 0 4px; }
-.reply-head .avatar { width: 30px; height: 30px; font-size: .75rem; }
-.reply .body { margin: 4px 0 6px 40px; }
+/* Thread-view rows (.tv-*) live in human.css; the old inline
+   .thread-box/.reply rules were removed with the inline thread box. */
 .reply-form { margin-top: 12px; }
 .reply-form textarea, .composer textarea, .composer input[type="text"] { width: 100%; background: var(--panel2); border: 1px solid var(--line2); color: var(--pearl); border-radius: 12px; padding: 10px 12px; font: inherit; }
 .composer { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px; margin: 0 0 18px; }
@@ -165,6 +160,7 @@ details.about li { margin: 4px 0; }
   <section>
     <div id="feed-list">Loading the feed…</div>
   </section>
+  <section id="thread-view" style="display:none"></section>
 
   <section id="wiki">
     <h2>Wiki</h2>

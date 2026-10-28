@@ -161,3 +161,52 @@ footer { border-top: 1px solid var(--line); margin-top: 36px; padding-top: 16px;
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ---- Thread view (2026-10-28, layout only) ---------------------- */
+/* Dedicated thread page in the Threads-app thread layout,
+   reimplemented in vanilla CSS. Comments only by design: no
+   like/follow/repost/share/view-count UI exists here. True-black
+   background, centered single column. The sticky bottom composer
+   bar reuses the existing .reply-form (posting path unchanged). */
+#thread-view { max-width: 680px; margin: 0 auto; }
+.tv-header { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.tv-header .tv-back { font-weight: 700; }
+.tv-main { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.tv-head { display: flex; align-items: flex-start; gap: 12px; }
+.tv-head .avatar { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%; background: var(--panel2); border: 1px solid var(--line2); color: var(--gold); font-weight: 700; font-size: .9rem; display: inline-flex; align-items: center; justify-content: center; }
+.tv-head .author { font-weight: 700; }
+.tv-head .time { color: var(--mute); font-size: .85rem; }
+.tv-main .body { white-space: pre-wrap; word-break: break-word; margin: 10px 0 6px 54px; }
+.tv-sort { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.tv-seemore { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.tv-count { margin: 12px 0 4px; }
+.tv-chain { padding-bottom: 12px; }
+.tv-reply { display: flex; flex-wrap: wrap; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.tv-avatar-col { flex: 0 0 auto; }
+.tv-avatar-col .avatar { width: 36px; height: 36px; font-size: .8rem; }
+.tv-reply-main { flex: 1 1 0; min-width: 0; }
+.tv-reply-head { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 0 0 4px; }
+.tv-reply-head .author { font-weight: 700; }
+.tv-reply-head .time { color: var(--mute); font-size: .85rem; }
+.tv-reply-main .body { white-space: pre-wrap; word-break: break-word; margin: 4px 0 8px; }
+.tv-children { flex-basis: 100%; margin: 4px 0 0 48px; padding-left: 12px; border-left: 1px solid var(--line); }
+.tv-children .tv-reply { border-bottom: 0; padding-bottom: 4px; }
+.tv-children .tv-children { margin-left: 48px; }
+.tv-toggle { margin-top: 8px; }
+.tv-composer { position: sticky; bottom: 0; z-index: 10; display: flex; align-items: flex-start; gap: 12px; background: #000; border-top: 1px solid var(--line); padding: 12px 0; }
+.tv-composer > .avatar { flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%; background: var(--panel2); border: 1px solid var(--line2); color: var(--gold); font-weight: 700; font-size: .9rem; display: inline-flex; align-items: center; justify-content: center; }
+.tv-composer-form { flex: 1 1 0; min-width: 0; }
+.tv-composer .reply-form { margin-top: 0; }
+
+/* ---- Feed-list thread units (2026-10-28) ------------------------ */
+/* One continuous unit per thread: head card + reply rows on a
+   connector rail + one Reply / View thread / Copy link row.
+   Comments only: no like/follow/repost/share/view-count UI. */
+.feed-unit { border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 14px; background: #000; }
+.feed-unit .feed-card { border: 0; padding: 0; margin: 0; background: transparent; }
+.feed-unit .feed-card .body { margin-left: 54px; }
+.unit-rows { position: relative; margin-top: 12px; }
+.unit-rows::before { content: ''; position: absolute; left: 17px; top: 6px; bottom: 6px; width: 1px; background: var(--line); }
+.unit-row { position: relative; border-bottom: 0; padding: 8px 0; }
+.unit-row .tv-avatar-col .avatar { background: var(--panel2); }
+.unit-actions { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }

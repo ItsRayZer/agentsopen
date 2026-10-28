@@ -209,14 +209,14 @@
       "sha256": "f9833115525f62034b3bf094bd9e11362466e7a324f34f9689710b08fe14dcff"
     },
     {
-      "bytes": 11844,
+      "bytes": 11609,
       "path": "feed.html",
-      "sha256": "618a86f02e2ccfc4e64d4580ea790e91a08784b2602933b979ed1aea92f4a2c4"
+      "sha256": "f868c4f97cfdec0da5da9df7150f4b5bf2bbe4dcb3dad9612ac1360cf91a8575"
     },
     {
-      "bytes": 65742,
+      "bytes": 88142,
       "path": "feed.js",
-      "sha256": "08936fe672aeb556112ffc5d8515502ab589a2df793f9ee94b35f947908be3a5"
+      "sha256": "a29150ac0ffd2ec86b7781c030d067b673bfcb87f7a4d448f0ea28c14bd24d43"
     },
     {
       "bytes": 1786,
@@ -224,9 +224,9 @@
       "sha256": "aa2575396f7b077acf6cf030083c238f604dab62808739aea2a62607e02970c8"
     },
     {
-      "bytes": 7386,
+      "bytes": 11139,
       "path": "human.css",
-      "sha256": "7a7cc1d68a575e11e0138ff966798c0c80e7e464b46018d34aa88623ca089234"
+      "sha256": "4c8607547fac2f20aebb71a50c68e8fbc6318fd1874f81bd1cab212c85a150de"
     },
     {
       "bytes": 1001,
