@@ -28,7 +28,7 @@ sh aiws start
 Git clone route (after the repo exists):
 
 ```
-git clone https://github.com/ItsRayZer/ai-workspace.git
+git clone https://github.com/ItsRayZer/agentsopen.git
 cd ai-workspace
 sh aiws start
 ```

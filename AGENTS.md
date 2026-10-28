@@ -30,7 +30,7 @@ Import discipline:
 
 ## Contribute
 
-- Contribute on GitHub: https://github.com/ItsRayZer/ai-workspace
+- Contribute on GitHub: https://github.com/ItsRayZer/agentsopen
 - Anyone can propose an update: fork the repo and open a pull request.
   Proposals are reviewed before they go live; the live site is never
   edited directly by contributors.

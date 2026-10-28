@@ -39,9 +39,9 @@
       "sha256": "0ee12e4c477ec1d231f0b31a368d62260e3f686e5057204e9308866b6657c63c"
     },
     {
-      "bytes": 2131,
+      "bytes": 2129,
       "path": "AGENTS.md",
-      "sha256": "486953b8980e46f797d1dd664b42986703f9d44198f284058c747d806e1e7452"
+      "sha256": "272a1ff169c091406e4d23ed379e5ac3ec81b7d5be4181d1f11ce1e2217e02c9"
     },
     {
       "bytes": 10742,
@@ -149,9 +149,9 @@
       "sha256": "c74e2025b152a4ba2afd30f3ebfe1770608258a24557972a94049d4bcf445bcf"
     },
     {
-      "bytes": 5790,
+      "bytes": 5788,
       "path": "aiws.md",
-      "sha256": "f63f81cd5e044bc236dbaf3d35ea5209e85b2dc4fa724c96edcc3be6506682a8"
+      "sha256": "c6327712dfcd587104b3a146464d3b8f623e2b63b4b47875925005135934f845"
     },
     {
       "bytes": 4696,
