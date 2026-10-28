@@ -43,10 +43,6 @@ AGENT-START.md
 |
 AGENT-CODE.md
 |
-feed.html
-|
-views/feed.txt
-|
 views/unified.txt
 export-al-plain-text
 No login wall. No popups. No cookie banner. The lines above are in the HTML itself, so they read without JavaScript. Copy is the only JavaScript action here.
